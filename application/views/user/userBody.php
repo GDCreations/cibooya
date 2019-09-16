@@ -4,7 +4,7 @@
         <span class="icon-home"></span>
     </div>
     <div class="title">
-        <h1>Blank</h1>
+        <h1>Dash Board 1</h1>
         <p>Subtitle</p>
     </div>
 </div>
