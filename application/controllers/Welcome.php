@@ -39,7 +39,9 @@ class Welcome extends CI_Controller {
 
         $this->load->view('common/tmpFooter');
         //Janaka Udayanaga 2019-09-16
-// gemunu udaya git change
+        // gemunu udaya git change
+        // Newww 123
+        //New 456
 	}
 
 
