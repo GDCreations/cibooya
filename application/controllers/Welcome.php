@@ -41,6 +41,7 @@ class Welcome extends CI_Controller {
         //Janaka Udayanaga 2019-09-16
         // gemunu udaya git change
         // Newww 123
+        //New 456
 	}
 
 
