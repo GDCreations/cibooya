@@ -1,27 +1,7 @@
 </div>
 <!-- END APP CONTENT -->
-
 </div>
 <!-- END APP CONTAINER -->
-
-<!-- START APP FOOTER -->
-<!-- <div class="app-footer app-footer-default" id="footer">
-      <div class="app-footer-line">
-          <div class="copyright">&copy; 2016-2017 Boooya. All right reserved in the Ukraine and other
-              countries.
-          </div>
-          <div class="pull-right">
-              <ul class="list-inline">
-                  <li><a href="#">About</a></li>
-                  <li><a href="#">Help</a></li>
-                  <li><a href="#">Community</a></li>
-                  <li><a href="#">Contacts</a></li>
-              </ul>
-          </div>
-      </div>
-  </div>-->
-<!-- END APP FOOTER -->
-
 
 <!-- START APP FOOTER -->
 <div class="app-footer app-footer-default" id="footer">
@@ -32,9 +12,10 @@
     </div>
     -->
     <div class="app-footer-line darken">
-        <div class="copyright wide text-center">&copy; 2016-2017 Boooya. All right reserved in the Ukraine and other
-            countries.
-        </div>
+        <!--<div class="copyright wide text-center">&copy; 2016-2017 Boooya. All right reserved in the Ukraine and other </div>-->
+        <div class="copyright wide text-center">
+            &copy; <?= date('Y') ?> - cibooya | v1.<?= date('m') ?> | Powered By
+            <a href="http://www.gdcreations.com" target="_blank">GDC</a></div>
     </div>
 </div>
 <!-- END APP FOOTER -->
