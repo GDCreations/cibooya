@@ -4,7 +4,7 @@
         <span class="icon-home"></span>
     </div>
     <div class="title">
-        <h1>Dashboard</h1>
+        <h1>Admin Dashboard</h1>
         <p>Subtitle</p>
     </div>
 </div>
