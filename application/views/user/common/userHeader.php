@@ -8,7 +8,8 @@
             <a href="index.html" class="app-navigation-logo"></a>
             <nav>
                 <ul>
-                    <li><a id="dashbrd" href="<?= base_url()?>User"><span class="nav-icon-hexa icon-home"></span> Dashboards </a></li>
+                    <li><a id="dashbrd" href="<?= base_url() ?>User"><span class="nav-icon-hexa icon-home"></span>
+                            Dashboards </a></li>
 
                     <!--                    <li class="title">DEMONSTRATION</li>-->
                     <li>
@@ -162,9 +163,12 @@
                                 <ul class="dropdown-menu dropdown-left">
                                     <li><a href="<?= base_url(); ?>admin"><span class="icon-users"></span> Master
                                             Setting</a></li>
-                                    <li><a href="#"><span class="icon-envelope"></span> Lock Screen</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="pages-email-inbox.html"><span class="icon-envelope"></span> Sign Out
+                                    <li><a href=""><span class="icon-user"></span>Your Profile</a></li>
+                                    <li><a href="#"><span class="icon-lock"></span> Lock Screen</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="<?= base_url(); ?>welcome/logout"><span class="fa fa-sign-out"></span>
+                                            Sign Out
                                         </a></li>
                                 </ul>
                             </div>
