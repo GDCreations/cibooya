@@ -127,12 +127,13 @@ class Login extends CI_Controller
 
         $ua = getBrowser();
         $yourbrowser = $ua['name'] . " " . $ua['version'];
-        // end 18-11-2018
 
         $nowtime = date('H');
         // IF CHECK USER LOGIN TIME AND USER MODE
         if ($nowtime < 23 & 1 < $nowtime || $result[0]->usmd == 1) {
+
             if (count($result) > 0) {
+
                 if ($result[0]->acst == '3') {
 
                     if ($result[0]->usmd == 1) {
@@ -187,14 +188,14 @@ class Login extends CI_Controller
                             'macd' => $mac,
                         );
                         $this->Generic_model->insertData('user_bad_log', $badlog_arr);
-                        redirect('?message=userlock'); // User lock 3 times use wrong password
+                          redirect('/welcome?message=userlock'); // User lock 3 times use wrong password
                     }
 
                 } else {
                     if ($result[0]->lgcd == $digeye) {
                         //restric day end locked users 2018-11-13
                         if ($result[0]->delc == 1) {
-                            redirect('?message=Delock');
+                             redirect('/welcome?message=Delock');
                         } else {
                             foreach ($result as $res) {
                                 $sessionArray = array('userId' => $res->auid,
@@ -232,17 +233,8 @@ class Login extends CI_Controller
                                 );
                                 $this->db->insert('user_log', $logdata_arr);
 
-//                    if ($res->usmd == 1) {
-//                        $this->session->set_userdata($sessionArray);
-//                        redirect('/admin?message=success');
-//                    } elseif ($res->usmd == 5) {
-//                        $this->session->set_userdata($sessionArray);
-//                        redirect('/user');
-//                    }  else {
-//                        redirect('/');
-//                    }
                                 $this->session->set_userdata($sessionArray);
-                                redirect('/user?message=success');
+                                 redirect('/user?message=success');
                             }
                         }
                     } else {
@@ -257,15 +249,23 @@ class Login extends CI_Controller
                             'macd' => $mac,
                         );
                         $this->Generic_model->insertData('user_bad_log', $badlog_arr);
-                        redirect('?message=wrngLgcd'); // wrong login code
+                         redirect('/welcome?message=wrngLgcd'); // wrong login code
                     }
                 }
-            } else {
+            }
+            else {
                 $result2 = $this->login_model->checkUserName($username, $password);
+                var_dump(count($result2));
+
                 if (count($result2) > 0) {
+
                     if ($result2[0]->acst == '3') {
-                        redirect('?message=userlock'); // User lock 3 times use wrong password
+                        $this->session->sess_destroy();
+                        // redirect('Welcome');
+                         redirect('/welcome?message=userlock'); // User lock 3 times use wrong password
                     } else {
+                        unset ($_SESSION["userId"]);
+
                         $chnc = $result2[0]->acst + 1;
                         $this->Generic_model->updateDataWithoutlog('user_mas', array('acst' => $chnc), array('auid' => $result2[0]->auid));
 
@@ -279,10 +279,9 @@ class Login extends CI_Controller
                             'macd' => $mac,
                         );
                         $this->Generic_model->insertData('user_bad_log', $badlog_arr);
-                        redirect('?message=wrngTry' . $chnc);
+                         redirect('/welcome?message=wrngTry' . $chnc);
                     }
                 } else {
-
                     $badlog_arr = array(
                         'usnm' => $username,
                         'pswd' => $password,
@@ -293,13 +292,11 @@ class Login extends CI_Controller
                         'macd' => $mac,
                     );
                     $this->Generic_model->insertData('user_bad_log', $badlog_arr);
-                    redirect('?message=fail');
+                     redirect('/welcome?message=fail');
                 }
                 // redirect('/');
             }
         } else {
-            //redirect('?message=wrongtime');
-
             $badlog_arr = array(
                 'usnm' => $username,
                 'pswd' => $password,
@@ -310,7 +307,7 @@ class Login extends CI_Controller
                 'macd' => $mac,
             );
             $this->Generic_model->insertData('user_bad_log', $badlog_arr);
-            redirect('?message=sys_update');
+              redirect('/welcome?message=sys_update');
         }
 
     }
