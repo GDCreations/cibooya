@@ -22,6 +22,7 @@
 <!-- START SCRIPTS -->
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery-migrate.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/moment/moment.min.js"></script>
 
@@ -82,5 +83,17 @@
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/app_plugins.js"></script>
 <!--        <script type="text/javascript" src="assets/js/app_demo.js"></script>-->
 <!-- END SCRIPTS -->
+<!--            Show Active Page on Navigation Bar-->
+<script>
+    var module = "<?= $acm?>";//Active Module Id
+    var page = "<?= $acp?>";//Active Page Id
+    $().ready(function () {
+        $("#"+page).addClass( "active" );
+        if(module!=''){
+            $("#"+module).addClass( "openable open" );
+        }
+    });
+</script>
+<!--            Show Active Page on Navigation Bar-->
 </body>
 </html>

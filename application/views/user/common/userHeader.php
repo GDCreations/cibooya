@@ -8,7 +8,7 @@
             <a href="index.html" class="app-navigation-logo"></a>
             <nav>
                 <ul>
-                    <li><a class="active" href="#"><span class="nav-icon-hexa icon-home"></span> Dashboards </a></li>
+                    <li><a id="dashbrd" href="<?= base_url()?>User"><span class="nav-icon-hexa icon-home"></span> Dashboards </a></li>
 
                     <!--                    <li class="title">DEMONSTRATION</li>-->
                     <li>
@@ -38,11 +38,13 @@
                     <li class="hidden-mobile"><a href="#" class="btn btn-link btn-icon"
                                                  data-sidebar-minimize=".app-sidebar.dir-left"><span
                                     class="icon-menu"></span></a></li>
-                    <li style="text-align: center; vertical-align: middle; padding: 7px 0px;"><span id="chk_cnntion" title="Network status:"></span></li>
+                    <li style="text-align: center; vertical-align: middle; padding: 7px 0px;">
+                        <div class="hidden-xs"><span id="chk_cnntion" title="Network status:"></span></div>
+                    </li>
                     <li style="text-align: center; vertical-align: middle; padding: 7px 0px;">
                         <div class="hidden-xs">
-                        <span style="color: #0F9DEA">LK Time : </span><span id="timecontainer2"></span>
-                        <span id="lkTime" style="color: #e69c0f;">
+                            <span style="color: #0F9DEA">LK Time : </span><span id="timecontainer2"></span>
+                            <span id="lkTime" style="color: #e69c0f;">
                         <script type="text/javascript">new showLocalTime("lkTime", "server-php", 0, "short");</script></span>
                         </div>
                     </li>
@@ -172,6 +174,3 @@
 
             </div>
             <!-- END APP HEADER  -->
-
-
-
