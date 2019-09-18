@@ -1,0 +1,14 @@
+-----------------------------------------------------
+2019-09-18
+C - Login
+V -
+M - Generic_model
+    Login_model
+
+Dbs Add new table
+    brch_mas
+    user_level
+    user_mas
+    com_det
+
+-----------------------------------------------------
