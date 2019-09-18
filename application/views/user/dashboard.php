@@ -1,8 +1,17 @@
 <!-- START PAGE HEADING -->
 <div class="app-heading-container app-heading-bordered bottom">
     <ul class="breadcrumb">
-        <li class="active">Dashboard</li>
+        <li class="active">User Dashboard</li>
     </ul>
+</div>
+<div class="app-heading app-heading-bordered app-heading-page">
+    <div class="icon icon-lg">
+        <span class="icon-home" style="color: #e69c0f;"></span>
+    </div>
+    <div class="title">
+        <h1>User Dashboard</h1>
+        <p>Subtitle</p>
+    </div>
 </div>
 <!-- END PAGE HEADING -->
 <!-- START PAGE CONTAINER -->

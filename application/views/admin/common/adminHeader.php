@@ -8,191 +8,20 @@
             <a href="index.html" class="app-navigation-logo"></a>
             <nav>
                 <ul>
-                    <li class="title">&nbsp;</li>
+                    <li><a id="dashbrd" href="<?= base_url()?>Admin"><span class="nav-icon-hexa icon-home"></span> Dashboards </a></li>
 
-                    <li><a href="#"><span class="icon-home"></span> Dashboards</a></li>
-
-                    <li class="title">DEMONSTRATION</li>
-                    <li>
-                        <a href="#"><span class="icon-home"></span> Dashboards</a>
+                    <!--                    <li class="title">DEMONSTRATION</li>-->
+                    <li id="sup_mng">
+                        <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
                         <ul>
                             <li>
-                                <a href="index.html"><span class="nav-icon-hexa">De</span> Default</a>
+                                <a id="sup_reg" href="<?= base_url()?>Stock/sup_reg"><span class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
                             </li>
                             <li>
-                                <a href="pages-dashboard-ecommerce.html"><span class="nav-icon-hexa">Ec</span>
-                                    E-commerce
-                                    <span class="label label-success label-bordered label-ghost">new</span></a>
+                                <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="#"><span class="nav-icon-hexa">Pg</span> Pages <span
-                                    class="label label-success label-bordered label-ghost">new</span></a>
-                        <ul>
-                            <li>
-                                <a href="#"><span class="nav-icon-hexa">Re</span> Real-estate <span
-                                            class="label label-success label-bordered label-ghost">new</span></a>
-                                <ul>
-                                    <li><a href="pages-real-estate-search.html"><span class="nav-icon-hexa">Sr</span>
-                                            Search Result</a></li>
-                                    <li><a href="pages-real-estate-map.html"><span class="nav-icon-hexa">Mp</span>
-                                            Map</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#"><span class="nav-icon-hexa">Ba</span> Bank Application</a>
-                                <ul>
-                                    <li><a href="pages-bank-main.html"><span class="nav-icon-hexa">Mn</span> Main</a>
-                                    </li>
-                                    <li><a href="pages-bank-cards.html"><span class="nav-icon-hexa">Cs</span> My
-                                            Cards</a></li>
-                                    <li><a href="pages-bank-deposits.html"><span class="nav-icon-hexa">Dp</span>
-                                            Deposits</a></li>
-                                    <li><a href="pages-bank-activity.html"><span class="nav-icon-hexa">Ac</span>
-                                            Activity</a></li>
-                                    <li><a href="pages-bank-settings.html"><span class="nav-icon-hexa">St</span>
-                                            Settings</a></li>
-                                    <li><a href="pages-bank-security.html"><span class="nav-icon-hexa">Sc</span>
-                                            Security</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#"><span class="nav-icon-hexa">Cs</span> Call Service</a>
-                                <ul>
-                                    <li><a href="pages-call-service-daily.html"><span class="nav-icon-hexa">Ds</span>
-                                            Daily Statistics</a></li>
-                                    <li><a href="pages-call-service-process.html"><span class="nav-icon-hexa">Pw</span>
-                                            Process Window</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#"><span class="nav-icon-hexa">Pt</span> Payment</a>
-                                <ul>
-                                    <li><a href="pages-payment-invoice.html"><span class="nav-icon-hexa">Pi</span>
-                                            Invoice</a></li>
-                                    <li><a href="pages-payment-pricing.html"><span class="nav-icon-hexa">Pt</span>
-                                            Pricing Tables</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#"><span class="nav-icon-hexa">Bp</span> Blog Pages</a>
-                                <ul>
-                                    <li><a href="pages-blog-main.html"><span class="nav-icon-hexa">Ma</span> Main
-                                            (Variant 1)</a></li>
-                                    <li><a href="pages-blog-main-2.html"><span class="nav-icon-hexa">Mn</span> Main
-                                            (Variant 2)</a></li>
-                                    <li><a href="pages-blog-category.html"><span class="nav-icon-hexa">Ct</span>
-                                            Category (Right Sidebar)</a></li>
-                                    <li><a href="pages-blog-category-2.html"><span class="nav-icon-hexa">Cr</span>
-                                            Category (Left Sidebar)</a></li>
-                                    <li><a href="pages-blog-single.html"><span class="nav-icon-hexa">Sn</span>
-                                            Single</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#"><span class="nav-icon-hexa">Pf</span> User Profiles</a>
-                                <ul>
-                                    <li><a href="pages-profile-social.html"><span class="nav-icon-hexa">Sp</span> Social
-                                            Profile</a></li>
-                                    <li><a href="pages-profile-card.html"><span class="nav-icon-hexa">Pc</span> Profile
-                                            Card</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#"><span class="nav-icon-hexa">Em</span> Email</a>
-                                <ul>
-                                    <li><a href="pages-email-inbox.html"><span class="nav-icon-hexa">Ib</span> Inbox</a>
-                                    </li>
-                                    <li><a href="pages-email-message.html"><span class="nav-icon-hexa">Ms</span> Message</a>
-                                    </li>
-                                    <li><a href="pages-email-compose.html"><span class="nav-icon-hexa">Cp</span> Compose</a>
-                                    </li>
-                                    <li><a href="pages-email-templates.html"><span class="nav-icon-hexa">Tp</span>
-                                            Templates</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#"><span class="nav-icon-hexa">Ms</span> Messages</a>
-                                <ul>
-                                    <li><a href="pages-messages-chat.html"><span class="nav-icon-hexa">Ct</span>
-                                            Chat</a></li>
-                                    <li><a href="pages-messages-list.html"><span class="nav-icon-hexa">Ml</span>
-                                            Messages List</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="pages-faq.html"><span class="nav-icon-hexa">Fq</span> FAQ</a></li>
-                            <li><a href="pages-gallery.html"><span class="nav-icon-hexa">Ga</span> Gallery</a></li>
-                            <li><a href="pages-search.html"><span class="nav-icon-hexa">Sr</span> Search Result</a></li>
-                            <li><a href="pages-contact-us.html"><span class="nav-icon-hexa">Cu</span> Contact Us<span
-                                            class="label label-success label-bordered label-ghost">new</span></a></li>
-                            <li><a href="pages-contact-list.html"><span class="nav-icon-hexa">Cl</span> Contact List</a>
-                            </li>
-                            <li><a href="pages-calendar.html"><span class="nav-icon-hexa">Cr</span> Calendar</a></li>
-                            <li><a href="pages-404.html"><span class="nav-icon-hexa">Er</span> Error 404</a></li>
-                            <li><a href="pages-help.html"><span class="nav-icon-hexa">Hp</span> Help</a></li>
-                            <li><a href="pages-lock-screen.html"><span class="nav-icon-hexa">Ls</span> Lock Screen</a>
-                            </li>
-                            <li>
-                                <a href="#"><span class="nav-icon-hexa">Si</span> Log In / Sign In</a>
-                                <ul>
-                                    <li><a href="pages-login.html"><span class="nav-icon-hexa">Li</span> Log In</a></li>
-                                    <li><a href="pages-login-bg.html"><span class="nav-icon-hexa">Lb</span> Log In
-                                            (Background)</a></li>
-                                    <li><a href="pages-signin.html"><span class="nav-icon-hexa">Si</span> Sign In</a>
-                                    </li>
-                                    <li><a href="pages-signin-bg.html"><span class="nav-icon-hexa">Sb</span> Sign In
-                                            (Background)</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="title">FORMS</li>
-                    <li>
-                        <a href="#"><span class="nav-icon-hexa">Fe</span> Form Elements</a>
-                        <ul>
-                            <li><a href="forms-elements-basic.html"><span class="nav-icon-hexa">Be</span> Basic Elements</a>
-                            </li>
-                            <li><a href="forms-elements-checkbox-radio.html"><span class="nav-icon-hexa">Cr</span>
-                                    Checkbox, Radio & Switch</a></li>
-                            <li><a href="forms-elements-select-datepicker.html"><span class="nav-icon-hexa">Sd</span>
-                                    Select & Datepicker</a></li>
-                            <li><a href="forms-elements-range-slider.html"><span class="nav-icon-hexa">Rs</span> Range
-                                    Slider</a></li>
-                            <li><a href="forms-editable.html"><span class="nav-icon-hexa">Ed</span> Form Editable</a>
-                            </li>
-                            <li><a href="forms-elements-valudation-states.html"><span class="nav-icon-hexa">Vs</span>
-                                    Validation States</a></li>
-                            <li><a href="forms-elements-input-groups.html"><span class="nav-icon-hexa">Ig</span> Input
-                                    Group</a></li>
-                            <li><a href="forms-elements-file-handling.html"><span class="nav-icon-hexa">Fh</span> File
-                                    Handling</a></li>
-                            <li><a href="forms-elements-other.html"><span class="nav-icon-hexa">Ot</span> Other</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#"><span class="nav-icon-hexa">Vd</span> Validation</a>
-                        <ul>
-                            <li><a href="forms-valudation-engine.html"><span class="nav-icon-hexa">Ve</span> Validation
-                                    Engine</a></li>
-                            <li><a href="forms-valudation-helpers.html"><span class="nav-icon-hexa">Mh</span> Masked
-                                    Helpers</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#"><span class="nav-icon-hexa">Ma</span> Miscellaneous</a>
-                        <ul>
-                            <li><a href="forms-wysiwyg-editors.html"><span class="nav-icon-hexa">We</span> WYSIWYG
-                                    Editors</a></li>
-                            <li><a href="forms-code-preview.html"><span class="nav-icon-hexa">Cp</span> Code Preview</a>
-                            </li>
-                            <li><a href="forms-wizard.html"><span class="nav-icon-hexa">Fw</span> Form Wizard</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="title">COMPONENTS</li>
-
                 </ul>
             </nav>
         </div>
@@ -208,12 +37,21 @@
                                     class="icon-menu"></span></a></li>
                     <li class="hidden-mobile"><a href="#" class="btn btn-link btn-icon"
                                                  data-sidebar-minimize=".app-sidebar.dir-left"><span
-                                    class="icon-list"></span></a></li>
+                                    class="icon-menu"></span></a></li>
+                    <li style="text-align: center; vertical-align: middle; padding: 7px 0px;">
+                        <div class="hidden-xs"><span id="chk_cnntion" title="Network status:"></span></div>
+                    </li>
+                    <li style="text-align: center; vertical-align: middle; padding: 7px 0px;">
+                        <div class="hidden-xs">
+                            <span style="color: #0F9DEA">LK Time : </span><span id="timecontainer2"></span>
+                            <span id="lkTime" style="color: #e69c0f;">
+                        <script type="text/javascript">new showLocalTime("lkTime", "server-php", 0, "short");</script></span>
+                        </div>
+                    </li>
                 </ul>
                 <form class="app-header-search" action="" method="post">
                     <input type="text" name="keyword" placeholder="Search">
                 </form>
-
                 <ul class="app-header-buttons pull-right">
                     <li>
                         <div class="contact contact-rounded contact-bordered contact-lg contact-ps-controls hidden-xs">
@@ -240,6 +78,9 @@
                                 </div>
                             </div>
                         </div>
+                    </li>
+                    <li>
+
                     </li>
                     <li>
                         <div class="dropdown">
@@ -319,7 +160,7 @@
                                 <button type="button" class="btn btn-default btn-icon" data-toggle="dropdown"><span
                                             class="icon-power-switch"></span></button>
                                 <ul class="dropdown-menu dropdown-left">
-                                    <li><a href="<?= base_url();?>user"><span class="icon-users"></span> User</a></li>
+                                    <li><a href="<?= base_url(); ?>User"><span class="icon-users"></span> User </a></li>
                                     <li><a href="#"><span class="icon-envelope"></span> Lock Screen</a></li>
                                     <li class="divider"></li>
                                     <li><a href="pages-email-inbox.html"><span class="icon-envelope"></span> Sign Out
@@ -329,7 +170,6 @@
                         </div>
                     </li>
                 </ul>
-
             </div>
             <!-- END APP HEADER  -->
 
