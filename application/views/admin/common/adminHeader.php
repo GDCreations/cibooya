@@ -8,14 +8,16 @@
             <a href="#" class="app-navigation-logo"></a>
             <nav>
                 <ul>
-                    <li><a id="dashbrd" href="<?= base_url()?>Admin"><span class="nav-icon-hexa icon-home"></span> Dashboards </a></li>
+                    <li><a id="dashbrd" href="<?= base_url() ?>Admin"><span class="nav-icon-hexa icon-home"></span>
+                            Dashboards </a></li>
 
                     <li class="title">STOCK</li>
                     <li id="sup_mng">
                         <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
                         <ul>
                             <li>
-                                <a id="sup_reg" href="<?= base_url()?>Stock/sup_reg"><span class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
+                                <a id="sup_reg" href="<?= base_url() ?>Stock/sup_reg"><span
+                                            class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
                             </li>
                             <li>
                                 <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>
@@ -55,25 +57,26 @@
                 <ul class="app-header-buttons pull-right">
                     <li>
                         <div class="contact contact-rounded contact-bordered contact-lg contact-ps-controls hidden-xs">
+
                             <img src="<?= base_url(); ?>assets/images/users/user_1.jpg" alt="John Doe">
                             <div class="contact-container">
-                                <a href="#">John Doe</a>
-                                <span>Administrator</span>
+                                <a href="#"> <?= $_SESSION['username']  ?></a>
+                                <span> <?= $_SESSION['roleText'] ?> </span>
                             </div>
+
                             <div class="contact-controls">
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-default btn-icon" data-toggle="dropdown"><span
-                                                class="icon-layers"></span></button>
+                                                class="icon-envelope"></span></button>
                                     <ul class="dropdown-menu dropdown-left">
-                                        <li><a href="pages-profile-social.html"><span class="icon-users"></span> Account</a>
-                                        </li>
-                                        <li><a href="pages-messages-chat.html"><span class="icon-envelope"></span>
+
+                                       <!-- <li><a href="pages-messages-chat.html"><span class="icon-envelope"></span>
                                                 Messages</a></li>
                                         <li><a href="pages-profile-card.html"><span class="icon-users"></span> Contacts</a>
                                         </li>
                                         <li class="divider"></li>
                                         <li><a href="pages-email-inbox.html"><span class="icon-envelope"></span> E-mail
-                                                <span class="label label-danger pull-right">19/2,399</span></a></li>
+                                                <span class="label label-danger pull-right">19/2,399</span></a></li>-->
                                     </ul>
                                 </div>
                             </div>
@@ -104,7 +107,7 @@
 
                                     <div class="app-timeline scroll app-timeline-simple text-sm" style="height: 240px;">
 
-                                        <div class="app-timeline-item">
+                                       <!-- <div class="app-timeline-item">
                                             <div class="dot dot-primary"></div>
                                             <div class="content">
                                                 <div class="title margin-bottom-0"><a href="#">Jessie Franklin</a>
@@ -142,7 +145,7 @@
                                                 <div class="title margin-bottom-0"><a href="#">Jasmine Voyer</a>
                                                     declined order <strong>Project 155</strong></div>
                                             </div>
-                                        </div>
+                                        </div>-->
 
                                     </div>
 
@@ -161,9 +164,12 @@
                                             class="icon-power-switch"></span></button>
                                 <ul class="dropdown-menu dropdown-left">
                                     <li><a href="<?= base_url(); ?>User"><span class="icon-users"></span> User </a></li>
-                                    <li><a href="#"><span class="icon-envelope"></span> Lock Screen</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="pages-email-inbox.html"><span class="icon-envelope"></span> Sign Out
+                                    <li><a href=""><span class="icon-user"></span>Your Profile</a></li>
+                                    <li><a href="<?= base_url(); ?>welcome/lockScren"><span class="fa fa-lock"></span> Lock Screen</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="<?= base_url(); ?>welcome/logout"><span class="fa fa-sign-out"></span>
+                                            Sign Out
                                         </a></li>
                                 </ul>
                             </div>

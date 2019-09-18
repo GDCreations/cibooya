@@ -10,5 +10,6 @@ Dbs Add new table
     user_level
     user_mas
     com_det
+    user_log
 
 -----------------------------------------------------

@@ -1,7 +1,12 @@
+<?php
+$data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('stat' => 1));
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Boooya - Template</title>
+    <!--<title>Boooya - Template</title>-->
+    <title> <?= $data[0]->synm ?> </title>
 
     <!-- META SECTION -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -162,5 +167,6 @@
         }
         // END MIDNIGHT LOG USER AUTO OUT
     }
+
     // end system time show function
 </script>
