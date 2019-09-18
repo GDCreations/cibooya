@@ -37,13 +37,11 @@
                                data-validation="required">
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" name="logps" id="logps" placeholder="Password">
+                        <input type="password" class="form-control" name="logps" id="logps" placeholder="Password" required>
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" name="logcd" id="logcd" placeholder="Digital Code">
+                        <input type="password" class="form-control" name="logcd" id="logcd" placeholder="Digital Code" >
                     </div>
-
-
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-6 col-xs-6">

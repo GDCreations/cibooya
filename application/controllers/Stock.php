@@ -45,8 +45,8 @@ class Stock extends CI_Controller {
 //************************************************
 //OPEN PAGE </JANAKA 2019-09-17>
 function sup_reg(){
-    $data['acm'] = 'sup_mng';
-    $data['acp'] = 'sup_reg';
+    $data['acm'] = 'sup_mng';  //
+    $data['acp'] = 'sup_reg';  //
     $this->load->view('common/tmpHeader');
     $this->load->view('admin/common/adminHeader');
 
