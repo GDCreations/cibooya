@@ -6,8 +6,8 @@ class Admin extends CI_Controller {
 	public function index()
 	{
         //Active Page Id
-        $data['acm'] = '';
-        $data['acp'] = 'dashbrd';
+        $data['acm'] = ''; //Module
+        $data['acp'] = 'dashbrd'; //Page
 		$this->load->view('common/tmpHeader');
         $this->load->view('admin/common/adminHeader');
 

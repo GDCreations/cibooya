@@ -16,6 +16,11 @@
     <!-- EOF CSS INCLUDE -->
 </head>
 <body>
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/moment/moment.min.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/jquery-validation/jquery.validate.js"></script>
 <script type="text/javascript">  // common function
     //$(document).userTimeout({
     //    logouturl: '<?//= base_url() ?>//welcome/auto_lgout',

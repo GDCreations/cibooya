@@ -5,7 +5,7 @@
         <!-- START SIDEBAR -->
         <div class="app-sidebar app-navigation app-navigation-fixed scroll app-navigation-style-default app-navigation-open-hover dir-left"
              data-type="close-other">
-            <a href="index.html" class="app-navigation-logo"></a>
+            <a href="#" class="app-navigation-logo"></a>
             <nav>
                 <ul>
                     <li><a id="dashbrd" href="<?= base_url()?>User"><span class="nav-icon-hexa icon-home"></span> Dashboards </a></li>

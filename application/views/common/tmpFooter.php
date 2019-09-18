@@ -20,12 +20,7 @@
 <!-- END APP WRAPPER -->
 
 <!-- START SCRIPTS -->
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery-ui.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery-migrate.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap/bootstrap.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/moment/moment.min.js"></script>
-
+<!--<script type="text/javascript" src="--><?//= base_url(); ?><!--assets/js/vendor/jquery/jquery-migrate.min.js"></script>-->
 <script type="text/javascript"
         src="<?= base_url(); ?>assets/js/vendor/customscrollbar/jquery.mCustomScrollbar.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap-select/bootstrap-select.js"></script>
@@ -34,8 +29,6 @@
         src="<?= base_url(); ?>assets/js/vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
 
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/maskedinput/jquery.maskedinput.min.js"></script>
-<script type="text/javascript"
-        src="<?= base_url(); ?>assets/js/vendor/form-validator/jquery.form-validator.min.js"></script>
 
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/noty/jquery.noty.packaged.js"></script>
 
