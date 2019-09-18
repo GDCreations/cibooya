@@ -21,12 +21,15 @@
         <div class="title">
             <h1>Supplier Registration</h1>
             <p>Subtitle</p>
+            <a class="btn btn-sm pull-right"><span class="nav-icon-hexa"></span> Register</a>
         </div>
     </div>
     <!-- END PAGE HEADING -->
 
     <!-- START PAGE CONTAINER -->
     <div class="container">
-        
+        <div class="panel panel-default">
+
+        </div>
     </div>
     <!-- END PAGE CONTAINER -->
