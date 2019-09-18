@@ -8,14 +8,16 @@
             <a href="index.html" class="app-navigation-logo"></a>
             <nav>
                 <ul>
-                    <li><a id="dashbrd" href="<?= base_url()?>Admin"><span class="nav-icon-hexa icon-home"></span> Dashboards </a></li>
+                    <li><a id="dashbrd" href="<?= base_url() ?>Admin"><span class="nav-icon-hexa icon-home"></span>
+                            Dashboards </a></li>
 
                     <!--                    <li class="title">DEMONSTRATION</li>-->
                     <li id="sup_mng">
                         <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
                         <ul>
                             <li>
-                                <a id="sup_reg" href="<?= base_url()?>Stock/sup_reg"><span class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
+                                <a id="sup_reg" href="<?= base_url() ?>Stock/sup_reg"><span
+                                            class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
                             </li>
                             <li>
                                 <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>
@@ -65,8 +67,7 @@
                                     <button type="button" class="btn btn-default btn-icon" data-toggle="dropdown"><span
                                                 class="icon-layers"></span></button>
                                     <ul class="dropdown-menu dropdown-left">
-                                        <li><a href="pages-profile-social.html"><span class="icon-users"></span> Account</a>
-                                        </li>
+
                                         <li><a href="pages-messages-chat.html"><span class="icon-envelope"></span>
                                                 Messages</a></li>
                                         <li><a href="pages-profile-card.html"><span class="icon-users"></span> Contacts</a>
@@ -161,9 +162,12 @@
                                             class="icon-power-switch"></span></button>
                                 <ul class="dropdown-menu dropdown-left">
                                     <li><a href="<?= base_url(); ?>User"><span class="icon-users"></span> User </a></li>
-                                    <li><a href="#"><span class="icon-envelope"></span> Lock Screen</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="pages-email-inbox.html"><span class="icon-envelope"></span> Sign Out
+                                    <li><a href=""><span class="icon-user"></span>Your Profile</a></li>
+                                    <li><a href="#"><span class="fa fa-lock"></span> Lock Screen</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="<?= base_url(); ?>welcome/logout"><span class="fa fa-sign-out"></span>
+                                            Sign Out
                                         </a></li>
                                 </ul>
                             </div>
