@@ -1,4 +1,10 @@
 <!-- START PAGE HEADING -->
+<div class="app-heading-container app-heading-bordered bottom">
+    <ul class="breadcrumb">
+        <li><a href="#">First level</a></li>
+        <li class="active">Current</li>
+    </ul>
+</div>
 <div class="app-heading app-heading-bordered app-heading-page">
     <div class="icon icon-lg">
         <span class="icon-home"></span>
@@ -7,12 +13,6 @@
         <h1>Admin Dashboard</h1>
         <p>Subtitle</p>
     </div>
-</div>
-<div class="app-heading-container app-heading-bordered bottom">
-    <ul class="breadcrumb">
-        <li><a href="#">First level</a></li>
-        <li class="active">Current</li>
-    </ul>
 </div>
 <!-- END PAGE HEADING -->
 
