@@ -1,3 +1,7 @@
+<?php
+$data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('stat' => 1));
+?>
+
 </div>
 <!-- END APP CONTENT -->
 </div>
@@ -9,7 +13,7 @@
     <div class="app-footer-line darken">
         <!--<div class="copyright wide text-center">&copy; 2016-2017 Boooya. All right reserved in the Ukraine and other </div>-->
         <div class="copyright wide text-center">
-            &copy; <?= date('Y') ?> - cibooya | v1.<?= date('m') ?> | Powered By
+            &copy; <?= date('Y') ?> - <?= $data[0]->synm ?> | v1.<?= date('m') ?> | Powered By
             <a href="http://www.gdcreations.com" target="_blank">GDC</a></div>
     </div>
 </div>
@@ -88,9 +92,9 @@
     var module = "<?= $acm?>";//Active Module Id
     var page = "<?= $acp?>";//Active Page Id
     $().ready(function () {
-        $("#"+page).addClass( "active" );
-        if(module!=''){
-            $("#"+module).addClass( "openable open" );
+        $("#" + page).addClass("active");
+        if (module != '') {
+            $("#" + module).addClass("openable open");
         }
     });
 </script>
