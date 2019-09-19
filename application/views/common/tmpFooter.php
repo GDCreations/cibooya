@@ -24,7 +24,7 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
 <!-- END APP WRAPPER -->
 
 <!-- START SCRIPTS -->
-<!--<script type="text/javascript" src="--><?//= base_url(); ?><!--assets/js/vendor/jquery/jquery-migrate.min.js"></script>-->
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/custom-js/common-func.js"></script>
 <script type="text/javascript"
         src="<?= base_url(); ?>assets/js/vendor/customscrollbar/jquery.mCustomScrollbar.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap-select/bootstrap-select.js"></script>
