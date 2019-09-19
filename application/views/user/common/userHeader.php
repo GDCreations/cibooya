@@ -39,27 +39,32 @@
                     <li class="hidden-mobile"><a href="#" class="btn btn-link btn-icon"
                                                  data-sidebar-minimize=".app-sidebar.dir-left"><span
                                     class="icon-menu"></span></a></li>
+                </ul>
+                <form class="app-header-search" action="" method="post">
+                    <input type="text" name="keyword" placeholder="Search">
+                </form>
+                <ul class="app-header-buttons">
                     <li style="text-align: center; vertical-align: middle; padding: 7px 0px;">
                         <div class="hidden-xs"><span id="chk_cnntion" title="Network status:"></span></div>
                     </li>
                     <li style="text-align: center; vertical-align: middle; padding: 7px 0px;">
                         <div class="hidden-xs">
-                            <span style="color: #0F9DEA">LK Time : </span><span id="timecontainer2"></span>
+                            <span style="color: #0F9DEA"><img src="<?= base_url()?>assets/img/flags/lk.png" alt="Sri Lanka"
+                                                              title="Sri Lanka" width="23"
+                                                              height="23"/> Time : </span><span
+                                    id="timecontainer2"></span>
                             <span id="lkTime" style="color: #e69c0f;">
-                        <script type="text/javascript">new showLocalTime("lkTime", "server-php", 0, "short");</script></span>
+                                        <script type="text/javascript">new showLocalTime("lkTime", "server-php", 0, "short");</script></span>
                         </div>
                     </li>
                 </ul>
-                <form class="app-header-search" action="" method="post">
-                    <input type="text" name="keyword" placeholder="Search">
-                </form>
                 <ul class="app-header-buttons pull-right">
                     <li>
                         <div class="contact contact-rounded contact-bordered contact-lg contact-ps-controls hidden-xs">
 
                             <img src="<?= base_url(); ?>assets/images/users/user_1.jpg" alt="John Doe">
                             <div class="contact-container">
-                                <a href="#"> <?= $_SESSION['username']  ?></a>
+                                <a href="#"> <?= $_SESSION['username'] ?></a>
                                 <span> <?= $_SESSION['roleText'] ?> </span>
                             </div>
 
@@ -68,15 +73,15 @@
                                     <button type="button" class="btn btn-default btn-icon" data-toggle="dropdown"><span
                                                 class="icon-envelope"></span></button>
                                     <ul class="dropdown-menu dropdown-left">
-                                       <!-- <li><a href="pages-profile-social.html"><span class="icon-users"></span> Account</a>
-                                        </li>
-                                        <li><a href="pages-messages-chat.html"><span class="icon-envelope"></span>
-                                                Messages</a></li>
-                                        <li><a href="pages-profile-card.html"><span class="icon-users"></span> Contacts</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a href="pages-email-inbox.html"><span class="icon-envelope"></span> E-mail
-                                                <span class="label label-danger pull-right">19/2,399</span></a></li>-->
+                                        <!-- <li><a href="pages-profile-social.html"><span class="icon-users"></span> Account</a>
+                                         </li>
+                                         <li><a href="pages-messages-chat.html"><span class="icon-envelope"></span>
+                                                 Messages</a></li>
+                                         <li><a href="pages-profile-card.html"><span class="icon-users"></span> Contacts</a>
+                                         </li>
+                                         <li class="divider"></li>
+                                         <li><a href="pages-email-inbox.html"><span class="icon-envelope"></span> E-mail
+                                                 <span class="label label-danger pull-right">19/2,399</span></a></li>-->
                                     </ul>
                                 </div>
                             </div>
@@ -167,7 +172,8 @@
                                             Setting</a></li>
                                     <li class="divider"></li>
                                     <li><a href=""><span class="icon-user"></span>Your Profile</a></li>
-                                    <li><a href="<?= base_url(); ?>welcome/lockScren"><span class="icon-lock"></span> Lock Screen</a></li>
+                                    <li><a href="<?= base_url(); ?>welcome/lockScren"><span class="icon-lock"></span>
+                                            Lock Screen</a></li>
                                     <li class="divider"></li>
                                     <li><a href="<?= base_url(); ?>welcome/logout"><span class="fa fa-sign-out"></span>
                                             Sign Out

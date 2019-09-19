@@ -55,20 +55,25 @@
                     <li class="hidden-mobile"><a href="#" class="btn btn-link btn-icon"
                                                  data-sidebar-minimize=".app-sidebar.dir-left"><span
                                     class="icon-menu"></span></a></li>
+                </ul>
+                <form class="app-header-search" action="" method="post">
+                    <input type="text" name="keyword" placeholder="Search">
+                </form>
+                <ul class="app-header-buttons">
                     <li style="text-align: center; vertical-align: middle; padding: 7px 0px;">
                         <div class="hidden-xs"><span id="chk_cnntion" title="Network status:"></span></div>
                     </li>
                     <li style="text-align: center; vertical-align: middle; padding: 7px 0px;">
                         <div class="hidden-xs">
-                            <span style="color: #0F9DEA">LK Time : </span><span id="timecontainer2"></span>
+                            <span style="color: #0F9DEA"><img src="<?= base_url()?>assets/img/flags/lk.png" alt="Sri Lanka"
+                                                              title="Sri Lanka" width="23"
+                                                              height="23"/> Time : </span><span
+                                    id="timecontainer2"></span>
                             <span id="lkTime" style="color: #e69c0f;">
-                        <script type="text/javascript">new showLocalTime("lkTime", "server-php", 0, "short");</script></span>
+                                        <script type="text/javascript">new showLocalTime("lkTime", "server-php", 0, "short");</script></span>
                         </div>
                     </li>
                 </ul>
-                <form class="app-header-search" action="" method="post">
-                    <input type="text" name="keyword" placeholder="Search">
-                </form>
                 <ul class="app-header-buttons pull-right">
                     <li>
                         <div class="contact contact-rounded contact-bordered contact-lg contact-ps-controls hidden-xs">
