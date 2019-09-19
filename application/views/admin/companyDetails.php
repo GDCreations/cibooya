@@ -191,6 +191,39 @@
         });
     });
 
+    //Add New Supplier
+    $('#add_sup_btn').click(function (e) {
+        e.preventDefault();
+        if ($('#add_sup_form').valid()) {
+            $('#add_sup_btn').prop('disabled',true);
+            swal({
+                title: "Processing...",
+                text: "Supplier's data saving..",
+                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                showConfirmButton: false
+            });
 
+            jQuery.ajax({
+                type: "POST",
+                url: "<?= base_url(); ?>Stock/supp_Regist",
+                data: $("#add_sup_form").serialize(),
+                dataType: 'json',
+                success: function (data) {
+                    swal({title: "", text: "Registration Success!", type: "success"},
+                        function () {
+                            $('#add_sup_btn').prop('disabled',false);
+                            clear_Form('add_sup_form');
+                            $('#modal-add').modal('hide');
+                        });
+                },
+                error: function (data, textStatus) {
+                    swal({title: "Registration Failed", text: textStatus, type: "error"},
+                        function () {
+                            location.reload();
+                        });
+                }
+            });
+        }
+    });
 
 </script>
