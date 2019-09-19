@@ -326,7 +326,16 @@
     $('#add_sup_btn').click(function (e) {
         e.preventDefault();
         if($('#add_sup_form').valid()){
-
+            
         }
+            clear_Form('add_sup_btn');
+
     });
+    
+    //FORM CLEARING FUNTIONS
+    function clear_Form(form) {
+        $('#'+form).find(
+            "input[type=text],textarea"
+        ).val("");
+    }
 </script>
