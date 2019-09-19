@@ -8,7 +8,7 @@ class Stock extends CI_Controller {
         parent::__construct();
 
         // Deletes cache for the currently requested URI
-//        $this->output->delete_cache();
+        $this->output->delete_cache();
 //
 //        $this->load->library('Pdf'); // Load library
 //        $this->pdf->fontpath = 'font/'; // Specify font folder
@@ -71,6 +71,48 @@ function sup_reg(){
         echo json_encode($data);
     }
 //END GET BRANCHES BY BANK </JANAKA 2019-09-18>
+
+//CHECK ALREADY ENTERED MOBILE NUMBER </JANAKA 2019-09-19>
+function chk_mobile(){
+        $mobi = $this->input->post('mobi');
+        $stat = $this->input->post('stat'); //0-Add/1-Edit
+
+        $this->db->select("mbno,tele");
+        $this->db->from('supp_mas');
+        $this->db->where("mbno=$mobi OR tele=$mobi");
+        if($stat==1){
+            $this->db->where("spid!=".$this->input->post('spid'));
+        }
+        $res = $this->db->get()->result();
+
+        if(sizeof($res)>0){
+            echo json_encode(false);
+        }else{
+            echo json_encode(true);
+        }
+}
+//END CHECK ALREADY ENTERED MOBILE NUMBER </JANAKA 2019-09-19>
+
+//CHECK ALREADY ENTERED MOBILE NUMBER </JANAKA 2019-09-19>
+function chk_bnkAcno(){
+        $acno = $this->input->post('acno');
+        $stat = $this->input->post('stat'); //0-Add/1-Edit
+
+        $this->db->select("acno,acid");
+        $this->db->from('sup_bnk_acc');
+        $this->db->where("acno=$acno");
+        if($stat==1){
+            $this->db->where("spid!=".$this->input->post('spid'));
+        }
+        $res = $this->db->get()->result();
+
+        if(sizeof($res)>0){
+            echo json_encode(false);
+        }else{
+            echo json_encode(true);
+        }
+}
+//END CHECK ALREADY ENTERED MOBILE NUMBER </JANAKA 2019-09-19>
 //************************************************
 //***       END SUPPLIER REGISTRATION          ***
 //************************************************
