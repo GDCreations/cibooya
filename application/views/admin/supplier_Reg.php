@@ -93,21 +93,24 @@
                         <div class="row form-horizontal">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Supplier Name <span class="fa fa-asterisk" style="color: red"></span></label>
+                                    <label class="col-md-4 col-xs-12 control-label">Supplier Name <span
+                                                class="fa fa-asterisk" style="color: red"></span></label>
                                     <div class="col-md-8 col-xs-12">
                                         <input class="form-control" type="text" name="name" id="name"
                                                placeholder="Supplier Name"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Address <span class="fa fa-asterisk" style="color: red"></span></label>
+                                    <label class="col-md-4 col-xs-12 control-label">Address <span class="fa fa-asterisk"
+                                                                                                  style="color: red"></span></label>
                                     <div class="col-md-8 col-xs-12">
                                         <textarea class="form-control" name="addr" id="addr"
                                                   placeholder="Supplier Address"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Contact <span class="fa fa-asterisk" style="color: red"></span></label>
+                                    <label class="col-md-4 col-xs-12 control-label">Contact <span class="fa fa-asterisk"
+                                                                                                  style="color: red"></span></label>
                                     <div class="col-md-4 col-xs-12">
                                         <input class="form-control" type="text" name="mobi" id="mobi"
                                                placeholder="Mobile"/>
@@ -118,14 +121,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Email <span class="fa fa-asterisk" style="color: red"></span></label>
+                                    <label class="col-md-4 col-xs-12 control-label">Email <span class="fa fa-asterisk"
+                                                                                                style="color: red"></span></label>
                                     <div class="col-md-8 col-xs-12">
                                         <input class="form-control" type="email" name="email" id="email"
                                                placeholder="Email"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Bank Name <span class="fa fa-asterisk" style="color: red"></span></label>
+                                    <label class="col-md-4 col-xs-12 control-label">Bank Name <span
+                                                class="fa fa-asterisk" style="color: red"></span></label>
                                     <div class="col-md-8 col-xs-12">
                                         <select id="bnknm" name="bnknm" onchange="getbankbrch(this.value,'bnkbr')"
                                                 class="bs-select">
@@ -139,7 +144,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Bank Branch <span class="fa fa-asterisk" style="color: red"></span></label>
+                                    <label class="col-md-4 col-xs-12 control-label">Bank Branch <span
+                                                class="fa fa-asterisk" style="color: red"></span></label>
                                     <div class="col-md-8 col-xs-12" id="bnkbr_cont">
                                         <select id="bnkbr" name="bnkbr" onchange="" class="bs-select">
                                             <option value="0">-- Select A Branch --</option>
@@ -147,7 +153,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Account Number <span class="fa fa-asterisk" style="color: red"></span></label>
+                                    <label class="col-md-4 col-xs-12 control-label">Account Number <span
+                                                class="fa fa-asterisk" style="color: red"></span></label>
                                     <div class="col-md-8 col-xs-12">
                                         <input class="form-control" type="text" name="acno" id="acno"
                                                placeholder="Account Number"/>
@@ -165,10 +172,12 @@
                     </div>
                     <div class="modal-footer">
                         <div class="pull-left">
-                            <span class="fa fa-hand-o-right"></span> <label style="color: red"> <span class="fa fa-asterisk"></span> Required Fields </label>
+                            <span class="fa fa-hand-o-right"></span> <label style="color: red"> <span
+                                        class="fa fa-asterisk"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="add_sup_btn" class="btn btn-warning btn-xs btn-rounded">Submit</button>
+                        <button type="button" id="add_sup_btn" class="btn btn-warning btn-xs btn-rounded">Submit
+                        </button>
                     </div>
                 </div>
             </form>
@@ -181,13 +190,13 @@
     $().ready(function () {
         $('#add_sup_form').validate({
             rules: {
-                name:{
-                    required : true
-                },
-                addr:{
+                name: {
                     required: true
                 },
-                mobi:{
+                addr: {
+                    required: true
+                },
+                mobi: {
                     required: true,
                     digits: true,
                     minlength: 10,
@@ -203,7 +212,7 @@
                         }
                     }
                 },
-                tele:{
+                tele: {
                     digits: true,
                     minlength: 10,
                     maxlength: 10,
@@ -222,13 +231,13 @@
                     required: true,
                     email: true
                 },
-                bnknm:{
+                bnknm: {
                     notEqual: 0
                 },
-                bnkbr:{
+                bnkbr: {
                     notEqual: 0
                 },
-                acno:{
+                acno: {
                     required: true,
                     digits: true,
                     minlength: 8,
@@ -245,20 +254,20 @@
                 }
             },
             messages: {
-                name:{
-                    required : "Enter supplier name"
+                name: {
+                    required: "Enter supplier name"
                 },
-                addr:{
+                addr: {
                     required: "Enter supplier address"
                 },
-                mobi:{
+                mobi: {
                     required: "Enter mobile number",
                     digits: "Only numbers are allowed",
                     minlength: "Please enter 10 digits number",
                     maxlength: "Please enter 10 digits number",
                     remote: "This number is already added"
                 },
-                tele:{
+                tele: {
                     digits: "Only numbers are allowed",
                     minlength: "Please enter 10 digits number",
                     maxlength: "Please enter 10 digits number",
@@ -268,13 +277,13 @@
                     required: "Enter email address",
                     email: "Please enter valid email address"
                 },
-                bnknm:{
+                bnknm: {
                     notEqual: "Select a bank"
                 },
-                bnkbr:{
+                bnkbr: {
                     notEqual: "Select a bank branch"
                 },
-                acno:{
+                acno: {
                     required: "Enter bank account number",
                     digits: "Only numbers are allowed",
                     minlength: "Minumum length is 8 digits",
@@ -325,16 +334,16 @@
     //Add New Supplier
     $('#add_sup_btn').click(function (e) {
         e.preventDefault();
-        if($('#add_sup_form').valid()){
-            
+        if ($('#add_sup_form').valid()) {
+
         }
-            clear_Form('add_sup_btn');
+        clear_Form('add_sup_form');
 
     });
-    
+
     //FORM CLEARING FUNTIONS
     function clear_Form(form) {
-        $('#'+form).find(
+        $('#' + form).find(
             "input[type=text],textarea"
         ).val("");
     }

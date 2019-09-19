@@ -11,6 +11,21 @@
                     <li><a id="dashbrd" href="<?= base_url() ?>Admin"><span class="nav-icon-hexa icon-home"></span>
                             Dashboards </a></li>
 
+                    <li id="gnrl">
+                        <a href="#"><span class="nav-icon-hexa fa fa-globe"></span> General</a>
+                        <ul>
+                            <li><a id="branding" href="<?= base_url() ?>admin/branding">
+                                    <span class="nav-icon-hexa fa fa-sliders"></span> Branding</a>
+                            </li>
+                            <li><a id="policyMng" href="<?= base_url() ?>admin/policyMng">
+                                    <span class="nav-icon-hexa fa fa-list-alt"></span> Policy Management</a>
+                            </li>
+                            <li><a id="rcntAct" href="<?= base_url() ?>admin/rcntAct">
+                                    <span class="nav-icon-hexa fa fa-sliders"></span> Recent Activity</a>
+                            </li>
+
+                        </ul>
+                    </li>
                     <li class="title">STOCK</li>
                     <li id="sup_mng">
                         <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
@@ -60,7 +75,7 @@
 
                             <img src="<?= base_url(); ?>assets/images/users/user_1.jpg" alt="John Doe">
                             <div class="contact-container">
-                                <a href="#"> <?= $_SESSION['username']  ?></a>
+                                <a href="#"> <?= $_SESSION['username'] ?></a>
                                 <span> <?= $_SESSION['roleText'] ?> </span>
                             </div>
 
@@ -70,13 +85,13 @@
                                                 class="icon-envelope"></span></button>
                                     <ul class="dropdown-menu dropdown-left">
 
-                                       <!-- <li><a href="pages-messages-chat.html"><span class="icon-envelope"></span>
-                                                Messages</a></li>
-                                        <li><a href="pages-profile-card.html"><span class="icon-users"></span> Contacts</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a href="pages-email-inbox.html"><span class="icon-envelope"></span> E-mail
-                                                <span class="label label-danger pull-right">19/2,399</span></a></li>-->
+                                        <!-- <li><a href="pages-messages-chat.html"><span class="icon-envelope"></span>
+                                                 Messages</a></li>
+                                         <li><a href="pages-profile-card.html"><span class="icon-users"></span> Contacts</a>
+                                         </li>
+                                         <li class="divider"></li>
+                                         <li><a href="pages-email-inbox.html"><span class="icon-envelope"></span> E-mail
+                                                 <span class="label label-danger pull-right">19/2,399</span></a></li>-->
                                     </ul>
                                 </div>
                             </div>
@@ -107,45 +122,45 @@
 
                                     <div class="app-timeline scroll app-timeline-simple text-sm" style="height: 240px;">
 
-                                       <!-- <div class="app-timeline-item">
-                                            <div class="dot dot-primary"></div>
-                                            <div class="content">
-                                                <div class="title margin-bottom-0"><a href="#">Jessie Franklin</a>
-                                                    uploaded new file <strong>844_jswork.pdf</strong></div>
-                                            </div>
-                                        </div>
+                                        <!-- <div class="app-timeline-item">
+                                             <div class="dot dot-primary"></div>
+                                             <div class="content">
+                                                 <div class="title margin-bottom-0"><a href="#">Jessie Franklin</a>
+                                                     uploaded new file <strong>844_jswork.pdf</strong></div>
+                                             </div>
+                                         </div>
 
-                                        <div class="app-timeline-item">
-                                            <div class="dot dot-warning"></div>
-                                            <div class="content">
-                                                <div class="title margin-bottom-0"><a href="#">Taylor Watson</a> changed
-                                                    work status <strong>PSD Dashboard</strong></div>
-                                            </div>
-                                        </div>
+                                         <div class="app-timeline-item">
+                                             <div class="dot dot-warning"></div>
+                                             <div class="content">
+                                                 <div class="title margin-bottom-0"><a href="#">Taylor Watson</a> changed
+                                                     work status <strong>PSD Dashboard</strong></div>
+                                             </div>
+                                         </div>
 
-                                        <div class="app-timeline-item">
-                                            <div class="dot dot-success"></div>
-                                            <div class="content">
-                                                <div class="title margin-bottom-0"><a href="#">Dmitry Ivaniuk</a>
-                                                    approved project <strong>Boooya</strong></div>
-                                            </div>
-                                        </div>
+                                         <div class="app-timeline-item">
+                                             <div class="dot dot-success"></div>
+                                             <div class="content">
+                                                 <div class="title margin-bottom-0"><a href="#">Dmitry Ivaniuk</a>
+                                                     approved project <strong>Boooya</strong></div>
+                                             </div>
+                                         </div>
 
-                                        <div class="app-timeline-item">
-                                            <div class="dot dot-success"></div>
-                                            <div class="content">
-                                                <div class="title margin-bottom-0"><a href="#">Boris Shaw</a> finished
-                                                    work on <strong>Boooya</strong></div>
-                                            </div>
-                                        </div>
+                                         <div class="app-timeline-item">
+                                             <div class="dot dot-success"></div>
+                                             <div class="content">
+                                                 <div class="title margin-bottom-0"><a href="#">Boris Shaw</a> finished
+                                                     work on <strong>Boooya</strong></div>
+                                             </div>
+                                         </div>
 
-                                        <div class="app-timeline-item">
-                                            <div class="dot dot-danger"></div>
-                                            <div class="content">
-                                                <div class="title margin-bottom-0"><a href="#">Jasmine Voyer</a>
-                                                    declined order <strong>Project 155</strong></div>
-                                            </div>
-                                        </div>-->
+                                         <div class="app-timeline-item">
+                                             <div class="dot dot-danger"></div>
+                                             <div class="content">
+                                                 <div class="title margin-bottom-0"><a href="#">Jasmine Voyer</a>
+                                                     declined order <strong>Project 155</strong></div>
+                                             </div>
+                                         </div>-->
 
                                     </div>
 
@@ -166,7 +181,8 @@
                                     <li><a href="<?= base_url(); ?>User"><span class="icon-users"></span> User </a></li>
                                     <li class="divider"></li>
                                     <li><a href=""><span class="icon-user"></span>Your Profile</a></li>
-                                    <li><a href="<?= base_url(); ?>welcome/lockScren"><span class="fa fa-lock"></span> Lock Screen</a></li>
+                                    <li><a href="<?= base_url(); ?>welcome/lockScren"><span class="fa fa-lock"></span>
+                                            Lock Screen</a></li>
                                     <li class="divider"></li>
                                     <li><a href="<?= base_url(); ?>welcome/logout"><span class="fa fa-sign-out"></span>
                                             Sign Out

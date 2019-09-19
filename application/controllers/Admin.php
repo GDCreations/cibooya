@@ -36,7 +36,6 @@ class Admin extends CI_Controller {
 
     public function index()
 	{
-        //Active Page Id
         $data['acm'] = ''; //Module
         $data['acp'] = 'dashbrd'; //Page
 		$this->load->view('common/tmpHeader');
@@ -47,4 +46,23 @@ class Admin extends CI_Controller {
         $this->load->view('common/tmpFooter',$data);
 
 	}
+
+	public function branding()
+	{
+        $data['acm'] = 'gnrl'; //Module
+        $data['acp'] = 'branding'; //Page
+
+		$this->load->view('common/tmpHeader');
+        $this->load->view('admin/common/adminHeader');
+
+        $dataArr['compInfo'] = $this->Generic_model->getData('com_det', '', array('stat' => 1));
+
+        $this->load->view('admin/companyDetails',$dataArr);
+
+        $this->load->view('common/tmpFooter',$data);
+
+	}
+
+
+
 }
