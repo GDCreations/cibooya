@@ -1,7 +1,12 @@
+<?php
+$data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('stat' => 1));
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Boooya - Template</title>
+    <!--<title>Boooya - Template</title>-->
+    <title> <?= $data[0]->synm ?> </title>
 
     <!-- META SECTION -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -13,9 +18,16 @@
     <!-- END META SECTION -->
     <!-- CSS INCLUDE -->
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/styles.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/plugins/jquery-validation/css/screen.css">
     <!-- EOF CSS INCLUDE -->
 </head>
 <body>
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/moment/moment.min.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/jquery-validation/dist/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/custom-js/custom-validation.js"></script>
 <script type="text/javascript">  // common function
     //$(document).userTimeout({
     //    logouturl: '<?//= base_url() ?>//welcome/auto_lgout',
@@ -157,5 +169,6 @@
         }
         // END MIDNIGHT LOG USER AUTO OUT
     }
+
     // end system time show function
 </script>

@@ -1,3 +1,7 @@
+<?php
+$data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('stat' => 1));
+?>
+
 </div>
 <!-- END APP CONTENT -->
 </div>
@@ -9,7 +13,7 @@
     <div class="app-footer-line darken">
         <!--<div class="copyright wide text-center">&copy; 2016-2017 Boooya. All right reserved in the Ukraine and other </div>-->
         <div class="copyright wide text-center">
-            &copy; <?= date('Y') ?> - cibooya | v1.<?= date('m') ?> | Powered By
+            &copy; <?= date('Y') ?> - <?= $data[0]->synm ?> | v1.<?= date('m') ?> | Powered By
             <a href="http://www.gdcreations.com" target="_blank">GDC</a></div>
     </div>
 </div>
@@ -20,12 +24,7 @@
 <!-- END APP WRAPPER -->
 
 <!-- START SCRIPTS -->
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery-ui.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery-migrate.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap/bootstrap.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/moment/moment.min.js"></script>
-
+<!--<script type="text/javascript" src="--><?//= base_url(); ?><!--assets/js/vendor/jquery/jquery-migrate.min.js"></script>-->
 <script type="text/javascript"
         src="<?= base_url(); ?>assets/js/vendor/customscrollbar/jquery.mCustomScrollbar.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap-select/bootstrap-select.js"></script>
@@ -34,8 +33,6 @@
         src="<?= base_url(); ?>assets/js/vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
 
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/maskedinput/jquery.maskedinput.min.js"></script>
-<script type="text/javascript"
-        src="<?= base_url(); ?>assets/js/vendor/form-validator/jquery.form-validator.min.js"></script>
 
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/noty/jquery.noty.packaged.js"></script>
 
@@ -88,9 +85,9 @@
     var module = "<?= $acm?>";//Active Module Id
     var page = "<?= $acp?>";//Active Page Id
     $().ready(function () {
-        $("#"+page).addClass( "active" );
-        if(module!=''){
-            $("#"+module).addClass( "openable open" );
+        $("#" + page).addClass("active");
+        if (module != '') {
+            $("#" + module).addClass("openable open");
         }
     });
 </script>
