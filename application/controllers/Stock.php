@@ -21,18 +21,18 @@ class Stock extends CI_Controller {
 //
         date_default_timezone_set('Asia/Colombo');
 //
-//        //$user = $this->Generic_model->getMdulPermis('user');    // USER MODULE
-//        if (!empty($_SESSION['userId'])) {
-//
-//            $user = $this->Generic_model->chckVlidUsr();    // IF CHECK VALIDE USER SESSION
-//            if ($user > 0) {
-//            } else {
-//                $this->session->sess_destroy();
-//                redirect('/');
-//            }
-//        } else {
-//            redirect('/');
-//        }
+        //$user = $this->Generic_model->getMdulPermis('user');    // USER MODULE
+        if (!empty($_SESSION['userId'])) {
+
+            $user = $this->Generic_model->chckVlidUsr();    // IF CHECK VALIDE USER SESSION
+            if ($user > 0) {
+            } else {
+                $this->session->sess_destroy();
+                redirect('/');
+            }
+        } else {
+            redirect('/');
+        }
     }
 
     public function index()
