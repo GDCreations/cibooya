@@ -93,21 +93,21 @@
                         <div class="row form-horizontal">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Supplier Name</label>
+                                    <label class="col-md-4 col-xs-12 control-label">Supplier Name <span class="fa fa-asterisk" style="color: red"></span></label>
                                     <div class="col-md-8 col-xs-12">
                                         <input class="form-control" type="text" name="name" id="name"
                                                placeholder="Supplier Name"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Address</label>
+                                    <label class="col-md-4 col-xs-12 control-label">Address <span class="fa fa-asterisk" style="color: red"></span></label>
                                     <div class="col-md-8 col-xs-12">
                                         <textarea class="form-control" name="addr" id="addr"
                                                   placeholder="Supplier Address"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Contact</label>
+                                    <label class="col-md-4 col-xs-12 control-label">Contact <span class="fa fa-asterisk" style="color: red"></span></label>
                                     <div class="col-md-4 col-xs-12">
                                         <input class="form-control" type="text" name="mobi" id="mobi"
                                                placeholder="Mobile"/>
@@ -118,28 +118,28 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Email</label>
+                                    <label class="col-md-4 col-xs-12 control-label">Email <span class="fa fa-asterisk" style="color: red"></span></label>
                                     <div class="col-md-8 col-xs-12">
                                         <input class="form-control" type="email" name="email" id="email"
                                                placeholder="Email"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Bank Name</label>
+                                    <label class="col-md-4 col-xs-12 control-label">Bank Name <span class="fa fa-asterisk" style="color: red"></span></label>
                                     <div class="col-md-8 col-xs-12">
-                                        <select id="bnk" name="bnk" onchange="getbankbrch(this.value,'bnkbr')"
+                                        <select id="bnknm" name="bnknm" onchange="getbankbrch(this.value,'bnkbr')"
                                                 class="bs-select">
                                             <option value="0">-- Select A Bank --</option>
                                             <?php
                                             foreach ($bank as $bnk) {
                                                 echo "<option value='$bnk->bnid'>" . $bnk->bkcd . " - " . $bnk->bknm . "</option>";
                                             }
-                                            ?>S
+                                            ?>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Bank Branch</label>
+                                    <label class="col-md-4 col-xs-12 control-label">Bank Branch <span class="fa fa-asterisk" style="color: red"></span></label>
                                     <div class="col-md-8 col-xs-12" id="bnkbr_cont">
                                         <select id="bnkbr" name="bnkbr" onchange="" class="bs-select">
                                             <option value="0">-- Select A Branch --</option>
@@ -147,7 +147,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Account Number</label>
+                                    <label class="col-md-4 col-xs-12 control-label">Account Number <span class="fa fa-asterisk" style="color: red"></span></label>
                                     <div class="col-md-8 col-xs-12">
                                         <input class="form-control" type="text" name="acno" id="acno"
                                                placeholder="Account Number"/>
@@ -164,6 +164,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <div class="pull-left">
+                            <span class="fa fa-hand-o-right"></span> <label style="color: red"> <span class="fa fa-asterisk"></span> Required Fields </label>
+                        </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
                         <button type="button" id="add_sup_btn" class="btn btn-warning btn-xs btn-rounded">Submit</button>
                     </div>
@@ -180,11 +183,102 @@
             rules: {
                 name:{
                     required : true
+                },
+                addr:{
+                    required: true
+                },
+                mobi:{
+                    required: true,
+                    digits: true,
+                    minlength: 10,
+                    maxlength: 10,
+                    remote: {
+                        url: "<?= base_url(); ?>Stock/chk_mobile",
+                        type: "post",
+                        data: {
+                            mobi: function () {
+                                return $("#mobi").val();
+                            },
+                            stat: 0
+                        }
+                    }
+                },
+                tele:{
+                    digits: true,
+                    minlength: 10,
+                    maxlength: 10,
+                    remote: {
+                        url: "<?= base_url(); ?>Stock/chk_mobile",
+                        type: "post",
+                        data: {
+                            mobi: function () {
+                                return $("#tele").val();
+                            },
+                            stat: 0
+                        }
+                    }
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                bnknm:{
+                    notEqual: 0
+                },
+                bnkbr:{
+                    notEqual: 0
+                },
+                acno:{
+                    required: true,
+                    digits: true,
+                    minlength: 8,
+                    remote: {
+                        url: "<?= base_url(); ?>Stock/chk_bnkAcno",
+                        type: "post",
+                        data: {
+                            acno: function () {
+                                return $("#acno").val();
+                            },
+                            stat: 0
+                        }
+                    }
                 }
             },
             messages: {
                 name:{
                     required : "Enter supplier name"
+                },
+                addr:{
+                    required: "Enter supplier address"
+                },
+                mobi:{
+                    required: "Enter mobile number",
+                    digits: "Only numbers are allowed",
+                    minlength: "Please enter 10 digits number",
+                    maxlength: "Please enter 10 digits number",
+                    remote: "This number is already added"
+                },
+                tele:{
+                    digits: "Only numbers are allowed",
+                    minlength: "Please enter 10 digits number",
+                    maxlength: "Please enter 10 digits number",
+                    remote: "This number is already added"
+                },
+                email: {
+                    required: "Enter email address",
+                    email: "Please enter valid email address"
+                },
+                bnknm:{
+                    notEqual: "Select a bank"
+                },
+                bnkbr:{
+                    notEqual: "Select a bank branch"
+                },
+                acno:{
+                    required: "Enter bank account number",
+                    digits: "Only numbers are allowed",
+                    minlength: "Minumum length is 8 digits",
+                    remote: "This account number is already added"
                 }
             }
         });

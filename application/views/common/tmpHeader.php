@@ -18,6 +18,7 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
     <!-- END META SECTION -->
     <!-- CSS INCLUDE -->
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/styles.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/plugins/jquery-validation/css/screen.css">
     <!-- EOF CSS INCLUDE -->
 </head>
 <body>
@@ -25,7 +26,8 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/moment/moment.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/jquery-validation/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/jquery-validation/dist/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/custom-js/custom-validation.js"></script>
 <script type="text/javascript">  // common function
     //$(document).userTimeout({
     //    logouturl: '<?//= base_url() ?>//welcome/auto_lgout',
