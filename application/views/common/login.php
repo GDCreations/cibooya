@@ -34,14 +34,20 @@
                 <form action="<?= base_url(); ?>login/loginMe" method="post">
                     <div class="form-group">
                         <input type="text" class="form-control" name="lognm" id="lognm" placeholder="Username"
-                               data-validation="required">
+                               required>
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" name="logps" id="logps" placeholder="Password" required>
+                        <input type="password" class="form-control" name="logps" id="logps" placeholder="Password"
+                               required>
                     </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" name="logcd" id="logcd" placeholder="Digital Code" >
-                    </div>
+
+                    <?php if ($polyinfo[0]->post == 1) { ?>
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="logcd" id="logcd"
+                                   placeholder="Digital Code">
+                        </div>
+                    <?php } ?>
+
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-6 col-xs-6">
@@ -56,7 +62,7 @@
             </div>
 
             <div class="app-login-box-footer">
-                &copy; <?= $sysinfo[0]->synm . ' '.date('Y')?>. All rights reserved.
+                &copy; <?= $sysinfo[0]->synm . ' ' . date('Y') ?>. All rights reserved.
             </div>
         </div>
 
@@ -70,7 +76,8 @@
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap/bootstrap.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/form-validator/jquery.form-validator.min.js"></script>
+<script type="text/javascript"
+        src="<?= base_url(); ?>assets/js/vendor/form-validator/jquery.form-validator.min.js"></script>
 
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/moment/moment.min.js"></script>
 
@@ -120,45 +127,44 @@ if (isset($_GET['message'])) {
             toastr.error('Please check login data !');
         </script>
         <?php
-    }else if ($message === "userlock") {
+    } else if ($message === "userlock") {
         ?>
         <script type="text/javascript">
             toastr.error('Your Account Lock ! <br>Contact System Admin !!');
         </script>
         <?php
-    }else if ($message === "sys_update") {
+    } else if ($message === "sys_update") {
         ?>
         <script type="text/javascript">
             toastr.error('Night Schedule Processing.!!!');
         </script>
         <?php
-    }else if ($message === "wrngTry1") {
+    } else if ($message === "wrngTry1") {
         ?>
         <script type="text/javascript">
             toastr.error('You tried wrong password 1 times !!');
         </script>
         <?php
-    }else if ($message === "wrngTry2") {
+    } else if ($message === "wrngTry2") {
         ?>
         <script type="text/javascript">
             toastr.error('You tried wrong password 2 times !!');
         </script>
         <?php
-    }else if ($message === "wrngTry3") {
+    } else if ($message === "wrngTry3") {
         ?>
         <script type="text/javascript">
             toastr.error('You tried wrong password 3 times !!');
         </script>
         <?php
-    }else if ($message === "wrngLgcd") {
+    } else if ($message === "wrngLgcd") {
         ?>
         <script type="text/javascript">
             toastr.error('Wrong Digital eye code !!');
         </script>
         <?php
-    }
-    //locked user day end reconsi 2018-11-13
-    else if ($message === "Delock"){
+    } //locked user day end reconsi 2018-11-13
+    else if ($message === "Delock") {
         ?>
         <script type="text/javascript">
             toastr.info("You Are Locked !<br/>Day End Reconciliation Is Not Done At Last Day, Please Concat Operation Manager..");

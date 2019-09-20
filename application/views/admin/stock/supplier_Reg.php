@@ -38,7 +38,7 @@
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">Status</label>
                     <div class="col-md-8 col-xs-12">
-                        <select id="stat" name="stat" onchange="" class="bs-select">
+                        <select id="stat" name="stat" onchange="srch_Supp();" class="bs-select">
                             <option value="all">All</option>
                             <option value="0">Pending</option>
                             <option value="1">Active</option>
@@ -191,23 +191,23 @@
 <script>
     $().ready(function () {
         //Table Initializing
-        $('#supp_table').DataTable({
-            "lengthMenu": [
-                [10, 25, 50, 100, -1],
-                [10, 25, 50, 100, "All"]
-            ],
-            "aoColumns": [
-                {sWidth: '3%'},
-                {sWidth: '5%'},
-                {sWidth: '15%'},
-                {sWidth: '15%'},
-                {sWidth: '10%'},
-                {sWidth: '10%'},
-                {sWidth: '10%'},
-                {sWidth: '8%'},
-                {sWidth: '12%'}
-            ],
-        });
+        // $('#supp_table').DataTable({
+        //     "lengthMenu": [
+        //         [10, 25, 50, 100, -1],
+        //         [10, 25, 50, 100, "All"]
+        //     ],
+        //     "aoColumns": [
+        //         {sWidth: '3%'},
+        //         {sWidth: '5%'},
+        //         {sWidth: '15%'},
+        //         {sWidth: '15%'},
+        //         {sWidth: '10%'},
+        //         {sWidth: '10%'},
+        //         {sWidth: '10%'},
+        //         {sWidth: '8%'},
+        //         {sWidth: '12%'}
+        //     ],
+        // });
 
         $('#add_sup_form').validate({
             rules: {
@@ -312,6 +312,8 @@
                 }
             }
         });
+
+        srch_Supp();
     });
 
     //Get Branches by Bank
@@ -408,7 +410,7 @@
             "serverSide": true,
             "columnDefs": [
                 {className: "text-left", "targets": [2, 3, 6]},
-                {className: "text-center", "targets": [0, 1, 4, 5, 7, 8, 9]},
+                {className: "text-center", "targets": [0, 1, 4, 5, 7, 8]},
                 {className: "text-right", "targets": [0]},
                 {className: "text-nowrap", "targets": [1]}
             ],
@@ -432,26 +434,6 @@
                     stat: stat
                 }
             }
-        });
-    }
-    
-    //FORM CLEARING FUNTION
-    function clear_Form(form) {
-        $("#" + form).trigger("reset");
-
-        //get selector elements
-        var nodes = $('#' + form).find(
-            "select"
-        ).val(0);
-
-        //Reseting selector items
-        nodes.map(function () {
-            var node2 = $("#"+$(this).attr('id')).prev(); //get previous element of selector element
-            node2.children().children().removeClass('selected'); //remove selected classes
-            node2.children().children().first().addClass('selected'); //add selected class
-            var selected = node2.children().children().first().children().children().first().html(); //get selected valus
-            node2.prev().prop('title',selected); //set selected value as title
-            node2.prev().children().first().html(selected); //set selected value as <li> element
         });
     }
 </script>
