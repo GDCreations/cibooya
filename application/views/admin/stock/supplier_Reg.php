@@ -19,7 +19,7 @@
     </div>
     <div class="title">
         <h1>Supplier Registration</h1>
-        <p>Register / Edit / Reject / Inactive / Search & View</p>
+        <p>Register / Edit / Reject / Deactive / Search & View</p>
     </div>
     <div class="pull-right">
         <button class="btn btn-sm btn-info btn-icon-fixed btn-rounded" data-toggle="modal" data-target="#modal-add">
@@ -135,7 +135,8 @@
                                         <label class="col-md-4 col-xs-12 control-label">Bank Name <span
                                                     class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <select id="bnknm" name="bnknm" onchange="getbankbrch(this.value,'bnkbr','bnkbr_cont')"
+                                            <select id="bnknm" name="bnknm"
+                                                    onchange="getbankbrch(this.value,'bnkbr','bnkbr_cont')"
                                                     class="bs-select">
                                                 <option value="0">-- Select A Bank --</option>
                                                 <?php
@@ -191,174 +192,213 @@
 
     <!-- MODAL VIEW SUPPLIER -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
+        <div class="modal-dialog modal-lg" role="document">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
+                                                                                              class="icon-cross"></span>
+            </button>
+            <form id="app_sup_form">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Supplier
+                            Registering <span class="text-muted" id="subTitle_edit"></span></h4>
+                        <input type="hidden" id="func" name="func"/>
+                        <input type="hidden" id="spid" name="spid"/>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="form-horizontal">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Supplier Name <span
+                                                    class="fa fa-asterisk edit_req" style="color: red"></span></label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <input class="form-control" type="text" name="name_edt" id="name_edt"
+                                                   placeholder="Supplier Name"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group view_Area">
+                                        <label class="col-md-4 col-xs-12 control-label">Supplier Code</label>
+                                        <label class="col-md-8 col-xs-12 control-label" id="code"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Address <span
+                                                    class="fa fa-asterisk edit_req"
+                                                    style="color: red"></span></label>
+                                        <div class="col-md-8 col-xs-12">
+                                        <textarea class="form-control" name="addr_edt" id="addr_edt"
+                                                  placeholder="Supplier Address"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Contact <span
+                                                    class="fa fa-asterisk edit_req"
+                                                    style="color: red"></span></label>
+                                        <div class="col-md-4 col-xs-12">
+                                            <input class="form-control" type="text" name="mobi_edt" id="mobi_edt"
+                                                   placeholder="Mobile"/>
+                                        </div>
+                                        <div class="col-md-4 col-xs-12">
+                                            <input class="form-control" type="text" name="tele_edt" id="tele_edt"
+                                                   placeholder="Land Tele."/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Email <span
+                                                    class="fa fa-asterisk edit_req"
+                                                    style="color: red"></span></label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <input class="form-control" type="email" name="email_edt" id="email_edt"
+                                                   placeholder="Email"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <lable class="col-md-9 control-label">Bank Details</lable>
+                                        <div id="edit_Area" class="col-md-3">
+                                            <button type="button" class="btn btn-xs btn-info btn-rounded btn-icon-fixed"
+                                                    data-toggle="modal" data-target="#modal-Bank-New">
+                                                <span class="fa fa-plus"></span> Add
+                                            </button>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table id="supp_Bank"
+                                                       class="table dataTable table-striped table-bordered"
+                                                       width="100%">
+                                                    <thead>
+                                                    <tr>
+                                                        <!--                                                    <th class="text-left">#</th>-->
+                                                        <th class="text-left">BANK</th>
+                                                        <th class="text-left">BRANCH</th>
+                                                        <th class="text-left">ACCOUNT NO.</th>
+                                                        <th class="text-left">ACTION</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Remark</label>
+                                        <div class="col-md-8 col-xs-12">
+                                        <textarea class="form-control" rows="5" name="remk_edt" id="remk_edt"
+                                                  placeholder="Remark"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal view_Area">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Status</label>
+                                        <label class="col-md-8 control-label" id="sup_stat"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Created By</label>
+                                        <label class="col-md-8 control-label" id="crby"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Created Date</label>
+                                        <label class="col-md-8 control-label" id="crdt"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Approved By</label>
+                                        <label class="col-md-8 control-label" id="apby"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Approved Date</label>
+                                        <label class="col-md-8 control-label" id="apdt"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Rejected By</label>
+                                        <label class="col-md-8 control-label" id="rjby"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Rejected Date</label>
+                                        <label class="col-md-8 control-label" id="rjdt"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Updated By</label>
+                                        <label class="col-md-8 control-label" id="mdby"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Updated Date</label>
+                                        <label class="col-md-8 control-label" id="mddt"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" id="app_sup_btn" class="btn btn-warning btn-xs btn-rounded">
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- END VIEW SUPPLIER -->
+
+    <!--    ADD NEW ACCOUNT-->
+    <div class="modal fade" id="modal-Bank-New" data-backdrop="static" tabindex="-1" role="dialog"
+         aria-labelledby="modal-default-header">
         <div class="modal-dialog" role="document">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Supplier
-                        Registering <span class="text-muted" id="subTitle_edit"></span></h4>
-                    <input type="hidden" id="func" name="func"/>
+                    <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Add New Account
+                        Number</h4>
                 </div>
                 <div class="modal-body">
                     <div class="container">
-                        <div class="form-horizontal">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Supplier Name <span
-                                                class="fa fa-asterisk edit_req" style="color: red"></span></label>
-                                    <div class="col-md-8 col-xs-12">
-                                        <input class="form-control" type="text" name="name_edt" id="name_edt"
-                                               placeholder="Supplier Name"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Address <span
-                                                class="fa fa-asterisk edit_req"
-                                                style="color: red"></span></label>
-                                    <div class="col-md-8 col-xs-12">
-                                        <textarea class="form-control" name="addr_edt" id="addr_edt"
-                                                  placeholder="Supplier Address"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Contact <span
-                                                class="fa fa-asterisk edit_req"
-                                                style="color: red"></span></label>
-                                    <div class="col-md-4 col-xs-12">
-                                        <input class="form-control" type="text" name="mobi_edt" id="mobi_edt"
-                                               placeholder="Mobile"/>
-                                    </div>
-                                    <div class="col-md-4 col-xs-12">
-                                        <input class="form-control" type="text" name="tele_edt" id="tele_edt"
-                                               placeholder="Land Tele."/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Email <span
-                                                class="fa fa-asterisk edit_req"
-                                                style="color: red"></span></label>
-                                    <div class="col-md-8 col-xs-12">
-                                        <input class="form-control" type="email" name="email_edt" id="email_edt"
-                                               placeholder="Email"/>
-                                    </div>
-                                </div>
-                                <div id="edit_Area">
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Bank Name </label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <select id="bnknm_edt" name="bnknm_edt"
-                                                    onchange="getbankbrch(this.value,'bnkbr_edt','bnkbr_cont_edt')"
-                                                    class="bs-select">
-                                                <option value="0">-- Select A Bank --</option>
-                                                <?php
-                                                foreach ($bank as $bnk) {
-                                                    echo "<option value='$bnk->bnid'>" . $bnk->bkcd . " - " . $bnk->bknm . "</option>";
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Bank Branch </label>
-                                        <div class="col-md-8 col-xs-12" id="bnkbr_cont_edt">
-                                            <select id="bnkbr_edt" name="bnkbr_edt" onchange="" class="bs-select">
-                                                <option value="0">-- Select A Branch --</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Account Number </label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" name="acno_edt" id="acno_edt"
-                                                       placeholder="Account Number"/>
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-info btn-sm" style="margin: 0" type="button"><span
-                                                                class="fa fa-plus"></span></button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <lable class="col-md-12 control-label">Bank Details</lable>
-                                    <div class="col-md-12">
-                                        <div class="table-responsive">
-                                            <table id="supp_Bank" class="table dataTable table-striped table-bordered"
-                                                   width="100%">
-                                                <thead>
-                                                <tr>
-                                                    <!--                                                    <th class="text-left">#</th>-->
-                                                    <th class="text-left">BANK</th>
-                                                    <th class="text-left">BRANCH</th>
-                                                    <th class="text-left">ACCOUNT NO.</th>
-                                                    <th class="text-left">ACTION</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 col-xs-12 control-label">Remark</label>
-                                    <div class="col-md-8 col-xs-12">
-                                        <textarea class="form-control" rows="5" name="remk_edt" id="remk_edt"
-                                                  placeholder="Remark"></textarea>
-                                    </div>
+                        <form id="edit_bank_form">
+                            <div class="form-group">
+                                <label class="col-md-4 col-xs-12 control-label">Bank Name </label>
+                                <div class="col-md-8 col-xs-12">
+                                    <select id="bnknm_edt" name="bnknm_edt"
+                                            onchange="getbankbrch(this.value,'bnkbr_edt','bnkbr_cont_edt')"
+                                            class="bs-select">
+                                        <option value="0">-- Select A Bank --</option>
+                                        <?php
+                                        foreach ($bank as $bnk) {
+                                            echo "<option value='$bnk->bnid'>" . $bnk->bkcd . " - " . $bnk->bknm . "</option>";
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-horizontal" id="view_Area">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Created By</label>
-                                    <label class="col-md-8 control-label" id="crby"></label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Created Date</label>
-                                    <label class="col-md-8 control-label" id="crdt"></label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Approved By</label>
-                                    <label class="col-md-8 control-label" id="apby"></label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Approved Date</label>
-                                    <label class="col-md-8 control-label" id="apdt"></label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Rejected By</label>
-                                    <label class="col-md-8 control-label" id="rjby"></label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Rejected Date</label>
-                                    <label class="col-md-8 control-label" id="rjdt"></label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Updated By</label>
-                                    <label class="col-md-8 control-label" id="mdby"></label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">Updated Date</label>
-                                    <label class="col-md-8 control-label" id="mddt"></label>
+                            <div class="form-group">
+                                <label class="col-md-4 col-xs-12 control-label">Bank Branch </label>
+                                <div class="col-md-8 col-xs-12" id="bnkbr_cont_edt">
+                                    <select id="bnkbr_edt" name="bnkbr_edt" onchange="" class="bs-select">
+                                        <option value="0">-- Select A Branch --</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
+                            <div class="form-group">
+                                <label class="col-md-4 col-xs-12 control-label">Account Number </label>
+                                <div class="col-md-8 col-xs-12">
+                                    <input type="text" class="form-control" name="acno_edt"
+                                           id="acno_edt"
+                                           placeholder="Account Number"/>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                    <button type="button" id="app_sup_btn" class="btn btn-warning btn-xs btn-rounded">
-                    </button>
+                    <button type="button" id="add_new_acc" class="btn btn-warning btn-xs btn-rounded">
+                    Add</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- END VIEW SUPPLIER -->
+    <!--    ADD NEW ACCOUNT-->
 </div>
 <!-- END PAGE CONTAINER -->
 <script>
@@ -385,7 +425,17 @@
         $('#add_sup_form').validate({
             rules: {
                 name: {
-                    required: true
+                    required: true,
+                    remote: {
+                        url: "<?= base_url(); ?>Stock/chk_spName",
+                        type: "post",
+                        data: {
+                            name: function () {
+                                return $("#name").val();
+                            },
+                            stat: 0
+                        }
+                    }
                 },
                 addr: {
                     required: true
@@ -449,7 +499,8 @@
             },
             messages: {
                 name: {
-                    required: "Enter supplier name"
+                    required: "Enter supplier name",
+                    remote: "Already entered name"
                 },
                 addr: {
                     required: "Enter supplier address"
@@ -486,6 +537,139 @@
             }
         });
 
+        $('#app_sup_form').validate({
+            rules: {
+                name_edt: {
+                    required: true,
+                    remote: {
+                        url: "<?= base_url(); ?>Stock/chk_spName",
+                        type: "post",
+                        data: {
+                            name: function () {
+                                return $("#name_edt").val();
+                            },
+                            spid: function () {
+                                return $("#spid").val();
+                            },
+                            stat: 1
+                        }
+                    }
+                },
+                addr_edt: {
+                    required: true
+                },
+                mobi_edt: {
+                    required: true,
+                    digits: true,
+                    minlength: 10,
+                    maxlength: 10,
+                    remote: {
+                        url: "<?= base_url(); ?>Stock/chk_mobile",
+                        type: "post",
+                        data: {
+                            mobi: function () {
+                                return $("#mobi_edt").val();
+                            },
+                            spid: function () {
+                                return $("#spid").val();
+                            },
+                            stat: 1
+                        }
+                    }
+                },
+                tele_edt: {
+                    digits: true,
+                    minlength: 10,
+                    maxlength: 10,
+                    remote: {
+                        url: "<?= base_url(); ?>Stock/chk_mobile",
+                        type: "post",
+                        data: {
+                            mobi: function () {
+                                return $("#tele_edt").val();
+                            },
+                            spid: function () {
+                                return $("#spid").val();
+                            },
+                            stat: 1
+                        }
+                    }
+                },
+                email_edt: {
+                    required: true,
+                    email: true
+                },
+            },
+            messages: {
+                name_edt: {
+                    required: "Enter supplier name",
+                    remote: "Already entered name"
+                },
+                addr_edt: {
+                    required: "Enter supplier address"
+                },
+                mobi_edt: {
+                    required: "Enter mobile number",
+                    digits: "Only numbers are allowed",
+                    minlength: "Please enter 10 digits number",
+                    maxlength: "Please enter 10 digits number",
+                    remote: "This number is already added"
+                },
+                tele_edt: {
+                    digits: "Only numbers are allowed",
+                    minlength: "Please enter 10 digits number",
+                    maxlength: "Please enter 10 digits number",
+                    remote: "This number is already added"
+                },
+                email_edt: {
+                    required: "Enter email address",
+                    email: "Please enter valid email address"
+                },
+            }
+        });
+
+        $('#edit_bank_form').validate({
+            rules: {
+                bnknm_edt: {
+                    notEqual: 0
+                },
+                bnkbr_edt: {
+                    notEqual: 0
+                },
+                acno_edt: {
+                    required: true,
+                    digits: true,
+                    minlength: 8,
+                    remote: {
+                        url: "<?= base_url(); ?>Stock/chk_bnkAcno",
+                        type: "post",
+                        data: {
+                            acno: function () {
+                                return $("#acno_edt").val();
+                            },
+                            spid: function () {
+                                return $("#spid").val();
+                            },
+                            stat: 1
+                        }
+                    }
+                }
+            },
+            messages: {
+                bnknm_edt: {
+                    notEqual: "Select a bank"
+                },
+                bnkbr_edt: {
+                    notEqual: "Select a bank branch"
+                },
+                acno_edt: {
+                    required: "Enter bank account number",
+                    digits: "Only numbers are allowed",
+                    minlength: "Minumum length is 8 digits",
+                    remote: "This account number is already added"
+                }
+            }
+        });
         srch_Supp();
     });
 
@@ -500,13 +684,12 @@
             dataType: 'json',
             success: function (response) {
                 var len = response['bkbrch'].length;
-                var child1 = $('#'+mhtml).children();
+                var child1 = $('#' + mhtml).children();
                 var child2 = child1.find('div').children();
                 child2.empty();
                 // TABLE SEARCH FILTER
                 if (len != 0) {
                     $('#' + html).empty();
-                    child2.empty();
                     $('#' + html).append("<option value='0'>-- Select A Branch --</option>");
                     child2.append("<li data-original-index=\"0\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">-- Select A Branch --\n" +
                         "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
@@ -614,7 +797,7 @@
     }
 
     //View Supplier
-    function viewSupp(id,func) {
+    function viewSupp(id, func) {
         swal({
             title: "Loading Data...",
             text: "Supplier's Details",
@@ -623,6 +806,7 @@
         });
 
         $('#func').val(func);
+        $('#spid').val(id);
 
         jQuery.ajax({
             type: "POST",
@@ -632,41 +816,41 @@
             },
             dataType: 'json',
             success: function (data) {
-                if(func=='view'){
+                if (func == 'view') {
                     //VIEW MODEL
                     $('#subTitle_edit').html(' - View');
-                    $('#app_sup_btn').css('display','none');
+                    $('#app_sup_btn').css('display', 'none');
                     $("#modal-view").find('.edit_req').css("display", "none");
                     $("#edit_Area").css('display', 'none');
-                    $("#view_Area").css('display', 'block');
+                    $(".view_Area").css('display', 'block');
                     //Make readonly all fields
                     $("#modal-view :input").attr("readonly", true);
                     $("#modal-view").find('.bootstrap-select').addClass("disabled dropup");
                     $("#modal-view").find('.bootstrap-select').children().addClass("disabled dropup");
                     var des = "disabled";
                     //VIEW MODEL
-                }else if(func=='edit'){
+                } else if (func == 'edit') {
                     //EDIT MODEL
                     $('#subTitle_edit').html(' - Edit');
-                    $('#app_sup_btn').css('display','inline');
+                    $('#app_sup_btn').css('display', 'inline');
                     $('#app_sup_btn').html('Update');
                     $("#modal-view").find('.edit_req').css("display", "inline");
                     $("#edit_Area").css('display', 'block');
-                    $("#view_Area").css('display', 'none');
+                    $(".view_Area").css('display', 'none');
                     //Remove readonly all fields
                     $("#modal-view :input").attr("readonly", false);
                     $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
                     $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
                     var des = "";
                     //EDIT MODEL
-                }else if(func=='app'){
+                } else if (func == 'app') {
                     //APPROVE MODEL
                     $('#subTitle_edit').html(' - Approve');
-                    $('#app_sup_btn').css('display','inline');
+                    $('#app_sup_btn').css('display', 'inline');
                     $('#app_sup_btn').html('Approve');
                     $("#modal-view").find('.edit_req').css("display", "inline");
                     $("#edit_Area").css('display', 'block');
-                    $("#view_Area").css('display', 'none');
+                    $(".view_Area").css('display', 'none');
                     //Remove readonly all fields
                     $("#modal-view :input").attr("readonly", false);
                     $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
@@ -686,14 +870,27 @@
                     $('#email_edt').val(spdet[0]['email']);
                     $('#remk_edt').val(spdet[0]['dscr']);
 
-                    $('#crby').html(": "+spdet[0]['crnm']);
-                    $('#crdt').html(": "+spdet[0]['crdt']);
-                    $('#apby').html(": "+((spdet[0]['apnm']!=null)?spdet[0]['apnm']:"--"));
-                    $('#apdt').html(": "+((spdet[0]['apdt']!=null && spdet[0]['apdt']!="0000-00-00 00:00:00")?spdet[0]['apdt']:"--"));
-                    $('#rjby').html(": "+((spdet[0]['rjnm']!=null)?spdet[0]['rjnm']:"--"));
-                    $('#rjdt').html(": "+((spdet[0]['rjdt']!=null && spdet[0]['rjdt']!="0000-00-00 00:00:00")?spdet[0]['rjdt']:"--"));
-                    $('#mdby').html(": "+((spdet[0]['mdnm']!=null)?spdet[0]['mdnm']:"--"));
-                    $('#mddt').html(": "+((spdet[0]['mddt']!=null && spdet[0]['mddt']!="0000-00-00 00:00:00")?spdet[0]['mddt']:"--"));
+                    if(spdet[0]['stat']==0){
+                        var stat = "<label class='label label-warning'>Pending</label>";
+                    }else if(spdet[0]['stat']==1){
+                        var stat = "<label class='label label-success'>Active</label>";
+                    }else if(spdet[0]['stat']==2){
+                        var stat = "<label class='label label-danger'>Reject</label>";
+                    }else if(spdet[0]['stat']==3){
+                        var stat = "<label class='label label-info'>Inactive</label>";
+                    }else {
+                        var stat = "--";
+                    }
+                    $('#sup_stat').html(": " + stat);
+                    $('#code').html(": " + spdet[0]['spcd']);
+                    $('#crby').html(": " + spdet[0]['crnm']);
+                    $('#crdt').html(": " + spdet[0]['crdt']);
+                    $('#apby').html(": " + ((spdet[0]['apnm'] != null) ? spdet[0]['apnm'] : "--"));
+                    $('#apdt').html(": " + ((spdet[0]['apdt'] != null && spdet[0]['apdt'] != "0000-00-00 00:00:00") ? spdet[0]['apdt'] : "--"));
+                    $('#rjby').html(": " + ((spdet[0]['rjnm'] != null) ? spdet[0]['rjnm'] : "--"));
+                    $('#rjdt').html(": " + ((spdet[0]['rjdt'] != null && spdet[0]['rjdt'] != "0000-00-00 00:00:00") ? spdet[0]['rjdt'] : "--"));
+                    $('#mdby').html(": " + ((spdet[0]['mdnm'] != null) ? spdet[0]['mdnm'] : "--"));
+                    $('#mddt').html(": " + ((spdet[0]['mddt'] != null && spdet[0]['mddt'] != "0000-00-00 00:00:00") ? spdet[0]['mddt'] : "--"));
                 }
 
                 if (len2 > 0) {
@@ -722,14 +919,18 @@
                     for (var ii = 0; ii < len2; ii++) {
                         if (bkdet[ii]['dfst'] == 1) {
                             var dfst = "<label class='label label-info' title='Default Account Number'>D</label> ";
+                            var radio = "<div title='Default Account' class='app-radio round'><input type='radio' name='dfstRd[]' value='"+bkdet[ii]['acid']+"' checked/></div>"
                         } else {
                             var dfst = "";
+                            var radio = "<div class='app-radio round'><input type='radio' name='dfstRd[]' value='"+bkdet[ii]['acid']+"'/></div>"
                         }
 
                         var bnknm = bkdet[ii]['bkcd'] + " - " + bkdet[ii]['bknm'];
                         var brnm = bkdet[ii]['brcd'] + " - " + bkdet[ii]['bcnm'];
                         var acc = dfst + bkdet[ii]['acno'];
-                        var opt = "<button "+des+" class='btn btn-xs btn-warning btn-rounded' title='Remove'><span class='fa fa-close'></span></button>";
+                        var opt = "<button " + des + " id='dltrw' class='btn btn-xs btn-warning btn-rounded' title='Remove'><span class='fa fa-close'></span></button> " +
+                                radio +
+                            "<input type='hidden' id='acnoList' name='acnoList[]' value='"+bkdet[ii]['acid']+"'/>";
                         t1.row.add([
                             // (ii+1),
                             bnknm,
@@ -749,4 +950,88 @@
             }
         });
     }
+
+    // table data remove
+    $('#supp_Bank tbody').on('click', '#dltrw', function () {
+        var table = $('#supp_Bank').DataTable();
+        table
+            .row($(this).parents('tr'))
+            .remove()
+            .draw();
+    });
+
+    //APPROVE || EDIT HERE
+    $('#app_sup_btn').click(function (e) {
+        e.preventDefault();
+        if ($('#app_sup_form').valid()) {
+            var func = $('#func').val();
+            if(func=='edit'){
+                swal({
+                    title: "Processing...",
+                    text: "Supplier's details updating..",
+                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                    showConfirmButton: false
+                });
+            }else if(func=='app'){
+                swal({
+                    title: "Processing...",
+                    text: "Supplier approving..",
+                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                    showConfirmButton: false
+                });
+            }else{
+                alert('Contact System Admin');
+            }
+        }
+    });
+
+    //Add New bank Account Number
+    $('#add_new_acc').click(function(e) {
+        if ($('#edit_bank_form').valid()) {
+            swal({
+                title: "Processing...",
+                text: "Supplier's account number saving..",
+                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                showConfirmButton: false
+            });
+
+            var spid = $('#spid').val();
+            $('#add_new_acc').prop('disabled', true);
+
+            jQuery.ajax({
+                type: "POST",
+                url: "<?= base_url(); ?>Stock/supp_add_bnkAcc",
+                data: {
+                    spid : spid,
+                    bknm : function () {
+                        return $('#bnknm_edt').val();
+                    },
+                    bkbr : function () {
+                        return $('#bnkbr_edt').val();
+                    },
+                    acc : function () {
+                        return $('#acno_edt').val();
+                    },
+                },
+                dataType: 'json',
+                success: function (data) {
+                    swal({title: "", text: "Saved!", type: "success"},
+                        function () {
+                            $('#add_new_acc').prop('disabled', false);
+                            clear_Form('edit_bank_form');
+                            $('#modal-Bank-New').modal('hide');
+
+
+                        });
+                },
+                error: function (data, textStatus) {
+                    swal({title: "Failed", text: textStatus, type: "error"},
+                        function () {
+                            location.reload();
+                        });
+                }
+            });
+
+        }
+    });
 </script>
