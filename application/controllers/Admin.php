@@ -124,13 +124,11 @@ class Admin extends CI_Controller
 
         $_01 = array('pov3' => $eycd, 'post' => $digey, 'mdby' => $_SESSION['userId'], 'mddt' => $date);
 
-
         $this->Generic_model->updateData('sys_policy', $_01, array('poid' => 1));
 
 
         //$funcPerm = $this->Generic_model->getFuncPermision('policyMng');
         //$this->Log_model->userFuncLog($funcPerm[0]->pgid, 'System Policy Update');
-
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
@@ -140,4 +138,23 @@ class Admin extends CI_Controller
             echo json_encode(true);
         }
     }
+
+
+
+    // SYSTEM POLICY
+    public function rcntAct()
+    {
+        $data['acm'] = ''; //Module
+        $data['acp'] = 'policyMng'; //Page
+
+        $this->load->view('common/tmpHeader');
+        $this->load->view('admin/common/adminHeader');
+
+        $dataArr['policyinfo'] = $this->Generic_model->getData('sys_policy', '', '');
+
+        $this->load->view('admin/systmPolicy', $dataArr);
+        $this->load->view('common/tmpFooter', $data);
+    }
+
+
 }
