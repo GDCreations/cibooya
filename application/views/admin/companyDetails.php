@@ -69,7 +69,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label">Register Date</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" value="<?= $compInfo[0]->regd ?>" name="regd"
+                        <input type="text" class="form-control bs-datepicker" value="<?= $compInfo[0]->regd ?>" name="regd"
                                id="regd"/>
                     </div>
                 </div>
