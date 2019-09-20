@@ -135,7 +135,7 @@
                                         <label class="col-md-4 col-xs-12 control-label">Bank Name <span
                                                     class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <select id="bnknm" name="bnknm" onchange="getbankbrch(this.value,'bnkbr')"
+                                            <select id="bnknm" name="bnknm" onchange="getbankbrch(this.value,'bnkbr','bnkbr_cont')"
                                                     class="bs-select">
                                                 <option value="0">-- Select A Bank --</option>
                                                 <?php
@@ -198,7 +198,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Supplier
-                        Registering</h4>
+                        Registering <span class="text-muted" id="subTitle_edit"></span></h4>
+                    <input type="hidden" id="func" name="func"/>
                 </div>
                 <div class="modal-body">
                     <div class="container">
@@ -248,7 +249,7 @@
                                         <label class="col-md-4 col-xs-12 control-label">Bank Name </label>
                                         <div class="col-md-8 col-xs-12">
                                             <select id="bnknm_edt" name="bnknm_edt"
-                                                    onchange="getbankbrch(this.value,'bnkbr_edt')"
+                                                    onchange="getbankbrch(this.value,'bnkbr_edt','bnkbr_cont_edt')"
                                                     class="bs-select">
                                                 <option value="0">-- Select A Bank --</option>
                                                 <?php
@@ -261,7 +262,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Bank Branch </label>
-                                        <div class="col-md-8 col-xs-12" id="bnkbr_cont">
+                                        <div class="col-md-8 col-xs-12" id="bnkbr_cont_edt">
                                             <select id="bnkbr_edt" name="bnkbr_edt" onchange="" class="bs-select">
                                                 <option value="0">-- Select A Branch --</option>
                                             </select>
@@ -315,11 +316,35 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="col-md-4 control-label">Created By</label>
-                                    <label class="col-md-8 control-label" id="crby">Janaka Udayanga Perera</label>
+                                    <label class="col-md-8 control-label" id="crby"></label>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-4 control-label">Created Date</label>
-                                    <label class="col-md-8 control-label" id="crdt">Janaka Udayanga Perera</label>
+                                    <label class="col-md-8 control-label" id="crdt"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Approved By</label>
+                                    <label class="col-md-8 control-label" id="apby"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Approved Date</label>
+                                    <label class="col-md-8 control-label" id="apdt"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Rejected By</label>
+                                    <label class="col-md-8 control-label" id="rjby"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Rejected Date</label>
+                                    <label class="col-md-8 control-label" id="rjdt"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Updated By</label>
+                                    <label class="col-md-8 control-label" id="mdby"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Updated Date</label>
+                                    <label class="col-md-8 control-label" id="mddt"></label>
                                 </div>
                             </div>
                         </div>
@@ -327,6 +352,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <button type="button" id="app_sup_btn" class="btn btn-warning btn-xs btn-rounded">
+                    </button>
                 </div>
             </div>
         </div>
@@ -463,7 +490,7 @@
     });
 
     //Get Branches by Bank
-    function getbankbrch(id, html) {
+    function getbankbrch(id, html, mhtml) {
         $.ajax({
             url: '<?= base_url(); ?>Stock/getbnkbrch',
             type: 'post',
@@ -473,12 +500,13 @@
             dataType: 'json',
             success: function (response) {
                 var len = response['bkbrch'].length;
-                var child1 = $('#bnkbr_cont').children();
+                var child1 = $('#'+mhtml).children();
                 var child2 = child1.find('div').children();
                 child2.empty();
                 // TABLE SEARCH FILTER
                 if (len != 0) {
                     $('#' + html).empty();
+                    child2.empty();
                     $('#' + html).append("<option value='0'>-- Select A Branch --</option>");
                     child2.append("<li data-original-index=\"0\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">-- Select A Branch --\n" +
                         "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
@@ -498,6 +526,7 @@
                     $('#' + html).append("<option value='0'>-- No Branch --</option>");
                     child2.append("<li data-original-index=\"0\" class=\"\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\"><span class=\"text\">-- No Branch --</span><span class=\" fa fa-check check-mark\"></span></a></li>");
                 }
+                default_Selector(child1.find('div'));
             }
         });
     }
@@ -585,13 +614,15 @@
     }
 
     //View Supplier
-    function viewSupp(id) {
+    function viewSupp(id,func) {
         swal({
             title: "Loading Data...",
             text: "Supplier's Details",
             imageUrl: "<?= base_url() ?>assets/img/loading.gif",
             showConfirmButton: false
         });
+
+        $('#func').val(func);
 
         jQuery.ajax({
             type: "POST",
@@ -601,6 +632,48 @@
             },
             dataType: 'json',
             success: function (data) {
+                if(func=='view'){
+                    //VIEW MODEL
+                    $('#subTitle_edit').html(' - View');
+                    $('#app_sup_btn').css('display','none');
+                    $("#modal-view").find('.edit_req').css("display", "none");
+                    $("#edit_Area").css('display', 'none');
+                    $("#view_Area").css('display', 'block');
+                    //Make readonly all fields
+                    $("#modal-view :input").attr("readonly", true);
+                    $("#modal-view").find('.bootstrap-select').addClass("disabled dropup");
+                    $("#modal-view").find('.bootstrap-select').children().addClass("disabled dropup");
+                    var des = "disabled";
+                    //VIEW MODEL
+                }else if(func=='edit'){
+                    //EDIT MODEL
+                    $('#subTitle_edit').html(' - Edit');
+                    $('#app_sup_btn').css('display','inline');
+                    $('#app_sup_btn').html('Update');
+                    $("#modal-view").find('.edit_req').css("display", "inline");
+                    $("#edit_Area").css('display', 'block');
+                    $("#view_Area").css('display', 'none');
+                    //Remove readonly all fields
+                    $("#modal-view :input").attr("readonly", false);
+                    $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
+                    $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
+                    var des = "";
+                    //EDIT MODEL
+                }else if(func=='app'){
+                    //APPROVE MODEL
+                    $('#subTitle_edit').html(' - Approve');
+                    $('#app_sup_btn').css('display','inline');
+                    $('#app_sup_btn').html('Approve');
+                    $("#modal-view").find('.edit_req').css("display", "inline");
+                    $("#edit_Area").css('display', 'block');
+                    $("#view_Area").css('display', 'none');
+                    //Remove readonly all fields
+                    $("#modal-view :input").attr("readonly", false);
+                    $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
+                    $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
+                    var des = "";
+                    //APPROVE MODEL
+                }
                 var len = data['spdet'].length;
                 var len2 = data['bkdet'].length;
                 var spdet = data['spdet'];
@@ -612,6 +685,15 @@
                     $('#tele_edt').val(spdet[0]['tele']);
                     $('#email_edt').val(spdet[0]['email']);
                     $('#remk_edt').val(spdet[0]['dscr']);
+
+                    $('#crby').html(": "+spdet[0]['crnm']);
+                    $('#crdt').html(": "+spdet[0]['crdt']);
+                    $('#apby').html(": "+((spdet[0]['apnm']!=null)?spdet[0]['apnm']:"--"));
+                    $('#apdt').html(": "+((spdet[0]['apdt']!=null && spdet[0]['apdt']!="0000-00-00 00:00:00")?spdet[0]['apdt']:"--"));
+                    $('#rjby').html(": "+((spdet[0]['rjnm']!=null)?spdet[0]['rjnm']:"--"));
+                    $('#rjdt').html(": "+((spdet[0]['rjdt']!=null && spdet[0]['rjdt']!="0000-00-00 00:00:00")?spdet[0]['rjdt']:"--"));
+                    $('#mdby').html(": "+((spdet[0]['mdnm']!=null)?spdet[0]['mdnm']:"--"));
+                    $('#mddt').html(": "+((spdet[0]['mddt']!=null && spdet[0]['mddt']!="0000-00-00 00:00:00")?spdet[0]['mddt']:"--"));
                 }
 
                 if (len2 > 0) {
@@ -647,7 +729,7 @@
                         var bnknm = bkdet[ii]['bkcd'] + " - " + bkdet[ii]['bknm'];
                         var brnm = bkdet[ii]['brcd'] + " - " + bkdet[ii]['bcnm'];
                         var acc = dfst + bkdet[ii]['acno'];
-                        var opt = "<button disabled class='btn btn-xs btn-warning btn-rounded' title='Remove'><span class='fa fa-close'></span></button>";
+                        var opt = "<button "+des+" class='btn btn-xs btn-warning btn-rounded' title='Remove'><span class='fa fa-close'></span></button>";
                         t1.row.add([
                             // (ii+1),
                             bnknm,
@@ -657,15 +739,6 @@
                         ]).draw(false);
                     }
                 }
-
-                //VIEW MODEL
-                $("#modal-view").find('.edit_req').css("display", "none");
-                $("#edit_Area").css('display', 'none');
-                //Make readonly all fields
-                $("#modal-view :input").attr("readonly", true);
-                $("#modal-view").find('.bootstrap-select').addClass("disabled dropup");
-                $("#modal-view").find('.bootstrap-select').children().addClass("disabled dropup");
-                //VIEW MODEL
                 swal.close();
             },
             error: function (data, textStatus) {

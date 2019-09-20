@@ -17,3 +17,11 @@ function clear_Form(form) {
         node2.prev().children().first().html(selected); //set selected value as <li> element
     });
 }
+
+function default_Selector(node) {
+    node.children().children().removeClass('selected'); //remove selected classes
+    node.children().children().first().addClass('selected'); //add selected class
+    var selected = node.children().children().first().children().children().first().html(); //get selected valus
+    node.prev().prop('title',selected); //set selected value as title
+    node.prev().children().first().html(selected); //set selected value as <li> element
+}
