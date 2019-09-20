@@ -16,7 +16,7 @@ class Stock extends CI_Controller
 //
         $this->load->database();                // load database
         $this->load->model('Generic_model');    // load model
-//        $this->load->model('User_model');       // load model
+        $this->load->model('Stock_model');       // load model
 //        $this->load->model('Log_model');        // load model
 //        $this->load->model('Hire_model');       // load model
 //
@@ -184,6 +184,69 @@ class Stock extends CI_Controller
         }
     }
 //END SUPPLIER REGISTRATION </JANAKA 2019-09-19>
+
+//SEARCH SUPPLIER </JANAKA 2019-09-19>
+    function searchSupp(){
+//        $funcPerm = $this->Generic_model->getFuncPermision('grnt_upgrd');
+//
+//        if ($funcPerm[0]->view == 1) {
+//            $viw = "";
+//        } else {
+//            $viw = "disabled";
+//        }
+//        if ($funcPerm[0]->reac == 1) {
+//            $reac = "";
+//        } else {
+//            $reac = "disabled";
+//        }
+
+        $result = $this->Stock_model->get_suppDtils();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            if($row->stat==0){
+                $stat = "<label class='label label-warning'>Pending</label>";
+                $option = "<button type='button' data-toggle='modal' data-target='#modalView' onclick='viewSupp($row->spid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' onclick='editSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> ".
+                    "<button type='button' onclick='approveSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> ".
+                    "<button type='button' onclick='rejectSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            }else if($row->stat==1){
+                $stat = "<label class='label label-success'>Active</label>";
+                $option = "<button type='button' data-toggle='modal' data-target='#modalView' onclick='viewSupp($row->spid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' onclick='editSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> ".
+                    "<button type='button' disabled onclick='reactSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-check' aria-hidden='true'></i></button> ".
+                    "<button type='button' onclick='inactSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+            }else if($row->stat==2){
+                $stat = "<label class='label label-danger'>Reject</label>";
+            }else if($row->stat==3){
+                $stat = "<label class='label label-'>Inactive</label>";
+            }else{
+                $stat = "--";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->spcd;
+            $sub_arr[] = $row->spnm;
+            $sub_arr[] = $row->addr;
+            $sub_arr[] = $row->mbno;
+            $sub_arr[] = $row->innm;
+            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Stock_model->count_all_supp(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_supp(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+//END SEARCH SUPPLIER </JANAKA 2019-09-19>
 //************************************************
 //***       END SUPPLIER REGISTRATION          ***
 //************************************************
