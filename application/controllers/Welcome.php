@@ -20,6 +20,7 @@ class Welcome extends CI_Controller
             redirect('user');
         } else {
             $data['sysinfo'] = $this->Generic_model->getData('com_det', array('cmne', 'synm', 'cplg', 'syvr'), array('stat' => 1));
+            $data['polyinfo'] = $this->Generic_model->getData('sys_policy', array('post'), array('poid' => 1));
             $this->load->view('common/login', $data);
         }
     }
