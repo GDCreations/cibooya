@@ -69,7 +69,8 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label">Register Date</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control bs-datepicker" value="<?= $compInfo[0]->regd ?>" name="regd"
+                        <input type="text" class="form-control bs-datepicker" value="<?= $compInfo[0]->regd ?>"
+                               name="regd"
                                id="regd"/>
                     </div>
                 </div>
@@ -82,7 +83,7 @@
                 </div>
 
                 <div class="form-group margin-top-20">
-                    <button class="btn btn-success pull-right" type="button" id="save">Submit</button>
+                    <button class="btn btn-sm btn-rounded btn-success pull-right" type="button" id="save">Submit</button>
                 </div>
             </div>
         </form>
@@ -163,9 +164,7 @@
                         });
                 }
             });
-
         }
     });
-
 
 </script>
