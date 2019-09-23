@@ -393,7 +393,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
                     <button type="button" id="add_new_acc" class="btn btn-warning btn-xs btn-rounded">
-                    Add</button>
+                        Add
+                    </button>
                 </div>
             </div>
         </div>
@@ -870,15 +871,15 @@
                     $('#email_edt').val(spdet[0]['email']);
                     $('#remk_edt').val(spdet[0]['dscr']);
 
-                    if(spdet[0]['stat']==0){
+                    if (spdet[0]['stat'] == 0) {
                         var stat = "<label class='label label-warning'>Pending</label>";
-                    }else if(spdet[0]['stat']==1){
+                    } else if (spdet[0]['stat'] == 1) {
                         var stat = "<label class='label label-success'>Active</label>";
-                    }else if(spdet[0]['stat']==2){
+                    } else if (spdet[0]['stat'] == 2) {
                         var stat = "<label class='label label-danger'>Reject</label>";
-                    }else if(spdet[0]['stat']==3){
+                    } else if (spdet[0]['stat'] == 3) {
                         var stat = "<label class='label label-info'>Inactive</label>";
-                    }else {
+                    } else {
                         var stat = "--";
                     }
                     $('#sup_stat').html(": " + stat);
@@ -909,28 +910,34 @@
                         ],
                         "aoColumns": [
                             // {sWidth: '3%'},
-                            {sWidth: '32%'},
-                            {sWidth: '32%'},
-                            {sWidth: '32%'},
-                            {sWidth: '4%'}
+                            {sWidth: '30%'},
+                            {sWidth: '30%'},
+                            {sWidth: '30%'},
+                            {sWidth: '10%'}
                         ]
                     });
 
                     for (var ii = 0; ii < len2; ii++) {
                         if (bkdet[ii]['dfst'] == 1) {
                             var dfst = "<label class='label label-info' title='Default Account Number'>D</label> ";
-                            var radio = "<div title='Default Account' class='app-radio round'><input type='radio' name='dfstRd[]' value='"+bkdet[ii]['acid']+"' checked/></div>"
+                            var radio = "<div title='Default Account' class='app-radio round'><input type='radio'" +
+                                "onclick='desDefClose($(this))'" +
+                                " name='dfstRd[]' value='" + bkdet[ii]['acid'] + "' checked/></div>"
+                            var defDes = 'disabled';
                         } else {
                             var dfst = "";
-                            var radio = "<div class='app-radio round'><input type='radio' name='dfstRd[]' value='"+bkdet[ii]['acid']+"'/></div>"
+                            var radio = "<div class='app-radio round'><input type='radio'" +
+                                "onclick='desDefClose($(this))'" +
+                                " name='dfstRd[]' value='" + bkdet[ii]['acid'] + "'/></div>"
+                            var defDes = '';
                         }
 
                         var bnknm = bkdet[ii]['bkcd'] + " - " + bkdet[ii]['bknm'];
                         var brnm = bkdet[ii]['brcd'] + " - " + bkdet[ii]['bcnm'];
                         var acc = dfst + bkdet[ii]['acno'];
-                        var opt = "<button " + des + " id='dltrw' class='btn btn-xs btn-warning btn-rounded' title='Remove'><span class='fa fa-close'></span></button> " +
-                                radio +
-                            "<input type='hidden' id='acnoList' name='acnoList[]' value='"+bkdet[ii]['acid']+"'/>";
+                        var opt = "<button " + des + defDes + " id='dltrw' class='btn btn-xs btn-warning btn-rounded btn_dlt_acc' title='Remove'><span class='fa fa-close'></span></button> " +
+                            radio +
+                            "<input type='hidden' id='acnoList' name='acnoList[]' value='" + bkdet[ii]['acid'] + "'/>";
                         t1.row.add([
                             // (ii+1),
                             bnknm,
@@ -951,6 +958,12 @@
         });
     }
 
+    //Disbled default account close button
+    function desDefClose(node) {
+        $('.btn_dlt_acc').prop('disabled', false);
+        node.parent().prev().prop('disabled', true);
+    }
+
     // table data remove
     $('#supp_Bank tbody').on('click', '#dltrw', function () {
         var table = $('#supp_Bank').DataTable();
@@ -964,29 +977,92 @@
     $('#app_sup_btn').click(function (e) {
         e.preventDefault();
         if ($('#app_sup_form').valid()) {
-            var func = $('#func').val();
-            if(func=='edit'){
-                swal({
-                    title: "Processing...",
-                    text: "Supplier's details updating..",
-                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                    showConfirmButton: false
+
+            swal({
+                    title: "Are you sure to do this ?",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3bdd59",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        var func = $('#func').val();
+                        $('#app_sup_btn').prop('disabled', false);
+                        if (func == 'edit') {
+                            swal({
+                                title: "Processing...",
+                                text: "Supplier's details updating..",
+                                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                                showConfirmButton: false
+                            });
+
+                            jQuery.ajax({
+                                type: "POST",
+                                url: "<?= base_url(); ?>Stock/supp_update",
+                                data: $("#app_sup_form").serialize(),
+                                dataType: 'json',
+                                success: function (data) {
+                                    swal({title: "", text: "Updating Success!", type: "success"},
+                                        function () {
+                                            $('#app_sup_btn').prop('disabled', false);
+                                            clear_Form('app_sup_form');
+                                            $('#modal-view').modal('hide');
+                                            srch_Supp();
+                                        });
+                                },
+                                error: function (data, textStatus) {
+                                    swal({title: "Updating Failed", text: textStatus, type: "error"},
+                                        function () {
+                                            location.reload();
+                                        });
+                                }
+                            });
+                        } else if (func == 'app') {
+                            swal({
+                                title: "Processing...",
+                                text: "Supplier approving..",
+                                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                                showConfirmButton: false
+                            });
+
+                            jQuery.ajax({
+                                type: "POST",
+                                url: "<?= base_url(); ?>Stock/supp_update",
+                                data: $("#app_sup_form").serialize(),
+                                dataType: 'json',
+                                success: function (data) {
+                                    swal({title: "", text: "Approved!", type: "success"},
+                                        function () {
+                                            $('#app_sup_btn').prop('disabled', false);
+                                            clear_Form('app_sup_form');
+                                            $('#modal-view').modal('hide');
+                                            srch_Supp();
+                                        });
+                                },
+                                error: function (data, textStatus) {
+                                    swal({title: "Approving Failed", text: textStatus, type: "error"},
+                                        function () {
+                                            location.reload();
+                                        });
+                                }
+                            });
+                        } else {
+                            alert('Contact System Admin');
+                        }
+                    } else {
+                        swal("Cancelled", " ", "warning");
+                    }
                 });
-            }else if(func=='app'){
-                swal({
-                    title: "Processing...",
-                    text: "Supplier approving..",
-                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                    showConfirmButton: false
-                });
-            }else{
-                alert('Contact System Admin');
-            }
         }
     });
 
     //Add New bank Account Number
-    $('#add_new_acc').click(function(e) {
+    $('#add_new_acc').click(function (e) {
         if ($('#edit_bank_form').valid()) {
             swal({
                 title: "Processing...",
@@ -1002,14 +1078,14 @@
                 type: "POST",
                 url: "<?= base_url(); ?>Stock/supp_add_bnkAcc",
                 data: {
-                    spid : spid,
-                    bknm : function () {
+                    spid: spid,
+                    bknm: function () {
                         return $('#bnknm_edt').val();
                     },
-                    bkbr : function () {
+                    bkbr: function () {
                         return $('#bnkbr_edt').val();
                     },
-                    acc : function () {
+                    acc: function () {
                         return $('#acno_edt').val();
                     },
                 },
@@ -1020,7 +1096,41 @@
                             $('#add_new_acc').prop('disabled', false);
                             clear_Form('edit_bank_form');
                             $('#modal-Bank-New').modal('hide');
+                            var len2 = data['accDet'].length;
+                            var bkdet = data['accDet'];
 
+                            $('#supp_Bank').DataTable().clear();
+                            var t1 = $('#supp_Bank').DataTable();
+
+                            for (var ii = 0; ii < len2; ii++) {
+                                if (bkdet[ii]['dfst'] == 1) {
+                                    var dfst = "<label class='label label-info' title='Default Account Number'>D</label> ";
+                                    var radio = "<div title='Default Account' class='app-radio round'><input type='radio'" +
+                                        "onclick='desDefClose($(this))'" +
+                                        " name='dfstRd[]' value='" + bkdet[ii]['acid'] + "' checked/></div>"
+                                    var defDes = 'disabled';
+                                } else {
+                                    var dfst = "";
+                                    var radio = "<div class='app-radio round'><input type='radio'" +
+                                        "onclick='desDefClose($(this))'" +
+                                        " name='dfstRd[]' value='" + bkdet[ii]['acid'] + "'/></div>"
+                                    var defDes = '';
+                                }
+
+                                var bnknm = bkdet[ii]['bkcd'] + " - " + bkdet[ii]['bknm'];
+                                var brnm = bkdet[ii]['brcd'] + " - " + bkdet[ii]['bcnm'];
+                                var acc = dfst + bkdet[ii]['acno'];
+                                var opt = "<button " + defDes + " id='dltrw' class='btn btn-xs btn-warning btn-rounded btn_dlt_acc' title='Remove'><span class='fa fa-close'></span></button> " +
+                                    radio +
+                                    "<input type='hidden' id='acnoList' name='acnoList[]' value='" + bkdet[ii]['acid'] + "'/>";
+                                t1.row.add([
+                                    // (ii+1),
+                                    bnknm,
+                                    brnm,
+                                    acc,
+                                    opt
+                                ]).draw(false);
+                            }
 
                         });
                 },
@@ -1034,4 +1144,148 @@
 
         }
     });
+
+    //Reject Supplier
+    function rejectSupp(id) {
+        swal({
+                title: "Are you sure reject ?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3bdd59",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    swal({
+                        title: "Processing...",
+                        text: "Rejecting...",
+                        imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                        showConfirmButton: false
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<?= base_url(); ?>Stock/supp_Reject",
+                        data: {
+                            id : id
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            swal({title: "", text: "Supplier was rejected!", type: "success"},
+                                function () {
+                                    srch_Supp();
+                                });
+                        },
+                        error: function (data, textStatus) {
+                            swal({title: "Faild", text: textStatus, type: "error"},
+                                function () {
+                                    location.reload();
+                                });
+                        }
+                    });
+                } else {
+                    swal("Cancelled", " ", "warning");
+                }
+            });
+    }
+
+    //Deactivate Supplier
+    function inactSupp(id) {
+        swal({
+                title: "Are you sure to deactivate ?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3bdd59",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    swal({
+                        title: "Processing...",
+                        text: "",
+                        imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                        showConfirmButton: false
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<?= base_url(); ?>Stock/supp_Deactive",
+                        data: {
+                            id : id
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            swal({title: "", text: "Supplier was deactivated!", type: "success"},
+                                function () {
+                                    srch_Supp();
+                                });
+                        },
+                        error: function (data, textStatus) {
+                            swal({title: "Faild", text: textStatus, type: "error"},
+                                function () {
+                                    location.reload();
+                                });
+                        }
+                    });
+                } else {
+                    swal("Cancelled", " ", "warning");
+                }
+            });
+    }
+
+    //activate Supplier
+    function reactSupp(id) {
+        swal({
+                title: "Are you sure to activate ?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3bdd59",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    swal({
+                        title: "Processing...",
+                        text: "Activating...",
+                        imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                        showConfirmButton: false
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<?= base_url(); ?>Stock/supp_Activate",
+                        data: {
+                            id : id
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            swal({title: "", text: "Supplier was activated!", type: "success"},
+                                function () {
+                                    srch_Supp();
+                                });
+                        },
+                        error: function (data, textStatus) {
+                            swal({title: "Faild", text: textStatus, type: "error"},
+                                function () {
+                                    location.reload();
+                                });
+                        }
+                    });
+                } else {
+                    swal("Cancelled", " ", "warning");
+                }
+            });
+    }
 </script>

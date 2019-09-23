@@ -143,34 +143,6 @@ class Stock extends CI_Controller
     {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
-        //Creating customer next number
-        $this->db->select("spcd");
-        $this->db->from('supp_mas');
-        $this->db->order_by('spcd', 'DESC');
-        $this->db->where("stat NOT IN(0,2)");
-        $this->db->limit(1);
-        $res = $this->db->get()->result();
-        if (sizeof($res) > 0) {
-            $number = explode('-', $res[0]->spcd);
-            $aa = intval($number[1]) + 1;
-            $cc = strlen($aa);
-
-            if ($cc == 1) {
-                $xx = '0000' . $aa;
-            } else if ($cc == 2) {
-                $xx = '000' . $aa;
-            } else if ($cc == 3) {
-                $xx = '00' . $aa;
-            } else if ($cc == 4) {
-                $xx = '0' . $aa;
-            } else if ($cc == 5) {
-                $xx = '0' . $aa;
-            }
-            $supcd = "S-" . $xx;
-        } else {
-            $supcd = "S-0001";
-        }
-
         //Inserting supplier details
         $this->Generic_model->insertData('supp_mas', array(
             'spcd' => "TMP",
@@ -234,25 +206,25 @@ class Stock extends CI_Controller
                     "<button type='button' onclick='rejectSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             } else if ($row->stat == 1) {
                 $stat = "<label class='label label-success'>Active</label>";
-                $option = "<button type='button' id='view' data-toggle='modal' data-target='#modalView' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                $option = "<button type='button' id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
                     "<button type='button' onclick='inactSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
             } else if ($row->stat == 2) {
                 $stat = "<label class='label label-danger'>Reject</label>";
-                $option = "<button type='button' id='view' data-toggle='modal' data-target='#modalView' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                $option = "<button type='button' id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             } else if ($row->stat == 3) {
                 $stat = "<label class='label label-info'>Inactive</label>";
-                $option = "<button type='button' id='view' data-toggle='modal' data-target='#modalView' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                $option = "<button type='button' id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' onclick='reactSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
             } else {
                 $stat = "--";
-                $option = "<button type='button' disabled data-toggle='modal' data-target='#modalView' onclick='viewSupp($row->spid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='editSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='approveSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='rejectSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
@@ -324,6 +296,112 @@ class Stock extends CI_Controller
             'dfst' => 0,
             'stat' => 1
         ));
+        $lstid = $this->db->insert_id();
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            //Get entered data
+            $this->db->select("bnk.acid,bnk.acno,bnk.dfst,bank.bkcd,bank.bknm,bank_brch.brcd,bank_brch.bcnm");
+            $this->db->from('sup_bnk_acc bnk');
+            $this->db->join('bank', 'bank.bnid=bnk.bnid');
+            $this->db->join('bank_brch', 'bank_brch.brid=bnk.brid');
+            $this->db->where("bnk.stat=1 AND spid=$spid");
+            $data['accDet'] = $this->db->get()->result();
+
+//            $data['accDet'] = array(
+//                'bknm' => $res[0]->bknm,
+//                'bkcd' => $res[0]->bkcd,
+//                'bcnm' => $res[0]->bcnm,
+//                'brcd' => $res[0]->brcd,
+//                'acid' => $lstid,
+//                'dfst' => 0
+//            );
+            echo json_encode($data);
+        }
+    }
+//END NEW SUPPLIER BANK ACCOUNT </JANAKA 2019-09-20>
+
+//SUPPLIER UPDATE || APPROVE </JANAKA 2019-09-23>
+    function supp_update(){
+        $func = $this->input->post('func');
+        $spid = $this->input->post('spid');
+
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $df = $this->input->post('dfstRd[]');
+        $acc = $this->input->post('acnoList[]');
+
+        //accounts updates
+        $this->Generic_model->updateData('sup_bnk_acc',array('stat'=>0,'dfst'=>0),array('spid'=>$spid));
+        for($it=0;$it<sizeof($acc);$it++){
+            if($acc[$it]==$df[0]){
+                $def = 1;
+            }else{
+                $def = 0;
+            }
+            $this->Generic_model->updateData('sup_bnk_acc',array(
+                'stat'=>1,
+                'dfst'=>$def),array('acid'=>$acc[$it]));
+        }
+
+        //Creating customer next number
+        $this->db->select("spcd");
+        $this->db->from('supp_mas');
+        $this->db->order_by('spcd', 'DESC');
+        $this->db->where("stat NOT IN(0,2)");
+        $this->db->limit(1);
+        $res = $this->db->get()->result();
+        if (sizeof($res) > 0) {
+            $number = explode('-', $res[0]->spcd);
+            $aa = intval($number[1]) + 1;
+            $cc = strlen($aa);
+
+            if ($cc == 1) {
+                $xx = '000' . $aa;
+            } else if ($cc == 2) {
+                $xx = '00' . $aa;
+            } else if ($cc == 3) {
+                $xx = '0' . $aa;
+            } else if ($cc == 4) {
+                $xx = $aa;
+            }
+            $supcd = "S-" . $xx;
+        } else {
+            $supcd = "S-0001";
+        }
+
+        if($func=='edit'){
+            //Updating supplier details
+            $this->Generic_model->updateData('supp_mas', array(
+                'spnm' => $this->input->post('name_edt'),
+                'addr' => $this->input->post('addr_edt'),
+                'mbno' => $this->input->post('mobi_edt'),
+                'tele' => $this->input->post('tele_edt'),
+                'email' => $this->input->post('email_edt'),
+                'dscr' => $this->input->post('remk_edt'),
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ),array('spid'=>$spid));
+        }else if($func=='app'){
+            //Updating supplier details
+            $this->Generic_model->updateData('supp_mas', array(
+                'spcd' => $supcd,
+                'spnm' => $this->input->post('name_edt'),
+                'addr' => $this->input->post('addr_edt'),
+                'mbno' => $this->input->post('mobi_edt'),
+                'tele' => $this->input->post('tele_edt'),
+                'email' => $this->input->post('email_edt'),
+                'dscr' => $this->input->post('remk_edt'),
+                'stat' => 1,
+                'apby' => $_SESSION['userId'],
+                'apdt' => date('Y-m-d H:i:s'),
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ),array('spid'=>$spid));
+        }
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
@@ -333,7 +411,70 @@ class Stock extends CI_Controller
             echo json_encode(true);
         }
     }
-//END NEW SUPPLIER BANK ACCOUNT </JANAKA 2019-09-20>
+//END SUPPLIER UPDATE || APPROVE </JANAKA 2019-09-23>
+
+//REJECT SUPPLIER </JANAKA 2019-09-23>
+function supp_Reject(){
+    $this->db->trans_begin(); // SQL TRANSACTION START
+
+    $spid = $this->input->post('id');
+    $this->Generic_model->updateData('supp_mas',array(
+        'stat' => 2,
+        'rjby' => $_SESSION['userId'],
+        'rjdt' => date('Y-m-d H:i:s')
+    ),array('spid'=>$spid));
+
+    if ($this->db->trans_status() === FALSE) {
+        $this->db->trans_rollback();
+        echo json_encode(false);
+    } else {
+        $this->db->trans_commit(); // SQL TRANSACTION END
+        echo json_encode(true);
+    }
+}
+//END REJECT SUPPLIER </JANAKA 2019-09-23>
+
+//DEACTIVATE SUPPLIER </JANAKA 2019-09-23>
+function supp_Deactive(){
+    $this->db->trans_begin(); // SQL TRANSACTION START
+
+    $spid = $this->input->post('id');
+    $this->Generic_model->updateData('supp_mas',array(
+        'stat' => 3,
+        'mdby' => $_SESSION['userId'],
+        'mddt' => date('Y-m-d H:i:s')
+    ),array('spid'=>$spid));
+
+    if ($this->db->trans_status() === FALSE) {
+        $this->db->trans_rollback();
+        echo json_encode(false);
+    } else {
+        $this->db->trans_commit(); // SQL TRANSACTION END
+        echo json_encode(true);
+    }
+}
+//END DEACTIVATE SUPPLIER </JANAKA 2019-09-23>
+
+//ACTIVATE SUPPLIER </JANAKA 2019-09-23>
+function supp_Activate(){
+    $this->db->trans_begin(); // SQL TRANSACTION START
+
+    $spid = $this->input->post('id');
+    $this->Generic_model->updateData('supp_mas',array(
+        'stat' => 1,
+        'mdby' => $_SESSION['userId'],
+        'mddt' => date('Y-m-d H:i:s')
+    ),array('spid'=>$spid));
+
+    if ($this->db->trans_status() === FALSE) {
+        $this->db->trans_rollback();
+        echo json_encode(false);
+    } else {
+        $this->db->trans_commit(); // SQL TRANSACTION END
+        echo json_encode(true);
+    }
+}
+//END ACTIVATE SUPPLIER </JANAKA 2019-09-23>
 //************************************************
 //***       END SUPPLIER REGISTRATION          ***
 //************************************************
