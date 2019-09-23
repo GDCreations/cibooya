@@ -802,7 +802,7 @@ class Generic_model extends CI_Model
                 $this->db->order_by("brnm", "asc");
                 $query = $this->db->get();
 
-                $result[0] = array('brch_id' => '0', 'brch_name' => '--Select Branch--');
+                $result[0] = array('brch_id' => '0', 'brch_name' => '-- Select Branch --');
                 $result[1] = array('brch_id' => 'all', 'brch_name' => 'All Branches');
                 $i = 2;
                 foreach ($query->result() as $branch) {
