@@ -72,11 +72,16 @@
                     <?php $Settings_title = false; }
                         //MAIN TITLE
                         if($Settings_title){
-
+                            ?>
+                            <script>
+                                $('#Settings_title').css('display','none');
+                            </script>
+                            <?php
                         }
                     ?>
                     <li class="title" id="Stock_title">STOCK</li>
                     <?php
+                    $Stock_title = true;
                     if(in_array('sup_mng',$permMdul,TRUE)){?>
                     <li id="sup_mng">
                         <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
@@ -92,7 +97,16 @@
                             </li>
                         </ul>
                     </li>
-                    <?php }?>
+                    <?php $Stock_title = false; }
+                    //MAIN TITLE
+                        if($Stock_title){
+                        ?>
+                        <script>
+                            $('#Stock_title').css('display','none');
+                        </script>
+                        <?php
+                    }
+                    ?>
                 </ul>
             </nav>
         </div>
