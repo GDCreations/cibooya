@@ -17,3 +17,21 @@ function clear_Form(form) {
         node2.prev().children().first().html(selected); //set selected value as <li> element
     });
 }
+
+function default_Selector(node) {
+    node.children().children().removeClass('selected'); //remove selected classes
+    node.children().children().first().addClass('selected'); //add selected class
+    var selected = node.children().children().first().children().children().first().html(); //get selected valus
+    node.prev().prop('title',selected); //set selected value as title
+    node.prev().children().first().html(selected); //set selected value as <li> element
+}
+
+//Selectors Red Indicating
+function chckBtn(id, inpu) {
+    if (id == 0) {
+        $('#'+inpu).parent().css('border','1px solid red');
+        $('#'+inpu).parent().css('border-radius','4px');
+    } else {
+        $('#'+inpu).parent().css('border','0px');
+    }
+}
