@@ -168,7 +168,7 @@ class Admin extends CI_Controller
     public function rcntAct()
     {
         $data['acm'] = ''; //Module
-        $data['acp'] = 'policyMng'; //Page
+        $data['acp'] = 'rcntAct'; //Page
 
         $this->load->view('common/tmpHeader');
         $this->load->view('admin/common/adminHeader');

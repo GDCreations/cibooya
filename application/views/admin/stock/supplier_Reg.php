@@ -135,7 +135,8 @@
                                         <label class="col-md-4 col-xs-12 control-label">Bank Name <span
                                                     class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <select id="bnknm" name="bnknm" onchange="getbankbrch(this.value,'bnkbr','bnkbr_cont')"
+                                            <select id="bnknm" name="bnknm"
+                                                    onchange="getbankbrch(this.value,'bnkbr','bnkbr_cont')"
                                                     class="bs-select">
                                                 <option value="0">-- Select A Bank --</option>
                                                 <?php
@@ -500,7 +501,7 @@
             dataType: 'json',
             success: function (response) {
                 var len = response['bkbrch'].length;
-                var child1 = $('#'+mhtml).children();
+                var child1 = $('#' + mhtml).children();
                 var child2 = child1.find('div').children();
                 child2.empty();
                 // TABLE SEARCH FILTER
@@ -614,7 +615,7 @@
     }
 
     //View Supplier
-    function viewSupp(id,func) {
+    function viewSupp(id, func) {
         swal({
             title: "Loading Data...",
             text: "Supplier's Details",
@@ -632,10 +633,10 @@
             },
             dataType: 'json',
             success: function (data) {
-                if(func=='view'){
+                if (func == 'view') {
                     //VIEW MODEL
                     $('#subTitle_edit').html(' - View');
-                    $('#app_sup_btn').css('display','none');
+                    $('#app_sup_btn').css('display', 'none');
                     $("#modal-view").find('.edit_req').css("display", "none");
                     $("#edit_Area").css('display', 'none');
                     $("#view_Area").css('display', 'block');
@@ -645,10 +646,10 @@
                     $("#modal-view").find('.bootstrap-select').children().addClass("disabled dropup");
                     var des = "disabled";
                     //VIEW MODEL
-                }else if(func=='edit'){
+                } else if (func == 'edit') {
                     //EDIT MODEL
                     $('#subTitle_edit').html(' - Edit');
-                    $('#app_sup_btn').css('display','inline');
+                    $('#app_sup_btn').css('display', 'inline');
                     $('#app_sup_btn').html('Update');
                     $("#modal-view").find('.edit_req').css("display", "inline");
                     $("#edit_Area").css('display', 'block');
@@ -659,10 +660,10 @@
                     $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
                     var des = "";
                     //EDIT MODEL
-                }else if(func=='app'){
+                } else if (func == 'app') {
                     //APPROVE MODEL
                     $('#subTitle_edit').html(' - Approve');
-                    $('#app_sup_btn').css('display','inline');
+                    $('#app_sup_btn').css('display', 'inline');
                     $('#app_sup_btn').html('Approve');
                     $("#modal-view").find('.edit_req').css("display", "inline");
                     $("#edit_Area").css('display', 'block');
@@ -686,14 +687,14 @@
                     $('#email_edt').val(spdet[0]['email']);
                     $('#remk_edt').val(spdet[0]['dscr']);
 
-                    $('#crby').html(": "+spdet[0]['crnm']);
-                    $('#crdt').html(": "+spdet[0]['crdt']);
-                    $('#apby').html(": "+((spdet[0]['apnm']!=null)?spdet[0]['apnm']:"--"));
-                    $('#apdt').html(": "+((spdet[0]['apdt']!=null && spdet[0]['apdt']!="0000-00-00 00:00:00")?spdet[0]['apdt']:"--"));
-                    $('#rjby').html(": "+((spdet[0]['rjnm']!=null)?spdet[0]['rjnm']:"--"));
-                    $('#rjdt').html(": "+((spdet[0]['rjdt']!=null && spdet[0]['rjdt']!="0000-00-00 00:00:00")?spdet[0]['rjdt']:"--"));
-                    $('#mdby').html(": "+((spdet[0]['mdnm']!=null)?spdet[0]['mdnm']:"--"));
-                    $('#mddt').html(": "+((spdet[0]['mddt']!=null && spdet[0]['mddt']!="0000-00-00 00:00:00")?spdet[0]['mddt']:"--"));
+                    $('#crby').html(": " + spdet[0]['crnm']);
+                    $('#crdt').html(": " + spdet[0]['crdt']);
+                    $('#apby').html(": " + ((spdet[0]['apnm'] != null) ? spdet[0]['apnm'] : "--"));
+                    $('#apdt').html(": " + ((spdet[0]['apdt'] != null && spdet[0]['apdt'] != "0000-00-00 00:00:00") ? spdet[0]['apdt'] : "--"));
+                    $('#rjby').html(": " + ((spdet[0]['rjnm'] != null) ? spdet[0]['rjnm'] : "--"));
+                    $('#rjdt').html(": " + ((spdet[0]['rjdt'] != null && spdet[0]['rjdt'] != "0000-00-00 00:00:00") ? spdet[0]['rjdt'] : "--"));
+                    $('#mdby').html(": " + ((spdet[0]['mdnm'] != null) ? spdet[0]['mdnm'] : "--"));
+                    $('#mddt').html(": " + ((spdet[0]['mddt'] != null && spdet[0]['mddt'] != "0000-00-00 00:00:00") ? spdet[0]['mddt'] : "--"));
                 }
 
                 if (len2 > 0) {
@@ -729,7 +730,7 @@
                         var bnknm = bkdet[ii]['bkcd'] + " - " + bkdet[ii]['bknm'];
                         var brnm = bkdet[ii]['brcd'] + " - " + bkdet[ii]['bcnm'];
                         var acc = dfst + bkdet[ii]['acno'];
-                        var opt = "<button "+des+" class='btn btn-xs btn-warning btn-rounded' title='Remove'><span class='fa fa-close'></span></button>";
+                        var opt = "<button " + des + " class='btn btn-xs btn-warning btn-rounded' title='Remove'><span class='fa fa-close'></span></button>";
                         t1.row.add([
                             // (ii+1),
                             bnknm,

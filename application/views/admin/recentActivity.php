@@ -61,7 +61,7 @@
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">To Date</label>
                     <div class="col-md-8 col-xs-12">
-                        <input type="text" class="form-control bs-datepicker" name="todt" id="todt"
+                        <input type="text" class="form-control datepicker" name="todt" id="todt"
                                value="<?= date('m-d-Y') ?>"/>
                     </div>
                 </div>
@@ -190,9 +190,9 @@
                 "serverSide": true,
                 "columnDefs": [
 
-                    {className: "text-left", "targets": [1, 2]},
+                    {className: "text-left", "targets": [1, 2,3]},
                     {className: "text-center", "targets": [0, 4]},
-                    {className: "text-right", "targets": [3]},
+                    {className: "text-right", "targets": []},
                     {className: "text-nowrap", "targets": [0]},
 
                     //  image add this function
@@ -268,7 +268,7 @@
                     {sWidth: '5%'},
                     {sWidth: '10%'},
                     {sWidth: '30%'}, // name
-                    {sWidth: '18%'},
+                    {sWidth: '25%'},
                     {sWidth: '10%'}
                 ],
                 "ajax": {
