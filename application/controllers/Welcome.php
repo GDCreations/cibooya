@@ -67,7 +67,6 @@ class Welcome extends CI_Controller
         $_SESSION['userId'] ='';
         $data['sysinfo'] = $this->Generic_model->getData('com_det', array('cmne', 'synm', 'cplg', 'syvr'), array('stat' => 1));
         $this->load->view('common/lock_screen', $data);
-
     }
 
 

@@ -47,8 +47,13 @@ class Login extends CI_Controller
     {
         $username = $this->input->post('lognm');
         $password = $this->input->post('logps');
-        $digeye = $this->input->post('logcd');
 
+        $pol = $this->Generic_model->getData('sys_policy',array('post'),array('poid'=>1));
+        if(sizeof($pol)>0 && $pol[0]->post==1){
+            $digeye = $this->input->post('logcd');
+        }else{
+            $digeye = '';
+        }
         $result = $this->login_model->loginMe($username, $password);
 
         $ipp = $_SERVER['REMOTE_ADDR'];
@@ -192,7 +197,7 @@ class Login extends CI_Controller
                     }
 
                 } else {
-                    if ($result[0]->lgcd == $digeye) {
+                    if ($result[0]->lgcd == $digeye || $pol[0]->post==0) {
                         //restric day end locked users 2018-11-13
                         if ($result[0]->delc == 1) {
                              redirect('/welcome?message=Delock');

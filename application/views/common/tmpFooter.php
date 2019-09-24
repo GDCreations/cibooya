@@ -1,7 +1,6 @@
 <?php
 $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('stat' => 1));
 ?>
-
 </div>
 <!-- END APP CONTENT -->
 </div>
@@ -19,7 +18,9 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
 </div>
 <!-- END APP FOOTER -->
 
-
+<!-- APP OVERLAY -->
+<div class="app-overlay"></div>
+<!-- END APP OVERLAY -->
 </div>
 <!-- END APP WRAPPER -->
 
