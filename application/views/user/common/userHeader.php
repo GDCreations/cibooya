@@ -1,5 +1,10 @@
 <!-- APP WRAPPER -->
 <div class="app">
+    <?php
+    clearstatcache();
+    // LOAD USER PERMISSION MODULE
+    $permMdul = $this->Generic_model->getPermisionModule();
+    ?>
     <!-- START APP CONTAINER -->
     <div class="app-container">
         <!-- START SIDEBAR -->
@@ -12,17 +17,23 @@
                             Dashboards </a></li>
 
                     <!--                    <li class="title">DEMONSTRATION</li>-->
-                    <li>
+                    <?php
+                    if(in_array('cus_mng',$permMdul,TRUE)){?>
+                    <li id="cus_mng">
                         <a href="#"><span class="nav-icon-hexa fa fa-users"></span> Customer Management</a>
                         <ul>
+                            <?php if (in_array("cus_reg", $permission, TRUE)) { ?>
                             <li>
-                                <a href="#"><span class="nav-icon-hexa fa fa-user"></span> Customer Registration</a>
+                                <a id="cus_reg" href="<?= base_url() ?>user/cus_reg"><span
+                                            class="nav-icon-hexa fa fa-user"></span> Customer Registration</a>
                             </li>
+                            <?php } ?>
                             <li>
                                 <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Customer's Banks </a>
                             </li>
                         </ul>
                     </li>
+                    <?php }?>
                 </ul>
             </nav>
         </div>
@@ -49,7 +60,8 @@
                     </li>
                     <li style="text-align: center; vertical-align: middle; padding: 7px 0px;">
                         <div class="hidden-xs">
-                            <span style="color: #0F9DEA"><img src="<?= base_url()?>assets/img/flags/lk.png" alt="Sri Lanka"
+                            <span style="color: #0F9DEA"><img src="<?= base_url() ?>assets/img/flags/lk.png"
+                                                              alt="Sri Lanka"
                                                               title="Sri Lanka" width="23"
                                                               height="23"/> Time : </span><span
                                     id="timecontainer2"></span>
@@ -168,9 +180,14 @@
                                 <button type="button" class="btn btn-default btn-icon" data-toggle="dropdown"><span
                                             class="icon-power-switch"></span></button>
                                 <ul class="dropdown-menu dropdown-left">
-                                    <li><a href="<?= base_url(); ?>admin"><span class="icon-users"></span> Master
-                                            Setting</a></li>
+                                    <?php $spst = $this->Generic_model->getSpecStting('msve');
+                                    if ($_SESSION['role'] == 1 || $_SESSION['role'] == $spst) { ?>
+                                        <li><a href="<?= base_url(); ?>admin"><span class="icon-users"></span> Master
+                                                Setting</a></li>
                                     <li class="divider"></li>
+                                        <?php
+                                    }
+                                    ?>
                                     <li><a href=""><span class="icon-user"></span>Your Profile</a></li>
                                     <li><a href="<?= base_url(); ?>welcome/lockScren"><span class="icon-lock"></span>
                                             Lock Screen</a></li>

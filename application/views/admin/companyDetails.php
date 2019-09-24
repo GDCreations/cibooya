@@ -90,82 +90,82 @@
         </form>
 
     </div>
-</div>
-<!-- END PAGE CONTAINER -->
 
-<script>
+    <script type="text/javascript">
 
-    $().ready(function () {
-        $('#brandingEdt').validate({
-            rules: {
-                cmne: {
-                    required: true
+        $().ready(function () {
+            $('#brandingEdt').validate({
+                rules: {
+                    cmne: {
+                        required: true
+                    },
+                    cadd: {
+                        required: true
+                    },
+                    ctel: {
+                        digits: true,
+                        minlength: 10,
+                        maxlength: 10,
+                    },
+                    ceml: {
+                        required: true,
+                        email: true
+                    },
+                    syln: {
+                        required: true,
+                    },
+                    synm: {
+                        required: true,
+                    },
                 },
-                cadd: {
-                    required: true
-                },
-                ctel: {
-                    digits: true,
-                    minlength: 10,
-                    maxlength: 10,
-                },
-                ceml: {
-                    required: true,
-                    email: true
-                },
-                syln: {
-                    required: true,
-                },
-                synm: {
-                    required: true,
-                },
-            },
-            messages: {
-                cmne: {
-                    required: "Enter supplier name"
-                },
-                addr: {
-                    required: "Enter supplier address"
-                },
-            }
-        });
-    });
-
-    //Add New Supplier
-    $('#save').click(function (e) {
-        e.preventDefault();
-        if ($('#brandingEdt').valid()) {
-
-            $('#save').prop('disabled', true);
-
-            swal({
-                title: "Processing...",
-                text: "Branding data saving..",
-                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                showConfirmButton: false
-            });
-
-            jQuery.ajax({
-                type: "POST",
-                url: "<?= base_url(); ?>admin/updateBranding",
-                data: $("#brandingEdt").serialize(),
-                dataType: 'json',
-                success: function (data) {
-                    swal({title: "", text: "Update Success!", type: "success"},
-                        function () {
-                            $('#save').prop('disabled', false);
-                            clear_Form('brandingEdt');
-                            $('#modal-add').modal('hide');
-                        });
-                },
-                error: function (data, textStatus) {
-                    swal({title: "Update Failed", text: textStatus, type: "error"},
-                        function () {
-                            location.reload();
-                        });
+                messages: {
+                    cmne: {
+                        required: "Enter supplier name"
+                    },
+                    addr: {
+                        required: "Enter supplier address"
+                    },
                 }
             });
-        }
-    });
+        });
 
-</script>
+        //Add New Supplier
+        $('#save').click(function (e) {
+            e.preventDefault();
+            if ($('#brandingEdt').valid()) {
+
+                $('#save').prop('disabled', true);
+
+                swal({
+                    title: "Processing...",
+                    text: "Branding data saving..",
+                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                    showConfirmButton: false
+                });
+
+                jQuery.ajax({
+                    type: "POST",
+                    url: "<?= base_url(); ?>admin/updateBranding",
+                    data: $("#brandingEdt").serialize(),
+                    dataType: 'json',
+                    success: function (data) {
+                        swal({title: "", text: "Update Success!", type: "success"},
+                            function () {
+                                $('#save').prop('disabled', false);
+                                clear_Form('brandingEdt');
+                                $('#modal-add').modal('hide');
+                            });
+                    },
+                    error: function (data, textStatus) {
+                        swal({title: "Update Failed", text: textStatus, type: "error"},
+                            function () {
+                                location.reload();
+                            });
+                    }
+                });
+            }
+        });
+
+    </script>
+</div>
+<!-- END PAGE CONTAINER -->

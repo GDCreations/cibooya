@@ -111,96 +111,96 @@
         </form>
 
     </div>
-</div>
-<!-- END PAGE CONTAINER -->
 
-<script>
+    <script type="text/javascript">
 
-    $().ready(function () {
-        $('#policyUpdate').validate({
-            rules: {
-                eycd: {
-                    required: true,
-                    digits: true,
-                    minlength: 6,
-                    maxlength: 6
+        $().ready(function () {
+            $('#policyUpdate').validate({
+                rules: {
+                    eycd: {
+                        required: true,
+                        digits: true,
+                        minlength: 6,
+                        maxlength: 6
+                    },
+                    cadd: {
+                        required: true
+                    },
+                    ctel: {
+                        digits: true,
+                        minlength: 10,
+                        maxlength: 10,
+                    },
+                    ceml: {
+                        required: true,
+                        email: true
+                    },
+                    syln: {
+                        required: true,
+                    },
+                    synm: {
+                        required: true,
+                    },
                 },
-                cadd: {
-                    required: true
-                },
-                ctel: {
-                    digits: true,
-                    minlength: 10,
-                    maxlength: 10,
-                },
-                ceml: {
-                    required: true,
-                    email: true
-                },
-                syln: {
-                    required: true,
-                },
-                synm: {
-                    required: true,
-                },
-            },
-            messages: {
-                eycd: {
-                    required: "Enter Digital Eye Code"
-                },
-                addr: {
-                    required: "Enter supplier address"
-                },
-            }
-        });
-    });
-
-    // DIGITAL EYE ENABLE DISABLE
-    function eyeMd() {
-        if ($('[name="digey"]').is(':checked')) {
-            document.getElementById("eyeCde").style.display = "block";
-        } else {
-            document.getElementById("eyeCde").style.display = "none";
-        }
-    }
-
-
-    //Add New Supplier
-    $('#save').click(function (e) {
-        e.preventDefault();
-        if ($('#policyUpdate').valid()) {
-
-            $('#save').prop('disabled', true);
-
-            swal({
-                title: "Processing...",
-                text: "Policy Updating..",
-                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                showConfirmButton: false
-            });
-
-            jQuery.ajax({
-                type: "POST",
-                url: "<?= base_url(); ?>admin/updatePolicy",
-                data: $("#policyUpdate").serialize(),
-                dataType: 'json',
-                success: function (data) {
-                    swal({title: "", text: "Update Success!", type: "success"},
-                        function () {
-                            location.reload();
-                            /*$('#save').prop('disabled', false);
-                            clear_Form('brandingEdt');
-                            $('#modal-add').modal('hide');*/
-                        });
-                },
-                error: function (data, textStatus) {
-                    swal({title: "Update Failed", text: textStatus, type: "error"},
-                        function () {
-                            location.reload();
-                        });
+                messages: {
+                    eycd: {
+                        required: "Enter Digital Eye Code"
+                    },
+                    addr: {
+                        required: "Enter supplier address"
+                    },
                 }
             });
-        }
-    });
+        });
 
-</script>
+        // DIGITAL EYE ENABLE DISABLE
+        function eyeMd() {
+            if ($('[name="digey"]').is(':checked')) {
+                document.getElementById("eyeCde").style.display = "block";
+            } else {
+                document.getElementById("eyeCde").style.display = "none";
+            }
+        }
+
+
+        //Add New Supplier
+        $('#save').click(function (e) {
+            e.preventDefault();
+            if ($('#policyUpdate').valid()) {
+
+                $('#save').prop('disabled', true);
+
+                swal({
+                    title: "Processing...",
+                    text: "Policy Updating..",
+                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                    showConfirmButton: false
+                });
+
+                jQuery.ajax({
+                    type: "POST",
+                    url: "<?= base_url(); ?>admin/updatePolicy",
+                    data: $("#policyUpdate").serialize(),
+                    dataType: 'json',
+                    success: function (data) {
+                        swal({title: "", text: "Update Success!", type: "success"},
+                            function () {
+                                location.reload();
+                                /*$('#save').prop('disabled', false);
+                                clear_Form('brandingEdt');
+                                $('#modal-add').modal('hide');*/
+                            });
+                    },
+                    error: function (data, textStatus) {
+                        swal({title: "Update Failed", text: textStatus, type: "error"},
+                            function () {
+                                location.reload();
+                            });
+                    }
+                });
+            }
+        });
+
+    </script>
+</div>
+<!-- END PAGE CONTAINER -->

@@ -49,10 +49,12 @@ class Stock extends CI_Controller
     {
         $data['acm'] = 'sup_mng'; //Module
         $data['acp'] = 'sup_reg'; //Page
-        $data2['bank'] = $this->Generic_model->getSortData('bank', '', array('stat' => 1), '', '', 'bkcd', 'ASC');
         $this->load->view('common/tmpHeader');
-        $this->load->view('admin/common/adminHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
 
+        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('sup_reg');
+        $data2['bank'] = $this->Generic_model->getSortData('bank', '', array('stat' => 1), '', '', 'bkcd', 'ASC');
         $this->load->view('admin/stock/supplier_Reg', $data2);
 
         $this->load->view('common/tmpFooter', $data);
@@ -167,6 +169,9 @@ class Stock extends CI_Controller
             'stat' => 1,
         ));
 
+        $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Added ($lstId)");
+
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
             echo json_encode(false);
@@ -180,18 +185,38 @@ class Stock extends CI_Controller
 //SEARCH SUPPLIER </JANAKA 2019-09-19>
     function searchSupp()
     {
-//        $funcPerm = $this->Generic_model->getFuncPermision('grnt_upgrd');
-//
-//        if ($funcPerm[0]->view == 1) {
-//            $viw = "";
-//        } else {
-//            $viw = "disabled";
-//        }
-//        if ($funcPerm[0]->reac == 1) {
-//            $reac = "";
-//        } else {
-//            $reac = "disabled";
-//        }
+        $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edit = "";
+        } else {
+            $edit = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rejt = "";
+        } else {
+            $rejt = "disabled";
+        }
+        if ($funcPerm[0]->dact == 1) {
+            $dac = "";
+        } else {
+            $dac = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
 
         $result = $this->Stock_model->get_suppDtils();
         $data = array();
@@ -200,27 +225,27 @@ class Stock extends CI_Controller
         foreach ($result as $row) {
             if ($row->stat == 0) {
                 $stat = "<label class='label label-warning'>Pending</label>";
-                $option = "<button type='button' id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='app' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
-                    "<button type='button' onclick='rejectSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' $rejt onclick='rejectSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             } else if ($row->stat == 1) {
                 $stat = "<label class='label label-success'>Active</label>";
-                $option = "<button type='button' id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' onclick='inactSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+                    "<button type='button' $dac onclick='inactSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
             } else if ($row->stat == 2) {
                 $stat = "<label class='label label-danger'>Reject</label>";
-                $option = "<button type='button' id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             } else if ($row->stat == 3) {
-                $stat = "<label class='label label-info'>Inactive</label>";
-                $option = "<button type='button' id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                $stat = "<label class='label label-indi'>Inactive</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' onclick='reactSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' $reac onclick='reactSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
             } else {
                 $stat = "--";
@@ -288,7 +313,7 @@ class Stock extends CI_Controller
         $bkbr = $this->input->post('bkbr');
         $acc = $this->input->post('acc');
 
-        $this->Generic_model->insertData('sup_bnk_acc',array(
+        $this->Generic_model->insertData('sup_bnk_acc', array(
             'spid' => $spid,
             'bnid' => $bknm,
             'brid' => $bkbr,
@@ -297,6 +322,9 @@ class Stock extends CI_Controller
             'stat' => 1
         ));
         $lstid = $this->db->insert_id();
+
+        $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier's Bank Account Added ($lstid)");
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
@@ -310,22 +338,14 @@ class Stock extends CI_Controller
             $this->db->join('bank_brch', 'bank_brch.brid=bnk.brid');
             $this->db->where("bnk.stat=1 AND spid=$spid");
             $data['accDet'] = $this->db->get()->result();
-
-//            $data['accDet'] = array(
-//                'bknm' => $res[0]->bknm,
-//                'bkcd' => $res[0]->bkcd,
-//                'bcnm' => $res[0]->bcnm,
-//                'brcd' => $res[0]->brcd,
-//                'acid' => $lstid,
-//                'dfst' => 0
-//            );
             echo json_encode($data);
         }
     }
 //END NEW SUPPLIER BANK ACCOUNT </JANAKA 2019-09-20>
 
 //SUPPLIER UPDATE || APPROVE </JANAKA 2019-09-23>
-    function supp_update(){
+    function supp_update()
+    {
         $func = $this->input->post('func');
         $spid = $this->input->post('spid');
 
@@ -335,16 +355,16 @@ class Stock extends CI_Controller
         $acc = $this->input->post('acnoList[]');
 
         //accounts updates
-        $this->Generic_model->updateData('sup_bnk_acc',array('stat'=>0,'dfst'=>0),array('spid'=>$spid));
-        for($it=0;$it<sizeof($acc);$it++){
-            if($acc[$it]==$df[0]){
+        $this->Generic_model->updateData('sup_bnk_acc', array('stat' => 0, 'dfst' => 0), array('spid' => $spid));
+        for ($it = 0; $it < sizeof($acc); $it++) {
+            if ($acc[$it] == $df[0]) {
                 $def = 1;
-            }else{
+            } else {
                 $def = 0;
             }
-            $this->Generic_model->updateData('sup_bnk_acc',array(
-                'stat'=>1,
-                'dfst'=>$def),array('acid'=>$acc[$it]));
+            $this->Generic_model->updateData('sup_bnk_acc', array(
+                'stat' => 1,
+                'dfst' => $def), array('acid' => $acc[$it]));
         }
 
         //Creating customer next number
@@ -373,7 +393,7 @@ class Stock extends CI_Controller
             $supcd = "S-0001";
         }
 
-        if($func=='edit'){
+        if ($func == 'edit') {
             //Updating supplier details
             $this->Generic_model->updateData('supp_mas', array(
                 'spnm' => $this->input->post('name_edt'),
@@ -384,8 +404,12 @@ class Stock extends CI_Controller
                 'dscr' => $this->input->post('remk_edt'),
                 'mdby' => $_SESSION['userId'],
                 'mddt' => date('Y-m-d H:i:s'),
-            ),array('spid'=>$spid));
-        }else if($func=='app'){
+            ), array('spid' => $spid));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier's Details Updated ($spid)");
+
+        } else if ($func == 'app') {
             //Updating supplier details
             $this->Generic_model->updateData('supp_mas', array(
                 'spcd' => $supcd,
@@ -400,7 +424,10 @@ class Stock extends CI_Controller
                 'apdt' => date('Y-m-d H:i:s'),
                 'mdby' => $_SESSION['userId'],
                 'mddt' => date('Y-m-d H:i:s'),
-            ),array('spid'=>$spid));
+            ), array('spid' => $spid));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Approved ($spid)");
         }
 
         if ($this->db->trans_status() === FALSE) {
@@ -414,66 +441,78 @@ class Stock extends CI_Controller
 //END SUPPLIER UPDATE || APPROVE </JANAKA 2019-09-23>
 
 //REJECT SUPPLIER </JANAKA 2019-09-23>
-function supp_Reject(){
-    $this->db->trans_begin(); // SQL TRANSACTION START
+    function supp_Reject()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
 
-    $spid = $this->input->post('id');
-    $this->Generic_model->updateData('supp_mas',array(
-        'stat' => 2,
-        'rjby' => $_SESSION['userId'],
-        'rjdt' => date('Y-m-d H:i:s')
-    ),array('spid'=>$spid));
+        $spid = $this->input->post('id');
+        $this->Generic_model->updateData('supp_mas', array(
+            'stat' => 2,
+            'rjby' => $_SESSION['userId'],
+            'rjdt' => date('Y-m-d H:i:s')
+        ), array('spid' => $spid));
 
-    if ($this->db->trans_status() === FALSE) {
-        $this->db->trans_rollback();
-        echo json_encode(false);
-    } else {
-        $this->db->trans_commit(); // SQL TRANSACTION END
-        echo json_encode(true);
+        $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Rejected ($spid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
     }
-}
 //END REJECT SUPPLIER </JANAKA 2019-09-23>
 
 //DEACTIVATE SUPPLIER </JANAKA 2019-09-23>
-function supp_Deactive(){
-    $this->db->trans_begin(); // SQL TRANSACTION START
+    function supp_Deactive()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
 
-    $spid = $this->input->post('id');
-    $this->Generic_model->updateData('supp_mas',array(
-        'stat' => 3,
-        'mdby' => $_SESSION['userId'],
-        'mddt' => date('Y-m-d H:i:s')
-    ),array('spid'=>$spid));
+        $spid = $this->input->post('id');
+        $this->Generic_model->updateData('supp_mas', array(
+            'stat' => 3,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('spid' => $spid));
 
-    if ($this->db->trans_status() === FALSE) {
-        $this->db->trans_rollback();
-        echo json_encode(false);
-    } else {
-        $this->db->trans_commit(); // SQL TRANSACTION END
-        echo json_encode(true);
+        $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Deactivated ($spid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
     }
-}
 //END DEACTIVATE SUPPLIER </JANAKA 2019-09-23>
 
 //ACTIVATE SUPPLIER </JANAKA 2019-09-23>
-function supp_Activate(){
-    $this->db->trans_begin(); // SQL TRANSACTION START
+    function supp_Activate()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
 
-    $spid = $this->input->post('id');
-    $this->Generic_model->updateData('supp_mas',array(
-        'stat' => 1,
-        'mdby' => $_SESSION['userId'],
-        'mddt' => date('Y-m-d H:i:s')
-    ),array('spid'=>$spid));
+        $spid = $this->input->post('id');
+        $this->Generic_model->updateData('supp_mas', array(
+            'stat' => 1,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('spid' => $spid));
 
-    if ($this->db->trans_status() === FALSE) {
-        $this->db->trans_rollback();
-        echo json_encode(false);
-    } else {
-        $this->db->trans_commit(); // SQL TRANSACTION END
-        echo json_encode(true);
+        $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Reactivated ($spid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
     }
-}
 //END ACTIVATE SUPPLIER </JANAKA 2019-09-23>
 //************************************************
 //***       END SUPPLIER REGISTRATION          ***
