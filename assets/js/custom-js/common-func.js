@@ -25,3 +25,13 @@ function default_Selector(node) {
     node.prev().prop('title',selected); //set selected value as title
     node.prev().children().first().html(selected); //set selected value as <li> element
 }
+
+//Selectors Red Indicating
+function chckBtn(id, inpu) {
+    if (id == 0) {
+        $('#'+inpu).parent().css('border','1px solid red');
+        $('#'+inpu).parent().css('border-radius','4px');
+    } else {
+        $('#'+inpu).parent().css('border','0px');
+    }
+}

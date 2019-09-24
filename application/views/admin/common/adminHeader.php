@@ -26,6 +26,26 @@
 
                         </ul>
                     </li>
+                    <li class="title">Settings</li>
+                    <li id="adv_stts">
+                        <a href="#"><span class="nav-icon-hexa fa fa-cogs"></span> Advance Settings</a>
+                        <ul>
+                            <li>
+                                <a id="permis" href="<?= base_url() ?>Admin/permis"><span
+                                            class="nav-icon-hexa fa fa-check-square-o"></span> Permission Management</a>
+                            </li>
+                        </ul>
+                        <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> System Settings</a>
+                        <ul>
+                            <li>
+                                <a id="" href="<?= base_url() ?>"><span
+                                            class="nav-icon-hexa fa fa-th-large"></span> Category Management</a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="nav-icon-hexa fa fa-anchor"></span> Brand Management </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="title">STOCK</li>
                     <li id="sup_mng">
                         <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
@@ -65,7 +85,8 @@
                     </li>
                     <li style="text-align: center; vertical-align: middle; padding: 7px 0px;">
                         <div class="hidden-xs">
-                            <span style="color: #0F9DEA"><img src="<?= base_url()?>assets/img/flags/lk.png" alt="Sri Lanka"
+                            <span style="color: #0F9DEA"><img src="<?= base_url() ?>assets/img/flags/lk.png"
+                                                              alt="Sri Lanka"
                                                               title="Sri Lanka" width="23"
                                                               height="23"/> Time : </span><span
                                     id="timecontainer2"></span>
