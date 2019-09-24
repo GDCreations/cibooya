@@ -1311,7 +1311,7 @@ class Generic_model extends CI_Model
                         "prnt" => '1',
                         "rpnt" => '1',
                         "reac" => '1',
-                        //"cqrp" => '1',
+                        "dact" => '1',
                         //   "inst" => '1',
                         //   "inst" => '1',
                     )
