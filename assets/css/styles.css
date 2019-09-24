@@ -23104,7 +23104,7 @@ body .row > div[class^='col-'] {
 }
 .app-navigation.app-navigation-style-default nav > ul > li.title {
   font-size: 11px;
-  color: #55698A;
+  color: #f69f00; /*#55698A;*/
   text-shadow: 1px 2px rgba(0, 0, 0, 0.2);
 }
 .app-navigation.app-navigation-style-default.app-navigation-minimized .app-navigation-logo {
@@ -23601,7 +23601,7 @@ body .row > div[class^='col-'] {
   padding-left: 45px;
 }
 .app-navigation nav > ul > li.title {
-  line-height: 30px;
+  line-height: 10px; /*30px;*/
   padding: 20px 0px 10px 15px;
 }
 .app-navigation.app-navigation-custom nav {
