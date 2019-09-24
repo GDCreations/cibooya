@@ -172,21 +172,4 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
 
     // end system time show function
 
-    $('.bs-datepicker').datepicker({
-        format: 'yyyy-mm-dd',
-        //startDate: '+1d'
-    });
-
-    $(".bs-datepicker").change(function(){
-        // alert("The text has been changed.");
-        console.log(" dfdks kdjk d")
-    });
-
-    $(".bs-datepicker").click(function(){
-        // alert("The text has been changed.");
-        console.log(" 222323  kdjk d")
-    });
-
-
-
 </script>
