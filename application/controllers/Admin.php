@@ -50,7 +50,7 @@ class Admin extends CI_Controller
     }
 
     // BEGIN COMMON DATA LOADING
-// Get user data
+    // Get user data
     public function getUser()
     {
         $bid = $this->input->post('brid');
@@ -71,9 +71,7 @@ class Admin extends CI_Controller
         echo json_encode($query->result());
     }
 
-
     // END COMMON DATA LOADING
-
 
     // COMPANY BRANDING
     public function branding()
@@ -185,7 +183,7 @@ class Admin extends CI_Controller
         $this->load->view('common/tmpFooter', $data);
     }
 
-// Recent activity search
+    // Recent activity search
     function srchActivit()
     {
         $result = $this->Admin_model->get_recntDtils();
@@ -904,4 +902,156 @@ class Admin extends CI_Controller
     //*******************************************************
     //**********   END PERMISSION MANAGEMENT       **********
     //*******************************************************
+
+    // SYSTEM COMPONENT - BRANCH
+    public function sysBrnc()
+    {
+        $data['acm'] = 'sysCompnt'; //Module
+        $data['acp'] = 'sysBrnc'; //Page
+
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('sysBrnc');
+        $dataArr['policyinfo'] = $this->Generic_model->getData('sys_policy', '', '');
+
+        $this->load->view('admin/branchManagement', $dataArr);
+        $this->load->view('common/tmpFooter', $data);
+    }
+
+    //SEARCH BRANCH
+    function searchBranc()
+    {
+        $funcPerm = $this->Generic_model->getFuncPermision('sysBrnc');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edit = "";
+        } else {
+            $edit = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rejt = "";
+        } else {
+            $rejt = "disabled";
+        }
+        if ($funcPerm[0]->dact == 1) {
+            $dac = "";
+        } else {
+            $dac = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
+
+        $result = $this->Admin_model->get_brnDtils();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            $auid = $row->brid;
+
+            if ($row->stat == 0) {
+                $stat = "<label class='label label-warning'>Pending</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' $rejt onclick='rejectSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 1) {
+                $stat = "<label class='label label-success'>Active</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' $dac onclick='inactSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 2) {
+                $stat = "<label class='label label-danger'>Reject</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 3) {
+                $stat = "<label class='label label-indi'>Inactive</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $reac onclick='reactSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+            } else {
+                $stat = "--";
+                $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='editSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='approveSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='rejectSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->brcd;
+            $sub_arr[] = $row->brnm;
+            $sub_arr[] = $row->brad;
+            $sub_arr[] = $row->brmb;
+            $sub_arr[] = $row->usnm;
+            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Admin_model->count_all_brn(),
+            "recordsFiltered" => $this->Admin_model->count_filtered_brn(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+
+
+    // SYSTEM COMPONENT - USER MANAGEMENT
+    public function usrMng()
+    {
+        $data['acm'] = 'sysCompnt'; //Module
+        $data['acp'] = 'sysBrnc'; //Page
+
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('usrMng');
+        $dataArr['policyinfo'] = $this->Generic_model->getData('sys_policy', '', '');
+
+
+        //$this->load->view('admin/systmPolicy', $dataArr);
+        $this->load->view('common/tmpFooter', $data);
+    }
+
+    // SYSTEM COMPONENT - USER LEVEL
+    public function usrLvl()
+    {
+        $data['acm'] = 'sysCompnt'; //Module
+        $data['acp'] = 'sysBrnc'; //Page
+
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('usrLvl');
+        $dataArr['policyinfo'] = $this->Generic_model->getData('sys_policy', '', '');
+
+
+        //$this->load->view('admin/systmPolicy', $dataArr);
+        $this->load->view('common/tmpFooter', $data);
+    }
+
 }

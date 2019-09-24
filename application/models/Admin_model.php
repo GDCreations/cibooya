@@ -92,7 +92,76 @@ class Admin_model extends CI_Model
 
 //  End Recent activity
 
+//SEARCH BRANCH DETAILS
+    var $cl_srch8 = array('spcd', 'spnm', 'addr', 'mbno', 'tele', 'email'); //set column field database for datatable searchable
+    var $cl_odr8 = array(null, 'spcd', 'spnm', 'addr', 'mbno', 'user_mas.innm', 'crdt', 'stat', ''); //set column field database for datatable orderable
+    var $order8 = array('crdt' => 'DESC'); // default order
 
+    function brnDet_query()
+    {
+        $stat = $this->input->post('stat');
+
+        $this->db->select("brch_mas.*, user_mas.usnm ");
+        $this->db->from('brch_mas');
+        $this->db->join('user_mas', 'user_mas.auid=brch_mas.crby');
+        if ($stat != 'all') {
+            $this->db->where("brch_mas.stat", $stat);
+        }
+    }
+
+    private function brnDet_queryData()
+    {
+        $this->brnDet_query();
+        $i = 0;
+        foreach ($this->cl_srch8 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch8) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr8[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order8)) {
+            $order8 = $this->order8;
+            $this->db->order_by(key($order8), $order8[key($order8)]);
+        }
+    }
+
+    function get_brnDtils()
+    {
+        $this->brnDet_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_brn()
+    {
+        $this->brnDet_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_brn()
+    {
+        $this->brnDet_query();
+        return $this->db->count_all_results();
+    }
+    //END SEARCH BRANCH
 }
 
 ?>
