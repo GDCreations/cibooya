@@ -93,8 +93,8 @@ class Admin_model extends CI_Model
 //  End Recent activity
 
 //SEARCH BRANCH DETAILS
-    var $cl_srch8 = array('spcd', 'spnm', 'addr', 'mbno', 'tele', 'email'); //set column field database for datatable searchable
-    var $cl_odr8 = array(null, 'spcd', 'spnm', 'addr', 'mbno', 'user_mas.innm', 'crdt', 'stat', ''); //set column field database for datatable orderable
+    var $cl_srch8 = array('brcd', 'brnm', 'brad', 'brmb', 'usnm', 'crdt'); //set column field database for datatable searchable
+    var $cl_odr8 = array(null, 'brcd', 'brnm', 'brad', 'brmb', 'usnm', 'crdt', 'stat', ''); //set column field database for datatable orderable
     var $order8 = array('crdt' => 'DESC'); // default order
 
     function brnDet_query()
