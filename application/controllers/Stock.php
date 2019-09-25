@@ -45,15 +45,15 @@ class Stock extends CI_Controller
 //***           SUPPLIER REGISTRATION          ***
 //************************************************
 //OPEN PAGE </JANAKA 2019-09-18>
-    function sup_reg()
+    function supReg()
     {
-        $data['acm'] = 'sup_mng'; //Module
-        $data['acp'] = 'sup_reg'; //Page
+        $data['acm'] = 'supMng'; //Module
+        $data['acp'] = 'supReg'; //Page
         $this->load->view('common/tmpHeader');
         $per['permission'] = $this->Generic_model->getPermision();
         $this->load->view('admin/common/adminHeader', $per);
 
-        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('sup_reg');
+        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('supReg');
         $data2['bank'] = $this->Generic_model->getSortData('bank', '', array('stat' => 1), '', '', 'bkcd', 'ASC');
         $this->load->view('admin/stock/supplier_Reg', $data2);
 
@@ -169,7 +169,7 @@ class Stock extends CI_Controller
             'stat' => 1,
         ));
 
-        $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+        $funcPerm = $this->Generic_model->getFuncPermision('supReg');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Added ($lstId)");
 
         if ($this->db->trans_status() === FALSE) {
@@ -185,7 +185,7 @@ class Stock extends CI_Controller
 //SEARCH SUPPLIER </JANAKA 2019-09-19>
     function searchSupp()
     {
-        $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+        $funcPerm = $this->Generic_model->getFuncPermision('supReg');
 
         if ($funcPerm[0]->view == 1) {
             $viw = "";
@@ -323,7 +323,7 @@ class Stock extends CI_Controller
         ));
         $lstid = $this->db->insert_id();
 
-        $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+        $funcPerm = $this->Generic_model->getFuncPermision('supReg');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier's Bank Account Added ($lstid)");
 
         if ($this->db->trans_status() === FALSE) {
@@ -406,7 +406,7 @@ class Stock extends CI_Controller
                 'mddt' => date('Y-m-d H:i:s'),
             ), array('spid' => $spid));
 
-            $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+            $funcPerm = $this->Generic_model->getFuncPermision('supReg');
             $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier's Details Updated ($spid)");
 
         } else if ($func == 'app') {
@@ -426,7 +426,7 @@ class Stock extends CI_Controller
                 'mddt' => date('Y-m-d H:i:s'),
             ), array('spid' => $spid));
 
-            $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+            $funcPerm = $this->Generic_model->getFuncPermision('supReg');
             $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Approved ($spid)");
         }
 
@@ -452,7 +452,7 @@ class Stock extends CI_Controller
             'rjdt' => date('Y-m-d H:i:s')
         ), array('spid' => $spid));
 
-        $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+        $funcPerm = $this->Generic_model->getFuncPermision('supReg');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Rejected ($spid)");
 
         if ($this->db->trans_status() === FALSE) {
@@ -477,7 +477,7 @@ class Stock extends CI_Controller
             'mddt' => date('Y-m-d H:i:s')
         ), array('spid' => $spid));
 
-        $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+        $funcPerm = $this->Generic_model->getFuncPermision('supReg');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Deactivated ($spid)");
 
         if ($this->db->trans_status() === FALSE) {
@@ -502,7 +502,7 @@ class Stock extends CI_Controller
             'mddt' => date('Y-m-d H:i:s')
         ), array('spid' => $spid));
 
-        $funcPerm = $this->Generic_model->getFuncPermision('sup_reg');
+        $funcPerm = $this->Generic_model->getFuncPermision('supReg');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Reactivated ($spid)");
 
         if ($this->db->trans_status() === FALSE) {
@@ -516,5 +516,28 @@ class Stock extends CI_Controller
 //END ACTIVATE SUPPLIER </JANAKA 2019-09-23>
 //************************************************
 //***       END SUPPLIER REGISTRATION          ***
+//************************************************
+
+//************************************************
+//***          CATEGORY REGISTRATION           ***
+//************************************************
+//OPEN PAGE </JANAKA 2019-09-25>
+    function catMng()
+    {
+        $data['acm'] = 'stcCmp'; //Module
+        $data['acp'] = 'catMng'; //Page
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('catMng');
+        $data2['bank'] = $this->Generic_model->getSortData('bank', '', array('stat' => 1), '', '', 'bkcd', 'ASC');
+        $this->load->view('admin/stock/supplier_Reg', $data2);
+
+        $this->load->view('common/tmpFooter', $data);
+    }
+//END OPEN PAGE </JANAKA 2019-09-25>
+//************************************************
+//***          CATEGORY REGISTRATION           ***
 //************************************************
 }
