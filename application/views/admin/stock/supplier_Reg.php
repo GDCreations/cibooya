@@ -987,7 +987,7 @@
                     function (isConfirm) {
                         if (isConfirm) {
                             var func = $('#func').val();
-                            $('#app_sup_btn').prop('disabled', false);
+                            $('#app_sup_btn').prop('disabled', true);
                             if (func == 'edit') {
                                 swal({
                                     title: "Processing...",

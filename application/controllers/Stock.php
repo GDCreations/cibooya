@@ -17,7 +17,7 @@ class Stock extends CI_Controller
         $this->load->database();                // load database
         $this->load->model('Generic_model');    // load model
         $this->load->model('Stock_model');       // load model
-//        $this->load->model('Log_model');        // load model
+        $this->load->model('Log_model');        // load model
 //        $this->load->model('Hire_model');       // load model
 //
         date_default_timezone_set('Asia/Colombo');
@@ -531,12 +531,314 @@ class Stock extends CI_Controller
         $this->load->view('admin/common/adminHeader', $per);
 
         $data2['funcPerm'] = $this->Generic_model->getFuncPermision('catMng');
-        $data2['bank'] = $this->Generic_model->getSortData('bank', '', array('stat' => 1), '', '', 'bkcd', 'ASC');
-        $this->load->view('admin/stock/supplier_Reg', $data2);
+        $this->load->view('admin/stock/category_Manage', $data2);
 
         $this->load->view('common/tmpFooter', $data);
     }
 //END OPEN PAGE </JANAKA 2019-09-25>
+
+//ADD NEW CATEGORY </JANAKA 2019-09-25>
+    function cat_Add(){
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        //Inserting Category details
+        $this->Generic_model->insertData('category', array(
+            'ctnm' => $this->input->post('name'),
+            'ctcd' => $this->input->post('code'),
+            'remk' => $this->input->post('remk'),
+            'stat' => 0,
+            'crby' => $_SESSION['userId'],
+            'crdt' => date('Y-m-d H:i:s'),
+        ));
+        $lstId = $this->db->insert_id();
+
+        $funcPerm = $this->Generic_model->getFuncPermision('catMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Category Added ($lstId)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ADD NEW CATEGORY </JANAKA 2019-09-25>
+
+//CHECK CATEGORY NAME ALREADY EXIST </JANAKA 2019-09-25>
+    function chk_catName(){
+        $stat = $this->input->post('stat');
+        $name = $this->input->post('name');
+        $ctid = $this->input->post('ctid');
+
+        $this->db->select("ctid");
+        $this->db->from('category');
+        $this->db->where('ctnm',$name);
+        if($stat==1){
+            $this->db->where("ctid!=$ctid");
+        }
+        $res = $this->db->get()->result();
+
+        if(sizeof($res)>0){
+            echo json_encode(false);
+        }else{
+            echo json_encode(true);
+        }
+    }
+//END CHECK CATEGORY NAME ALREADY EXIST </JANAKA 2019-09-25>
+
+//CHECK CATEGORY CODE ALREADY EXIST </JANAKA 2019-09-25>
+    function chk_catCode(){
+        $stat = $this->input->post('stat');
+        $code = $this->input->post('code');
+        $ctid = $this->input->post('ctid');
+
+        $this->db->select("ctid");
+        $this->db->from('category');
+        $this->db->where('ctcd',$code);
+        if($stat==1){
+            $this->db->where("ctid!=$ctid");
+        }
+        $res = $this->db->get()->result();
+
+        if(sizeof($res)>0){
+            echo json_encode(false);
+        }else{
+            echo json_encode(true);
+        }
+    }
+//END CHECK CATEGORY CODE ALREADY EXIST </JANAKA 2019-09-25>
+
+//SEARCH SUPPLIER </JANAKA 2019-09-25>
+    function searchCat()
+    {
+        $funcPerm = $this->Generic_model->getFuncPermision('catMng');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edit = "";
+        } else {
+            $edit = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rejt = "";
+        } else {
+            $rejt = "disabled";
+        }
+        if ($funcPerm[0]->dact == 1) {
+            $dac = "";
+        } else {
+            $dac = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
+
+        $result = $this->Stock_model->get_catDtils();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            if ($row->stat == 0) {
+                $stat = "<label class='label label-warning'>Pending</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewCat($row->ctid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewCat($row->ctid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewCat($row->ctid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' $rejt onclick='rejectCat($row->ctid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 1) {
+                $stat = "<label class='label label-success'>Active</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewCat($row->ctid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewCat($row->ctid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' $dac onclick='inactCat($row->ctid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 2) {
+                $stat = "<label class='label label-danger'>Reject</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewCat($row->ctid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 3) {
+                $stat = "<label class='label label-indi'>Inactive</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->ctid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $reac onclick='reactCat($row->ctid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+            } else {
+                $stat = "--";
+                $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewCat($row->ctid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='viewCat($row->ctid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='viewCat($row->ctid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='rejectCat($row->ctid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->ctcd;
+            $sub_arr[] = $row->ctnm;
+            $sub_arr[] = $row->innm;
+            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Stock_model->count_all_cat(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_cat(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+//END SEARCH SUPPLIER </JANAKA 2019-09-25>
+
+//GET SUPPLIER DETAILS </JANAKA 2019-09-25>
+    function get_CatDet()
+    {
+        $id = $this->input->post('id');
+        //Category Details
+        $this->db->select("sup.*,cr.innm AS crnm,md.innm AS mdnm");
+        $this->db->from('category sup');
+        $this->db->join('user_mas cr', 'cr.auid=sup.crby');
+        $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
+        $this->db->where("sup.ctid=$id");
+        $data = $this->db->get()->result();
+
+        echo json_encode($data);
+    }
+//END GET SUPPLIER DETAILS </JANAKA 2019-09-25>
+
+//CATEGORY UPDATE || APPROVE </JANAKA 2019-09-25>
+    function cat_update()
+    {
+        $func = $this->input->post('func');
+        $ctid = $this->input->post('ctid');
+
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        if ($func == 'edit') {
+            //Updating supplier details
+            $this->Generic_model->updateData('category', array(
+                'ctnm' => $this->input->post('name_edt'),
+                'ctcd' => $this->input->post('code_edt'),
+                'remk' => $this->input->post('remk_edt'),
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ), array('ctid' => $ctid));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('catMng');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Category Details Updated ($ctid)");
+
+        } else if ($func == 'app') {
+            //Updating supplier details
+            $this->Generic_model->updateData('category', array(
+                'ctnm' => $this->input->post('name_edt'),
+                'ctcd' => $this->input->post('code_edt'),
+                'remk' => $this->input->post('remk_edt'),
+                'stat' => 1,
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ), array('ctid' => $ctid));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('catMng');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Category Approved ($ctid)");
+        }
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END CATEGORY UPDATE || APPROVE </JANAKA 2019-09-25
+
+//REJECT CATEGORY </JANAKA 2019-09-25>
+    function cat_Reject()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $ctid = $this->input->post('id');
+        $this->Generic_model->updateData('category', array(
+            'stat' => 2,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('ctid' => $ctid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('catMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Category Rejected ($ctid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END REJECT CATEGORY </JANAKA 2019-09-25>
+
+//DEACTIVATE CATEGORY </JANAKA 2019-09-25>
+    function cat_Deactive()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $ctid = $this->input->post('id');
+        $this->Generic_model->updateData('category', array(
+            'stat' => 3,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('ctid' => $ctid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('catMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Category Deactivated ($ctid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END DEACTIVATE CATEGORY </JANAKA 2019-09-25>
+
+//ACTIVATE CATEGORY </JANAKA 2019-09-25>
+    function cat_Activate()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $ctid = $this->input->post('id');
+        $this->Generic_model->updateData('category', array(
+            'stat' => 1,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('ctid' => $ctid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('catMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Category Reactivated ($ctid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ACTIVATE CATEGORY </JANAKA 2019-09-25>
 //************************************************
 //***          CATEGORY REGISTRATION           ***
 //************************************************
