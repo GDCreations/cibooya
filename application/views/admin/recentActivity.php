@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">From Date</label>
                     <div class="col-md-8 col-xs-12">
-                        <div class='input-group date datetimepicker'>
+                        <div class='input-group date'>
                             <input type='text' class="form-control datetimepicker" id="frdt" name="frdt" value="<?= date('Y-m-d') ?>"/>
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
@@ -65,9 +65,8 @@
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">To Date</label>
                     <div class="col-md-8 col-xs-12">
-                        <div class='input-group date datetimepicker'>
-                        <input type="text" class="form-control datetimepicker" name="todt" id="todt"
-                               value="<?= date('Y-m-d') ?>"/>
+                        <div class='input-group date'>
+                            <input type='text' class="form-control datetimepicker" id="todt" name="todt" value="<?= date('Y-m-d') ?>"/>
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
                             </span>
@@ -112,14 +111,6 @@
         $().ready(function () {
 
         });
-
-        // function chckBtn(id, inpu) {
-        //     if (id == 0) { //brch_cst
-        //         document.getElementById(inpu).style.borderColor = "red";
-        //     } else {
-        //         document.getElementById(inpu).style.borderColor = "";
-        //     }
-        // }
 
         function getUser(brid, div) {
             $.ajax({

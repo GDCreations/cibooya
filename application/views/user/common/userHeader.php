@@ -18,13 +18,13 @@
 
                     <!--                    <li class="title">DEMONSTRATION</li>-->
                     <?php
-                    if(in_array('cus_mng',$permMdul,TRUE)){?>
-                    <li id="cus_mng">
+                    if(in_array('cusMng',$permMdul,TRUE)){?>
+                    <li id="cusMng">
                         <a href="#"><span class="nav-icon-hexa fa fa-users"></span> Customer Management</a>
                         <ul>
-                            <?php if (in_array("cus_reg", $permission, TRUE)) { ?>
+                            <?php if (in_array("cusReg", $permission, TRUE)) { ?>
                             <li>
-                                <a id="cus_reg" href="<?= base_url() ?>user/cus_reg"><span
+                                <a id="cusReg" href="<?= base_url() ?>user/cusReg"><span
                                             class="nav-icon-hexa fa fa-user"></span> Customer Registration</a>
                             </li>
                             <?php } ?>

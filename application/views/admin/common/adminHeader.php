@@ -42,8 +42,8 @@
                     <li class="title" id="Settings_title">SETTINGS</li>
                     <?php $Settings_title = true; ?>
 
-                    <?php if (in_array('sysCompnt', $permMdul, TRUE)) { ?>
-                        <li id="sysCompnt">
+                    <?php if (in_array('sysCmp', $permMdul, TRUE)) { ?>
+                        <li id="sysCmp">
                             <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> System Components</a>
                             <ul>
                                 <?php if (in_array("sysBrnc", $permission, TRUE)) { ?>
@@ -52,12 +52,12 @@
                                     </li>
                                 <?php } ?>
                                 <?php if (in_array("usrMng", $permission, TRUE)) { ?>
-                                    <li><a id="branding" href="<?= base_url() ?>admin/usrMng">
+                                    <li><a id="usrMng" href="<?= base_url() ?>admin/usrMng">
                                             <span class="nav-icon-hexa fa fa-sliders"></span> User Management</a>
                                     </li>
                                 <?php } ?>
                                 <?php if (in_array("usrLvl", $permission, TRUE)) { ?>
-                                    <li><a id="branding" href="<?= base_url() ?>admin/usrLvl">
+                                    <li><a id="usrLvl" href="<?= base_url() ?>admin/usrLvl">
                                             <span class="nav-icon-hexa fa fa-sliders"></span> User Level</a>
                                     </li>
                                 <?php } ?>
@@ -66,8 +66,8 @@
                         </li>
                         <?php $Settings_title = false;
                     } ?>
-                    <?php if (in_array('adv_stts', $permMdul, TRUE)) { ?>
-                        <li id="adv_stts">
+                    <?php if (in_array('advStts', $permMdul, TRUE)) { ?>
+                        <li id="advStts">
                             <a href="#"><span class="nav-icon-hexa fa fa-cogs"></span> Advance Settings</a>
                             <ul>
                                 <?php if (in_array("permis", $permission, TRUE)) { ?>
@@ -89,16 +89,17 @@
                     <?php } ?>
 
                     <li class="title" id="Stock_title">STOCK</li>
-                    <?php $Stock_title = true; ?>
-
-                    <?php if (in_array('sup_mng', $permMdul, TRUE)) { ?>
-                        <li id="sys_stts">
+                    <?php $Stock_title = true;
+                    if (in_array('stcCmp', $permMdul, TRUE)) { ?>
+                        <li id="stcCmp">
                             <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> Stock Components</a>
                             <ul>
+                                <?php if (in_array("catMng", $permission, TRUE)) { ?>
                                 <li>
-                                    <a id="" href="<?= base_url() ?>"><span
+                                    <a id="catMng" href="<?= base_url()?>Stock/catMng"><span
                                                 class="nav-icon-hexa fa fa-th-large"></span> Category Management</a>
                                 </li>
+                                <?php } ?>
                                 <li>
                                     <a href="#"><span class="nav-icon-hexa fa fa-anchor"></span> Brand Management </a>
                                 </li>
@@ -107,13 +108,13 @@
                         <?php $Stock_title = false;
                     } ?>
 
-                    <?php if (in_array('sup_mng', $permMdul, TRUE)) { ?>
-                        <li id="sup_mng">
+                    <?php if (in_array('supMng', $permMdul, TRUE)) { ?>
+                        <li id="supMng">
                             <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
                             <ul>
-                                <?php if (in_array("sup_reg", $permission, TRUE)) { ?>
+                                <?php if (in_array("supReg", $permission, TRUE)) { ?>
                                     <li>
-                                        <a id="sup_reg" href="<?= base_url() ?>Stock/sup_reg"><span
+                                        <a id="supReg" href="<?= base_url() ?>Stock/supReg"><span
                                                     class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
                                     </li>
                                 <?php } ?>

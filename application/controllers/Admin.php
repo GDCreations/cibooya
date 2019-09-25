@@ -906,7 +906,7 @@ class Admin extends CI_Controller
     // SYSTEM COMPONENT - BRANCH
     public function sysBrnc()
     {
-        $data['acm'] = 'sysCompnt'; //Module
+        $data['acm'] = 'sysCmp'; //Module
         $data['acp'] = 'sysBrnc'; //Page
 
         $this->load->view('common/tmpHeader');
@@ -1244,8 +1244,8 @@ class Admin extends CI_Controller
     // SYSTEM COMPONENT - USER MANAGEMENT
     public function usrMng()
     {
-        $data['acm'] = 'sysCompnt'; //Module
-        $data['acp'] = 'sysBrnc'; //Page
+        $data['acm'] = 'sysCmp'; //Module
+        $data['acp'] = 'usrMng'; //Page
 
         $this->load->view('common/tmpHeader');
         $per['permission'] = $this->Generic_model->getPermision();
@@ -1262,8 +1262,8 @@ class Admin extends CI_Controller
     // SYSTEM COMPONENT - USER LEVEL
     public function usrLvl()
     {
-        $data['acm'] = 'sysCompnt'; //Module
-        $data['acp'] = 'sysBrnc'; //Page
+        $data['acm'] = 'sysCmp'; //Module
+        $data['acp'] = 'usrLvl'; //Page
 
         $this->load->view('common/tmpHeader');
         $per['permission'] = $this->Generic_model->getPermision();
