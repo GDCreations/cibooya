@@ -965,31 +965,31 @@ class Admin extends CI_Controller
 
             if ($row->stat == 0) {
                 $stat = "<label class='label label-warning'>Pending</label>";
-                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' $rejt onclick='rejectSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             } else if ($row->stat == 1) {
                 $stat = "<label class='label label-success'>Active</label>";
-                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
                     "<button type='button' $dac onclick='inactSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
-            } else if ($row->stat == 2) {
+            } else if ($row->stat == 3) {
                 $stat = "<label class='label label-danger'>Reject</label>";
-                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
-            } else if ($row->stat == 3) {
+            } else if ($row->stat == 2) {
                 $stat = "<label class='label label-indi'>Inactive</label>";
-                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' $reac onclick='reactSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
             } else {
                 $stat = "--";
-                $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='editSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='approveSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='rejectSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
@@ -1002,7 +1002,7 @@ class Admin extends CI_Controller
             $sub_arr[] = $row->brad;
             $sub_arr[] = $row->brmb;
             $sub_arr[] = $row->usnm;
-            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $row->brcrdt;
             $sub_arr[] = $stat;
             $sub_arr[] = $option;
             $data[] = $sub_arr;
@@ -1015,6 +1015,229 @@ class Admin extends CI_Controller
             "data" => $data,
         );
         echo json_encode($output);
+    }
+
+    // BRANCH NAME CHECK
+    function chkBrncName()
+    {
+        $name = $this->input->post('name');
+        $stat = $this->input->post('stat'); //0-Add/1-Edit
+
+        $this->db->select("brnm");
+        $this->db->from('brch_mas');
+        $this->db->where('brnm', $name);
+        if ($stat == 1) {
+            $this->db->where("brid != " . $this->input->post('auid'));
+        }
+        $res = $this->db->get()->result();
+        if (sizeof($res) > 0) {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
+    }
+
+    // BRANCH CODE CHECK
+    function chkBrnCode()
+    {
+        $name = $this->input->post('code');
+        $stat = $this->input->post('stat'); //0-Add/1-Edit
+
+        $this->db->select("brcd");
+        $this->db->from('brch_mas');
+        $this->db->where('brcd', $name);
+        if ($stat == 1) {
+            $this->db->where("brid !=" . $this->input->post('auid'));
+        }
+        $res = $this->db->get()->result();
+        if (sizeof($res) > 0) {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
+    }
+
+    // BRANCH INSERT
+    function branchCreate()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $brcd = strtoupper($this->input->post('code'));
+
+        $this->Generic_model->insertData('brch_mas',
+            array(
+                'brcd' => $brcd,
+                'brnm' => $this->input->post('name'),
+                'brad' => $this->input->post('addr'),
+                'brmb' => $this->input->post('mobi'),
+                'brtp' => $this->input->post('tele'),
+                'brem' => $this->input->post('email'),
+                'remk' => $this->input->post('remk'),
+                'stat' => 0,
+                'crby' => $_SESSION['userId'],
+                'crdt' => date('Y-m-d H:i:s'),
+            ));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('sysBrnc');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "New Branch Added ($brcd)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    // VIEW BRANCH for edit approval
+    function getBrncDet()
+    {
+        $auid = $this->input->post('id');
+
+        $this->db->select(" * ");
+        $this->db->from('brch_mas');
+        /*$this->db->join('user_mas cr', 'cr.auid=sup.crby');
+        $this->db->join('user_mas ap', 'ap.auid=sup.apby', 'LEFT');
+        $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
+        $this->db->join('user_mas rj', 'rj.auid=sup.rjby', 'LEFT');*/
+        $this->db->where("brch_mas.brid", $auid);
+        $data = $this->db->get()->result();
+
+        echo json_encode($data);
+    }
+
+    // UPDATE & APPROVAL
+    function brncEdit()
+    {
+        $func = $this->input->post('func');
+        $auid = $this->input->post('auid');
+        $brcd = strtoupper($this->input->post('codeEdt'));
+
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        if ($func == 'edit') {
+            //Updating
+            $this->Generic_model->updateData('brch_mas',
+                array(
+                    'brcd' => $brcd,
+                    'brnm' => $this->input->post('nameEdt'),
+                    'brad' => $this->input->post('addrEdt'),
+                    'brmb' => $this->input->post('mobiEdt'),
+                    'brtp' => $this->input->post('teleEdt'),
+                    'brem' => $this->input->post('emailEdt'),
+                    'remk' => $this->input->post('remkEdt'),
+                    'mdby' => $_SESSION['userId'],
+                    'mddt' => date('Y-m-d H:i:s'),
+                ),
+                array('brid' => $auid));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('sysBrnc');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Updated ($brcd)");
+
+        } else if ($func == 'app') {
+
+            //Updating
+            $this->Generic_model->updateData('brch_mas',
+                array(
+                    'brcd' => $brcd,
+                    'brnm' => $this->input->post('nameEdt'),
+                    'brad' => $this->input->post('addrEdt'),
+                    'brmb' => $this->input->post('mobiEdt'),
+                    'brtp' => $this->input->post('teleEdt'),
+                    'brem' => $this->input->post('emailEdt'),
+                    'remk' => $this->input->post('remkEdt'),
+                    'stat' => 1,
+                    'apby' => $_SESSION['userId'],
+                    'apdt' => date('Y-m-d H:i:s'),
+                    'mdby' => $_SESSION['userId'],
+                    'mddt' => date('Y-m-d H:i:s'),
+                ),
+                array('brid' => $auid));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('sysBrnc');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Approved ($brcd)");
+        }
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    // BRANCH REJECT
+    function brnReject()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $auid = $this->input->post('id');
+        $this->Generic_model->updateData('brch_mas',
+            array(
+                'stat' => 3,
+            ),
+            array('brid' => $auid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('sysBrnc');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Rejected ($auid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    // DEACTIVE
+    function brnDeactive()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $auid = $this->input->post('id');
+        $this->Generic_model->updateData('brch_mas', array(
+            'stat' => 2,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('brid' => $auid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('sysBrnc');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Deactivated ($auid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    // REACTIVE
+    function brncReactiv()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $spid = $this->input->post('id');
+        $this->Generic_model->updateData('brch_mas', array(
+            'stat' => 1,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('brid' => $spid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('sysBrnc');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Reactivated ($spid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
     }
 
 

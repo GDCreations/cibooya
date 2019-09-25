@@ -20,7 +20,7 @@ class Admin_model extends CI_Model
         $this->db->from("user_log");
         $this->db->join('user_mas', 'user_mas.auid = user_log.usid');
         $this->db->join('brch_mas', 'brch_mas.brid = user_mas.brch');
-        $this->db->where("DATE_FORMAT(user_log.lgdt, '%d-%m-%Y') BETWEEN '$frdt' AND  '$todt' ");
+        $this->db->where("DATE_FORMAT(user_log.lgdt, '%Y-%m-%d') BETWEEN '$frdt' AND  '$todt' ");
 
         if ($brn != 'all') {
             $this->db->where('user_mas.brch ', $brn);
@@ -101,7 +101,7 @@ class Admin_model extends CI_Model
     {
         $stat = $this->input->post('stat');
 
-        $this->db->select("brch_mas.*, user_mas.usnm ");
+        $this->db->select("brch_mas.*, user_mas.usnm , DATE_FORMAT(brch_mas.crdt, '%Y-%m-%d') AS brcrdt");
         $this->db->from('brch_mas');
         $this->db->join('user_mas', 'user_mas.auid=brch_mas.crby');
         if ($stat != 'all') {
