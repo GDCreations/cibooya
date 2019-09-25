@@ -131,7 +131,6 @@
         $('#save').click(function (e) {
             e.preventDefault();
             if ($('#brandingEdt').valid()) {
-
                 $('#save').prop('disabled', true);
 
                 swal({
