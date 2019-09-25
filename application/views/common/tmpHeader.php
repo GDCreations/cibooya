@@ -19,6 +19,8 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
     <!-- CSS INCLUDE -->
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/styles.css">
     <link rel="stylesheet" href="<?= base_url(); ?>assets/plugins/jquery-validation/css/screen.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/glyphicon_icon.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css">
     <!-- EOF CSS INCLUDE -->
 </head>
 <body>
@@ -171,22 +173,5 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
     }
 
     // end system time show function
-
-    $('.bs-datepicker').datepicker({
-        format: 'yyyy-mm-dd',
-        //startDate: '+1d'
-    });
-
-    $(".bs-datepicker").change(function(){
-        // alert("The text has been changed.");
-        console.log(" dfdks kdjk d")
-    });
-
-    $(".bs-datepicker").click(function(){
-        // alert("The text has been changed.");
-        console.log(" 222323  kdjk d")
-    });
-
-
 
 </script>

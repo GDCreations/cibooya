@@ -1,8 +1,8 @@
 <!-- START PAGE HEADING -->
 <div class="app-heading-container app-heading-bordered bottom">
     <ul class="breadcrumb">
-        <li><a href="#">Supplier Management</a></li>
-        <li class="active">Supplier Registration</li>
+        <li><a href="#">System Component</a></li>
+        <li class="active">Branch Management</li>
     </ul>
 </div>
 <div class="app-heading app-heading-bordered app-heading-page">
@@ -10,8 +10,8 @@
         <span class="fa fa-user" style="color: #e69c0f;"></span>
     </div>
     <div class="title">
-        <h1>Supplier Registration</h1>
-        <p>Register / Edit / Reject / Deactive / Search & View</p>
+        <h1>Branch Management</h1>
+        <p>Create / Edit / Inactive / Active </p>
     </div>
     <?php
     if ($funcPerm[0]->inst == 1) { ?>
@@ -37,8 +37,8 @@
                             <option value="all">All</option>
                             <option value="0">Pending</option>
                             <option value="1">Active</option>
+                            <option value="2">Tmp Disable</option>
                             <option value="3">Inactive</option>
-                            <option value="2">Reject</option>
                         </select>
                     </div>
                 </div>
@@ -47,7 +47,6 @@
     </div>
     <div class="block">
         <div class="row form-horizontal">
-            <!--            <div class="block block-condensed">-->
             <div class="table-responsive">
                 <table id="supp_table" class="table dataTable table-striped table-bordered" width="100%">
                     <thead>
@@ -66,9 +65,7 @@
                     <tbody>
                     </tbody>
                 </table>
-
             </div>
-            <!--            </div>-->
         </div>
     </div>
 
@@ -783,7 +780,7 @@
                 ],
 
                 "ajax": {
-                    url: '<?= base_url(); ?>Stock/searchSupp',
+                    url: '<?= base_url(); ?>admin/searchBranc',
                     type: 'post',
                     data: {
                         stat: stat
@@ -916,13 +913,13 @@
                             if (bkdet[ii]['dfst'] == 1) {
                                 var dfst = "<label class='label label-info' title='Default Account Number'>D</label> ";
                                 var radio = "<div title='Default Account' class='app-radio round'><input type='radio'" +
-                                    "onclick='desDefClose($(this))'" + des +
+                                    "onclick='desDefClose($(this))'" +
                                     " name='dfstRd[]' value='" + bkdet[ii]['acid'] + "' checked/></div>"
                                 var defDes = 'disabled';
                             } else {
                                 var dfst = "";
                                 var radio = "<div class='app-radio round'><input type='radio'" +
-                                    "onclick='desDefClose($(this))'" + des +
+                                    "onclick='desDefClose($(this))'" +
                                     " name='dfstRd[]' value='" + bkdet[ii]['acid'] + "'/></div>"
                                 var defDes = '';
                             }

@@ -41,7 +41,8 @@ class Admin extends CI_Controller
         $data['acm'] = ''; //Module
         $data['acp'] = 'dashbrd'; //Page
         $this->load->view('common/tmpHeader');
-        $this->load->view('admin/common/adminHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
 
         $this->load->view('admin/adminDash');
 
@@ -49,7 +50,7 @@ class Admin extends CI_Controller
     }
 
     // BEGIN COMMON DATA LOADING
-// Get user data
+    // Get user data
     public function getUser()
     {
         $bid = $this->input->post('brid');
@@ -70,9 +71,7 @@ class Admin extends CI_Controller
         echo json_encode($query->result());
     }
 
-
     // END COMMON DATA LOADING
-
 
     // COMPANY BRANDING
     public function branding()
@@ -81,12 +80,12 @@ class Admin extends CI_Controller
         $data['acp'] = 'branding'; //Page
 
         $this->load->view('common/tmpHeader');
-        $this->load->view('admin/common/adminHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
 
+        $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('branding');
         $dataArr['compInfo'] = $this->Generic_model->getData('com_det', '', array('stat' => 1));
-
         $this->load->view('admin/companyDetails', $dataArr);
-
         $this->load->view('common/tmpFooter', $data);
     }
 
@@ -110,10 +109,10 @@ class Admin extends CI_Controller
         $where_arr = array(
             'cmid' => 1
         );
-        $result22 = $this->Generic_model->updateData('com_det', $data_ar1, $where_arr);
+        $this->Generic_model->updateData('com_det', $data_ar1, $where_arr);
 
-        // $funcPerm = $this->Generic_model->getFuncPermision('brand');
-        // $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Company Details Update ');
+        $funcPerm = $this->Generic_model->getFuncPermision('branding');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Company Details Updated');
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
@@ -131,10 +130,11 @@ class Admin extends CI_Controller
         $data['acp'] = 'policyMng'; //Page
 
         $this->load->view('common/tmpHeader');
-        $this->load->view('admin/common/adminHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
 
+        $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('policyMng');
         $dataArr['policyinfo'] = $this->Generic_model->getData('sys_policy', '', '');
-
         $this->load->view('admin/systmPolicy', $dataArr);
         $this->load->view('common/tmpFooter', $data);
     }
@@ -153,8 +153,8 @@ class Admin extends CI_Controller
         $this->Generic_model->updateData('sys_policy', $_01, array('poid' => 1));
 
 
-        //$funcPerm = $this->Generic_model->getFuncPermision('policyMng');
-        //$this->Log_model->userFuncLog($funcPerm[0]->pgid, 'System Policy Update');
+        $funcPerm = $this->Generic_model->getFuncPermision('policyMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'System Policy Updated');
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
@@ -172,8 +172,10 @@ class Admin extends CI_Controller
         $data['acp'] = 'rcntAct'; //Page
 
         $this->load->view('common/tmpHeader');
-        $this->load->view('admin/common/adminHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
 
+        $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('rcntAct');
         $dataArr['branchinfo'] = $this->Generic_model->getBranch();
         $dataArr['uslvlinfo'] = $this->Generic_model->getData('user_level', '', "stat = 1 AND id != 1");
 
@@ -181,7 +183,7 @@ class Admin extends CI_Controller
         $this->load->view('common/tmpFooter', $data);
     }
 
-// Recent activity search
+    // Recent activity search
     function srchActivit()
     {
         $result = $this->Admin_model->get_recntDtils();
@@ -193,7 +195,7 @@ class Admin extends CI_Controller
 
             $sub_arr = array();
             $sub_arr[] = ++$i;
-            $sub_arr[] =  $row->usnm . ' (' . $row->brcd . ')';
+            $sub_arr[] = $row->usnm . ' (' . $row->brcd . ')';
             if ($row->pnm != '' && $row->func != '') {
                 $sub_arr[] = $row->pnm . ' --> ' . $row->func;
             } else if ($row->pnm != '') {
@@ -209,6 +211,9 @@ class Admin extends CI_Controller
             $data[] = $sub_arr;
         }
 
+//        $funcPerm = $this->Generic_model->getFuncPermision('rcntAct');
+//        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'View Recent Activity');
+
         $output = array(
             "draw" => $_POST['draw'],
             "recordsTotal" => $this->Admin_model->all_recnt(),
@@ -216,9 +221,6 @@ class Admin extends CI_Controller
             "data" => $data,
         );
         echo json_encode($output);
-        //$funcPerm = $this->Generic_model->getFuncPermision('recn_actv');
-        //$this->Log_model->userFuncLog($funcPerm[0]->pgid, 'View Recent Activity');
-
     }
 
     //*******************************************************
@@ -229,15 +231,16 @@ class Admin extends CI_Controller
     {
         $data['acm'] = ''; //Module
         $data['acp'] = 'permis'; //Page
-        $dataArr['branchinfo'] = $this->Generic_model->getBranch();
-        $dataArr['uslvlinfo'] = $this->Generic_model->getUserLvl();
 
         $this->load->view('common/tmpHeader');
         $per['permission'] = $this->Generic_model->getPermision();
-        $this->load->view('admin/common/adminHeader',$per);
+        $this->load->view('admin/common/adminHeader', $per);
 
+        $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('permis');
+        $dataArr['branchinfo'] = $this->Generic_model->getBranch();
+        $dataArr['uslvlinfo'] = $this->Generic_model->getUserLvl();
         $this->load->view('admin/permissionManagement', $dataArr);
-        $this->load->view('common/tmpFooter',$data);
+        $this->load->view('common/tmpFooter', $data);
     }
 
     // normal permission
@@ -253,6 +256,37 @@ class Admin extends CI_Controller
         $this->db->join('user_page_mdl', 'user_page_mdl.aid = user_page.modu', 'left');
         $this->db->where('user_prmis.stat', 1);
         $this->db->where('user_page.stst', 1);
+        $this->db->where('user_page.mntp', 0);
+        // default permission
+        if ($prtp == '1') {
+            $this->db->where('user_prmis.prtp', 0);
+            $this->db->where('user_prmis.ulid', $uslv);
+        } else if ($prtp == '2') {
+            // manuel permission
+            $this->db->where('user_prmis.prtp', 1);
+            $this->db->where('user_prmis.usid', $user);
+        }
+        $this->db->order_by('user_page.modu', 'ASC'); //ASC  DESC
+        $this->db->order_by('user_page.aid', 'ASC'); //ASC  DESC
+
+        $query = $this->db->get();
+        echo json_encode($query->result());
+    }
+
+    // Master permission
+    function srchPermisMs()
+    {
+        $prtp = $this->input->post('prtp');
+        $uslv = $this->input->post('uslv');
+        $user = $this->input->post('user');
+
+        $this->db->select("user_prmis.prid,user_prmis.pgac,user_prmis.view,user_prmis.inst,user_prmis.edit,user_prmis.apvl,user_prmis.rejt,user_prmis.dact,user_prmis.reac,user_page.pgnm,user_page.aid ,user_page.mntp, user_page_mdl.mdnm  ");
+        $this->db->from("user_prmis");
+        $this->db->join('user_page', 'user_page.aid = user_prmis.pgid');
+        $this->db->join('user_page_mdl', 'user_page_mdl.aid = user_page.modu', 'left');
+        $this->db->where('user_prmis.stat', 1);
+        $this->db->where('user_page.stst', 1);
+        $this->db->where('user_page.mntp', 1);
         // default permission
         if ($prtp == '1') {
             $this->db->where('user_prmis.prtp', 0);
@@ -338,7 +372,62 @@ class Admin extends CI_Controller
         // ------ end permission change save -----
 
         $funcPerm = $this->Generic_model->getFuncPermision('permis');
-        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Normal Permission Update' . $nte);
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Normal Permission Updated' . $nte);
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    // Master permission add
+    function edtPerminMs()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+        $len = $this->input->post('lenms');
+
+        for ($a = 0; $a < $len; $a++) {
+            $prid = $this->input->post("prid[" . $a . "]");
+            $view = $this->input->post("view[" . $a . "]");
+            $inst = $this->input->post("inst[" . $a . "]");
+            $edit = $this->input->post("edit[" . $a . "]");
+            $rejt = $this->input->post("rejt[" . $a . "]");
+            $apvl = $this->input->post("apvl[" . $a . "]");
+            $pgac = $this->input->post("pgac[" . $a . "]");
+            $reac = $this->input->post("reac[" . $a . "]");
+            $dact = $this->input->post("dact[" . $a . "]");
+
+            $data_ar1 = array(
+                'pgac' => $pgac,
+                'view' => $view,
+                'inst' => $inst,
+                'edit' => $edit,
+                'rejt' => $rejt,
+                'apvl' => $apvl,
+                'dact' => $dact,
+                'reac' => $reac
+            );
+            $this->Generic_model->updateData('user_prmis', $data_ar1, array('prid' => $prid));
+        }
+
+        // ------ permission change save -----
+        $prid = $this->input->post("prid[0]");
+        $prmdt = $this->Generic_model->getData('user_prmis', array('prtp', 'ulid', 'usid'), array('prid' => $prid));
+        // user level wise permission
+        if ($prmdt[0]->prtp == 0) {
+            $lvldt = $this->Generic_model->getData('user_level', array('lvnm'), array('id' => $prmdt[0]->ulid));
+            $nte = " (" . $lvldt[0]->lvnm . ')';
+        } else {
+            $usdt = $this->Generic_model->getData('user_mas', array('usnm'), array('auid' => $prmdt[0]->usid));
+            $nte = " (" . $usdt[0]->usnm . ')';
+        }
+        // ------ end permission change save -----
+
+        $funcPerm = $this->Generic_model->getFuncPermision('permis');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Master Permission Updated' . $nte);
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
@@ -382,7 +471,7 @@ class Admin extends CI_Controller
         // ------ end permission change save -----
 
         $funcPerm = $this->Generic_model->getFuncPermision('permis');
-        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Advance permission Update' . $nte);
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Advance permission Updated' . $nte);
 
 
         if ($this->db->trans_status() === FALSE) {
@@ -583,7 +672,7 @@ class Admin extends CI_Controller
         }
 
         $funcPerm = $this->Generic_model->getFuncPermision('permis');
-        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Special permission Update');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Special permission Updated');
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
@@ -685,7 +774,7 @@ class Admin extends CI_Controller
             }
         }
         $funcPerm = $this->Generic_model->getFuncPermision('permis');
-        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Module permission Update');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Module permission Updated');
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
@@ -701,12 +790,14 @@ class Admin extends CI_Controller
     {
         $prtp = $this->input->post('prtp');
         $uslv = $this->input->post('uslv'); // user level id
+        $type = $this->input->post('type'); // user level id
         $brch = $this->input->post('brch');
         $user = $this->input->post('user'); // user id
 
         $this->db->select(" user_page.* ,user_page_mdl.mdnm ");
         $this->db->from("user_page");
         $this->db->where('user_page.stst', 1);
+        $this->db->where('user_page.mntp', $type);
         $this->db->join('user_page_mdl', 'user_page_mdl.aid = user_page.modu', 'left');
 
         if ($prtp == 1) {
@@ -760,6 +851,9 @@ class Admin extends CI_Controller
             }
         }
 
+        $funcPerm = $this->Generic_model->getFuncPermision('permis');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Page Added ($aid) To ($usid2)");
+
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
             echo json_encode(false);
@@ -808,4 +902,156 @@ class Admin extends CI_Controller
     //*******************************************************
     //**********   END PERMISSION MANAGEMENT       **********
     //*******************************************************
+
+    // SYSTEM COMPONENT - BRANCH
+    public function sysBrnc()
+    {
+        $data['acm'] = 'sysCompnt'; //Module
+        $data['acp'] = 'sysBrnc'; //Page
+
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('sysBrnc');
+        $dataArr['policyinfo'] = $this->Generic_model->getData('sys_policy', '', '');
+
+        $this->load->view('admin/branchManagement', $dataArr);
+        $this->load->view('common/tmpFooter', $data);
+    }
+
+    //SEARCH BRANCH
+    function searchBranc()
+    {
+        $funcPerm = $this->Generic_model->getFuncPermision('sysBrnc');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edit = "";
+        } else {
+            $edit = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rejt = "";
+        } else {
+            $rejt = "disabled";
+        }
+        if ($funcPerm[0]->dact == 1) {
+            $dac = "";
+        } else {
+            $dac = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
+
+        $result = $this->Admin_model->get_brnDtils();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            $auid = $row->brid;
+
+            if ($row->stat == 0) {
+                $stat = "<label class='label label-warning'>Pending</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' $rejt onclick='rejectSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 1) {
+                $stat = "<label class='label label-success'>Active</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' $dac onclick='inactSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 2) {
+                $stat = "<label class='label label-danger'>Reject</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 3) {
+                $stat = "<label class='label label-indi'>Inactive</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $reac onclick='reactSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+            } else {
+                $stat = "--";
+                $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewSupp($auid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='editSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='approveSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='rejectSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->brcd;
+            $sub_arr[] = $row->brnm;
+            $sub_arr[] = $row->brad;
+            $sub_arr[] = $row->brmb;
+            $sub_arr[] = $row->usnm;
+            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Admin_model->count_all_brn(),
+            "recordsFiltered" => $this->Admin_model->count_filtered_brn(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+
+
+    // SYSTEM COMPONENT - USER MANAGEMENT
+    public function usrMng()
+    {
+        $data['acm'] = 'sysCompnt'; //Module
+        $data['acp'] = 'sysBrnc'; //Page
+
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('usrMng');
+        $dataArr['policyinfo'] = $this->Generic_model->getData('sys_policy', '', '');
+
+
+        //$this->load->view('admin/systmPolicy', $dataArr);
+        $this->load->view('common/tmpFooter', $data);
+    }
+
+    // SYSTEM COMPONENT - USER LEVEL
+    public function usrLvl()
+    {
+        $data['acm'] = 'sysCompnt'; //Module
+        $data['acp'] = 'sysBrnc'; //Page
+
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('usrLvl');
+        $dataArr['policyinfo'] = $this->Generic_model->getData('sys_policy', '', '');
+
+
+        //$this->load->view('admin/systmPolicy', $dataArr);
+        $this->load->view('common/tmpFooter', $data);
+    }
+
 }

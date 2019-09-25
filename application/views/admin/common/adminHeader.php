@@ -1,5 +1,10 @@
 <!-- APP WRAPPER -->
 <div class="app">
+    <?php
+    clearstatcache();
+    // LOAD USER PERMISSION MODULE
+    $permMdul = $this->Generic_model->getPermisionModule();
+    ?>
     <!-- START APP CONTAINER -->
     <div class="app-container">
         <!-- START SIDEBAR -->
@@ -10,55 +15,123 @@
                 <ul>
                     <li><a id="dashbrd" href="<?= base_url() ?>Admin"><span class="nav-icon-hexa icon-home"></span>
                             Dashboards </a></li>
+                    <?php
+                    if (in_array('gnrl', $permMdul, TRUE)) {
+                        ?>
+                        <li id="gnrl">
+                            <a href="#"><span class="nav-icon-hexa fa fa-globe"></span> General</a>
+                            <ul>
+                                <?php if (in_array("branding", $permission, TRUE)) { ?>
+                                    <li><a id="branding" href="<?= base_url() ?>admin/branding">
+                                            <span class="nav-icon-hexa fa fa-sliders"></span> Branding</a>
+                                    </li>
+                                <?php } ?>
+                                <?php if (in_array("policyMng", $permission, TRUE)) { ?>
+                                    <li><a id="policyMng" href="<?= base_url() ?>admin/policyMng">
+                                            <span class="nav-icon-hexa fa fa-list-alt"></span> Policy Management</a>
+                                    </li>
+                                <?php } ?>
+                                <?php if (in_array("rcntAct", $permission, TRUE)) { ?>
+                                    <li><a id="rcntAct" href="<?= base_url() ?>admin/rcntAct">
+                                            <span class="nav-icon-hexa fa fa-sliders"></span> Recent Activity</a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </li>
+                    <?php } ?>
+                    <li class="title" id="Settings_title">SETTINGS</li>
+                    <?php $Settings_title = true; ?>
 
-                    <li id="gnrl">
-                        <a href="#"><span class="nav-icon-hexa fa fa-globe"></span> General</a>
-                        <ul>
-                            <li><a id="branding" href="<?= base_url() ?>admin/branding">
-                                    <span class="nav-icon-hexa fa fa-sliders"></span> Branding</a>
-                            </li>
-                            <li><a id="policyMng" href="<?= base_url() ?>admin/policyMng">
-                                    <span class="nav-icon-hexa fa fa-list-alt"></span> Policy Management</a>
-                            </li>
-                            <li><a id="rcntAct" href="<?= base_url() ?>admin/rcntAct">
-                                    <span class="nav-icon-hexa fa fa-sliders"></span> Recent Activity</a>
-                            </li>
+                    <?php if (in_array('sysCompnt', $permMdul, TRUE)) { ?>
+                        <li id="sysCompnt">
+                            <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> System Components</a>
+                            <ul>
+                                <?php if (in_array("sysBrnc", $permission, TRUE)) { ?>
+                                    <li><a id="sysBrnc" href="<?= base_url() ?>admin/sysBrnc">
+                                            <span class="nav-icon-hexa fa fa-sliders"></span> Branch Management</a>
+                                    </li>
+                                <?php } ?>
+                                <?php if (in_array("usrMng", $permission, TRUE)) { ?>
+                                    <li><a id="branding" href="<?= base_url() ?>admin/usrMng">
+                                            <span class="nav-icon-hexa fa fa-sliders"></span> User Management</a>
+                                    </li>
+                                <?php } ?>
+                                <?php if (in_array("usrLvl", $permission, TRUE)) { ?>
+                                    <li><a id="branding" href="<?= base_url() ?>admin/usrLvl">
+                                            <span class="nav-icon-hexa fa fa-sliders"></span> User Level</a>
+                                    </li>
+                                <?php } ?>
 
-                        </ul>
-                    </li>
-                    <li class="title">Settings</li>
-                    <li id="adv_stts">
-                        <a href="#"><span class="nav-icon-hexa fa fa-cogs"></span> Advance Settings</a>
-                        <ul>
-                            <li>
-                                <a id="permis" href="<?= base_url() ?>Admin/permis"><span
-                                            class="nav-icon-hexa fa fa-check-square-o"></span> Permission Management</a>
-                            </li>
-                        </ul>
-                        <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> System Settings</a>
-                        <ul>
-                            <li>
-                                <a id="" href="<?= base_url() ?>"><span
-                                            class="nav-icon-hexa fa fa-th-large"></span> Category Management</a>
-                            </li>
-                            <li>
-                                <a href="#"><span class="nav-icon-hexa fa fa-anchor"></span> Brand Management </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="title">STOCK</li>
-                    <li id="sup_mng">
-                        <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
-                        <ul>
-                            <li>
-                                <a id="sup_reg" href="<?= base_url() ?>Stock/sup_reg"><span
-                                            class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
-                            </li>
-                            <li>
-                                <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>
-                            </li>
-                        </ul>
-                    </li>
+                            </ul>
+                        </li>
+                        <?php $Settings_title = false;
+                    } ?>
+                    <?php if (in_array('adv_stts', $permMdul, TRUE)) { ?>
+                        <li id="adv_stts">
+                            <a href="#"><span class="nav-icon-hexa fa fa-cogs"></span> Advance Settings</a>
+                            <ul>
+                                <?php if (in_array("permis", $permission, TRUE)) { ?>
+                                    <li>
+                                        <a id="permis" href="<?= base_url() ?>Admin/permis"><span
+                                                    class="nav-icon-hexa fa fa-check-square-o"></span> Permission
+                                            Management</a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </li>
+                        <?php $Settings_title = false;
+                    }
+                    //MAIN TITLE
+                    if ($Settings_title) { ?>
+                        <script>
+                            $('#Settings_title').css('display', 'none');
+                        </script>
+                    <?php } ?>
+
+                    <li class="title" id="Stock_title">STOCK</li>
+                    <?php $Stock_title = true; ?>
+
+                    <?php if (in_array('sup_mng', $permMdul, TRUE)) { ?>
+                        <li id="sys_stts">
+                            <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> Stock Components</a>
+                            <ul>
+                                <li>
+                                    <a id="" href="<?= base_url() ?>"><span
+                                                class="nav-icon-hexa fa fa-th-large"></span> Category Management</a>
+                                </li>
+                                <li>
+                                    <a href="#"><span class="nav-icon-hexa fa fa-anchor"></span> Brand Management </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <?php $Stock_title = false;
+                    } ?>
+
+                    <?php if (in_array('sup_mng', $permMdul, TRUE)) { ?>
+                        <li id="sup_mng">
+                            <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
+                            <ul>
+                                <?php if (in_array("sup_reg", $permission, TRUE)) { ?>
+                                    <li>
+                                        <a id="sup_reg" href="<?= base_url() ?>Stock/sup_reg"><span
+                                                    class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
+                                    </li>
+                                <?php } ?>
+                                <li>
+                                    <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <?php $Stock_title = false;
+                    } ?>
+
+                    <?php
+                    //MAIN TITLE
+                    if ($Stock_title) { ?>
+                        <script>
+                            $('#Stock_title').css('display', 'none');
+                        </script>
+                    <?php } ?>
                 </ul>
             </nav>
         </div>
@@ -220,6 +293,3 @@
                 </ul>
             </div>
             <!-- END APP HEADER  -->
-
-
-
