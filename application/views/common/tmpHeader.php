@@ -19,6 +19,8 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
     <!-- CSS INCLUDE -->
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/styles.css">
     <link rel="stylesheet" href="<?= base_url(); ?>assets/plugins/jquery-validation/css/screen.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/glyphicon_icon.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css">
     <!-- EOF CSS INCLUDE -->
 </head>
 <body>

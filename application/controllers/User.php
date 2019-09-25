@@ -33,7 +33,11 @@ class User extends CI_Controller
             redirect('/');
         }
     }
-
+//</TESTING AREA>
+    function Test(){
+        $this->load->view('blank');
+    }
+//</END TESTING AREA>
 	public function index()
 	{
 	    //Active Page Id

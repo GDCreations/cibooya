@@ -30,8 +30,7 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
         src="<?= base_url(); ?>assets/js/vendor/customscrollbar/jquery.mCustomScrollbar.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap-select/bootstrap-select.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/select2/select2.full.min.js"></script>
-<script type="text/javascript"
-        src="<?= base_url(); ?>assets/js/vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/maskedinput/jquery.maskedinput.min.js"></script>
 
@@ -90,6 +89,13 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
         if (module != '') {
             $("#" + module).addClass("openable open");
         }
+    });
+
+    //INITIALITING DATETIMEPICKERS
+    $().ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
     });
 </script>
 <!--            Show Active Page on Navigation Bar-->

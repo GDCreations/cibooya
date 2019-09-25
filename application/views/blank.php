@@ -11,8 +11,24 @@
     <link rel="shortcut icon" href="<?= base_url(); ?>assets/img/favicon.ico" type="image/x-icon">
     <link rel="icon" href="<?= base_url(); ?>assets/img/favicon.ico" type="image/x-icon">
     <!-- END META SECTION -->
+
+    <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/moment/moment.min.js"></script>
+
+    <script type="text/javascript"
+            src="<?= base_url(); ?>assets/js/vendor/customscrollbar/jquery.mCustomScrollbar.min.js"></script>
+    <script type="text/javascript"
+            src="<?= base_url(); ?>assets/js/vendor/bootstrap-select/bootstrap-select.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/select2/select2.full.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <!-- CSS INCLUDE -->
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/styles.css">
+    <link rel="stylesheet"
+          href="<?= base_url(); ?>assets/css/glyphicon_icon.css">
+    <link rel="stylesheet"
+          href="<?= base_url(); ?>assets/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css">
     <!-- EOF CSS INCLUDE -->
 </head>
 <body>
@@ -72,8 +88,25 @@
 
             <!-- START PAGE CONTAINER -->
             <div class="container">
-
-
+                <div class="row">
+                    <div class='col-sm-6'>
+                        <div class="form-group">
+                            <div class='input-group date datetimepicker'>
+                                <input type='text' class="form-control datetimepicker" value="<?= date('Y-m-d')?>"/>
+                                <span class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('.datetimepicker').datetimepicker({
+                                format: 'YYYY-MM-DD'
+                            });
+                        });
+                    </script>
+                </div>
             </div>
             <!-- END PAGE CONTAINER -->
 
@@ -123,17 +156,9 @@
 <!-- END APP WRAPPER -->
 
 <!-- START SCRIPTS -->
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery-ui.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap/bootstrap.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/moment/moment.min.js"></script>
-
-<script type="text/javascript"
-        src="<?= base_url(); ?>assets/js/vendor/customscrollbar/jquery.mCustomScrollbar.min.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap-select/bootstrap-select.js"></script>
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/select2/select2.full.min.js"></script>
-<script type="text/javascript"
-        src="<?= base_url(); ?>assets/js/vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
+<!--<script type="text/javascript"-->
+<!--        src="-->
+<? //= base_url(); ?><!--assets/js/vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>-->
 
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/maskedinput/jquery.maskedinput.min.js"></script>
 <script type="text/javascript"
@@ -143,7 +168,9 @@
 
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/datatables/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/datatables/dataTables.bootstrap.min.js"></script>
-
+<!--<script type="text/javascript"-->
+<!--        src="-->
+<? //= base_url(); ?><!--assets/js/vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>-->
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/sweetalert/sweetalert.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/knob/jquery.knob.min.js"></script>
 
@@ -174,7 +201,7 @@
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/tableexport/jspdf/jspdf.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/tableexport/jspdf/libs/base64.js"></script>
 
-<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap-daterange/daterangepicker.js"></script>
+<!--<script type="text/javascript" src="--><?//= base_url(); ?><!--assets/js/vendor/bootstrap-daterange/daterangepicker.js"></script>-->
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap-tour/bootstrap-tour.min.js"></script>
 <script type="text/javascript"
         src="<?= base_url(); ?>assets/js/vendor/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>

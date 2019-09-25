@@ -916,13 +916,13 @@
                             if (bkdet[ii]['dfst'] == 1) {
                                 var dfst = "<label class='label label-info' title='Default Account Number'>D</label> ";
                                 var radio = "<div title='Default Account' class='app-radio round'><input type='radio'" +
-                                    "onclick='desDefClose($(this))'" +
+                                    "onclick='desDefClose($(this))'" + des +
                                     " name='dfstRd[]' value='" + bkdet[ii]['acid'] + "' checked/></div>"
                                 var defDes = 'disabled';
                             } else {
                                 var dfst = "";
                                 var radio = "<div class='app-radio round'><input type='radio'" +
-                                    "onclick='desDefClose($(this))'" +
+                                    "onclick='desDefClose($(this))'" + des +
                                     " name='dfstRd[]' value='" + bkdet[ii]['acid'] + "'/></div>"
                                 var defDes = '';
                             }
