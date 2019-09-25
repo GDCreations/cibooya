@@ -65,8 +65,13 @@
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">To Date</label>
                     <div class="col-md-8 col-xs-12">
-                        <input type="text" class="form-control bs-datepicker" name="todt" id="todt"
-                               value="<?= date('m-d-Y') ?>"/>
+                        <div class='input-group date datetimepicker'>
+                        <input type="text" class="form-control datetimepicker" name="todt" id="todt"
+                               value="<?= date('Y-m-d') ?>"/>
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -108,13 +113,13 @@
 
         });
 
-        function chckBtn(id, inpu) {
-            if (id == 0) { //brch_cst
-                document.getElementById(inpu).style.borderColor = "red";
-            } else {
-                document.getElementById(inpu).style.borderColor = "";
-            }
-        }
+        // function chckBtn(id, inpu) {
+        //     if (id == 0) { //brch_cst
+        //         document.getElementById(inpu).style.borderColor = "red";
+        //     } else {
+        //         document.getElementById(inpu).style.borderColor = "";
+        //     }
+        // }
 
         function getUser(brid, div) {
             $.ajax({
@@ -156,24 +161,21 @@
                     default_Selector(child1.find('div'));
                 }
             });
-
         }
 
         // Search btn
         function srchActv() {
-
             var brn = document.getElementById('brch').value;
             var user = document.getElementById('user').value;
             //var act = document.getElementById('act').value;
             var frdt = document.getElementById('frdt').value;
             var todt = document.getElementById('todt').value;
 
-            console.log(brn + ' x ' + user + ' x ' + frdt + ' x ' + todt + ' x ');
-
             if (brn == '0') {
-                document.getElementById('brch').style.borderColor = "red";
+                $('#brch').parent().css('border','1px solid red');
+                $('#brch').parent().css('border-radius','4px');
             } else {
-                document.getElementById('brch').style.borderColor = "";
+                $('#brch').parent().css('border','0px');
 
                 $('#dataTbRcnt').DataTable().clear();
                 $('#dataTbRcnt').DataTable({
