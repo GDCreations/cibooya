@@ -6,14 +6,13 @@
 INSERT INTO `sys_policy` (`poid`, `popg`, `ponm`, `pods`, `pov1`, `pov2`, `pov3`, `post`, `remk`, `crby`, `crdt`, `mdby`, `mddt`, `stat`) VALUES (NULL, '', 'User Register Email', 'This policy enable, User Registration login details automation send to user. If policy disable Not send to email', '', '', '', '0', '0-disable/1-enable', '1', '2018-05-01 00:00:00', '1', '2019-09-26 10:55:25', '1');
 ALTER TABLE `user_mas` ADD `fslg` INT(10) NOT NULL COMMENT 'if first login (0-No/1-Yes)' AFTER `islg`;
 
-2019-09-26 JANAKA
+2019-09-26 JANAKA ** DONE
 INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'brndMng', 'Brand Management', '', '0', '1', '1', '6'), (NULL, 'typeMng', 'Type Management', '', '0', '1', '1', '6');
 INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'itemMng', 'Item Management', '', '0', '1', '1', '6');
 -----------------------------------------------------
 2019-09-25 ** DONE
 ALTER TABLE `brch_mas` ADD `apby` INT(10) NOT NULL AFTER `mddt`, ADD `apdt` DATETIME NOT NULL AFTER `apby`;
 ALTER TABLE `user_mas` CHANGE `stat` `stat` INT(2) NOT NULL COMMENT '0-inactive/1-active/2-tmp disable';
-
 -----------------------------------------------------
 2019-09-24  ** DONE
 INSERT INTO `user_page_mdl` (`aid`, `mdcd`, `mdnm`, `remk`, `stat`) VALUES (NULL, 'sysCompnt', 'System Component', '', '1');
@@ -24,16 +23,6 @@ INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, 
 ALTER TABLE `brch_mas` CHANGE `stat` `stat` INT(2) NOT NULL COMMENT '0-pending/1-active/2-tmp disable/3-inactive';
 -----------------------------------------------------
 2019-09-18
-C - Login
-V -
-M - Generic_model
-    Login_model
 
-Dbs Add new table
-    brch_mas
-    user_level
-    user_mas
-    com_det
-    user_log
 
 -----------------------------------------------------

@@ -67,7 +67,7 @@
                                 $chk = "";
                                 $dis1 = "none";
                             } ?>
-                            <label class="switch">
+                            <label class="switch switch-sm">
                                 Disable <input type="checkbox" value="1" id="digey" name="digey" <?= $chk ?>
                                                onchange="eyeMd()"/>
                             </label> Enable
@@ -94,7 +94,7 @@
                             } else {
                                 $chk = "";
                             } ?>
-                            <label class="switch">
+                            <label class="switch switch-sm">
                                 Disable <input type="checkbox" value="1" id="rgmil" name="rgmil" <?= $chk ?>/>
                             </label> Enable
                         </div>
