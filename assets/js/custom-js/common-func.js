@@ -61,13 +61,10 @@ function chckBtn(id, inpu) {
         $('#' + inpu).parent().css('border', '0px');
     }
 }
-
 // NIC VALIDATION AND FIND DOB & GENDER USEING NIC
 
 // nic - NIC no / vlid - passing value html id / htid - htmal id (disable enable button) / dob - DOB html id / gend - Gender html id / genDiv - gend parent div
 function checkNic(nic, vlid, htid, dob, gend, genDiv) {
-
-    console.log(dob + ' ** ' + gend + ' - ' + genDiv);
 
     //var nicNo = document.getElementById("nic").value;
     var nicNo = nic;
@@ -93,11 +90,11 @@ function checkNic(nic, vlid, htid, dob, gend, genDiv) {
         }
 
         if (x < 500) {
-            //document.getElementById("gend").value = 1;
-            document.getElementById( gend).value = 1;
+            //document.getElementById( gend).value = 1;
+            set_select(gend,1);
         } else {
-            //document.getElementById("gend").value = 2;
-            document.getElementById( gend).value = 2;
+            //document.getElementById( gend).value = 2;
+            set_select(gend,2);
             x = +x - +500;
         }
 
@@ -145,11 +142,11 @@ function checkNic(nic, vlid, htid, dob, gend, genDiv) {
         var x = nicNo.substr(4, 3);
 
         if (x < 500) {
-            //document.getElementById("gend").value = 1;
-            document.getElementById(gend).value = 1;
+            //document.getElementById(gend).value = 1;
+            set_select(gend,1);
         } else {
-            //document.getElementById("gend").value = 2;
-            document.getElementById(gend).value = 2;
+            //document.getElementById(gend).value = 2;
+            set_select(gend,2);
             x = +x - +500;
         }
 
