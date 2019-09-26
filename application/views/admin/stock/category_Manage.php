@@ -116,7 +116,7 @@
                                         class="fa fa-asterisk req-astrick"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="add_cat_btn" class="btn btn-warning btn-xs btn-rounded">Submit
+                        <button type="button" id="add_cat_btn" class="btn btn-warning btn-sm btn-rounded">Submit
                         </button>
                     </div>
                 </div>
@@ -196,7 +196,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="app_cat_btn" class="btn btn-warning btn-xs btn-rounded">
+                        <button type="button" id="app_cat_btn" class="btn btn-warning btn-sm btn-rounded">
                         </button>
                     </div>
                 </div>

@@ -8,7 +8,7 @@
 </div>
 <div class="app-heading app-heading-bordered app-heading-page">
     <div class="icon icon-lg">
-        <span class="fa fa-th-large" style="color: #e69c0f;"></span>
+        <span class="fa fa-check-square-o" style="color: #e69c0f;"></span>
     </div>
     <div class="title">
         <h1>Permission Management</h1>

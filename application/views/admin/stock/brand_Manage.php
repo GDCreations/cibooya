@@ -33,7 +33,22 @@
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">Status</label>
                     <div class="col-md-8 col-xs-12">
-                        <select id="stat" name="stat" onchange="srch_Cat();" class="bs-select">
+                        <select id="cats" name="cats" class="bs-select" onchange="chckBtn(this.value,'cats')">
+                            <option value="0">-- Select Category --</option>
+                            <?php
+                            foreach ($category as $cat){
+                                echo "<option value='$cat->ctid'>".$cat->ctcd." - ".$cat->ctnm."</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-md-4 col-xs-12 control-label">Status</label>
+                    <div class="col-md-8 col-xs-12">
+                        <select id="stat" name="stat" class="bs-select">
                             <option value="all">All</option>
                             <option value="0">Pending</option>
                             <option value="1">Active</option>
@@ -43,12 +58,17 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed" onclick="srch_Brnd()"><span class="fa fa-search"></span>Search</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="block">
         <div class="row form-horizontal">
             <div class="table-responsive">
-                <table id="cat_table" class="table dataTable table-striped table-bordered" width="100%">
+                <table id="brnd_table" class="table dataTable table-striped table-bordered" width="100%">
                     <thead>
                     <tr>
                         <th class="text-left">#</th>
@@ -208,7 +228,7 @@
     <script type="text/javascript">
         $().ready(function () {
             //Table Initializing
-            $('#cat_table').DataTable({
+            $('#brnd_table').DataTable({
                 "lengthMenu": [
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]

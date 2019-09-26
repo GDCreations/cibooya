@@ -27,8 +27,8 @@ function default_Selector(node) {
 }
 
 //Set selected item in selector
-//id - Selector ID
-//itm - Selected Item ID
+//id - Selector ID <select></select>
+//itm - Selected Item ID <option></option>
 function set_select(id,itm) {
     $('#'+id).val(itm);
     var sltr = $('#'+id);       //Get Selector Element
