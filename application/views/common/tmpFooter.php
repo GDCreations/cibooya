@@ -11,7 +11,7 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
 
     <div class="app-footer-line darken">
         <!--<div class="copyright wide text-center">&copy; 2016-2017 Boooya. All right reserved in the Ukraine and other </div>-->
-        <div class="copyright wide text-center">
+        <div class="copyright wide text-left">
             &copy; <?= date('Y') ?> - <?= $data[0]->synm ?> | v1.<?= date('m') ?> | Powered By
             <a href="http://www.gdcreations.com" target="_blank">GDC</a></div>
     </div>
@@ -30,6 +30,7 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
         src="<?= base_url(); ?>assets/js/vendor/customscrollbar/jquery.mCustomScrollbar.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap-select/bootstrap-select.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/select2/select2.full.min.js"></script>
+<!--https://github.com/Eonasdan/bootstrap-datetimepicker-->
 <script type="text/javascript" src="<?= base_url(); ?>assets/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/maskedinput/jquery.maskedinput.min.js"></script>
@@ -96,6 +97,7 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
         $('.datetimepicker').datetimepicker({
             format: 'YYYY-MM-DD'
         });
+        $('.datetimepicker').css('cursor','pointer');
     });
 </script>
 <!--            Show Active Page on Navigation Bar-->

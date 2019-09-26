@@ -69,9 +69,7 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label">Register Date</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control bs-datepicker"
-                               value="<?= date("m-d-Y", strtotime($compInfo[0]->regd)) ?>"
-                               name="regd" id="regd"/>
+                            <input type='text' class="form-control datetimepicker" id="regd" name="regd" value="<?= $compInfo[0]->regd ?>"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -133,7 +131,6 @@
         $('#save').click(function (e) {
             e.preventDefault();
             if ($('#brandingEdt').valid()) {
-
                 $('#save').prop('disabled', true);
 
                 swal({
@@ -152,8 +149,9 @@
                         swal({title: "", text: "Update Success!", type: "success"},
                             function () {
                                 $('#save').prop('disabled', false);
-                                clear_Form('brandingEdt');
-                                $('#modal-add').modal('hide');
+                                //clear_Form('brandingEdt');
+                                //$('#modal-add').modal('hide');
+                                location.reload();
                             });
                     },
                     error: function (data, textStatus) {

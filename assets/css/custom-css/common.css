@@ -1,0 +1,11 @@
+/*Require Field Astrick Mark*/
+.req-astrick {
+    color: red;
+    font-size: 9px;
+    font-weight: normal;
+}
+
+/*app -> table -> tbody -> tr -> td -> .btn*/
+.app .table tbody tr td .btn {
+    border-radius: 5px;
+}

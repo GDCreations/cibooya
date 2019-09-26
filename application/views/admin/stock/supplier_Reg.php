@@ -90,7 +90,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Supplier Name <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="name" id="name"
                                                    placeholder="Supplier Name"/>
@@ -98,8 +98,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Address <span
-                                                    class="fa fa-asterisk"
-                                                    style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                         <textarea class="form-control" name="addr" id="addr"
                                                   placeholder="Supplier Address"></textarea>
@@ -107,8 +106,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Contact <span
-                                                    class="fa fa-asterisk"
-                                                    style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-4 col-xs-12">
                                             <input class="form-control" type="text" name="mobi" id="mobi"
                                                    placeholder="Mobile"/>
@@ -120,8 +118,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Email <span
-                                                    class="fa fa-asterisk"
-                                                    style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="email" name="email" id="email"
                                                    placeholder="Email"/>
@@ -129,7 +126,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Bank Name <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <select id="bnknm" name="bnknm"
                                                     onchange="getbankbrch(this.value,'bnkbr','bnkbr_cont')"
@@ -145,7 +142,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Bank Branch <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12" id="bnkbr_cont">
                                             <select id="bnkbr" name="bnkbr" onchange="" class="bs-select">
                                                 <option value="0">-- Select A Branch --</option>
@@ -154,7 +151,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Account Number <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="acno" id="acno"
                                                    placeholder="Account Number"/>
@@ -174,10 +171,10 @@
                     <div class="modal-footer">
                         <div class="pull-left">
                             <span class="fa fa-hand-o-right"></span> <label style="color: red"> <span
-                                        class="fa fa-asterisk"></span> Required Fields </label>
+                                        class="fa fa-asterisk req-astrick"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="add_sup_btn" class="btn btn-warning btn-xs btn-rounded">Submit
+                        <button type="button" id="add_sup_btn" class="btn btn-warning btn-sm btn-rounded">Submit
                         </button>
                     </div>
                 </div>
@@ -206,7 +203,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Supplier Name <span
-                                                    class="fa fa-asterisk edit_req" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick edit_req"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="name_edt" id="name_edt"
                                                    placeholder="Supplier Name"/>
@@ -218,8 +215,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Address <span
-                                                    class="fa fa-asterisk edit_req"
-                                                    style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick edit_req"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                         <textarea class="form-control" name="addr_edt" id="addr_edt"
                                                   placeholder="Supplier Address"></textarea>
@@ -227,8 +223,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Contact <span
-                                                    class="fa fa-asterisk edit_req"
-                                                    style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick edit_req"></span></label>
                                         <div class="col-md-4 col-xs-12">
                                             <input class="form-control" type="text" name="mobi_edt" id="mobi_edt"
                                                    placeholder="Mobile"/>
@@ -240,8 +235,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Email <span
-                                                    class="fa fa-asterisk edit_req"
-                                                    style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick edit_req"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="email" name="email_edt" id="email_edt"
                                                    placeholder="Email"/>
@@ -328,7 +322,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="app_sup_btn" class="btn btn-warning btn-xs btn-rounded">
+                        <button type="button" id="app_sup_btn" class="btn btn-warning btn-sm btn-rounded">
                         </button>
                     </div>
                 </div>
@@ -388,7 +382,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                    <button type="button" id="add_new_acc" class="btn btn-warning btn-xs btn-rounded">
+                    <button type="button" id="add_new_acc" class="btn btn-warning btn-sm btn-rounded">
                         Add
                     </button>
                 </div>
@@ -987,7 +981,7 @@
                     function (isConfirm) {
                         if (isConfirm) {
                             var func = $('#func').val();
-                            $('#app_sup_btn').prop('disabled', false);
+                            $('#app_sup_btn').prop('disabled', true);
                             if (func == 'edit') {
                                 swal({
                                     title: "Processing...",

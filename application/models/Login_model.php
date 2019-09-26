@@ -4,8 +4,9 @@ class Login_model extends CI_Model
 {
     function loginMe($username, $password)
     {
-        $this->db->select('');
+        $this->db->select('user_mas.*, user_level.lvnm');
         $this->db->from('user_mas');
+        $this->db->join('user_level', 'user_level.id = user_mas.usmd','left');
         $this->db->where('user_mas.usnm', $username);
         $this->db->where('user_mas.stat', 1);
         $query = $this->db->get();
