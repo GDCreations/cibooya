@@ -114,7 +114,7 @@
 
     <!-- MODAL ADD NEW SUPPLIER -->
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg" role="document" style="width: 80%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
@@ -124,6 +124,7 @@
                         <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> User Creation
                         </h4>
                     </div>
+
                     <div class="modal-body">
                         <div class="container">
                             <div class="row form-horizontal">
@@ -136,7 +137,10 @@
                                                     onchange="chckBtn(this.value,'brchNw')">
                                                 <?php
                                                 foreach ($branchinfo as $branch) {
-                                                    echo "<option value='$branch[brch_id]'>$branch[brch_name]</option>";
+                                                    if ($branch['brch_id'] == 'all') {
+                                                    } else {
+                                                        echo "<option value='$branch[brch_id]'>$branch[brch_name]</option>";
+                                                    }
                                                 }
                                                 ?>
                                             </select>
@@ -146,7 +150,7 @@
                                         <label class="col-md-4 col-xs-12 control-label">First Name <span
                                                     class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control text-uppercase" type="text" name="frnm" id="frnm"
+                                            <input class="form-control" type="text" name="frnm" id="frnm"
                                                    placeholder="First Name"/>
                                         </div>
                                     </div>
@@ -154,7 +158,7 @@
                                         <label class="col-md-4 col-xs-12 control-label">User Name <span
                                                     class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control text-uppercase" type="text" name="usnm" id="usnm"
+                                            <input class="form-control" type="text" name="usnm" id="usnm"
                                                    placeholder="User Name"/>
                                         </div>
                                     </div>
@@ -162,7 +166,8 @@
                                         <label class="col-md-4 col-xs-12 control-label">NIC <span
                                                     class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control text-uppercase" type="text" name="unic" id="unic"
+                                            <input class="form-control" type="text" name="unic" id="unic"
+                                                   onkeyup="checkNic(this.value,'unic','addBtn','udob','ugnd','ugndDiv')"
                                                    placeholder="NIC"/>
                                         </div>
                                     </div>
@@ -180,7 +185,6 @@
                                                    placeholder="Land Tele."/>
                                         </div>
                                     </div>
-
                                 </div>
 
                                 <div class="col-md-6">
@@ -203,7 +207,7 @@
                                         <label class="col-md-4 col-xs-12 control-label">Last Name <span
                                                     class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control text-uppercase" type="text" name="lsnm" id="lsnm"
+                                            <input class="form-control" type="text" name="lsnm" id="lsnm"
                                                    placeholder="Last Name"/>
                                         </div>
                                     </div>
@@ -211,9 +215,8 @@
                                         <label class="col-md-4 col-xs-12 control-label">Email <span
                                                     class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control text-uppercase" type="email" name="emil"
-                                                   id="emil"
-                                                   placeholder="Email"/>
+                                            <input class="form-control" type="email" name="emil"
+                                                   id="emil" placeholder="Email"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -221,36 +224,41 @@
                                                     class="fa fa-asterisk"
                                                     style="color: red"></span></label>
                                         <div class="col-md-4 col-xs-12">
-                                            <input class="form-control" type="text" name="udob" id="udob"
-                                                   placeholder="DOB"/>
+                                            <input class="form-control datetimepicker" type="text" name="udob" id="udob"
+                                                   placeholder="DOB" readonly/>
                                         </div>
-                                        <div class="col-md-4 col-xs-12">
-                                            <input class="form-control" type="text" name="ugnd" id="ugnd"
-                                                   placeholder="Gend"/>
+                                        <div class="col-md-4 col-xs-12" id="ugndDiv">
+                                            <select class="bs-select" name="ugnd" id="ugnd"
+                                                    onchange="chckBtn(this.value,'ugnd')" readonly>
+                                                <option value='0'>-- Select --</option>
+                                                <option value='1'> Male</option>
+                                                <option value='2'> Female</option>
+
+                                            </select>
                                         </div>
                                     </div>
-
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Permission Type <span
-                                                    class="fa fa-asterisk"
+                                                    class="fa fa-asterisk "
                                                     style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="prme" id="prme"
-                                                   placeholder="Email"/>
+                                            <label class="switch">
+                                                Default <input type="checkbox" value="1" id="prmTp" name="prmTp">
+                                            </label> Manual
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <div class="pull-left">
-                            <span class="fa fa-hand-o-right"></span> <label style="color: red"> <span
-                                        class="fa fa-asterisk"></span> Required Fields </label>
+                            <span class="fa fa-hand-o-right"></span> <label style="color: red">
+                                <span class="fa fa-asterisk"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="addBtn" class="btn btn-warning btn-xs btn-rounded">Submit
+                        <button type="button" id="addBtn" class="btn btn-warning btn-sm btn-rounded">Submit
                         </button>
                     </div>
                 </div>
@@ -259,51 +267,69 @@
     </div>
     <!-- END ADD NEW  -->
 
-    <!-- MODAL VIEW  -->
+    <!-- MODAL VIEW / EDIT /  -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-md" role="document">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
-                                                                                              class="icon-cross"></span>
+        <div class="modal-dialog modal-lg" role="document" style="width: 80%">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" class="icon-cross"></span>
             </button>
-            <form id="brnEdtform">
+
+            <form id="edtform">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Branch
-                            Creation <span class="text-muted" id="subTitle_edit"></span></h4>
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> User Creation
+                            <span class="text-muted" id="subTitle_edit"></span></h4>
                         <input type="hidden" id="func" name="func"/>
                         <input type="hidden" id="auid" name="auid"/>
                     </div>
+
                     <div class="modal-body">
                         <div class="container">
                             <div class="row form-horizontal">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Branch Name <span
+                                        <label class="col-md-4 col-xs-12 control-label">Branch <span
                                                     class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="nameEdt" id="nameEdt"
-                                                   placeholder="Branch Name"/>
+                                            <select class="bs-select" name="brchNwEdt" id="brchNwEdt"
+                                                    onchange="chckBtn(this.value,'brchNwEdt')">
+                                                <?php
+                                                foreach ($branchinfo as $branch) {
+                                                    if ($branch['brch_id'] == 'all') {
+                                                    } else {
+                                                        echo "<option value='$branch[brch_id]'>$branch[brch_name]</option>";
+                                                    }
+                                                }
+                                                ?>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Branch Code <span
+                                        <label class="col-md-4 col-xs-12 control-label">First Name <span
                                                     class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control text-uppercase" type="text" name="codeEdt"
-                                                   id="codeEdt"
-                                                   placeholder="Branch Code"/>
+                                            <input class="form-control" type="text" name="frnmEdt" id="frnmEdt"
+                                                   placeholder="First Name"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">User Name <span
+                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <input class="form-control" type="text" name="usnmEdt" id="usnmEdt"
+                                                   placeholder="User Name"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">NIC <span
+                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <input class="form-control" type="text" name="unicEdt" id="unicEdt"
+                                                   onkeyup="checkNic(this.value,'unicEdt','edtBtn','udobEdt','ugndEdt','ugndDivEdt')"
+                                                   placeholder="NIC"/>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Address <span
-                                                    class="fa fa-asterisk"
-                                                    style="color: red"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                        <textarea class="form-control" name="addrEdt" id="addrEdt"
-                                                  placeholder="Address"></textarea>
-                                        </div>
-                                    </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Contact <span
                                                     class="fa fa-asterisk"
@@ -317,70 +343,77 @@
                                                    placeholder="Land Tele."/>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Email <span
-                                                    class="fa fa-asterisk"
-                                                    style="color: red"></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">User Level <span
+                                                    class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="email" name="emailEdt" id="emailEdt"
-                                                   placeholder="Email"/>
+                                            <select class="bs-select" name="uslvNwEdt" id="uslvNwEdt"
+                                                    onchange="chckBtn(this.value,'uslvNwEdt')">
+                                                <option value="0"> -- Select Level --</option>
+                                                <?php
+                                                foreach ($uslvlinfo as $uslv) {
+                                                    echo "<option value='$uslv->id'>$uslv->lvnm</option>";
+                                                }
+                                                ?>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Remark</label>
+                                        <label class="col-md-4 col-xs-12 control-label">Last Name <span
+                                                    class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                        <textarea class="form-control" rows="5" name="remkEdt" id="remkEdt"
-                                                  placeholder="Remark"></textarea>
+                                            <input class="form-control" type="text" name="lsnmEdt" id="lsnmEdt"
+                                                   placeholder="Last Name"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Email <span
+                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <input class="form-control" type="email" name="emilEdt"
+                                                   id="emilEdt" placeholder="Email"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">DOB / Gender <span
+                                                    class="fa fa-asterisk"
+                                                    style="color: red"></span></label>
+                                        <div class="col-md-4 col-xs-12">
+                                            <input class="form-control datetimepicker" type="text" name="udobEdt"
+                                                   id="udobEdt"
+                                                   placeholder="DOB" readonly/>
+                                        </div>
+                                        <div class="col-md-4 col-xs-12" id="ugndDivEdt">
+                                            <select class="bs-select" name="ugndEdt" id="ugndEdt"
+                                                    onchange="chckBtn(this.value,'ugnd')" readonly>
+                                                <option value='0'>-- Select --</option>
+                                                <option value='1'> Male</option>
+                                                <option value='2'> Female</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Permission Type <span
+                                                    class="fa fa-asterisk "
+                                                    style="color: red"></span></label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <label class="switch">
+                                                Default <input type="checkbox" value="1" id="prmTpEdt" name="prmTpEdt">
+                                            </label> Manual
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <!--<div class="form-horizontal view_Area">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Status</label>
-                                        <label class="col-md-8 control-label" id="sup_stat"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Created By</label>
-                                        <label class="col-md-8 control-label" id="crby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Created Date</label>
-                                        <label class="col-md-8 control-label" id="crdt"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Approved By</label>
-                                        <label class="col-md-8 control-label" id="apby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Approved Date</label>
-                                        <label class="col-md-8 control-label" id="apdt"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Rejected By</label>
-                                        <label class="col-md-8 control-label" id="rjby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Rejected Date</label>
-                                        <label class="col-md-8 control-label" id="rjdt"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Updated By</label>
-                                        <label class="col-md-8 control-label" id="mdby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Updated Date</label>
-                                        <label class="col-md-8 control-label" id="mddt"></label>
-                                    </div>
-                                </div>
-                            </div>-->
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="edtBtn" class="btn btn-warning btn-xs btn-rounded">
+                        <button type="button" id="edtBtn" class="btn btn-warning btn-sm btn-rounded">
                         </button>
                     </div>
                 </div>
@@ -409,7 +442,10 @@
                     frnm: {
                         required: true
                     },
-
+                    emil: {
+                        required: true,
+                        email: true
+                    },
                     usnm: {
                         required: true,
                         remote: {
@@ -423,9 +459,10 @@
                             }
                         }
                     },
-
                     unic: {
-                        required: true
+                        required: true,
+                        minlength: 10,
+                        maxlength: 12,
                     },
                     mobi: {
                         required: true,
@@ -438,11 +475,6 @@
                         minlength: 10,
                         maxlength: 10,
                     },
-                    email: {
-                        required: true,
-                        email: true
-                    },
-
                     uslvNw: {
                         required: true,
                         notEqual: 0
@@ -459,16 +491,17 @@
 
                 },
                 messages: {
-                    name: {
-                        required: "Enter Branch Name",
-                        remote: "Already entered Name"
+                    brchNw: {
+                        required: "Select Branch ",
+                        notEqual: "Select Branch"
                     },
-                    code: {
-                        required: "Enter Branch Code",
-                        remote: "Already Entered Code"
+                    uslvNw: {
+                        required: "Select User Level",
+                        notEqual: "Select User Level"
                     },
-                    addr: {
-                        required: "Enter Branch address"
+                    usnm: {
+                        required: "Enter User Name",
+                        remote: "Already entered User Name",
                     },
                     mobi: {
                         required: "Enter mobile number",
@@ -490,16 +523,16 @@
                 }
             });
 
-            $('#brnEdtform').validate({
+            $('#edtform').validate({
                 rules: {
-                    nameEdt: {
+                    usnmEdt: {
                         required: true,
                         remote: {
-                            url: "<?= base_url(); ?>admin/chkBrncName",
+                            url: "<?= base_url(); ?>admin/chkUserName",
                             type: "post",
                             data: {
-                                name: function () {
-                                    return $("#nameEdt").val();
+                                usnm: function () {
+                                    return $("#usnmEdt").val();
                                 },
                                 auid: function () {
                                     return $("#auid").val();
@@ -508,24 +541,16 @@
                             }
                         }
                     },
-                    codeEdt: {
+                    brchNwEdt: {
                         required: true,
-                        remote: {
-                            url: "<?= base_url(); ?>admin/chkBrnCode",
-                            type: "post",
-                            data: {
-                                code: function () {
-                                    return $("#codeEdt").val();
-                                },
-                                auid: function () {
-                                    return $("#auid").val();
-                                },
-                                stat: 1
-                            }
-                        }
+                        notEqual: 0
                     },
-                    addrEdt: {
+                    frnmEdt: {
                         required: true
+                    },
+                    emilEdt: {
+                        required: true,
+                        email: true
                     },
                     mobiEdt: {
                         required: true,
@@ -537,10 +562,6 @@
                         digits: true,
                         minlength: 10,
                         maxlength: 10,
-                    },
-                    emailEdt: {
-                        required: true,
-                        email: true
                     },
                 },
                 messages: {
@@ -573,7 +594,6 @@
                     },
                 }
             });
-
             //srchUser();
         });
 
@@ -604,8 +624,8 @@
                     ],
                     "serverSide": true,
                     "columnDefs": [
-                        {className: "text-left", "targets": [2, 3, 5]},
-                        {className: "text-center", "targets": [0, 1, 4, 6, 7, 8]},
+                        {className: "text-left", "targets": [2, 3, 5, 6]},
+                        {className: "text-center", "targets": [0, 1, 4, 7, 8]},
                         {className: "text-right", "targets": [0]},
                         {className: "text-nowrap", "targets": [2, 3]},
                     ],
@@ -621,7 +641,6 @@
                         {sWidth: '8%'}, //Status
                         {sWidth: '15%'} //Option
                     ],
-
                     "ajax": {
                         url: '<?= base_url(); ?>admin/searchUser',
                         type: 'post',
@@ -642,14 +661,14 @@
                 $('#addBtn').prop('disabled', true);
                 swal({
                     title: "Processing...",
-                    text: "Branch's data saving..",
+                    text: "User data saving..",
                     imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                     showConfirmButton: false
                 });
 
                 jQuery.ajax({
                     type: "POST",
-                    url: "<?= base_url(); ?>admin/branchCreate",
+                    url: "<?= base_url(); ?>admin/userCreate",
                     data: $("#addForm").serialize(),
                     dataType: 'json',
                     success: function (data) {
@@ -685,10 +704,11 @@
                 $('#subTitle_edit').html(' - View');
                 $('#edtBtn').css('display', 'none');
                 $("#modal-view").find('.edit_req').css("display", "none");
-                $("#edit_Area").css('display', 'none');
-                $(".view_Area").css('display', 'block');
+
                 //Make readonly all fields
                 $("#modal-view :input").attr("readonly", true);
+                $("#prmTpEdt").attr("disabled", true);
+
                 $("#modal-view").find('.bootstrap-select').addClass("disabled dropup");
                 $("#modal-view").find('.bootstrap-select').children().addClass("disabled dropup");
                 var des = "disabled";
@@ -699,28 +719,15 @@
                 $('#edtBtn').css('display', 'inline');
                 $('#edtBtn').html('Update');
                 $("#modal-view").find('.edit_req').css("display", "inline");
-                $("#edit_Area").css('display', 'block');
-                $(".view_Area").css('display', 'none');
+
                 //Remove readonly all fields
                 $("#modal-view :input").attr("readonly", false);
+                $("#prmTpEdt").attr("disabled", false);
+
                 $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
                 $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
                 var des = "";
                 //EDIT MODEL
-            } else if (func == 'app') {
-                //APPROVE MODEL
-                $('#subTitle_edit').html(' - Approve');
-                $('#edtBtn').css('display', 'inline');
-                $('#edtBtn').html('Approve');
-                $("#modal-view").find('.edit_req').css("display", "inline");
-                $("#edit_Area").css('display', 'block');
-                $(".view_Area").css('display', 'none');
-                //Remove readonly all fields
-                $("#modal-view :input").attr("readonly", false);
-                $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
-                $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
-                var des = "";
-                //APPROVE MODEL
             }
 
             $('#func').val(func);
@@ -728,7 +735,7 @@
 
             jQuery.ajax({
                 type: "POST",
-                url: "<?= base_url(); ?>admin/getBrncDet",
+                url: "<?= base_url(); ?>admin/getUserDet",
                 data: {
                     id: id
                 },
@@ -736,26 +743,27 @@
                 success: function (data) {
                     var len = data.length;
                     if (len > 0) {
-                        $('#nameEdt').val(data[0]['brnm']);
-                        $('#codeEdt').val(data[0]['brcd']);
-                        $('#addrEdt').val(data[0]['brad']);
-                        $('#mobiEdt').val(data[0]['brmb']);
-                        $('#teleEdt').val(data[0]['brtp']);
-                        $('#emailEdt').val(data[0]['brem']);
-                        $('#remkEdt').val(data[0]['remk']);
+                        set_select('brchNwEdt',data[0]['brch']);
+                        set_select('uslvNwEdt',data[0]['usmd']);
+                        set_select('ugndEdt',data[0]['gend']);
 
-                        // $('#sup_stat').html(": " + stat);
-                        // $('#code').html(": " + spdet[0]['spcd']);
-                        // $('#crby').html(": " + spdet[0]['crnm']);
-                        // $('#crdt').html(": " + spdet[0]['crdt']);
-                        // $('#apby').html(": " + ((spdet[0]['apnm'] != null) ? spdet[0]['apnm'] : "--"));
-                        // $('#apdt').html(": " + ((spdet[0]['apdt'] != null && spdet[0]['apdt'] != "0000-00-00 00:00:00") ? spdet[0]['apdt'] : "--"));
-                        // $('#rjby').html(": " + ((spdet[0]['rjnm'] != null) ? spdet[0]['rjnm'] : "--"));
-                        // $('#rjdt').html(": " + ((spdet[0]['rjdt'] != null && spdet[0]['rjdt'] != "0000-00-00 00:00:00") ? spdet[0]['rjdt'] : "--"));
-                        // $('#mdby').html(": " + ((spdet[0]['mdnm'] != null) ? spdet[0]['mdnm'] : "--"));
-                        // $('#mddt').html(": " + ((spdet[0]['mddt'] != null && spdet[0]['mddt'] != "0000-00-00 00:00:00") ? spdet[0]['mddt'] : "--"));
-                        //
+                        $('#frnmEdt').val(data[0]['fnme']);
+                        $('#lsnmEdt').val(data[0]['lnme']);
 
+                        $('#emilEdt').val(data[0]['emid']);
+                        $('#usnmEdt').val(data[0]['usnm']);
+
+                        $('#unicEdt').val(data[0]['unic']);
+                        $('#udobEdt').val(data[0]['udob']);
+                        //$('#ugndEdt').val(data[0]['gend']);
+                        $('#teleEdt').val(data[0]['tpno']);
+                        $('#mobiEdt').val(data[0]['almo']);
+
+                        if (data[0]['prmd'] == 1) {
+                            $("#prmTpEdt").prop("checked", true);
+                        } else {
+                            $("#prmTpEdt").prop("checked", false);
+                        }
                     }
                     swal.close();
                 },
@@ -768,11 +776,10 @@
             });
         }
 
-
         //APPROVE || EDIT HERE
         $('#edtBtn').click(function (e) {
             e.preventDefault();
-            if ($('#brnEdtform').valid()) {
+            if ($('#edtform').valid()) {
 
                 swal({
                         title: "Are you sure to do this ?",
@@ -789,24 +796,25 @@
                         if (isConfirm) {
                             var func = $('#func').val();
                             $('#edtBtn').prop('disabled', false);
+
                             if (func == 'edit') {
                                 swal({
                                     title: "Processing...",
-                                    text: "Branch's details updating..",
+                                    text: "User's details updating..",
                                     imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                                     showConfirmButton: false
                                 });
 
                                 jQuery.ajax({
                                     type: "POST",
-                                    url: "<?= base_url(); ?>admin/brncEdit",
-                                    data: $("#brnEdtform").serialize(),
+                                    url: "<?= base_url(); ?>admin/userEdit",
+                                    data: $("#edtform").serialize(),
                                     dataType: 'json',
                                     success: function (data) {
                                         swal({title: "", text: "Updating Success!", type: "success"},
                                             function () {
                                                 $('#edtBtn').prop('disabled', false);
-                                                clear_Form('brnEdtform');
+                                                clear_Form('edtform');
                                                 $('#modal-view').modal('hide');
                                                 srchUser();
                                             });
@@ -818,36 +826,8 @@
                                             });
                                     }
                                 });
-                            } else if (func == 'app') {
-                                swal({
-                                    title: "Processing...",
-                                    text: "Supplier approving..",
-                                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                                    showConfirmButton: false
-                                });
-
-                                jQuery.ajax({
-                                    type: "POST",
-                                    url: "<?= base_url(); ?>admin/brncEdit",
-                                    data: $("#brnEdtform").serialize(),
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        swal({title: "", text: "Approved!", type: "success"},
-                                            function () {
-                                                $('#edtBtn').prop('disabled', false);
-                                                clear_Form('brnEdtform');
-                                                $('#modal-view').modal('hide');
-                                                srchUser();
-                                            });
-                                    },
-                                    error: function (data, textStatus) {
-                                        swal({title: "Approving Failed", text: textStatus, type: "error"},
-                                            function () {
-                                                location.reload();
-                                            });
-                                    }
-                                });
-                            } else {
+                            }
+                            else {
                                 alert('Contact System Admin');
                             }
                         } else {
@@ -858,7 +838,7 @@
         });
 
         //Reject
-        function rejectSupp(id) {
+        function rejectUser(id) {
             swal({
                     title: "Are you sure reject ?",
                     text: "",
@@ -906,7 +886,7 @@
         }
 
         //Deactivate
-        function inactSupp(id) {
+        function inactUser(id) {
             swal({
                     title: "Are you sure to deactivate ?",
                     text: "",
@@ -929,13 +909,13 @@
 
                         $.ajax({
                             type: "POST",
-                            url: "<?= base_url(); ?>admin/brnDeactive",
+                            url: "<?= base_url(); ?>admin/userDeactive",
                             data: {
                                 id: id
                             },
                             dataType: 'json',
                             success: function (data) {
-                                swal({title: "", text: "Branch was deactivated!", type: "success"},
+                                swal({title: "", text: "Deactivated!", type: "success"},
                                     function () {
                                         srchUser();
                                     });
@@ -954,7 +934,7 @@
         }
 
         //activate Supplier
-        function reactSupp(id) {
+        function reactUser(id) {
             swal({
                     title: "Are you sure to activate ?",
                     text: "",
@@ -977,13 +957,13 @@
 
                         $.ajax({
                             type: "POST",
-                            url: "<?= base_url(); ?>admin/brncReactiv",
+                            url: "<?= base_url(); ?>admin/userReactiv",
                             data: {
                                 id: id
                             },
                             dataType: 'json',
                             success: function (data) {
-                                swal({title: "", text: "Branch was activated!", type: "success"},
+                                swal({title: "", text: "Activated!", type: "success"},
                                     function () {
                                         srchUser();
                                     });
