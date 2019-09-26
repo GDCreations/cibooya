@@ -1240,11 +1240,11 @@ class Admin extends CI_Controller
         }
     }
 
-
+    //******************************************************* //
     // SYSTEM COMPONENT - USER MANAGEMENT
     public function usrMng()
     {
-        $data['acm'] = 'sysCmp'; //Module
+        $data['acm'] = ''; //Module
         $data['acp'] = 'usrMng'; //Page
 
         $this->load->view('common/tmpHeader');
@@ -1254,11 +1254,336 @@ class Admin extends CI_Controller
         $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('usrMng');
         $dataArr['policyinfo'] = $this->Generic_model->getData('sys_policy', '', '');
 
+        $dataArr['branchinfo'] = $this->Generic_model->getBranch();
+        $dataArr['uslvlinfo'] = $this->Generic_model->getData('user_level', '', "stat = 1 AND id != 1");
 
-        //$this->load->view('admin/systmPolicy', $dataArr);
+        $this->load->view('admin/userManagement', $dataArr);
         $this->load->view('common/tmpFooter', $data);
     }
 
+    //SEARCH USER
+    function searchUser()
+    {
+        $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edit = "";
+        } else {
+            $edit = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rejt = "";
+        } else {
+            $rejt = "disabled";
+        }
+        if ($funcPerm[0]->dact == 1) {
+            $dac = "";
+        } else {
+            $dac = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
+
+        $result = $this->Admin_model->get_userDtils();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            $auid = $row->auid;
+
+          /*  if ($row->stat == 0) {
+                $stat = "<label class='label label-warning'>Pending</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' $rejt onclick='rejectSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else */
+                if ($row->stat == 1) {
+                $stat = "<label class='label label-success'>Active</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' $dac onclick='inactSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 0) {
+                $stat = "<label class='label label-danger'>Inactive</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 2) {
+                $stat = "<label class='label label-indi'> Tmp Disable</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $reac onclick='reactSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+            } else {
+                $stat = "--";
+                $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='editSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='approveSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='rejectSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->brcd;
+            $sub_arr[] = $row->usnm;
+            $sub_arr[] = $row->fnme . ' ' . $row->lnme;
+            $sub_arr[] = $row->almo;
+            $sub_arr[] = $row->unic;
+            $sub_arr[] = $row->lvnm;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Admin_model->count_all_user(),
+            "recordsFiltered" => $this->Admin_model->count_filtered_user(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+
+    // USER NAME CHECK
+    function chkBrncNameXX()
+    {
+        $name = $this->input->post('name');
+        $stat = $this->input->post('stat'); //0-Add/1-Edit
+
+        $this->db->select("brnm");
+        $this->db->from('brch_mas');
+        $this->db->where('brnm', $name);
+        if ($stat == 1) {
+            $this->db->where("brid != " . $this->input->post('auid'));
+        }
+        $res = $this->db->get()->result();
+        if (sizeof($res) > 0) {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
+    }
+
+    // USER CODE CHECK
+    function chkBrnCodeXX()
+    {
+        $name = $this->input->post('code');
+        $stat = $this->input->post('stat'); //0-Add/1-Edit
+
+        $this->db->select("brcd");
+        $this->db->from('brch_mas');
+        $this->db->where('brcd', $name);
+        if ($stat == 1) {
+            $this->db->where("brid !=" . $this->input->post('auid'));
+        }
+        $res = $this->db->get()->result();
+        if (sizeof($res) > 0) {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
+    }
+
+    // USER INSERT
+    function branchCreateXX()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $brcd = strtoupper($this->input->post('code'));
+
+        $this->Generic_model->insertData('brch_mas',
+            array(
+                'brcd' => $brcd,
+                'brnm' => $this->input->post('name'),
+                'brad' => $this->input->post('addr'),
+                'brmb' => $this->input->post('mobi'),
+                'brtp' => $this->input->post('tele'),
+                'brem' => $this->input->post('email'),
+                'remk' => $this->input->post('remk'),
+                'stat' => 0,
+                'crby' => $_SESSION['userId'],
+                'crdt' => date('Y-m-d H:i:s'),
+            ));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "New Branch Added ($brcd)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    // VIEW USER for edit approval
+    function getBrncDetXX()
+    {
+        $auid = $this->input->post('id');
+
+        $this->db->select(" * ");
+        $this->db->from('brch_mas');
+        /*$this->db->join('user_mas cr', 'cr.auid=sup.crby');
+        $this->db->join('user_mas ap', 'ap.auid=sup.apby', 'LEFT');
+        $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
+        $this->db->join('user_mas rj', 'rj.auid=sup.rjby', 'LEFT');*/
+        $this->db->where("brch_mas.brid", $auid);
+        $data = $this->db->get()->result();
+
+        echo json_encode($data);
+    }
+
+    // UPDATE & APPROVAL
+    function brncEditXX()
+    {
+        $func = $this->input->post('func');
+        $auid = $this->input->post('auid');
+        $brcd = strtoupper($this->input->post('codeEdt'));
+
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        if ($func == 'edit') {
+            //Updating
+            $this->Generic_model->updateData('brch_mas',
+                array(
+                    'brcd' => $brcd,
+                    'brnm' => $this->input->post('nameEdt'),
+                    'brad' => $this->input->post('addrEdt'),
+                    'brmb' => $this->input->post('mobiEdt'),
+                    'brtp' => $this->input->post('teleEdt'),
+                    'brem' => $this->input->post('emailEdt'),
+                    'remk' => $this->input->post('remkEdt'),
+                    'mdby' => $_SESSION['userId'],
+                    'mddt' => date('Y-m-d H:i:s'),
+                ),
+                array('brid' => $auid));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Updated ($brcd)");
+
+        } else if ($func == 'app') {
+
+            //Updating
+            $this->Generic_model->updateData('brch_mas',
+                array(
+                    'brcd' => $brcd,
+                    'brnm' => $this->input->post('nameEdt'),
+                    'brad' => $this->input->post('addrEdt'),
+                    'brmb' => $this->input->post('mobiEdt'),
+                    'brtp' => $this->input->post('teleEdt'),
+                    'brem' => $this->input->post('emailEdt'),
+                    'remk' => $this->input->post('remkEdt'),
+                    'stat' => 1,
+                    'apby' => $_SESSION['userId'],
+                    'apdt' => date('Y-m-d H:i:s'),
+                    'mdby' => $_SESSION['userId'],
+                    'mddt' => date('Y-m-d H:i:s'),
+                ),
+                array('brid' => $auid));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Approved ($brcd)");
+        }
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    // USER REJECT
+    function brnRejectXX()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $auid = $this->input->post('id');
+        $this->Generic_model->updateData('brch_mas',
+            array(
+                'stat' => 3,
+            ),
+            array('brid' => $auid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Rejected ($auid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    // DEACTIVE
+    function brnDeactiveXX()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $auid = $this->input->post('id');
+        $this->Generic_model->updateData('brch_mas', array(
+            'stat' => 2,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('brid' => $auid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Deactivated ($auid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    // REACTIVE
+    function brncReactivXX()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $spid = $this->input->post('id');
+        $this->Generic_model->updateData('brch_mas', array(
+            'stat' => 1,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('brid' => $spid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Reactivated ($spid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+
+    //******************************************************* //
     // SYSTEM COMPONENT - USER LEVEL
     public function usrLvl()
     {

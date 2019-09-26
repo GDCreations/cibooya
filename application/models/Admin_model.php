@@ -161,7 +161,91 @@ class Admin_model extends CI_Model
         $this->brnDet_query();
         return $this->db->count_all_results();
     }
-    //END SEARCH BRANCH
+//END SEARCH BRANCH
+
+//SEARCH USER DETAILS
+    var $cl_srch9 = array('brcd', 'brnm', 'brad', 'brmb', 'usnm', 'crdt'); //set column field database for datatable searchable
+    var $cl_odr9 = array(null, 'brcd', 'brnm', 'brad', 'brmb', 'usnm', 'crdt', 'stat', ''); //set column field database for datatable orderable
+    var $order9 = array('crdt' => 'DESC'); // default order
+
+    function userDet_query()
+    {
+        $brch = $this->input->post('brch');
+        $uslv = $this->input->post('uslv');
+        $stat = $this->input->post('stat');
+
+        $this->db->select("user_mas.*, brch_mas.brcd, user_level.lvnm ");
+        $this->db->from('user_mas');
+        $this->db->join('brch_mas', 'brch_mas.brid = user_mas.brch');
+        $this->db->join('user_level', 'user_level.id = user_mas.usmd');
+
+        if ($brch != 'all') {
+            $this->db->where("user_mas.brch", $brch);
+        }
+        if ($uslv != 'all') {
+            $this->db->where("user_mas.usmd", $uslv);
+        }
+        if ($stat != 'all') {
+            $this->db->where("user_mas.stat", $stat);
+        }
+
+    }
+
+    private function userDet_queryData()
+    {
+        $this->userDet_query();
+        $i = 0;
+        foreach ($this->cl_srch9 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch9) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr9[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order9)) {
+            $order9 = $this->order9;
+            $this->db->order_by(key($order9), $order9[key($order9)]);
+        }
+    }
+
+    function get_userDtils()
+    {
+        $this->userDet_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_user()
+    {
+        $this->userDet_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_user()
+    {
+        $this->userDet_query();
+        return $this->db->count_all_results();
+    }
+//END SEARCH USER
+
+
 }
 
 ?>
