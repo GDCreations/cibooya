@@ -322,7 +322,7 @@
                     <div class="modal-body">
                         <div class="container">
                             <div class="table-responsive">
-                                <table class="table datatable table-bordered table-striped table-actions" width="100%"
+                                <table class="table datatable table-bordered table-head-custom table-striped table-actions" width="100%"
                                        id="dataTbmdl">
                                     <thead>
                                     <tr>
@@ -621,7 +621,6 @@
                         }
 
                         if (i > 0 && (response[i - 1]['mdnm'] != response[i]['mdnm'])) {
-
                             var rowNode = t.row.add([
                                 '#',
                                 "<span style='color: red'> <b> " + response[i]['mdnm'] + "   </b> </span>",
@@ -1189,6 +1188,14 @@
                                 ''
                             ]).draw(false).node();
                             $(rowNode).addClass('info');
+                        }else if(i==0){
+                            var rowNode = t.row.add([
+                                '#',
+                                "<span style='color: red'> <b> " + response[i]['mdnm'] + "   </b> </span>",
+                                '',
+                                ''
+                            ]).draw(false).node();
+                            $(rowNode).addClass('info');
                         }
 
                         t.row.add([
@@ -1412,15 +1419,21 @@
                         var viw = "<label class=''><input type='checkbox' name='addm[" + i + "]' value='1' id='checkbox-1'  class='icheckbox' /> </label>";
 
                         if (i > 0 && (response[i - 1]['mdnm'] != response[i]['mdnm'])) {
-
                             var rowNode = t.row.add([
-                                '-',
+                                '#',
                                 "<span style='color: red'> <b> " + response[i]['mdnm'] + "   </b> </span>",
-                                '-',
-                                '-'
-                            ]).draw();
-
-                            $(rowNode).css('color', 'Red');
+                                '',
+                                ''
+                            ]).draw(false).node();
+                            $(rowNode).addClass('info');
+                        }else if(i==0){
+                            var rowNode = t.row.add([
+                                '#',
+                                "<span style='color: red'> <b> " + response[i]['mdnm'] + "   </b> </span>",
+                                '',
+                                ''
+                            ]).draw(false).node();
+                            $(rowNode).addClass('info');
                         }
 
                         t.row.add([

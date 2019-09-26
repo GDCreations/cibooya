@@ -73,6 +73,78 @@ class Stock_model extends CI_Model
         return $this->db->count_all_results();
     }
     //END SEARCH SUPPLIER DETAILS </JANAKA 2019-09-19>
+
+    //SEARCH CATEGORY DETAILS </JANAKA 2019-09-19>
+    var $cl_srch2 = array('ctcd','ctnm'); //set column field database for datatable searchable
+    var $cl_odr2 = array(null, 'ctcd', 'ctnm', 'user_mas.innm', 'crdt', 'stat',''); //set column field database for datatable orderable
+    var $order2 = array('crdt' => 'DESC'); // default order
+
+    function catDet_query()
+    {
+        $stat = $this->input->post('stat');
+
+        $this->db->select("category.*,user_mas.innm");
+        $this->db->from('category');
+        $this->db->join('user_mas','user_mas.auid=category.crby');
+        if($stat!='all'){
+            $this->db->where("category.stat=$stat");
+        }
+    }
+
+    private function catDet_queryData()
+    {
+        $this->catDet_query();
+        $i = 0;
+        foreach ($this->cl_srch2 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch2) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr2[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order2)) {
+            $order2 = $this->order2;
+            $this->db->order_by(key($order2), $order2[key($order2)]);
+        }
+    }
+
+    function get_catDtils()
+    {
+        $this->catDet_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_cat()
+    {
+        $this->catDet_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_cat()
+    {
+        // $this->db->from($this->table);
+        $this->catDet_query();
+        return $this->db->count_all_results();
+    }
+    //END SEARCH CATEGORY DETAILS </JANAKA 2019-09-19>
 }
 
 ?>
