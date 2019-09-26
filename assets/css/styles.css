@@ -28511,9 +28511,13 @@ input[type="file"] {
 .app .label-icon.label-icon-xlg *[class^="icon-"] {
   font-size: 40px;
 }
-.app .table tr td,
+.app .table tr td {
+  line-height: 15px; /*20px;*/
+  padding: 7px 10px;
+  vertical-align: middle;
+}
 .app .table tr th {
-  line-height: 20px;
+  line-height: 15px; /*20px;*/
   padding: 10px 15px;
   vertical-align: middle;
 }

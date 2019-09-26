@@ -11,7 +11,7 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
 
     <div class="app-footer-line darken">
         <!--<div class="copyright wide text-center">&copy; 2016-2017 Boooya. All right reserved in the Ukraine and other </div>-->
-        <div class="copyright wide text-center">
+        <div class="copyright wide text-left">
             &copy; <?= date('Y') ?> - <?= $data[0]->synm ?> | v1.<?= date('m') ?> | Powered By
             <a href="http://www.gdcreations.com" target="_blank">GDC</a></div>
     </div>
