@@ -1,3 +1,20 @@
+
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+2019-09-25 ** DONE
+ALTER TABLE `brch_mas` ADD `apby` INT(10) NOT NULL AFTER `mddt`, ADD `apdt` DATETIME NOT NULL AFTER `apby`;
+ALTER TABLE `user_mas` CHANGE `stat` `stat` INT(2) NOT NULL COMMENT '0-inactive/1-active/2-tmp disable';
+
+-----------------------------------------------------
+2019-09-24  ** DONE
+INSERT INTO `user_page_mdl` (`aid`, `mdcd`, `mdnm`, `remk`, `stat`) VALUES (NULL, 'sysCompnt', 'System Component', '', '1');
+INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'sysBrnc', 'Branch Management', '', '0', '1', '1', '5');
+INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'usrMng', 'User Management', '', '0', '1', '1', '5');
+INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'usrLvl', 'User Level', '', '0', '1', '1', '5');
+
+ALTER TABLE `brch_mas` CHANGE `stat` `stat` INT(2) NOT NULL COMMENT '0-pending/1-active/2-tmp disable/3-inactive';
 -----------------------------------------------------
 2019-09-18
 C - Login
