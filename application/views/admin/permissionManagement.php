@@ -345,7 +345,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="add_new_page" class="btn btn-warning btn-xs btn-rounded">
+                        <button type="button" id="add_new_page" class="btn btn-warning btn-sm btn-rounded">
                             Add
                         </button>
                     </div>
@@ -575,55 +575,55 @@
                         }
 
                         if (response[i]['view'] == 1) {
-                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='view' value=" + response[i]['view'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/><span></span></label>";
+                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='View' value=" + response[i]['view'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/><span></span></label>";
                         } else {
-                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='view' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='View' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['inst'] == 1) {
-                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='add' value=" + response[i]['inst'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='Add' value=" + response[i]['inst'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='add' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='Add' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['edit'] == 1) {
-                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='edit' value=" + response[i]['edit'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='Edit' value=" + response[i]['edit'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='edit' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='Edit' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['rejt'] == 1) {
-                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='reject/delete' value=" + response[i]['rejt'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='Reject/Delete' value=" + response[i]['rejt'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='reject/delete' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='Reject/Delete' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['apvl'] == 1) {
-                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='approval' value=" + response[i]['apvl'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='Approval' value=" + response[i]['apvl'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='approval' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='Approval' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
 
                         if (response[i]['reac'] == 1) {
-                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='reactive' value=" + response[i]['reac'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='Reactive' value=" + response[i]['reac'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='reactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='Reactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
 
                         if (response[i]['dact'] == 1) {
-                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='reactive' value=" + response[i]['dact'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='Deactive' value=" + response[i]['dact'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='reactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='Deactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
 
-                        var all = "<label class=''><input type='checkbox' name='all[" + i + "]' value='' id='checkbox-1' onclick='chckall(" + i + ",this.checked)'  class='icheckbox' /> </label>";
+                        var all = "<label class=''><input type='checkbox' title='All' name='all[" + i + "]' value='' id='checkbox-1' onclick='chckall(" + i + ",this.checked)'  class='icheckbox' /> </label>";
 
                         if (response[i]['pgac'] == 1) {
-                            var pgac = " <label class='switch switch-sm'><input type='checkbox' name='pgac[" + i + "]' title='page access' checked value = '1'/> <span></span> </label> ";
+                            var pgac = " <label class='switch switch-sm' title='Page access'><input type='checkbox' name='pgac[" + i + "]' checked value = '1'/> <span></span> </label> ";
                         } else {
-                            var pgac = " <label class='switch switch-sm'><input type='checkbox' name='pgac[" + i + "]' title='page access' value = '1'/> <span></span> </label> ";
+                            var pgac = " <label class='switch switch-sm' title='Page access'><input type='checkbox' name='pgac[" + i + "]' value = '1'/> <span></span> </label> ";
                         }
 
                         if (i > 0 && (response[i - 1]['mdnm'] != response[i]['mdnm'])) {
                             var rowNode = t.row.add([
                                 '#',
-                                "<span style='color: red'> <b> " + response[i]['mdnm'] + "   </b> </span>",
+                                "<span style='color: #2D3349'> <b> " + response[i]['mdnm'] + "   </b> </span>",
                                 '',
                                 '',
                                 '',
@@ -723,56 +723,56 @@
                         }
 
                         if (response[i]['view'] == 1) {
-                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='view' value=" + response[i]['view'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/><span></span></label>";
+                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='View' value=" + response[i]['view'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/><span></span></label>";
                         } else {
-                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='view' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='View' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['inst'] == 1) {
-                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='add' value=" + response[i]['inst'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='Add' value=" + response[i]['inst'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='add' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='Add' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['edit'] == 1) {
-                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='edit' value=" + response[i]['edit'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='Edit' value=" + response[i]['edit'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='edit' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='Edit' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['rejt'] == 1) {
-                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='reject/delete' value=" + response[i]['rejt'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='Reject/Delete' value=" + response[i]['rejt'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='reject/delete' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='Reject/Delete' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['apvl'] == 1) {
-                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='approval' value=" + response[i]['apvl'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='Approval' value=" + response[i]['apvl'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='approval' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='Approval' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
 
                         if (response[i]['reac'] == 1) {
-                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='reactive' value=" + response[i]['reac'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='Reactive' value=" + response[i]['reac'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='reactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='Reactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
 
                         if (response[i]['dact'] == 1) {
-                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='reactive' value=" + response[i]['dact'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='Deactive' value=" + response[i]['dact'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='reactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='Deactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
 
-                        var all = "<label class=''><input type='checkbox' name='all[" + i + "]' value='' id='checkbox-1' onclick='chckall(" + i + ",this.checked)'  class='icheckbox' /> </label>";
+                        var all = "<label class=''><input type='checkbox' name='all[" + i + "]' title='All' value='' id='checkbox-1' onclick='chckall(" + i + ",this.checked)'  class='icheckbox' /> </label>";
 
                         if (response[i]['pgac'] == 1) {
-                            var pgac = " <label class='switch switch-sm'><input type='checkbox' name='pgac[" + i + "]' title='page access' checked value = '1'/> <span></span> </label> ";
+                            var pgac = " <label class='switch switch-sm' title='Page access'><input type='checkbox' name='pgac[" + i + "]' checked value = '1'/> <span></span> </label> ";
                         } else {
-                            var pgac = " <label class='switch switch-sm'><input type='checkbox' name='pgac[" + i + "]' title='page access' value = '1'/> <span></span> </label> ";
+                            var pgac = " <label class='switch switch-sm' title='Page access'><input type='checkbox' name='pgac[" + i + "]' value = '1'/> <span></span> </label> ";
                         }
 
                         if (i > 0 && (response[i - 1]['mdnm'] != response[i]['mdnm'])) {
 
                             var rowNode = t.row.add([
                                 '#',
-                                "<span style='color: red'> <b> " + response[i]['mdnm'] + "   </b> </span>",
+                                "<span style='color: #2D3349'> <b> " + response[i]['mdnm'] + "   </b> </span>",
                                 '',
                                 '',
                                 '',
@@ -874,7 +874,7 @@
                             var rpnt = "<label class=''><input type='checkbox' name='rpnt[" + a + "]' title='Reprint' value='1' id='checkbox-1'  class='icheckbox " + a + "' /> </label>";
                         }
 
-                        var all = "<label class=''><input type='checkbox' name='all[" + a + "]' value='' id='checkbox-1' onclick='chckallAdv(" + a + ",this.checked)'  class='icheckbox' /> </label>";
+                        var all = "<label class=''><input type='checkbox' name='all[" + a + "]' title='All' value='' id='checkbox-1' onclick='chckallAdv(" + a + ",this.checked)'  class='icheckbox' /> </label>";
 
                         t2.row.add([
                             a + 1,
@@ -948,9 +948,9 @@
                             var hid = "<label class=''><input type='hidden' name='auid[" + a + "]'  value=" + response['perm'][a]['auid'] + " /> </label>";
 
                             if (response['perm'][a]['msve'] == 1) {
-                                var msst = "<label class=''><input type='checkbox' name='msve[" + a + "]' title='Print' value=" + response['perm'][a]['msve'] + " id='checkbox-1'  class='icheckbox " + a + "' checked='checked'/> </label>";
+                                var msst = "<label class=''><input type='checkbox' name='msve[" + a + "]' title='Master Setting' value=" + response['perm'][a]['msve'] + " id='checkbox-1'  class='icheckbox " + a + "' checked='checked'/> </label>";
                             } else {
-                                var msst = "<label class=''><input type='checkbox' name='msve[" + a + "]' title='Print' value='1' id='checkbox-1'  class='icheckbox " + a + "' /> </label>";
+                                var msst = "<label class=''><input type='checkbox' name='msve[" + a + "]' title='Master Setting' value='1' id='checkbox-1'  class='icheckbox " + a + "' /> </label>";
                             }
                             if (response['perm'][a]['albr'] == 1) {
                                 var albr = "<label class=''><input type='checkbox' name='albr[" + a + "]' title='All Branch' onclick='chkspBrn(this.id)' value=" + response['perm'][a]['albr'] + " id='checkbox_albr'  class='icheckbox " + a + "' checked='checked'/> </label>";
@@ -963,22 +963,22 @@
                                 var spbr = "<label class=''><input type='checkbox' name='spbr[" + a + "]' title='Special Branch' onclick='chkAlBrn(this.id)' value='1' id='checkbox_spbr'  class='icheckbox " + a + " panel-refresh' /> </label>";
                             }
                             if (response['perm'][a]['alof'] == 1) {
-                                var alof = "<label class=''><input type='checkbox' name='alof[" + a + "]' title='Reprint' value=" + response['perm'][a]['alof'] + " id='checkbox-1'  class='icheckbox " + a + "' checked='checked'/> </label>";
+                                var alof = "<label class=''><input type='checkbox' name='alof[" + a + "]' title='All Officer' value=" + response['perm'][a]['alof'] + " id='checkbox-1'  class='icheckbox " + a + "' checked='checked'/> </label>";
                             } else {
-                                var alof = "<label class=''><input type='checkbox' name='alof[" + a + "]' title='Reprint' value='1' id='checkbox-1'  class='icheckbox " + a + "' /> </label>";
+                                var alof = "<label class=''><input type='checkbox' name='alof[" + a + "]' title='All Officer' value='1' id='checkbox-1'  class='icheckbox " + a + "' /> </label>";
                             }
                             if (response['perm'][a]['alcn'] == 1) {
-                                var alcn = "<label class=''><input type='checkbox' name='alcn[" + a + "]' title='Reprint' value=" + response['perm'][a]['alcn'] + " id='checkbox-1'  class='icheckbox " + a + "' checked='checked'/> </label>";
+                                var alcn = "<label class=''><input type='checkbox' name='alcn[" + a + "]' title='All Center' value=" + response['perm'][a]['alcn'] + " id='checkbox-1'  class='icheckbox " + a + "' checked='checked'/> </label>";
                             } else {
-                                var alcn = "<label class=''><input type='checkbox' name='alcn[" + a + "]' title='Reprint' value='1' id='checkbox-1'  class='icheckbox " + a + "' /> </label>";
+                                var alcn = "<label class=''><input type='checkbox' name='alcn[" + a + "]' title='All Center' value='1' id='checkbox-1'  class='icheckbox " + a + "' /> </label>";
                             }
                             if (response['perm'][a]['tpsp'] == 1) {
-                                var tpsp = "<label class=''><input type='checkbox' name='tpsp[" + a + "]' title='Reprint' value=" + response['perm'][a]['tpsp'] + " id='checkbox-1'  class='icheckbox " + a + "' checked='checked'/> </label>";
+                                var tpsp = "<label class=''><input type='checkbox' name='tpsp[" + a + "]' title='Topup Special' value=" + response['perm'][a]['tpsp'] + " id='checkbox-1'  class='icheckbox " + a + "' checked='checked'/> </label>";
                             } else {
-                                var tpsp = "<label class=''><input type='checkbox' name='tpsp[" + a + "]' title='Reprint' value='1' id='checkbox-1'  class='icheckbox " + a + "' /> </label>";
+                                var tpsp = "<label class=''><input type='checkbox' name='tpsp[" + a + "]' title='Topup Special' value='1' id='checkbox-1'  class='icheckbox " + a + "' /> </label>";
                             }
 
-                            var all = "<label class=''><input type='checkbox' name='all[" + a + "]' value='' id='checkbox-1' onclick='chckallSpec(" + a + ",this.checked)'  class='icheckbox' /> </label>";
+                            var all = "<label class=''><input type='checkbox' name='all[" + a + "]' title='All' value='' id='checkbox-1' onclick='chckallSpec(" + a + ",this.checked)'  class='icheckbox' /> </label>";
 
                             t2.row.add([
                                 a + 1 + hid,
@@ -1008,7 +1008,7 @@
                         var alof = "<label class=''><input type='checkbox' name='alof[" + 0 + "]' value='1' title='All Officer'  id='checkbox-1'  class='icheckbox " + 0 + "' /> </label>";
                         var alcn = "<label class=''><input type='checkbox' name='alcn[" + 0 + "]' value='1' title='All Center'  id='checkbox-1'  class='icheckbox " + 0 + "' /> </label>";
                         var tpsp = "<label class=''><input type='checkbox' name='tpsp[" + 0 + "]' value='1' title='Topup Special'  id='checkbox-1'  class='icheckbox " + 0 + "' /> </label>";
-                        var all = "<label class=''><input type='checkbox' name='all[" + 0 + "]' value='1' value='' id='checkbox-1' onclick='chckallSpec(" + 0 + ",this.checked)'  class='icheckbox' /> </label>";
+                        var all = "<label class=''><input type='checkbox' name='all[" + 0 + "]' title='All' value='1' value='' id='checkbox-1' onclick='chckallSpec(" + 0 + ",this.checked)'  class='icheckbox' /> </label>";
 
                         t2.row.add([
                             1,
@@ -1075,9 +1075,9 @@
                             var hid = "<label class=''><input type='hidden' name='auid[" + a + "]'  value=" + response['perm'][a]['auid'] + " /> </label>";
 
                             if (response['perm'][a]['user'] == 1) {
-                                var user = "<label class=''><input type='checkbox' name='user[" + a + "]' title='user module' value=" + response['perm'][a]['user'] + " id='checkbox-1'  class='icheckbox " + a + "' checked='checked'/> </label>";
+                                var user = "<label class=''><input type='checkbox' name='user[" + a + "]' title='User module' value=" + response['perm'][a]['user'] + " id='checkbox-1'  class='icheckbox " + a + "' checked='checked'/> </label>";
                             } else {
-                                var user = "<label class=''><input type='checkbox' name='user[" + a + "]' title='user module' value='1' id='checkbox-1'  class='icheckbox " + a + "' /> </label>";
+                                var user = "<label class=''><input type='checkbox' name='user[" + a + "]' title='User module' value='1' id='checkbox-1'  class='icheckbox " + a + "' /> </label>";
                             }
                             if (response['perm'][a]['admi'] == 1) {
                                 var admi = "<label class=''><input type='checkbox' name='admi[" + a + "]' title='Admin Module' value=" + response['perm'][a]['admi'] + " id='checkbox-1'  class='icheckbox " + a + "' checked='checked'/> </label>";
@@ -1090,7 +1090,7 @@
                                 var stck = "<label class=''><input type='checkbox' name='stck[" + a + "]' title='Stock Module' value='1' id='checkbox-1'  class='icheckbox " + a + "' /> </label>";
                             }
 
-                            var all = "<label class=''><input type='checkbox' name='all[" + a + "]' value='' id='checkbox-1' onclick='chckallMdul(" + a + ",this.checked)'  class='icheckbox' /> </label>";
+                            var all = "<label class=''><input type='checkbox' name='all[" + a + "]' title='All' value='' id='checkbox-1' onclick='chckallMdul(" + a + ",this.checked)'  class='icheckbox' /> </label>";
 
                             t2.row.add([
                                 a + 1 + hid,
@@ -1110,7 +1110,7 @@
                         var user = "<label class=''><input type='checkbox' name='user[" + 0 + "]' value='1' title='User Module'  id='checkbox-1'  class='icheckbox " + 0 + "' /> </label>";
                         var admi = "<label class=''><input type='checkbox' name='admi[" + 0 + "]' value='1' title='Admin Module'  id='checkbox-1'  class='icheckbox " + 0 + "' /> </label>";
                         var stck = "<label class=''><input type='checkbox' name='stck[" + 0 + "]' value='1' title='Stock Module'  id='checkbox-1'  class='icheckbox " + 0 + "' /> </label>";
-                        var all = "<label class=''><input type='checkbox' name='all[" + 0 + "]' value='1' value='' id='checkbox-1' onclick='chckallMdul(" + 0 + ",this.checked)'  class='icheckbox' /> </label>";
+                        var all = "<label class=''><input type='checkbox' name='all[" + 0 + "]' title='All' value='1' value='' id='checkbox-1' onclick='chckallMdul(" + 0 + ",this.checked)'  class='icheckbox' /> </label>";
 
                         t2.row.add([
                             1,
@@ -1174,16 +1174,16 @@
                         }
 
                         if (response[i]['stst'] == 1) {
-                            var pgac = " <label class='switch switch-sm'><input type='checkbox' name='pgac[" + i + "]' title='page access' checked value = '1'/> <span></span> </label> ";
+                            var pgac = " <label class='switch switch-sm' title='Page access'><input type='checkbox' name='pgac[" + i + "]' checked value = '1'/> <span></span> </label> ";
                         } else {
-                            var pgac = " <label class='switch switch-sm'><input type='checkbox' name='pgac[" + i + "]' title='page access' value = '1'/> <span></span> </label> ";
+                            var pgac = " <label class='switch switch-sm' title='Page access'><input type='checkbox' name='pgac[" + i + "]' value = '1'/> <span></span> </label> ";
                         }
 
                         if (i > 0 && (response[i - 1]['mdnm'] != response[i]['mdnm'])) {
 
                             var rowNode = t.row.add([
                                 '#',
-                                "<span style='color: red'> <b> " + response[i]['mdnm'] + "   </b> </span>",
+                                "<span style='color: #2D3349'> <b> " + response[i]['mdnm'] + "   </b> </span>",
                                 '',
                                 ''
                             ]).draw(false).node();
@@ -1191,7 +1191,7 @@
                         }else if(i==0){
                             var rowNode = t.row.add([
                                 '#',
-                                "<span style='color: red'> <b> " + response[i]['mdnm'] + "   </b> </span>",
+                                "<span style='color: #2D3349'> <b> " + response[i]['mdnm'] + "   </b> </span>",
                                 '',
                                 ''
                             ]).draw(false).node();
@@ -1416,12 +1416,12 @@
                         }
 
                         var hid = "<label class=''><input type='hidden' name='aid[" + i + "]'  value=" + response[i]['aid'] + " /> </label>";
-                        var viw = "<label class=''><input type='checkbox' name='addm[" + i + "]' value='1' id='checkbox-1'  class='icheckbox' /> </label>";
+                        var viw = "<label class=''><input type='checkbox' title='Add' name='addm[" + i + "]' value='1' id='checkbox-1'  class='icheckbox' /> </label>";
 
                         if (i > 0 && (response[i - 1]['mdnm'] != response[i]['mdnm'])) {
                             var rowNode = t.row.add([
                                 '#',
-                                "<span style='color: red'> <b> " + response[i]['mdnm'] + "   </b> </span>",
+                                "<span style='color: #2D3349'> <b> " + response[i]['mdnm'] + "   </b> </span>",
                                 '',
                                 ''
                             ]).draw(false).node();
@@ -1429,7 +1429,7 @@
                         }else if(i==0){
                             var rowNode = t.row.add([
                                 '#',
-                                "<span style='color: red'> <b> " + response[i]['mdnm'] + "   </b> </span>",
+                                "<span style='color: #2D3349'> <b> " + response[i]['mdnm'] + "   </b> </span>",
                                 '',
                                 ''
                             ]).draw(false).node();

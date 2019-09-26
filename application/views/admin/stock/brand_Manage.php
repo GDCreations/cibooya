@@ -2,15 +2,15 @@
 <div class="app-heading-container app-heading-bordered bottom">
     <ul class="breadcrumb">
         <li><a href="#">Stock Components</a></li>
-        <li class="active">Category Management</li>
+        <li class="active">Brand Management</li>
     </ul>
 </div>
 <div class="app-heading app-heading-bordered app-heading-page">
     <div class="icon icon-lg">
-        <span class="fa fa-th-large" style="color: #e69c0f;"></span>
+        <span class="fa fa-anchor" style="color: #e69c0f;"></span>
     </div>
     <div class="title">
-        <h1>Category Management</h1>
+        <h1>Brand Management</h1>
         <p>Add / Edit / Reject / Deactive / Search & View</p>
     </div>
     <?php
@@ -85,7 +85,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Category Name <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                                    class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="name" id="name"
                                                    placeholder="Category Name"/>
@@ -93,7 +93,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Category Code <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                                    class="fa fa-asterisk"
+                                                    style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control text-uppercase" type="text" name="code" id="code"
                                                    placeholder="Category Code"/>
@@ -113,7 +114,7 @@
                     <div class="modal-footer">
                         <div class="pull-left">
                             <span class="fa fa-hand-o-right"></span> <label style="color: red"> <span
-                                        class="fa fa-asterisk req-astrick"></span> Required Fields </label>
+                                        class="fa fa-asterisk"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
                         <button type="button" id="add_cat_btn" class="btn btn-warning btn-xs btn-rounded">Submit
@@ -145,17 +146,16 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Category Name <span
-                                                    class="fa fa-asterisk req-astrick edit_req"></span></label>
+                                                    class="fa fa-asterisk edit_req" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="name_edt" id="name_edt"
                                                    placeholder="Category Name"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Category Code <span
-                                                    class="fa fa-asterisk req-astrick edit_req"></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">Category Code</label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control text-uppercase" type="text" name="code_edt" id="code_edt"
+                                            <input class="form-control" type="text" name="code_edt" id="code_edt"
                                                    placeholder="Category Code"/>
                                         </div>
                                     </div>
