@@ -978,7 +978,7 @@ class Admin extends CI_Controller
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' $dac onclick='inactSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+                    "<button type='button' $dac onclick='inactSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
             } else if ($row->stat == 3) {
                 $stat = "<label class='label label-danger'>Reject</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -990,7 +990,7 @@ class Admin extends CI_Controller
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' $reac onclick='reactSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
             } else {
                 $stat = "--";
                 $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -1320,7 +1320,7 @@ class Admin extends CI_Controller
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' $dac onclick='inactSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+                    "<button type='button' $dac onclick='inactUser($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
             } else if ($row->stat == 0) {
                 $stat = "<label class='label label-danger'>Inactive</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -1331,14 +1331,14 @@ class Admin extends CI_Controller
                 $stat = "<label class='label label-indi'> Tmp Disable</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' $reac onclick='reactSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+                    "<button type='button' $reac onclick='reactUser($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
             } else {
                 $stat = "--";
                 $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='editSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='approveSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='rejectSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+                    "<button type='button' disabled onclick='editSupp();' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='approveSupp();' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='rejectSupp();' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             }
 
             $sub_arr = array();
@@ -1408,13 +1408,28 @@ class Admin extends CI_Controller
     {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
-        $usnm = ($this->input->post('usnm'));
-
         if ($this->input->post('prmTp') == '') {
             $prmd = 0;
         } else {
             $prmd = $this->input->post('prmTp');
         }
+
+        /* https://arjunphp.com/generating-alphanumeric-unique-id-in-codeigniter/ */
+        /*  1) alpha: A string with lower and uppercase letters only.
+            2) alnum: Alpha-numeric string with lower and uppercase characters.
+            3) numeric: Numeric string.
+            4) nozero: Numeric string with no zeros.
+        */
+
+        $this->load->helper('string');
+        $rdcode = random_string('nozero', 6);
+
+        /*$funm = $this->input->post('funm');
+        $innm = $this->input->post('innm');*/
+        $email = $this->input->post('emil');
+        $usnm = $this->input->post('usnm');
+        $fnme = $this->input->post('frnm');
+        $lnme = $this->input->post('lsnm');
 
         $this->Generic_model->insertData('user_mas',
             array(
@@ -1422,19 +1437,24 @@ class Admin extends CI_Controller
                 'brch' => $this->input->post('brchNw'),
                 'usmd' => $this->input->post('uslvNw'),
                 'prmd' => $prmd,
-                'fnme' => $this->input->post('frnm'),
-                'lnme' => $this->input->post('lsnm'),
 
-                'emid' => $this->input->post('emil'),
+                'fnme' => $fnme,
+                'lnme' => $lnme,
+                'emid' => $email,
+
                 'unic' => $this->input->post('unic'),
                 'tpno' => $this->input->post('tele'),
                 'almo' => $this->input->post('mobi'),
                 'udob' => $this->input->post('udob'),
                 'gend' => $this->input->post('ugnd'),
 
-                'stat' => 0,
+                'stat' => 1,
                 'crby' => $_SESSION['userId'],
                 'crdt' => date('Y-m-d H:i:s'),
+
+                'lgps' => '$2y$10$KgBH6wkYF0/B1GF/dyvuxukPt/nObT9mzNmrf84SjJJM9IUD1RBfC', // asd@123
+                'lgcd' => $rdcode,
+                'fslg' => 1,
             ));
 
         $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
@@ -1445,77 +1465,116 @@ class Admin extends CI_Controller
             echo json_encode(false);
         } else {
             $this->db->trans_commit(); // SQL TRANSACTION END
-            echo json_encode(true);
+
+            // CHECK POLICY USER REGISTER EMAIL SEND OR NOT
+            $pocyemil = $this->Generic_model->getData('sys_policy', array('post', 'stat'), array('poid' => 2));
+            if ($pocyemil[0]->stat == 1 && $pocyemil[0]->post == 1) {
+
+                $comdt = $this->Generic_model->getData('com_det', array('cmne', 'syln'), array('stat' => 1));
+                $systnm = $comdt[0]->cmne;
+                $sysLink = $comdt[0]->syln;
+
+                // SEND MAIL CONFIGURATION
+                $config = Array(
+                    'protocol' => 'smtp',
+                    'smtp_host' => 'ssl://mail.northpony.com',
+                    'smtp_port' => 465,
+                    'smtp_user' => 'noreply@northpony.com', // change it to yours
+                    'smtp_pass' => '&8,SlFRE_D3y', // change it to yours
+                    'mailtype' => 'html',
+                    'charset' => 'iso-8859-1',
+                    // 'charset' => 'utf-8',
+                    'wordwrap' => TRUE
+                );
+
+                // SEND MAIL MESSAGE
+                $message = "<tbody>
+        <tr><td bgcolor='#F6F8FA' style='background-color:#F6F8FA; padding:12px; border-bottom:1px solid #ECECEC'></td>
+        </tr><tr><td style=''><table border='0' cellspacing='0' cellpadding='0' width='100%' style=''><tbody>
+        <tr><td style='padding:24px 0 48px'><table border='0' cellspacing='0' cellpadding='0' width='100%' style=''><tbody>
+        <tr><td align='center' style='padding:0 2.2% 32px; text-align:center'><h2 style='margin:0; word-wrap:break-word; color:#262626; word-break:; font-weight:700; font-size:20px; line-height:1.2'></h2><h2 style='margin:0; color:#262626; font-weight:200; font-size:20px; line-height:1.2'> Get Started On Your " . $systnm . " System Account Now. </h2></td></tr>
+        <tr><td align='center' style=''><table border='0' class='x_face-grid x_small' cellspacing='0' cellpadding='0' width='100%' style='table-layout:fixed'><tbody>Thank you for join with us, " . $fnme . ' ' . $lnme . "<br><br>To get started, activate your account by setting up your username and password. .<br><br>Username: " . $usnm . "<br>Password: asd@123 <br>Digital Eye : $rdcode <br><br></tbody></table></td></tr>
+        <tr><td align='center' style='text-align:center'><h2 style='margin:0; color:#262626; font-weight:200; font-size:20px; line-height:1.2'> <a href=' " . $sysLink . "'  style='color:#008CC9; display:inline-block; text-decoration:none'>Login to System</a></h2></td></tr></tbody></table></td></tr></tbody></table></td></tr>
+        <tr><td style=''><table border='0' cellspacing='0' cellpadding='0' width='100%' bgcolor='#EDF0F3' align='center' style='background-color:#EDF0F3; padding:0 24px; color:#999999; text-align:center'><tbody>
+        <tr><td style=''><table align='center' border='0' cellspacing='0' cellpadding='0' width='100%' style=''><tbody><tr><td valign='middle' align='center' style='padding:0 0 16px 0; vertical-align:middle; text-align:center'></td></tr></tbody></table><table border='0' cellspacing='0' cellpadding='0' width='100%' style=''><tbody><tr><td align='center' style='padding:0 0 12px 0; text-align:center'><p style='margin:0; color:#737373; font-weight:400; font-size:12px; line-height:1.333'>This is a system generated email to help you to get Login Details.</p></td></tr>
+        <tr><td align='center' style='padding:0 0 12px 0; text-align:center'><p style='margin:0; word-wrap:break-word; color:#737373; word-break:break-word; font-weight:400; font-size:12px; line-height:1.333'>If you have any questions or if you are encountering problems, our support team at support@gdcreations.com is happy to assist you. Alternatively, you can visit our Support Desk.</p></td></tr>
+        <tr><td align='center' style='padding:0 0 8px 0; text-align:center'></td></tr>
+        </tbody></table></td></tr></tbody></table></td></tr></tbody>";
+
+                $this->load->library('email', $config);
+                $this->email->set_newline("\r\n");
+                $this->email->from('noreply@northpony.com', $systnm);   // change it to yours
+                $this->email->to($email);                               // change it to yours    'gamunu@gdcreations.com'
+                $this->email->subject('Get Started On Your ' . $systnm . ' Account.');
+                $this->email->message($message);
+
+                if ($this->email->send()) {
+                    echo json_encode(true);
+
+                } else {
+                    show_error($this->email->print_debugger());
+                    echo json_encode(false);
+                }
+            } else {
+                echo json_encode(true);
+            }
         }
     }
 
     // VIEW USER for edit approval
-    function getBrncDetXX()
+    function getUserDet()
     {
         $auid = $this->input->post('id');
 
         $this->db->select(" * ");
-        $this->db->from('brch_mas');
-        /*$this->db->join('user_mas cr', 'cr.auid=sup.crby');
-        $this->db->join('user_mas ap', 'ap.auid=sup.apby', 'LEFT');
-        $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
-        $this->db->join('user_mas rj', 'rj.auid=sup.rjby', 'LEFT');*/
-        $this->db->where("brch_mas.brid", $auid);
+        $this->db->from('user_mas');
+        $this->db->where("user_mas.auid", $auid);
         $data = $this->db->get()->result();
 
         echo json_encode($data);
     }
 
-    // UPDATE & APPROVAL
-    function brncEditXX()
+    // UPDATE
+    function userEdit()
     {
         $func = $this->input->post('func');
         $auid = $this->input->post('auid');
-        $brcd = strtoupper($this->input->post('codeEdt'));
+        $usnm = $this->input->post('usnmEdt');
+
+        if ($this->input->post('prmTpEdt') == '') {
+            $prmd = 0;
+        } else {
+            $prmd = $this->input->post('prmTpEdt');
+        }
 
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         if ($func == 'edit') {
             //Updating
-            $this->Generic_model->updateData('brch_mas',
+            $this->Generic_model->updateData('user_mas',
                 array(
-                    'brcd' => $brcd,
-                    'brnm' => $this->input->post('nameEdt'),
-                    'brad' => $this->input->post('addrEdt'),
-                    'brmb' => $this->input->post('mobiEdt'),
-                    'brtp' => $this->input->post('teleEdt'),
-                    'brem' => $this->input->post('emailEdt'),
-                    'remk' => $this->input->post('remkEdt'),
+                    'usnm' => $usnm,
+                    'brch' => $this->input->post('brchNwEdt'),
+                    'usmd' => $this->input->post('uslvNwEdt'),
+                    'prmd' => $prmd,
+
+                    'fnme' => $this->input->post('frnmEdt'),
+                    'lnme' => $this->input->post('lsnmEdt'),
+                    'emid' => $this->input->post('emilEdt'),
+
+                    'unic' => $this->input->post('unicEdt'),
+                    'tpno' => $this->input->post('teleEdt'),
+                    'almo' => $this->input->post('mobiEdt'),
+                    'udob' => $this->input->post('udobEdt'),
+                    'gend' => $this->input->post('ugndEdt'),
+
                     'mdby' => $_SESSION['userId'],
                     'mddt' => date('Y-m-d H:i:s'),
                 ),
-                array('brid' => $auid));
+                array('auid' => $auid));
 
             $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
-            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Updated ($brcd)");
-
-        } else if ($func == 'app') {
-
-            //Updating
-            $this->Generic_model->updateData('brch_mas',
-                array(
-                    'brcd' => $brcd,
-                    'brnm' => $this->input->post('nameEdt'),
-                    'brad' => $this->input->post('addrEdt'),
-                    'brmb' => $this->input->post('mobiEdt'),
-                    'brtp' => $this->input->post('teleEdt'),
-                    'brem' => $this->input->post('emailEdt'),
-                    'remk' => $this->input->post('remkEdt'),
-                    'stat' => 1,
-                    'apby' => $_SESSION['userId'],
-                    'apdt' => date('Y-m-d H:i:s'),
-                    'mdby' => $_SESSION['userId'],
-                    'mddt' => date('Y-m-d H:i:s'),
-                ),
-                array('brid' => $auid));
-
-            $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
-            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Approved ($brcd)");
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "User Updated ($usnm)");
         }
 
         if ($this->db->trans_status() === FALSE) {
@@ -1552,19 +1611,20 @@ class Admin extends CI_Controller
     }
 
     // DEACTIVE
-    function brnDeactiveXX()
+    function userDeactive()
     {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         $auid = $this->input->post('id');
-        $this->Generic_model->updateData('brch_mas', array(
+        $this->Generic_model->updateData('user_mas',
+            array(
             'stat' => 2,
             'mdby' => $_SESSION['userId'],
             'mddt' => date('Y-m-d H:i:s')
-        ), array('brid' => $auid));
+        ), array('auid' => $auid));
 
         $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
-        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Deactivated ($auid)");
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "User Deactivated ($auid)");
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
@@ -1576,19 +1636,20 @@ class Admin extends CI_Controller
     }
 
     // REACTIVE
-    function brncReactivXX()
+    function userReactiv()
     {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         $spid = $this->input->post('id');
-        $this->Generic_model->updateData('brch_mas', array(
+        $this->Generic_model->updateData('user_mas',
+            array(
             'stat' => 1,
             'mdby' => $_SESSION['userId'],
             'mddt' => date('Y-m-d H:i:s')
-        ), array('brid' => $spid));
+        ), array('auid' => $spid));
 
         $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
-        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Reactivated ($spid)");
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "User Reactivated ($spid)");
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
