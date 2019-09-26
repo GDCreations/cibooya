@@ -544,7 +544,7 @@ class Stock extends CI_Controller
         //Inserting Category details
         $this->Generic_model->insertData('category', array(
             'ctnm' => $this->input->post('name'),
-            'ctcd' => $this->input->post('code'),
+            'ctcd' => strtoupper($this->input->post('code')),
             'remk' => $this->input->post('remk'),
             'stat' => 0,
             'crby' => $_SESSION['userId'],
@@ -731,7 +731,7 @@ class Stock extends CI_Controller
             //Updating supplier details
             $this->Generic_model->updateData('category', array(
                 'ctnm' => $this->input->post('name_edt'),
-                'ctcd' => $this->input->post('code_edt'),
+                'ctcd' => strtoupper($this->input->post('code_edt')),
                 'remk' => $this->input->post('remk_edt'),
                 'mdby' => $_SESSION['userId'],
                 'mddt' => date('Y-m-d H:i:s'),
@@ -744,7 +744,7 @@ class Stock extends CI_Controller
             //Updating supplier details
             $this->Generic_model->updateData('category', array(
                 'ctnm' => $this->input->post('name_edt'),
-                'ctcd' => $this->input->post('code_edt'),
+                'ctcd' => strtoupper($this->input->post('code_edt')),
                 'remk' => $this->input->post('remk_edt'),
                 'stat' => 1,
                 'mdby' => $_SESSION['userId'],
@@ -841,5 +841,27 @@ class Stock extends CI_Controller
 //END ACTIVATE CATEGORY </JANAKA 2019-09-25>
 //************************************************
 //***          CATEGORY REGISTRATION           ***
+//************************************************
+
+//************************************************
+//***          BRAND REGISTRATION              ***
+//************************************************
+//OPEN PAGE </JANAKA 2019-09-25>
+    function brndMng()
+    {
+        $data['acm'] = 'stcCmp'; //Module
+        $data['acp'] = 'brndMng'; //Page
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('brndMng');
+        $this->load->view('admin/stock/brand_Manage', $data2);
+
+        $this->load->view('common/tmpFooter', $data);
+    }
+//END OPEN PAGE </JANAKA 2019-09-25>
+//************************************************
+//***      END BRAND REGISTRATION              ***
 //************************************************
 }

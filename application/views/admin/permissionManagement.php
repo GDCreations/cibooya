@@ -345,7 +345,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="add_new_page" class="btn btn-warning btn-xs btn-rounded">
+                        <button type="button" id="add_new_page" class="btn btn-warning btn-sm btn-rounded">
                             Add
                         </button>
                     </div>
@@ -575,41 +575,41 @@
                         }
 
                         if (response[i]['view'] == 1) {
-                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='view' value=" + response[i]['view'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/><span></span></label>";
+                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='View' value=" + response[i]['view'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/><span></span></label>";
                         } else {
-                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='view' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='View' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['inst'] == 1) {
-                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='add' value=" + response[i]['inst'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='Add' value=" + response[i]['inst'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='add' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='Add' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['edit'] == 1) {
-                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='edit' value=" + response[i]['edit'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='Edit' value=" + response[i]['edit'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='edit' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='Edit' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['rejt'] == 1) {
-                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='reject/delete' value=" + response[i]['rejt'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='Reject/Delete' value=" + response[i]['rejt'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='reject/delete' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='Reject/Delete' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['apvl'] == 1) {
-                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='approval' value=" + response[i]['apvl'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='Approval' value=" + response[i]['apvl'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='approval' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='Approval' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
 
                         if (response[i]['reac'] == 1) {
-                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='reactive' value=" + response[i]['reac'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='Reactive' value=" + response[i]['reac'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='reactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='Reactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
 
                         if (response[i]['dact'] == 1) {
-                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='reactive' value=" + response[i]['dact'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='Deactive' value=" + response[i]['dact'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='reactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='Deactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
 
                         var all = "<label class=''><input type='checkbox' name='all[" + i + "]' value='' id='checkbox-1' onclick='chckall(" + i + ",this.checked)'  class='icheckbox' /> </label>";
@@ -723,41 +723,41 @@
                         }
 
                         if (response[i]['view'] == 1) {
-                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='view' value=" + response[i]['view'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/><span></span></label>";
+                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='View' value=" + response[i]['view'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/><span></span></label>";
                         } else {
-                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='view' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var viw = "<label class=''><input type='checkbox' name='view[" + i + "]' title='View' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['inst'] == 1) {
-                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='add' value=" + response[i]['inst'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='Add' value=" + response[i]['inst'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='add' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var inst = "<label class=''><input type='checkbox' name='inst[" + i + "]' title='Add' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['edit'] == 1) {
-                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='edit' value=" + response[i]['edit'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='Edit' value=" + response[i]['edit'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='edit' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var edit = "<label class=''><input type='checkbox' name='edit[" + i + "]' title='Edit' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['rejt'] == 1) {
-                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='reject/delete' value=" + response[i]['rejt'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='Reject/Delete' value=" + response[i]['rejt'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='reject/delete' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var rejt = "<label class=''><input type='checkbox' name='rejt[" + i + "]' title='Reject/Delete' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
                         if (response[i]['apvl'] == 1) {
-                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='approval' value=" + response[i]['apvl'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='Approval' value=" + response[i]['apvl'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='approval' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var apvl = "<label class=''><input type='checkbox' name='apvl[" + i + "]' title='Approval' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
 
                         if (response[i]['reac'] == 1) {
-                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='reactive' value=" + response[i]['reac'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='Reactive' value=" + response[i]['reac'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='reactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var reac = "<label class=''><input type='checkbox' name='reac[" + i + "]' title='Reactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
 
                         if (response[i]['dact'] == 1) {
-                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='reactive' value=" + response[i]['dact'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
+                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='Deactive' value=" + response[i]['dact'] + " id='checkbox-1'  class='icheckbox " + i + "' checked='checked'/> </label>";
                         } else {
-                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='reactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
+                            var dact = "<label class=''><input type='checkbox' name='dact[" + i + "]' title='Deactive' value='1' id='checkbox-1'  class='icheckbox " + i + "' /> </label>";
                         }
 
                         var all = "<label class=''><input type='checkbox' name='all[" + i + "]' value='' id='checkbox-1' onclick='chckall(" + i + ",this.checked)'  class='icheckbox' /> </label>";

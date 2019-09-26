@@ -95,14 +95,29 @@
                             <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> Stock Components</a>
                             <ul>
                                 <?php if (in_array("catMng", $permission, TRUE)) { ?>
-                                <li>
-                                    <a id="catMng" href="<?= base_url()?>Stock/catMng"><span
-                                                class="nav-icon-hexa fa fa-th-large"></span> Category Management</a>
-                                </li>
+                                    <li>
+                                        <a id="catMng" href="<?= base_url() ?>Stock/catMng"><span
+                                                    class="nav-icon-hexa fa fa-th-large"></span> Category Management</a>
+                                    </li>
                                 <?php } ?>
-                                <li>
-                                    <a href="#"><span class="nav-icon-hexa fa fa-anchor"></span> Brand Management </a>
-                                </li>
+                                <?php if (in_array("brndMng", $permission, TRUE)) { ?>
+                                    <li>
+                                        <a id="brndMng" href="<?= base_url() ?>Stock/brndMng"><span
+                                                    class="nav-icon-hexa fa fa-anchor"></span> Brand Management </a>
+                                    </li>
+                                <?php } ?>
+                                <?php if (in_array("typeMng", $permission, TRUE)) { ?>
+                                    <li>
+                                        <a id="typeMng" href="<?= base_url() ?>Stock/typeMng"><span
+                                                    class="nav-icon-hexa fa fa-navicon"></span> Type Management </a>
+                                    </li>
+                                <?php } ?>
+                                <?php if (in_array("itemMng", $permission, TRUE)) { ?>
+                                    <li>
+                                        <a id="itemMng" href="<?= base_url() ?>Stock/itemMng"><span
+                                                    class="nav-icon-hexa fa fa-cubes"></span> Item Management </a>
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </li>
                         <?php $Stock_title = false;
