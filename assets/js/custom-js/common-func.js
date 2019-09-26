@@ -26,6 +26,32 @@ function default_Selector(node) {
     node.prev().children().first().html(selected); //set selected value as <li> element
 }
 
+//Set selected item in selector
+//id - Selector ID
+//itm - Selected Item ID
+function set_select(id,itm) {
+    $('#'+id).val(itm);
+    var sltr = $('#'+id);       //Get Selector Element
+    var prev = $('#'+id).prev();//Get Previous element (<div><ul><li></li></ul></div>)
+    var sltr_chld = sltr.children(); //<option></option>
+    sltr_chld.map(function () {
+        //Get Index of value option
+        if($(this).val()==itm){
+           var index = $(this).index();
+           var li = prev.children().children().removeClass('selected'); //<li></li>
+           li.map(function () {
+               //Get Selecting Index <li></li>
+               if($(this).index()==index){
+                   $(this).addClass('selected');
+                   var sel_value = $(this).children().children().first().html(); //Selected value text
+                   prev.prev().prop('title',sel_value);
+                   prev.prev().children().first().html(sel_value)
+               }
+           });
+        }
+    });
+}
+
 //Selectors Red Indicating
 function chckBtn(id, inpu) {
     if (id == 0) {
