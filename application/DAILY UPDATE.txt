@@ -2,7 +2,7 @@
 -----------------------------------------------------
 -----------------------------------------------------
 -----------------------------------------------------
-2019-09-26
+2019-09-26 Gemunu
 INSERT INTO `sys_policy` (`poid`, `popg`, `ponm`, `pods`, `pov1`, `pov2`, `pov3`, `post`, `remk`, `crby`, `crdt`, `mdby`, `mddt`, `stat`) VALUES (NULL, '', 'User Register Email', 'This policy enable, User Registration login details automation send to user. If policy disable Not send to email', '', '', '', '0', '0-disable/1-enable', '1', '2018-05-01 00:00:00', '1', '2019-09-26 10:55:25', '1');
 ALTER TABLE `user_mas` ADD `fslg` INT(10) NOT NULL COMMENT 'if first login (0-No/1-Yes)' AFTER `islg`;
 
