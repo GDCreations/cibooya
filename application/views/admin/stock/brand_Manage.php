@@ -33,22 +33,7 @@
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">Status</label>
                     <div class="col-md-8 col-xs-12">
-                        <select id="cats" name="cats" class="bs-select" onchange="chckBtn(this.value,'cats')">
-                            <option value="0">-- Select Category --</option>
-                            <?php
-                            foreach ($category as $cat){
-                                echo "<option value='$cat->ctid'>".$cat->ctcd." - ".$cat->ctnm."</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">Status</label>
-                    <div class="col-md-8 col-xs-12">
-                        <select id="stat" name="stat" class="bs-select">
+                        <select id="stat" name="stat" class="bs-select" onchange="srch_Brnd()">
                             <option value="all">All</option>
                             <option value="0">Pending</option>
                             <option value="1">Active</option>
@@ -56,11 +41,6 @@
                             <option value="2">Reject</option>
                         </select>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed" onclick="srch_Brnd()"><span class="fa fa-search"></span>Search</button>
                 </div>
             </div>
         </div>
@@ -73,7 +53,7 @@
                     <tr>
                         <th class="text-left">#</th>
                         <th class="text-left">CODE</th>
-                        <th class="text-left">CATEGORY</th>
+                        <th class="text-left">BRAND</th>
                         <th class="text-left">CREATED BY</th>
                         <th class="text-left">CREATED DATE</th>
                         <th class="text-left">STATUS</th>
@@ -88,36 +68,33 @@
         </div>
     </div>
 
-    <!-- MODAL ADD NEW SUPPLIER -->
+    <!-- MODAL ADD NEW BRAND -->
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
         <div class="modal-dialog" role="document">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
-            <form id="add_cat_form">
+            <form id="add_brnd_form">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Add New Category</h4>
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Add Brand</h4>
                     </div>
                     <div class="modal-body">
                         <div class="container">
                             <div class="row form-horizontal">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Category Name <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">Brand Name <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="name" id="name"
-                                                   placeholder="Category Name"/>
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Brand Name"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Category Code <span
-                                                    class="fa fa-asterisk"
-                                                    style="color: red"></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">Brand Code <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control text-uppercase" type="text" name="code" id="code"
-                                                   placeholder="Category Code"/>
+                                            <input type="text" class="form-control text-uppercase" id="code" name="code" placeholder="Brand Code"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -134,49 +111,49 @@
                     <div class="modal-footer">
                         <div class="pull-left">
                             <span class="fa fa-hand-o-right"></span> <label style="color: red"> <span
-                                        class="fa fa-asterisk"></span> Required Fields </label>
+                                        class="fa fa-asterisk req-astrick"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="add_cat_btn" class="btn btn-warning btn-xs btn-rounded">Submit
+                        <button type="button" id="add_brnd_btn" class="btn btn-warning btn-xs btn-rounded">Submit
                         </button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <!-- END ADD NEW SUPPLIER -->
+    <!-- END ADD NEW BRAND -->
 
-    <!-- MODAL VIEW SUPPLIER -->
+    <!-- MODAL VIEW BRAND -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog" role="document">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
-            <form id="app_cat_form">
+            <form id="app_brnd_form">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Category
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Brand
                             Management <span class="text-muted" id="subTitle_edit"></span></h4>
                         <input type="hidden" id="func" name="func"/>
-                        <input type="hidden" id="ctid" name="ctid"/>
+                        <input type="hidden" id="bdid" name="bdid"/>
                     </div>
                     <div class="modal-body">
                         <div class="container">
                             <div class="form-horizontal">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Category Name <span
+                                        <label class="col-md-4 col-xs-12 control-label">Brand Name <span
                                                     class="fa fa-asterisk edit_req" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="name_edt" id="name_edt"
-                                                   placeholder="Category Name"/>
+                                                   placeholder="Brand Name"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Category Code</label>
+                                        <label class="col-md-4 col-xs-12 control-label">Brand Code</label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="code_edt" id="code_edt"
-                                                   placeholder="Category Code"/>
+                                            <input class="form-control text-uppercase" type="text" name="code_edt" id="code_edt"
+                                                   placeholder="Brand Code"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -192,7 +169,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Status</label>
-                                        <label class="col-md-8 control-label" id="cat_stat"></label>
+                                        <label class="col-md-8 control-label" id="brd_stat"></label>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Created By</label>
@@ -216,14 +193,14 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="app_cat_btn" class="btn btn-warning btn-xs btn-rounded">
+                        <button type="button" id="app_brd_btn" class="btn btn-warning btn-xs btn-rounded">
                         </button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    <!-- END VIEW SUPPLIER -->
+    <!-- END VIEW BRAND -->
 
     <script type="text/javascript">
         $().ready(function () {
@@ -244,12 +221,12 @@
                 ],
             });
 
-            $('#add_cat_form').validate({
+            $('#add_brnd_form').validate({
                 rules: {
                     name: {
                         required: true,
                         remote: {
-                            url: "<?= base_url(); ?>Stock/chk_catName",
+                            url: "<?= base_url(); ?>Stock/chk_brdName",
                             type: "post",
                             data: {
                                 name: function () {
@@ -261,10 +238,10 @@
                     },
                     code: {
                         required: true,
-                        minlength: 4,
-                        maxlength: 4,
+                        minlength: 3,
+                        maxlength: 3,
                         remote: {
-                            url: "<?= base_url(); ?>Stock/chk_catCode",
+                            url: "<?= base_url(); ?>Stock/chk_brdCode",
                             type: "post",
                             data: {
                                 code: function () {
@@ -277,29 +254,29 @@
                 },
                 messages: {
                     name: {
-                        required: "Enter category name",
+                        required: "Enter brand name",
                         remote: "Already entered name"
                     },
                     code: {
-                        required: "Enter category code",
+                        required: "Enter brand code",
                         remote: "Already entered code"
                     }
                 }
             });
 
-            $('#app_cat_form').validate({
+            $('#app_brnd_form').validate({
                 rules: {
                     name_edt: {
                         required: true,
                         remote: {
-                            url: "<?= base_url(); ?>Stock/chk_catName",
+                            url: "<?= base_url(); ?>Stock/chk_brdName",
                             type: "post",
                             data: {
                                 name: function () {
                                     return $("#name_edt").val();
                                 },
-                                ctid: function () {
-                                    return $("#ctid").val();
+                                bdid: function () {
+                                    return $("#bdid").val();
                                 },
                                 stat: 1
                             }
@@ -307,17 +284,17 @@
                     },
                     code_edt: {
                         required: true,
-                        minlength: 4,
-                        maxlength: 4,
+                        minlength: 3,
+                        maxlength: 3,
                         remote: {
-                            url: "<?= base_url(); ?>Stock/chk_catCode",
+                            url: "<?= base_url(); ?>Stock/chk_brdCode",
                             type: "post",
                             data: {
                                 code: function () {
                                     return $("#code_edt").val();
                                 },
-                                ctid: function () {
-                                    return $("#ctid").val();
+                                bdid: function () {
+                                    return $("#bdid").val();
                                 },
                                 stat: 1
                             }
@@ -326,43 +303,42 @@
                 },
                 messages: {
                     name_edt: {
-                        required: "Enter category name",
+                        required: "Enter brand name",
                         remote: "Already entered name"
                     },
                     code_edt: {
-                        required: "Enter category code",
+                        required: "Enter brand code",
                         remote: "Already entered code"
                     }
                 }
             });
-
-            srch_Cat();
+            srch_Brnd();
         });
 
         //Add New Supplier
-        $('#add_cat_btn').click(function (e) {
+        $('#add_brnd_btn').click(function (e) {
             e.preventDefault();
-            if ($('#add_cat_form').valid()) {
-                $('#add_cat_btn').prop('disabled', true);
+            if ($('#add_brnd_form').valid()) {
+                $('#add_brnd_btn').prop('disabled', true);
                 swal({
                     title: "Processing...",
-                    text: "Category data saving..",
+                    text: "Brand data saving..",
                     imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                     showConfirmButton: false
                 });
 
                 jQuery.ajax({
                     type: "POST",
-                    url: "<?= base_url(); ?>Stock/cat_Add",
-                    data: $("#add_cat_form").serialize(),
+                    url: "<?= base_url(); ?>Stock/brnd_Add",
+                    data: $("#add_brnd_form").serialize(),
                     dataType: 'json',
                     success: function (data) {
-                        swal({title: "", text: "Category Added!", type: "success"},
+                        swal({title: "", text: "Brand Added!", type: "success"},
                             function () {
-                                $('#add_cat_btn').prop('disabled', false);
-                                clear_Form('add_cat_form');
+                                $('#add_brnd_btn').prop('disabled', false);
+                                clear_Form('add_brnd_form');
                                 $('#modal-add').modal('hide');
-                                srch_Cat();
+                                srch_Brnd();
                             });
                     },
                     error: function (data, textStatus) {
@@ -376,10 +352,11 @@
         });
 
         //Search Suppliers
-        function srch_Cat() {
+        function srch_Brnd() {
             var stat = $('#stat').val();
-            $('#cat_table').DataTable().clear();
-            $('#cat_table').DataTable({
+
+            $('#brnd_table').DataTable().clear();
+            $('#brnd_table').DataTable({
                 "destroy": true,
                 "cache": false,
                 "processing": true,
@@ -402,7 +379,7 @@
                 "aoColumns": [
                     {sWidth: '3%'}, //#
                     {sWidth: '5%'}, //Code
-                    {sWidth: '20%'}, //Name
+                    {sWidth: '20%'}, //Category
                     {sWidth: '10%'}, //Created By
                     {sWidth: '10%'}, //Created date
                     {sWidth: '8%'}, //Status
@@ -410,7 +387,7 @@
                 ],
 
                 "ajax": {
-                    url: '<?= base_url(); ?>Stock/searchCat',
+                    url: '<?= base_url(); ?>Stock/searchBrnd',
                     type: 'post',
                     data: {
                         stat: stat
@@ -420,20 +397,20 @@
         }
 
         //View Supplier
-        function viewCat(id, func) {
+        function viewBrd(id, func) {
             swal({
                 title: "Loading Data...",
-                text: "Category Details",
+                text: "Brand Details",
                 imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                 showConfirmButton: false
             });
 
             $('#func').val(func);
-            $('#ctid').val(id);
+            $('#bdid').val(id);
 
             jQuery.ajax({
                 type: "POST",
-                url: "<?= base_url(); ?>Stock/get_CatDet",
+                url: "<?= base_url(); ?>Stock/get_BrdDet",
                 data: {
                     id: id
                 },
@@ -442,7 +419,7 @@
                     if (func == 'view') {
                         //VIEW MODEL
                         $('#subTitle_edit').html(' - View');
-                        $('#app_cat_btn').css('display', 'none');
+                        $('#app_brd_btn').css('display', 'none');
                         $("#modal-view").find('.edit_req').css("display", "none");
                         $("#edit_Area").css('display', 'none');
                         $(".view_Area").css('display', 'block');
@@ -452,8 +429,8 @@
                     } else if (func == 'edit') {
                         //EDIT MODEL
                         $('#subTitle_edit').html(' - Edit');
-                        $('#app_cat_btn').css('display', 'inline');
-                        $('#app_cat_btn').html('Update');
+                        $('#app_brd_btn').css('display', 'inline');
+                        $('#app_brd_btn').html('Update');
                         $("#modal-view").find('.edit_req').css("display", "inline");
                         $("#edit_Area").css('display', 'block');
                         $(".view_Area").css('display', 'none');
@@ -463,8 +440,8 @@
                     } else if (func == 'app') {
                         //APPROVE MODEL
                         $('#subTitle_edit').html(' - Approve');
-                        $('#app_cat_btn').css('display', 'inline');
-                        $('#app_cat_btn').html('Approve');
+                        $('#app_brd_btn').css('display', 'inline');
+                        $('#app_brd_btn').html('Approve');
                         $("#modal-view").find('.edit_req').css("display", "inline");
                         $("#edit_Area").css('display', 'block');
                         $(".view_Area").css('display', 'none');
@@ -475,8 +452,8 @@
                     var len = data.length;
 
                     if (len > 0) {
-                        $('#name_edt').val(data[0]['ctnm']);
-                        $('#code_edt').val(data[0]['ctcd']);
+                        $('#name_edt').val(data[0]['bdnm']);
+                        $('#code_edt').val(data[0]['bdcd']);
                         $('#remk_edt').val(data[0]['remk']);
 
                         if (data[0]['stat'] == 0) {
@@ -490,7 +467,7 @@
                         } else {
                             var stat = "--";
                         }
-                        $('#cat_stat').html(": " + stat);
+                        $('#brd_stat').html(": " + stat);
                         $('#crby').html(": " + data[0]['crnm']);
                         $('#crdt').html(": " + data[0]['crdt']);
                         $('#mdby').html(": " + ((data[0]['mdnm'] != null) ? data[0]['mdnm'] : "--"));
@@ -508,9 +485,9 @@
         }
 
         //APPROVE || EDIT HERE
-        $('#app_cat_btn').click(function (e) {
+        $('#app_brd_btn').click(function (e) {
             e.preventDefault();
-            if ($('#app_cat_form').valid()) {
+            if ($('#app_brnd_form').valid()) {
 
                 swal({
                         title: "Are you sure to do this ?",
@@ -526,27 +503,27 @@
                     function (isConfirm) {
                         if (isConfirm) {
                             var func = $('#func').val();
-                            $('#app_cat_btn').prop('disabled', true);
+                            $('#app_brd_btn').prop('disabled', true);
                             if (func == 'edit') {
                                 swal({
                                     title: "Processing...",
-                                    text: "Category details updating..",
+                                    text: "Brand details updating..",
                                     imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                                     showConfirmButton: false
                                 });
 
                                 jQuery.ajax({
                                     type: "POST",
-                                    url: "<?= base_url(); ?>Stock/cat_update",
-                                    data: $("#app_cat_form").serialize(),
+                                    url: "<?= base_url(); ?>Stock/brd_update",
+                                    data: $("#app_brnd_form").serialize(),
                                     dataType: 'json',
                                     success: function (data) {
                                         swal({title: "", text: "Updating Success!", type: "success"},
                                             function () {
-                                                $('#app_cat_btn').prop('disabled', false);
-                                                clear_Form('app_cat_form');
+                                                $('#app_brd_btn').prop('disabled', false);
+                                                clear_Form('app_brnd_form');
                                                 $('#modal-view').modal('hide');
-                                                srch_Cat();
+                                                srch_Brnd();
                                             });
                                     },
                                     error: function (data, textStatus) {
@@ -559,23 +536,23 @@
                             } else if (func == 'app') {
                                 swal({
                                     title: "Processing...",
-                                    text: "Category approving..",
+                                    text: "Brand approving..",
                                     imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                                     showConfirmButton: false
                                 });
 
                                 jQuery.ajax({
                                     type: "POST",
-                                    url: "<?= base_url(); ?>Stock/cat_update",
-                                    data: $("#app_cat_form").serialize(),
+                                    url: "<?= base_url(); ?>Stock/brd_update",
+                                    data: $("#app_brnd_form").serialize(),
                                     dataType: 'json',
                                     success: function (data) {
                                         swal({title: "", text: "Approved!", type: "success"},
                                             function () {
-                                                $('#app_cat_btn').prop('disabled', false);
-                                                clear_Form('app_cat_form');
+                                                $('#app_brd_btn').prop('disabled', false);
+                                                clear_Form('app_brnd_form');
                                                 $('#modal-view').modal('hide');
-                                                srch_Cat();
+                                                srch_Brnd();
                                             });
                                     },
                                     error: function (data, textStatus) {
@@ -596,7 +573,7 @@
         });
 
         //Reject Supplier
-        function rejectCat(id) {
+        function rejectBrd(id) {
             swal({
                     title: "Are you sure reject ?",
                     text: "",
@@ -619,15 +596,15 @@
 
                         $.ajax({
                             type: "POST",
-                            url: "<?= base_url(); ?>Stock/cat_Reject",
+                            url: "<?= base_url(); ?>Stock/brd_Reject",
                             data: {
                                 id: id
                             },
                             dataType: 'json',
                             success: function (data) {
-                                swal({title: "", text: "Category was rejected!", type: "success"},
+                                swal({title: "", text: "Brand was rejected!", type: "success"},
                                     function () {
-                                        srch_Cat();
+                                        srch_Brnd();
                                     });
                             },
                             error: function (data, textStatus) {
@@ -644,7 +621,7 @@
         }
 
         //Deactivate Supplier
-        function inactCat(id) {
+        function inactBrd(id) {
             swal({
                     title: "Are you sure to deactivate ?",
                     text: "",
@@ -667,15 +644,15 @@
 
                         $.ajax({
                             type: "POST",
-                            url: "<?= base_url(); ?>Stock/cat_Deactive",
+                            url: "<?= base_url(); ?>Stock/brd_Deactive",
                             data: {
                                 id: id
                             },
                             dataType: 'json',
                             success: function (data) {
-                                swal({title: "", text: "Category was deactivated!", type: "success"},
+                                swal({title: "", text: "Brand was deactivated!", type: "success"},
                                     function () {
-                                        srch_Cat();
+                                        srch_Brnd();
                                     });
                             },
                             error: function (data, textStatus) {
@@ -692,7 +669,7 @@
         }
 
         //activate Supplier
-        function reactCat(id) {
+        function reactBrd(id) {
             swal({
                     title: "Are you sure to activate ?",
                     text: "",
@@ -715,15 +692,15 @@
 
                         $.ajax({
                             type: "POST",
-                            url: "<?= base_url(); ?>Stock/cat_Activate",
+                            url: "<?= base_url(); ?>Stock/brd_Activate",
                             data: {
                                 id: id
                             },
                             dataType: 'json',
                             success: function (data) {
-                                swal({title: "", text: "Category was activated!", type: "success"},
+                                swal({title: "", text: "Brand was activated!", type: "success"},
                                     function () {
-                                        srch_Cat();
+                                        srch_Brnd();
                                     });
                             },
                             error: function (data, textStatus) {

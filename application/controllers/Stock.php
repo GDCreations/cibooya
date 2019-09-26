@@ -234,7 +234,7 @@ class Stock extends CI_Controller
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' $dac onclick='inactSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+                    "<button type='button' $dac onclick='inactSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
             } else if ($row->stat == 2) {
                 $stat = "<label class='label label-danger'>Reject</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -246,7 +246,7 @@ class Stock extends CI_Controller
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' $reac onclick='reactSupp($row->spid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
             } else {
                 $stat = "--";
                 $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -661,7 +661,7 @@ class Stock extends CI_Controller
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewCat($row->ctid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewCat($row->ctid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' $dac onclick='inactCat($row->ctid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+                    "<button type='button' $dac onclick='inactCat($row->ctid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
             } else if ($row->stat == 2) {
                 $stat = "<label class='label label-danger'>Reject</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewCat($row->ctid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -673,7 +673,7 @@ class Stock extends CI_Controller
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->ctid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' $reac onclick='reactCat($row->ctid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-hand-stop-o' aria-hidden='true'></i></button>";
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
             } else {
                 $stat = "--";
                 $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewCat($row->ctid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -846,7 +846,7 @@ class Stock extends CI_Controller
 //************************************************
 //***          BRAND REGISTRATION              ***
 //************************************************
-//OPEN PAGE </JANAKA 2019-09-25>
+//OPEN PAGE </JANAKA 2019-09-26>
     function brndMng()
     {
         $data['acm'] = 'stcCmp'; //Module
@@ -856,14 +856,314 @@ class Stock extends CI_Controller
         $this->load->view('admin/common/adminHeader', $per);
 
         $data2['funcPerm'] = $this->Generic_model->getFuncPermision('brndMng');
-        $data2['category'] = $this->Generic_model->getData('category',array('ctid','ctcd','ctnm'),"stat IN(1,3)");
         $this->load->view('admin/stock/brand_Manage', $data2);
 
         $this->load->view('common/tmpFooter', $data);
     }
-//END OPEN PAGE </JANAKA 2019-09-25>
+//END OPEN PAGE </JANAKA 2019-09-26>
 
+//ADD NEW BRAND </JANAKA 2019-09-26>
+    function brnd_Add(){
+        $this->db->trans_begin(); // SQL TRANSACTION START
 
+        //Inserting Category details
+        $this->Generic_model->insertData('brand', array(
+            'bdnm' => $this->input->post('name'),
+            'bdcd' => strtoupper($this->input->post('code')),
+            'remk' => $this->input->post('remk'),
+            'stat' => 0,
+            'crby' => $_SESSION['userId'],
+            'crdt' => date('Y-m-d H:i:s'),
+        ));
+        $lstId = $this->db->insert_id();
+
+        $funcPerm = $this->Generic_model->getFuncPermision('brndMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Brand Added ($lstId)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ADD NEW CATEGORY </JANAKA 2019-09-26>
+
+//CHECK BRAND NAME ALREADY EXIST </JANAKA 2019-09-26>
+    function chk_brdName(){
+        $stat = $this->input->post('stat');
+        $name = $this->input->post('name');
+        $bdid = $this->input->post('bdid');
+
+        $this->db->select("bdid");
+        $this->db->from('brand');
+        $this->db->where('bdnm',$name);
+        if($stat==1){
+            $this->db->where("bdid!=$bdid");
+        }
+        $res = $this->db->get()->result();
+
+        if(sizeof($res)>0){
+            echo json_encode(false);
+        }else{
+            echo json_encode(true);
+        }
+    }
+//END CHECK BRAND NAME ALREADY EXIST </JANAKA 2019-09-26>
+
+//CHECK BRAND CODE ALREADY EXIST </JANAKA 2019-09-26>
+    function chk_brdCode(){
+        $stat = $this->input->post('stat');
+        $code = $this->input->post('code');
+        $bdid = $this->input->post('bdid');
+
+        $this->db->select("bdid");
+        $this->db->from('brand');
+        $this->db->where('bdcd',$code);
+        if($stat==1){
+            $this->db->where("bdid!=$bdid");
+        }
+        $res = $this->db->get()->result();
+
+        if(sizeof($res)>0){
+            echo json_encode(false);
+        }else{
+            echo json_encode(true);
+        }
+    }
+//END CHECK BRAND CODE ALREADY EXIST </JANAKA 2019-09-26>
+
+//SEARCH BRAND </JANAKA 2019-09-26>
+    function searchBrnd()
+    {
+        $funcPerm = $this->Generic_model->getFuncPermision('brndMng');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edit = "";
+        } else {
+            $edit = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rejt = "";
+        } else {
+            $rejt = "disabled";
+        }
+        if ($funcPerm[0]->dact == 1) {
+            $dac = "";
+        } else {
+            $dac = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
+
+        $result = $this->Stock_model->get_brdDtils();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            if ($row->stat == 0) {
+                $stat = "<label class='label label-warning'>Pending</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrd($row->bdid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrd($row->bdid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewBrd($row->bdid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' $rejt onclick='rejectBrd($row->bdid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 1) {
+                $stat = "<label class='label label-success'>Active</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrd($row->bdid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrd($row->bdid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' $dac onclick='inactBrd($row->bdid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 2) {
+                $stat = "<label class='label label-danger'>Reject</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrd($row->bdid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 3) {
+                $stat = "<label class='label label-indi'>Inactive</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrd($row->bdid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $reac onclick='reactBrd($row->bdid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+            } else {
+                $stat = "--";
+                $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewBrd($row->bdid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='viewBrd($row->bdid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='viewBrd($row->bdid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='rejectBrd($row->bdid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->bdcd;
+            $sub_arr[] = $row->bdnm;
+            $sub_arr[] = $row->innm;
+            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Stock_model->count_all_brd(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_brd(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+//END SEARCH BRAND </JANAKA 2019-09-26>
+
+//GET BRAND DETAILS </JANAKA 2019-09-26>
+    function get_BrdDet()
+    {
+        $id = $this->input->post('id');
+        //Category Details
+        $this->db->select("sup.*,cr.innm AS crnm,md.innm AS mdnm");
+        $this->db->from('brand sup');
+        $this->db->join('user_mas cr', 'cr.auid=sup.crby');
+        $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
+        $this->db->where("sup.bdid=$id");
+        $data = $this->db->get()->result();
+
+        echo json_encode($data);
+    }
+//END GET BRAND DETAILS </JANAKA 2019-09-26>
+
+//BRAND UPDATE || APPROVE </JANAKA 2019-09-26>
+    function brd_update()
+    {
+        $func = $this->input->post('func');
+        $bdid = $this->input->post('bdid');
+
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        if ($func == 'edit') {
+            //Updating supplier details
+            $this->Generic_model->updateData('brand', array(
+                'bdnm' => $this->input->post('name_edt'),
+                'bdcd' => strtoupper($this->input->post('code_edt')),
+                'remk' => $this->input->post('remk_edt'),
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ), array('bdid' => $bdid));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('brndMng');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Brand Details Updated ($bdid)");
+
+        } else if ($func == 'app') {
+            //Updating supplier details
+            $this->Generic_model->updateData('brand', array(
+                'bdnm' => $this->input->post('name_edt'),
+                'bdcd' => strtoupper($this->input->post('code_edt')),
+                'remk' => $this->input->post('remk_edt'),
+                'stat' => 1,
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ), array('bdid' => $bdid));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('brndMng');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Brand Approved ($bdid)");
+        }
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END BRAND UPDATE || APPROVE </JANAKA 2019-09-26>
+
+//REJECT BRAND </JANAKA 2019-09-26>
+    function brd_Reject()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $bdid = $this->input->post('id');
+        $this->Generic_model->updateData('brand', array(
+            'stat' => 2,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('bdid' => $bdid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('brndMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Brand Rejected ($bdid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END REJECT BRAND </JANAKA 2019-09-26>
+
+//DEACTIVATE BRAND </JANAKA 2019-09-26>
+    function brd_Deactive()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $bdid = $this->input->post('id');
+        $this->Generic_model->updateData('brand', array(
+            'stat' => 3,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('bdid' => $bdid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('brndMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Brand Deactivated ($bdid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END DEACTIVATE BRAND </JANAKA 2019-09-26>
+
+//ACTIVATE BRAND </JANAKA 2019-09-26>
+    function brd_Activate()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $bdid = $this->input->post('id');
+        $this->Generic_model->updateData('brand', array(
+            'stat' => 1,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('bdid' => $bdid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('brndMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Brand Reactivated ($bdid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ACTIVATE BRAND </JANAKA 2019-09-26>
 //************************************************
 //***      END BRAND REGISTRATION              ***
 //************************************************
