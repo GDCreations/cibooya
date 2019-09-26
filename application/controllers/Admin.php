@@ -1383,26 +1383,6 @@ class Admin extends CI_Controller
         }
     }
 
-    // USER CODE CHECK
-    function chkBrnCodeXX()
-    {
-        $name = $this->input->post('code');
-        $stat = $this->input->post('stat'); //0-Add/1-Edit
-
-        $this->db->select("brcd");
-        $this->db->from('brch_mas');
-        $this->db->where('brcd', $name);
-        if ($stat == 1) {
-            $this->db->where("brid !=" . $this->input->post('auid'));
-        }
-        $res = $this->db->get()->result();
-        if (sizeof($res) > 0) {
-            echo json_encode(false);
-        } else {
-            echo json_encode(true);
-        }
-    }
-
     // USER INSERT
     function userCreate()
     {
@@ -1660,7 +1640,6 @@ class Admin extends CI_Controller
         }
     }
 
-
     //******************************************************* //
     // SYSTEM COMPONENT - USER LEVEL
     public function usrLvl()
@@ -1675,9 +1654,38 @@ class Admin extends CI_Controller
         $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('usrLvl');
         $dataArr['policyinfo'] = $this->Generic_model->getData('sys_policy', '', '');
 
-
-        //$this->load->view('admin/systmPolicy', $dataArr);
+        $this->load->view('admin/userLevel', $dataArr);
         $this->load->view('common/tmpFooter', $data);
     }
 
+    //SEARCH USER LEVEL
+    function searchUserLvl()
+    {
+        $stat = $this->input->post('stat');
+
+        $this->db->select(" * ");
+        $this->db->from("user_level");
+        if ($stat != 'all') {
+            $this->db->where('user_level.stat', $stat);
+        }
+
+        $result = $this->db->get()->result();
+        $data = array();
+        $i = 0;
+
+        foreach ($result as $row) {
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->lvnm;
+
+            $data[] = $sub_arr;
+        }
+        $output = array(
+            "sEcho" => 2,
+            "iTotalRecords" => count($data),
+            "iTotalDisplayRecords" => count($data),
+            "aaData" => $data
+        );
+        echo json_encode($output);
+    }
 }
