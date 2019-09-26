@@ -148,9 +148,13 @@ class Admin extends CI_Controller
         $digey = $this->input->post('digey');   // DIGITAL EYE CODE ENABLE/ DISABLE
         $eycd = $this->input->post('eycd');     // DIGITAL EYE CODE
 
+        $rgmil = $this->input->post('rgmil');     // USER REGISTER EMAIL SEND
+
         $_01 = array('pov3' => $eycd, 'post' => $digey, 'mdby' => $_SESSION['userId'], 'mddt' => $date);
+        $_02 = array('post' => $rgmil, 'mdby' => $_SESSION['userId'], 'mddt' => $date);
 
         $this->Generic_model->updateData('sys_policy', $_01, array('poid' => 1));
+        $this->Generic_model->updateData('sys_policy', $_02, array('poid' => 2));
 
 
         $funcPerm = $this->Generic_model->getFuncPermision('policyMng');
@@ -1304,14 +1308,14 @@ class Admin extends CI_Controller
         foreach ($result as $row) {
             $auid = $row->auid;
 
-          /*  if ($row->stat == 0) {
-                $stat = "<label class='label label-warning'>Pending</label>";
-                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
-                    "<button type='button' $rejt onclick='rejectSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
-            } else */
-                if ($row->stat == 1) {
+            /*  if ($row->stat == 0) {
+                  $stat = "<label class='label label-warning'>Pending</label>";
+                  $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                      "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                      "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                      "<button type='button' $rejt onclick='rejectSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+              } else */
+            if ($row->stat == 1) {
                 $stat = "<label class='label label-success'>Active</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
@@ -1360,16 +1364,16 @@ class Admin extends CI_Controller
     }
 
     // USER NAME CHECK
-    function chkBrncNameXX()
+    function chkUserName()
     {
-        $name = $this->input->post('name');
+        $name = $this->input->post('usnm');
         $stat = $this->input->post('stat'); //0-Add/1-Edit
 
-        $this->db->select("brnm");
-        $this->db->from('brch_mas');
-        $this->db->where('brnm', $name);
+        $this->db->select("usnm");
+        $this->db->from('user_mas');
+        $this->db->where('usnm', $name);
         if ($stat == 1) {
-            $this->db->where("brid != " . $this->input->post('auid'));
+            $this->db->where("auid != " . $this->input->post('auid'));
         }
         $res = $this->db->get()->result();
         if (sizeof($res) > 0) {
@@ -1400,28 +1404,41 @@ class Admin extends CI_Controller
     }
 
     // USER INSERT
-    function branchCreateXX()
+    function userCreate()
     {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
-        $brcd = strtoupper($this->input->post('code'));
+        $usnm = ($this->input->post('usnm'));
 
-        $this->Generic_model->insertData('brch_mas',
+        if ($this->input->post('prmTp') == '') {
+            $prmd = 0;
+        } else {
+            $prmd = $this->input->post('prmTp');
+        }
+
+        $this->Generic_model->insertData('user_mas',
             array(
-                'brcd' => $brcd,
-                'brnm' => $this->input->post('name'),
-                'brad' => $this->input->post('addr'),
-                'brmb' => $this->input->post('mobi'),
-                'brtp' => $this->input->post('tele'),
-                'brem' => $this->input->post('email'),
-                'remk' => $this->input->post('remk'),
+                'usnm' => $usnm,
+                'brch' => $this->input->post('brchNw'),
+                'usmd' => $this->input->post('uslvNw'),
+                'prmd' => $prmd,
+                'fnme' => $this->input->post('frnm'),
+                'lnme' => $this->input->post('lsnm'),
+
+                'emid' => $this->input->post('emil'),
+                'unic' => $this->input->post('unic'),
+                'tpno' => $this->input->post('tele'),
+                'almo' => $this->input->post('mobi'),
+                'udob' => $this->input->post('udob'),
+                'gend' => $this->input->post('ugnd'),
+
                 'stat' => 0,
                 'crby' => $_SESSION['userId'],
                 'crdt' => date('Y-m-d H:i:s'),
             ));
 
         $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
-        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "New Branch Added ($brcd)");
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "New User Added ($usnm)");
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();

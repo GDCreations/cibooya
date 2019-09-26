@@ -80,6 +80,30 @@
                     </td>
                     <!--                    <input type="text" value="dd" name="sss"/>-->
                 </tr>
+
+                <!-- 02 -->
+                <tr class="<?= 'Stat_' . $policyinfo[1]->stat ?>">
+                    <td align="center">02</td>
+                    <td><strong><?= $policyinfo[1]->ponm ?></strong> (<?= $policyinfo[1]->poid ?>)
+                    </td>
+                    <td><?= $policyinfo[1]->pods ?> </td>
+                    <td>
+                        <div class="col-md-6">
+                            <?php if ($policyinfo[1]->post == 1) {
+                                $chk = "checked";
+                            } else {
+                                $chk = "";
+                            } ?>
+                            <label class="switch">
+                                Disable <input type="checkbox" value="1" id="rgmil" name="rgmil" <?= $chk ?>/>
+                            </label> Enable
+                        </div>
+                    </td>
+                </tr>
+
+
+
+
                 <!-- 02 -->
                 <!-- <tr class="<? /*= 'Stat_' . $policyinfo[1]->stat */ ?>">
                     <td align="center">02</td>
