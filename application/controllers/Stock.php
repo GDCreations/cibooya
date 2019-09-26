@@ -856,11 +856,14 @@ class Stock extends CI_Controller
         $this->load->view('admin/common/adminHeader', $per);
 
         $data2['funcPerm'] = $this->Generic_model->getFuncPermision('brndMng');
+        $data2['category'] = $this->Generic_model->getData('category',array('ctid','ctcd','ctnm'),"stat IN(1,3)");
         $this->load->view('admin/stock/brand_Manage', $data2);
 
         $this->load->view('common/tmpFooter', $data);
     }
 //END OPEN PAGE </JANAKA 2019-09-25>
+
+
 //************************************************
 //***      END BRAND REGISTRATION              ***
 //************************************************
