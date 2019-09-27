@@ -104,4 +104,41 @@ class Welcome extends CI_Controller
         }
     }
 
+    // SYSTEM UPDATE AUTO REDIRECT
+    public function sysupdate()
+    {
+        if (!empty($_SESSION['userId'])) {
+            $this->load->view('common/sysUpdate');
+        } else {
+            $this->session->sess_destroy();
+            $this->index();
+            redirect('/');
+        }
+    }
+
+    // SYSTEM UPDATE TIME CAL
+    function timestamp()
+    {
+        $this->db->select("*");
+        $this->db->from("syst_update");
+        $this->db->where(" stat = 0 AND date = CURDATE() AND DATE_FORMAT(NOW(), '%H:%i:%s') BETWEEN frtm AND totm ");
+        $query = $this->db->get();
+        $chkupdt = $query->result();
+
+        if (count($chkupdt) > 0 && $_SESSION['role'] != 1) {  // && $_SESSION['role'] != 1
+            $start_date = new DateTime($chkupdt[0]->totm);
+            $since_start = $start_date->diff(new DateTime(date('H:i:s')));
+
+            echo
+                (strlen($since_start->h) < 2 ? '0' . $since_start->h : $since_start->h) . ':'
+                . (strlen($since_start->i) < 2 ? '0' . $since_start->i : $since_start->i) . ':'
+                . (strlen($since_start->s) < 2 ? '0' . $since_start->s : $since_start->s);
+
+        } else {
+            $this->session->sess_destroy();
+        }
+    }
+
+
+
 }

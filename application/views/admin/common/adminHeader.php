@@ -152,10 +152,10 @@
 
                     <?php if ($_SESSION['role'] == 1) { ?>
                         <li class="title" id="Settings_title">MIT SETTINGS</li>
-                        <li><a id="sysBrnc" href="<?= base_url() ?>admin/sysBrnc">
+                        <li><a id="sysUpdate" href="<?= base_url() ?>admin/sysUpdate">
                                 <span class="nav-icon-hexa fa fa-wrench"></span> system update</a>
                         </li>
-                        <li><a id="usrMng" href="<?= base_url() ?>admin/usrMng">
+                        <li><a id="usrMng" href="<?= base_url() ?>admin/sysChanlg">
                                 <span class="nav-icon-hexa fa fa-upload"></span> change log</a>
                         </li>
                     <?php } ?>
