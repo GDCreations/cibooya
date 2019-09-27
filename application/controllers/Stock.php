@@ -1222,4 +1222,330 @@ class Stock extends CI_Controller
 //************************************************
 //***      END BRAND REGISTRATION              ***
 //************************************************
+
+//************************************************
+//***          TYPE REGISTRATION               ***
+//************************************************
+//OPEN PAGE </JANAKA 2019-09-27>
+    function typeMng()
+    {
+        $data['acm'] = 'stcCmp'; //Module
+        $data['acp'] = 'typeMng'; //Page
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('typeMng');
+        $this->load->view('admin/stock/type_Manage', $data2);
+
+        $this->load->view('common/tmpFooter', $data);
+    }
+//END OPEN PAGE </JANAKA 2019-09-27>
+
+//CHECK TYPE NAME ALREADY EXIST </JANAKA 2019-09-27>
+    function chk_typName(){
+        $stat = $this->input->post('stat');
+        $name = $this->input->post('name');
+        $tpid = $this->input->post('tpid');
+
+        $this->db->select("tpid");
+        $this->db->from('type');
+        $this->db->where('tpnm',$name);
+        if($stat==1){
+            $this->db->where("tpid!=$tpid");
+        }
+        $res = $this->db->get()->result();
+
+        if(sizeof($res)>0){
+            echo json_encode(false);
+        }else{
+            echo json_encode(true);
+        }
+    }
+//END CHECK TYPE NAME ALREADY EXIST </JANAKA 2019-09-27>
+
+//CHECK TYPE CODE ALREADY EXIST </JANAKA 2019-09-27>
+    function chk_typCode(){
+        $stat = $this->input->post('stat');
+        $code = $this->input->post('code');
+        $tpid = $this->input->post('tpid');
+
+        $this->db->select("tpid");
+        $this->db->from('type');
+        $this->db->where('tpcd',$code);
+        if($stat==1){
+            $this->db->where("tpid!=$tpid");
+        }
+        $res = $this->db->get()->result();
+
+        if(sizeof($res)>0){
+            echo json_encode(false);
+        }else{
+            echo json_encode(true);
+        }
+    }
+//END CHECK TYPE CODE ALREADY EXIST </JANAKA 2019-09-27>
+
+//ADD NEW TYPE </JANAKA 2019-09-27>
+    function typ_Add(){
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $code = strtoupper($this->input->post('code'));
+        //Inserting Brand details
+        $this->Generic_model->insertData('type', array(
+            'tpnm' => $this->input->post('name'),
+            'tpcd' => $code,
+            'remk' => $this->input->post('remk'),
+            'stat' => 0,
+            'crby' => $_SESSION['userId'],
+            'crdt' => date('Y-m-d H:i:s'),
+        ));
+        $lstId = $this->db->insert_id();
+
+        $funcPerm = $this->Generic_model->getFuncPermision('typeMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Type Added ($lstId)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ADD NEW TYPE </JANAKA 2019-09-27>
+
+//SEARCH TYPE </JANAKA 2019-09-27>
+    function searchTyp()
+    {
+        $funcPerm = $this->Generic_model->getFuncPermision('typeMng');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edit = "";
+        } else {
+            $edit = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rejt = "";
+        } else {
+            $rejt = "disabled";
+        }
+        if ($funcPerm[0]->dact == 1) {
+            $dac = "";
+        } else {
+            $dac = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
+
+        $result = $this->Stock_model->get_typDtils();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            if ($row->stat == 0) {
+                $stat = "<label class='label label-warning'>Pending</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewTyp($row->tpid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewTyp($row->tpid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewTyp($row->tpid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' $rejt onclick='rejectTyp($row->tpid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 1) {
+                $stat = "<label class='label label-success'>Active</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewTyp($row->tpid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewTyp($row->tpid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' $dac onclick='inactTyp($row->tpid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 2) {
+                $stat = "<label class='label label-danger'>Reject</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewTyp($row->tpid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 3) {
+                $stat = "<label class='label label-indi'>Inactive</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewTyp($row->tpid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $reac onclick='reactTyp($row->tpid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+            } else {
+                $stat = "--";
+                $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewTyp($row->tpid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='viewTyp($row->tpid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='viewTyp($row->tpid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='rejectTyp($row->tpid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->tpcd;
+            $sub_arr[] = $row->tpnm;
+            $sub_arr[] = $row->innm;
+            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Stock_model->count_all_typ(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_typ(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+//END SEARCH TYPE </JANAKA 2019-09-27>
+
+//GET TYPE DETAILS </JANAKA 2019-09-27>
+    function get_TypDet()
+    {
+        $id = $this->input->post('id');
+        //Category Details
+        $this->db->select("sup.*,cr.innm AS crnm,md.innm AS mdnm");
+        $this->db->from('type sup');
+        $this->db->join('user_mas cr', 'cr.auid=sup.crby');
+        $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
+        $this->db->where("sup.tpid=$id");
+        $data = $this->db->get()->result();
+
+        echo json_encode($data);
+    }
+//END GET TYPE DETAILS </JANAKA 2019-09-27>
+
+//TYPE UPDATE || APPROVE </JANAKA 2019-09-27>
+    function typ_update()
+    {
+        $func = $this->input->post('func');
+        $tpid = $this->input->post('tpid');
+
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        if ($func == 'edit') {
+            //Updating supplier details
+            $this->Generic_model->updateData('type', array(
+                'tpnm' => $this->input->post('name_edt'),
+                'tpcd' => strtoupper($this->input->post('code_edt')),
+                'remk' => $this->input->post('remk_edt'),
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ), array('tpid' => $tpid));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('typeMng');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Type Details Updated ($tpid)");
+
+        } else if ($func == 'app') {
+            //Updating supplier details
+            $this->Generic_model->updateData('type', array(
+                'tpnm' => $this->input->post('name_edt'),
+                'tpcd' => strtoupper($this->input->post('code_edt')),
+                'remk' => $this->input->post('remk_edt'),
+                'stat' => 1,
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ), array('tpid' => $tpid));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('typeMng');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Type Approved ($tpid)");
+        }
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END TYPE UPDATE || APPROVE </JANAKA 2019-09-27>
+
+//REJECT TYPE </JANAKA 2019-09-27>
+    function typ_Reject()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $tpid = $this->input->post('id');
+        $this->Generic_model->updateData('type', array(
+            'stat' => 2,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('tpid' => $tpid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('typeMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Type Rejected ($tpid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END REJECT TYPE </JANAKA 2019-09-27>
+
+//DEACTIVATE TYPE </JANAKA 2019-09-27>
+    function typ_Deactive()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $tpid = $this->input->post('id');
+        $this->Generic_model->updateData('type', array(
+            'stat' => 3,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('tpid' => $tpid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('typeMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Type Deactivated ($tpid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END DEACTIVATE TYPE </JANAKA 2019-09-27>
+
+//ACTIVATE TYPE </JANAKA 2019-09-27>
+    function typ_Activate()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $tpid = $this->input->post('id');
+        $this->Generic_model->updateData('type', array(
+            'stat' => 1,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('tpid' => $tpid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('typeMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Type Reactivated ($tpid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ACTIVATE TYPE </JANAKA 2019-09-27>
+//************************************************
+//***      END TYPE REGISTRATION               ***
+//************************************************
 }
