@@ -1,12 +1,33 @@
 <?php
+//$data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('stat' => 1));
+$this->load->model('Generic_model'); // load model
 $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('stat' => 1));
+
+$url = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+//echo $url;
+$re = (explode("/", $url));
+
+if (!empty($re[3])) {
+    $aa = $re[3];
+    $pgdt = $this->Generic_model->getData('user_page', array('pgnm'), array('stst' => 1, 'pgcd' => $aa));
+
+    if (sizeof($pgdt) > 0) {
+        $pgnm = ' | ' . $pgdt[0]->pgnm;
+    } else {
+        $pgnm = '';
+    }
+} else {
+    $pgnm = '';
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <!--<title>Boooya - Template</title>-->
-    <title> <?= $data[0]->synm ?> </title>
+    <title> <?= $data[0]->synm . $pgnm?> </title>
 
     <!-- META SECTION -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
