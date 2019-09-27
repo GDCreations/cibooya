@@ -1,12 +1,33 @@
 <?php
+//$data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('stat' => 1));
+$this->load->model('Generic_model'); // load model
 $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('stat' => 1));
+
+$url = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+//echo $url;
+$re = (explode("/", $url));
+
+if (!empty($re[3])) {
+    $aa = $re[3];
+    $pgdt = $this->Generic_model->getData('user_page', array('pgnm'), array('stst' => 1, 'pgcd' => $aa));
+
+    if (sizeof($pgdt) > 0) {
+        $pgnm = ' | ' . $pgdt[0]->pgnm;
+    } else {
+        $pgnm = '';
+    }
+} else {
+    $pgnm = '';
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <!--<title>Boooya - Template</title>-->
-    <title> <?= $data[0]->synm ?> </title>
+    <title> <?= $data[0]->synm . $pgnm?> </title>
 
     <!-- META SECTION -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -21,8 +42,12 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/custom-css/common.css">
     <link rel="stylesheet" href="<?= base_url(); ?>assets/plugins/jquery-validation/css/screen.css">
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/glyphicon_icon.css">
-<!--    https://github.com/Eonasdan/bootstrap-datetimepicker-->
+    <!--  DATE TIME PICKER -- https://github.com/Eonasdan/bootstrap-datetimepicker-->
     <link rel="stylesheet" href="<?= base_url(); ?>assets/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css">
+    <!--  DATE TIME PICKER-->
+    <!-- FILE UPLOADS -- https://plugins.krajee.com/file-input#ajax-resumable-->
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/plugins/file-uploader/css/fileinput.css">
+    <!--    FILE UPLOADS-->
     <!-- EOF CSS INCLUDE -->
 </head>
 <body>
@@ -32,14 +57,17 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/moment/moment.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/plugins/jquery-validation/dist/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/custom-js/custom-validation.js"></script>
+
+
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/jquery.userTimeout.js"></script>
 <script type="text/javascript">  // common function
-    //$(document).userTimeout({
-    //    logouturl: '<?//= base_url() ?>//welcome/auto_lgout',
-    //    session: 900000 //15 Minutes    1's= 1000ms
-    //});
+    $(document).userTimeout({
+        logouturl: '<?= base_url() ?>welcome/auto_lgout',
+        session: 900000 //15 Minutes    1's= 1000ms  // 900000
+    });
 
     //SYSTEM DATE TIME
-    var weekdaystxt = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
+    var weekdaystxt = ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"]
 
     function showLocalTime(container, servermode, offsetMinutes, displayversion) {
         if (!document.getElementById || !document.getElementById(container)) return

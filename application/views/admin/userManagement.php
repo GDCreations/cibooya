@@ -131,7 +131,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Branch <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <select class="bs-select" name="brchNw" id="brchNw"
                                                     onchange="chckBtn(this.value,'brchNw')">
@@ -148,7 +148,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">First Name <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="frnm" id="frnm"
                                                    placeholder="First Name"/>
@@ -156,7 +156,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">User Name <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="usnm" id="usnm"
                                                    placeholder="User Name"/>
@@ -164,7 +164,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">NIC <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="unic" id="unic"
                                                    onkeyup="checkNic(this.value,'unic','addBtn','udob','ugnd','ugndDiv')"
@@ -174,8 +174,8 @@
 
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Contact <span
-                                                    class="fa fa-asterisk"
-                                                    style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"
+                                            ></span></label>
                                         <div class="col-md-4 col-xs-12">
                                             <input class="form-control" type="text" name="mobi" id="mobi"
                                                    placeholder="Mobile"/>
@@ -190,7 +190,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">User Level <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <select class="bs-select" name="uslvNw" id="uslvNw"
                                                     onchange="chckBtn(this.value,'uslvNw')">
@@ -205,7 +205,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Last Name <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="lsnm" id="lsnm"
                                                    placeholder="Last Name"/>
@@ -213,7 +213,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Email <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="email" name="emil"
                                                    id="emil" placeholder="Email"/>
@@ -221,8 +221,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">DOB / Gender <span
-                                                    class="fa fa-asterisk"
-                                                    style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"
+                                            ></span></label>
                                         <div class="col-md-4 col-xs-12">
                                             <input class="form-control datetimepicker" type="text" name="udob" id="udob"
                                                    placeholder="DOB" readonly/>
@@ -238,9 +238,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Permission Type <span
-                                                    class="fa fa-asterisk "
-                                                    style="color: red"></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">Permission Type
+                                            <span class="fa fa-asterisk req-astrick "></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <label class="switch">
                                                 Default <input type="checkbox" value="1" id="prmTp" name="prmTp">
@@ -254,8 +253,8 @@
 
                     <div class="modal-footer">
                         <div class="pull-left">
-                            <span class="fa fa-hand-o-right"></span> <label style="color: red">
-                                <span class="fa fa-asterisk"></span> Required Fields </label>
+                            <span class="fa fa-hand-o-right"></span>
+                            <label style="color: red"> <span class="fa fa-asterisk req-astrick"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
                         <button type="button" id="addBtn" class="btn btn-warning btn-sm btn-rounded">Submit
@@ -289,7 +288,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Branch <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <select class="bs-select" name="brchNwEdt" id="brchNwEdt"
                                                     onchange="chckBtn(this.value,'brchNwEdt')">
@@ -306,7 +305,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">First Name <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="frnmEdt" id="frnmEdt"
                                                    placeholder="First Name"/>
@@ -314,7 +313,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">User Name <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="usnmEdt" id="usnmEdt"
                                                    placeholder="User Name"/>
@@ -322,7 +321,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">NIC <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="unicEdt" id="unicEdt"
                                                    onkeyup="checkNic(this.value,'unicEdt','edtBtn','udobEdt','ugndEdt','ugndDivEdt')"
@@ -332,8 +331,8 @@
 
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Contact <span
-                                                    class="fa fa-asterisk"
-                                                    style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"
+                                            ></span></label>
                                         <div class="col-md-4 col-xs-12">
                                             <input class="form-control" type="text" name="mobiEdt" id="mobiEdt"
                                                    placeholder="Mobile"/>
@@ -348,7 +347,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">User Level <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <select class="bs-select" name="uslvNwEdt" id="uslvNwEdt"
                                                     onchange="chckBtn(this.value,'uslvNwEdt')">
@@ -363,7 +362,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Last Name <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="lsnmEdt" id="lsnmEdt"
                                                    placeholder="Last Name"/>
@@ -371,7 +370,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Email <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="email" name="emilEdt"
                                                    id="emilEdt" placeholder="Email"/>
@@ -379,8 +378,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">DOB / Gender <span
-                                                    class="fa fa-asterisk"
-                                                    style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick"
+                                            ></span></label>
                                         <div class="col-md-4 col-xs-12">
                                             <input class="form-control datetimepicker" type="text" name="udobEdt"
                                                    id="udobEdt"
@@ -398,8 +397,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Permission Type <span
-                                                    class="fa fa-asterisk "
-                                                    style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick "
+                                            ></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <label class="switch">
                                                 Default <input type="checkbox" value="1" id="prmTpEdt" name="prmTpEdt">
@@ -638,7 +637,7 @@
                         {sWidth: '10%'}, //Mobile
                         {sWidth: '10%'}, //Created By
                         {sWidth: '10%'}, //Created date
-                        {sWidth: '8%'}, //Status
+                        {sWidth: '10%'}, //Status
                         {sWidth: '15%'} //Option
                     ],
                     "ajax": {
@@ -723,6 +722,7 @@
                 //Remove readonly all fields
                 $("#modal-view :input").attr("readonly", false);
                 $("#prmTpEdt").attr("disabled", false);
+                $("#udobEdt").attr("readonly", true);
 
                 $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
                 $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
@@ -743,9 +743,9 @@
                 success: function (data) {
                     var len = data.length;
                     if (len > 0) {
-                        set_select('brchNwEdt',data[0]['brch']);
-                        set_select('uslvNwEdt',data[0]['usmd']);
-                        set_select('ugndEdt',data[0]['gend']);
+                        set_select('brchNwEdt', data[0]['brch']);
+                        set_select('uslvNwEdt', data[0]['usmd']);
+                        set_select('ugndEdt', data[0]['gend']);
 
                         $('#frnmEdt').val(data[0]['fnme']);
                         $('#lsnmEdt').val(data[0]['lnme']);
@@ -980,6 +980,56 @@
                     }
                 });
         }
+
+        //PASSWORD RESET
+        function resetPass(id) {
+            swal({
+                    title: "Are you sure to Password Reset ?",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3bdd59",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        swal({
+                            title: "Processing...",
+                            text: "Activating...",
+                            imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                            showConfirmButton: false
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: "<?= base_url(); ?>admin/userPassReset",
+                            data: {
+                                id: id
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                swal({title: "", text: "Successful Password Reset!", type: "success"},
+                                    function () {
+                                        srchUser();
+                                    });
+                            },
+                            error: function (data, textStatus) {
+                                swal({title: "Faild", text: textStatus, type: "error"},
+                                    function () {
+                                        location.reload();
+                                    });
+                            }
+                        });
+                    } else {
+                        swal("Cancelled", " ", "warning");
+                    }
+                });
+        }
+
+
     </script>
 </div>
 <!-- END PAGE CONTAINER -->

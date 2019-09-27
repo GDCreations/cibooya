@@ -18,25 +18,50 @@
 
                     <!--                    <li class="title">DEMONSTRATION</li>-->
                     <?php
-                    if(in_array('cusMng',$permMdul,TRUE)){?>
-                    <li id="cusMng">
-                        <a href="#"><span class="nav-icon-hexa fa fa-users"></span> Customer Management</a>
+                    if (in_array('cusMng', $permMdul, TRUE)) {
+                        ?>
+                        <li id="cusMng">
+                            <a href="#"><span class="nav-icon-hexa fa fa-users"></span> Customer Management</a>
+                            <ul>
+                                <?php if (in_array("cusReg", $permission, TRUE)) { ?>
+                                    <li>
+                                        <a id="cusReg" href="<?= base_url() ?>user/cusReg"><span
+                                                    class="nav-icon-hexa fa fa-user"></span> Customer Registration</a>
+                                    </li>
+                                <?php } ?>
+                                <li>
+                                    <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Customer's Banks </a>
+                                </li>
+                            </ul>
+                        </li>
+                    <?php } ?>
+                    <li class="title" id="Settings_title">SYSTEM SUPPORT</li>
+                    <li id="sysCmp">
+                        <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> SYSTEM SUPPORT</a>
                         <ul>
-                            <?php if (in_array("cusReg", $permission, TRUE)) { ?>
-                            <li>
-                                <a id="cusReg" href="<?= base_url() ?>user/cusReg"><span
-                                            class="nav-icon-hexa fa fa-user"></span> Customer Registration</a>
+                            <li><a href="http://northpony.com/software/AA_v3.6.zip" target='_blank'>
+                                    <span class='nav-icon-hexa fa fa-cloud-download'></span> Ammyy Admin Software</a>
                             </li>
-                            <?php } ?>
-                            <li>
-                                <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Customer's Banks </a>
+                            <li><a href="http://northpony.com/software/AnyDesk.zip" target='_blank'>
+                                    <span class='nav-icon-hexa fa fa-cloud-download'></span> AnyDesk Software</a></li>
+                            <li><a href="http://northpony.com/System_support/How_To_Enable_Popup_Chrome_Browser.pdf"
+                                   target='_blank'>
+                                    <span class='nav-icon-hexa fa fa-file-pdf-o'></span> Enable Popup </a></li>
+                            <li><a href="http://northpony.com/System_support/How_to_clear_browse_cache.pdf"
+                                   target='_blank'>
+                                    <span class='nav-icon-hexa fa fa-file-pdf-o'></span> Clear Browse Cache </a></li>
+                            <li><a href="http://northpony.com/System_support/Support_ticket_instructions_file.pdf"
+                                   target='_blank'>
+                                    <span class='nav-icon-hexa fa fa-file-pdf-o'></span> Support Ticket Instruction </a>
                             </li>
                         </ul>
                     </li>
-                    <?php }?>
-<!--                    TESTING AREA-->
-<!--                    <li><a href="--><?//= base_url() ?><!--User/Test"><span class="nav-icon-hexa fa fa-thumbs-up"></span>-->
-<!--                            Testing </a></li>-->
+                    <li><a href="https://support.northpony.com" target="_blank">
+                            <span class="nav-icon-hexa fa fa-headphones"></span> Support Ticket
+                            <span class="label label-warning animated infinite rubberBand">New !</span>
+                        </a></li>
+
+
                 </ul>
             </nav>
         </div>
@@ -187,7 +212,7 @@
                                     if ($_SESSION['role'] == 1 || $_SESSION['role'] == $spst) { ?>
                                         <li><a href="<?= base_url(); ?>admin"><span class="icon-users"></span> Master
                                                 Setting</a></li>
-                                    <li class="divider"></li>
+                                        <li class="divider"></li>
                                         <?php
                                     }
                                     ?>

@@ -74,7 +74,7 @@ class Stock_model extends CI_Model
     }
     //END SEARCH SUPPLIER DETAILS </JANAKA 2019-09-19>
 
-    //SEARCH CATEGORY DETAILS </JANAKA 2019-09-19>
+    //SEARCH CATEGORY DETAILS </JANAKA 2019-09-25>
     var $cl_srch2 = array('ctcd','ctnm'); //set column field database for datatable searchable
     var $cl_odr2 = array(null, 'ctcd', 'ctnm', 'user_mas.innm', 'crdt', 'stat',''); //set column field database for datatable orderable
     var $order2 = array('crdt' => 'DESC'); // default order
@@ -144,7 +144,79 @@ class Stock_model extends CI_Model
         $this->catDet_query();
         return $this->db->count_all_results();
     }
-    //END SEARCH CATEGORY DETAILS </JANAKA 2019-09-19>
+    //END SEARCH CATEGORY DETAILS </JANAKA 2019-09-25>
+
+    //SEARCH BRAND DETAILS </JANAKA 2019-09-26>
+    var $cl_srch3 = array('bdcd','bdnm'); //set column field database for datatable searchable
+    var $cl_odr3 = array(null, 'bdcd','','bdnm', 'user_mas.innm', 'crdt', 'stat',''); //set column field database for datatable orderable
+    var $order3 = array('crdt' => 'DESC'); // default order
+
+    function brdDet_query()
+    {
+        $stat = $this->input->post('stat');
+
+        $this->db->select("brand.*,user_mas.innm");
+        $this->db->from('brand');
+        $this->db->join('user_mas','user_mas.auid=brand.crby');
+        if($stat!='all'){
+            $this->db->where("brand.stat=$stat");
+        }
+    }
+
+    private function brdDet_queryData()
+    {
+        $this->brdDet_query();
+        $i = 0;
+        foreach ($this->cl_srch3 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch3) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr3[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order3)) {
+            $order3 = $this->order3;
+            $this->db->order_by(key($order3), $order3[key($order3)]);
+        }
+    }
+
+    function get_brdDtils()
+    {
+        $this->brdDet_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_brd()
+    {
+        $this->brdDet_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_brd()
+    {
+        // $this->db->from($this->table);
+        $this->brdDet_query();
+        return $this->db->count_all_results();
+    }
+    //END SEARCH BRAND DETAILS </JANAKA 2019-09-26>
 }
 
 ?>
