@@ -866,10 +866,33 @@ class Stock extends CI_Controller
     function brnd_Add(){
         $this->db->trans_begin(); // SQL TRANSACTION START
 
+        $code = strtoupper($this->input->post('code'));
+        if(!empty($_FILES['logo']['name'])){
+            $flnme = $code;
+            $config['upload_path'] = 'uploads/img/brand';
+            $config['allowed_types'] = 'jpg|png|jpeg';
+            $config['max_size'] = '5000'; //KB
+            $config['file_name'] = $flnme;
+
+            //Load upload library and initialize configuration
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('logo')) {
+                $uploadData = $this->upload->data();
+                $logo = $uploadData['file_name'];
+            } else {
+                $logo = 'brand-def.png';
+            }
+        }else{
+            $logo = "brand-def.png";
+        }
+
         //Inserting Category details
         $this->Generic_model->insertData('brand', array(
             'bdnm' => $this->input->post('name'),
-            'bdcd' => strtoupper($this->input->post('code')),
+            'bdcd' => $code,
+            'logo' => $logo,
             'remk' => $this->input->post('remk'),
             'stat' => 0,
             'crby' => $_SESSION['userId'],
@@ -1007,9 +1030,12 @@ class Stock extends CI_Controller
                     "<button type='button' disabled onclick='rejectBrd($row->bdid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             }
 
+            $img = "<img class='sm-image' src='".base_url()."uploads/img/brand/".$row->logo."'/>";
+
             $sub_arr = array();
             $sub_arr[] = ++$i;
             $sub_arr[] = $row->bdcd;
+            $sub_arr[] = $img;
             $sub_arr[] = $row->bdnm;
             $sub_arr[] = $row->innm;
             $sub_arr[] = $row->crdt;
@@ -1052,11 +1078,39 @@ class Stock extends CI_Controller
 
         $this->db->trans_begin(); // SQL TRANSACTION START
 
+        $code = strtoupper($this->input->post('code_edt'));
+        if(!empty($_FILES['logo_edt']['name'])){
+            $flnme = $code;
+            $config['upload_path'] = 'uploads/img/brand';
+            $config['allowed_types'] = 'jpg|png|jpeg';
+            $config['max_size'] = '5000'; //KB
+            $config['file_name'] = $flnme;
+
+            $imagename = $this->input->post('brd_logo');
+            if ($imagename != 'brand-def.png') {
+                unlink('uploads/img/brand/' . $imagename);
+            }
+
+            //Load upload library and initialize configuration
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('logo_edt')) {
+                $uploadData = $this->upload->data();
+                $logo = $uploadData['file_name'];
+            } else {
+                $logo = 'brand-def.png';
+            }
+        }else{
+            $logo = $this->input->post('brd_logo');
+        }
+
         if ($func == 'edit') {
             //Updating supplier details
             $this->Generic_model->updateData('brand', array(
                 'bdnm' => $this->input->post('name_edt'),
-                'bdcd' => strtoupper($this->input->post('code_edt')),
+                'bdcd' => $code,
+                'logo' => $logo,
                 'remk' => $this->input->post('remk_edt'),
                 'mdby' => $_SESSION['userId'],
                 'mddt' => date('Y-m-d H:i:s'),
@@ -1069,7 +1123,8 @@ class Stock extends CI_Controller
             //Updating supplier details
             $this->Generic_model->updateData('brand', array(
                 'bdnm' => $this->input->post('name_edt'),
-                'bdcd' => strtoupper($this->input->post('code_edt')),
+                'bdcd' => $code,
+                'logo' => $logo,
                 'remk' => $this->input->post('remk_edt'),
                 'stat' => 1,
                 'mdby' => $_SESSION['userId'],

@@ -79,4 +79,9 @@ class User extends CI_Controller
 
         $this->load->view('common/tmpFooter', $data);
     }
+
+    function upload(){
+        var_dump($_FILES['input-id']);
+        echo "<br>".$this->input->post('files');
+    }
 }

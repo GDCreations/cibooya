@@ -53,6 +53,7 @@
                     <tr>
                         <th class="text-left">#</th>
                         <th class="text-left">CODE</th>
+                        <th class="text-left">LOGO</th>
                         <th class="text-left">BRAND</th>
                         <th class="text-left">CREATED BY</th>
                         <th class="text-left">CREATED DATE</th>
@@ -74,10 +75,11 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
-            <form id="add_brnd_form">
+            <form id="add_brnd_form" enctype="multipart/form-data">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Add Brand</h4>
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Add Brand
+                        </h4>
                     </div>
                     <div class="modal-body">
                         <div class="container">
@@ -87,14 +89,22 @@
                                         <label class="col-md-4 col-xs-12 control-label">Brand Name <span
                                                     class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="Brand Name"/>
+                                            <input type="text" class="form-control" id="name" name="name"
+                                                   placeholder="Brand Name"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Brand Code <span
                                                     class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input type="text" class="form-control text-uppercase" id="code" name="code" placeholder="Brand Code"/>
+                                            <input type="text" class="form-control text-uppercase" id="code" name="code"
+                                                   placeholder="Brand Code"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12">Logo</label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <input type="file" id="logo" name="logo"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -129,13 +139,14 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
-            <form id="app_brnd_form">
+            <form id="app_brnd_form" enctype="multipart/form-data">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Brand
                             Management <span class="text-muted" id="subTitle_edit"></span></h4>
                         <input type="hidden" id="func" name="func"/>
                         <input type="hidden" id="bdid" name="bdid"/>
+                        <input type="hidden" id="brd_logo" name="brd_logo"/>
                     </div>
                     <div class="modal-body">
                         <div class="container">
@@ -143,17 +154,25 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Brand Name <span
-                                                    class="fa fa-asterisk edit_req" style="color: red"></span></label>
+                                                    class="fa fa-asterisk req-astrick edit_req"</span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="text" name="name_edt" id="name_edt"
                                                    placeholder="Brand Name"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Brand Code</label>
+                                        <label class="col-md-4 col-xs-12 control-label">Brand Code <span
+                                                    class="fa fa-asterisk req-astrick edit_req"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control text-uppercase" type="text" name="code_edt" id="code_edt"
+                                            <input class="form-control text-uppercase" type="text" name="code_edt"
+                                                   id="code_edt"
                                                    placeholder="Brand Code"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12">Logo</label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <input type="file" id="logo_edt" name="logo_edt"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -213,12 +232,31 @@
                 "aoColumns": [
                     {sWidth: '3%'},
                     {sWidth: '5%'},
+                    {sWidth: '5%'},
                     {sWidth: '20%'},
                     {sWidth: '10%'},
                     {sWidth: '10%'},
                     {sWidth: '8%'},
                     {sWidth: '12%'}
                 ],
+            });
+
+            //File Uploader Initialiting
+            $("#logo").fileinput({
+                allowedFileExtensions: ['jpg', 'png', 'jpeg'],
+                showUpload: false,
+                showCaption: false,
+                browseClass: "btn btn-primary btn-sm btn-rounded",
+                removeClass: "btn btn-warning btn-sm btn-rounded",
+                maxFileSize: 5000, //Kb
+            });
+            $("#logo_edt").fileinput({
+                allowedFileExtensions: ['jpg', 'png', 'jpeg'],
+                showUpload: false,
+                showCaption: false,
+                browseClass: "btn btn-primary btn-sm btn-rounded",
+                removeClass: "btn btn-warning btn-sm btn-rounded",
+                maxFileSize: 5000, //Kb
             });
 
             $('#add_brnd_form').validate({
@@ -315,9 +353,11 @@
             srch_Brnd();
         });
 
-        //Add New Supplier
+        //Add New Brand
         $('#add_brnd_btn').click(function (e) {
             e.preventDefault();
+            var formObj = document.getElementById('add_brnd_form');
+            var formData = new FormData(formObj);
             if ($('#add_brnd_form').valid()) {
                 $('#add_brnd_btn').prop('disabled', true);
                 swal({
@@ -330,8 +370,11 @@
                 jQuery.ajax({
                     type: "POST",
                     url: "<?= base_url(); ?>Stock/brnd_Add",
-                    data: $("#add_brnd_form").serialize(),
-                    dataType: 'json',
+                    data: formData,
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
                     success: function (data) {
                         swal({title: "", text: "Brand Added!", type: "success"},
                             function () {
@@ -351,7 +394,7 @@
             }
         });
 
-        //Search Suppliers
+        //Search Brand
         function srch_Brnd() {
             var stat = $('#stat').val();
 
@@ -370,15 +413,16 @@
                 ],
                 "serverSide": true,
                 "columnDefs": [
-                    {className: "text-left", "targets": [2, 3]},
-                    {className: "text-center", "targets": [0, 1, 4, 5, 6]},
+                    {className: "text-left", "targets": [3, 4]},
+                    {className: "text-center", "targets": [0, 1, 2, 5, 6, 7]},
                     {className: "text-right", "targets": [0]},
-                    {className: "text-nowrap", "targets": [2, 3]},
+                    {className: "text-nowrap", "targets": [3, 4]},
                 ],
                 "order": [[4, "DESC"]], //ASC  desc
                 "aoColumns": [
                     {sWidth: '3%'}, //#
                     {sWidth: '5%'}, //Code
+                    {sWidth: '5%'}, //LOGO
                     {sWidth: '20%'}, //Category
                     {sWidth: '10%'}, //Created By
                     {sWidth: '10%'}, //Created date
@@ -425,6 +469,7 @@
                         $(".view_Area").css('display', 'block');
                         //Make readonly all fields
                         $("#modal-view :input").attr("readonly", true);
+                        $('.file-input').css('pointer-events', 'none');
                         //VIEW MODEL
                     } else if (func == 'edit') {
                         //EDIT MODEL
@@ -436,6 +481,7 @@
                         $(".view_Area").css('display', 'none');
                         //Remove readonly all fields
                         $("#modal-view :input").attr("readonly", false);
+                        $('.file-input').css('pointer-events', '');
                         //EDIT MODEL
                     } else if (func == 'app') {
                         //APPROVE MODEL
@@ -447,6 +493,7 @@
                         $(".view_Area").css('display', 'none');
                         //Remove readonly all fields
                         $("#modal-view :input").attr("readonly", false);
+                        $('.file-input').css('pointer-events', '');
                         //APPROVE MODEL
                     }
                     var len = data.length;
@@ -455,6 +502,23 @@
                         $('#name_edt').val(data[0]['bdnm']);
                         $('#code_edt').val(data[0]['bdcd']);
                         $('#remk_edt').val(data[0]['remk']);
+                        $('#brd_logo').val(data[0]['logo']);
+
+                        //File Uploader Initialiting
+                        $("#logo_edt").fileinput('enable');
+                        $("#logo_edt").fileinput('destroy');
+                        $("#logo_edt").fileinput({
+                            allowedFileExtensions: ['jpg', 'png', 'jpeg'],
+                            showUpload: false,
+                            showCaption: false,
+                            browseClass: "btn btn-primary btn-sm btn-rounded",
+                            removeClass: "btn btn-warning btn-sm btn-rounded",
+                            maxFileSize: 5000, //Kb
+                            initialPreviewAsData: true,
+                            initialPreview: [
+                                "<?= base_url()?>uploads/img/brand/" + data[0]['logo']
+                            ]
+                        });
 
                         if (data[0]['stat'] == 0) {
                             var stat = "<label class='label label-warning'>Pending</label>";
@@ -487,8 +551,9 @@
         //APPROVE || EDIT HERE
         $('#app_brd_btn').click(function (e) {
             e.preventDefault();
+            var formObj = document.getElementById('app_brnd_form');
+            var formData = new FormData(formObj);
             if ($('#app_brnd_form').valid()) {
-
                 swal({
                         title: "Are you sure to do this ?",
                         text: "",
@@ -515,8 +580,11 @@
                                 jQuery.ajax({
                                     type: "POST",
                                     url: "<?= base_url(); ?>Stock/brd_update",
-                                    data: $("#app_brnd_form").serialize(),
-                                    dataType: 'json',
+                                    data: formData,
+                                    mimeType: "multipart/form-data",
+                                    contentType: false,
+                                    cache: false,
+                                    processData: false,
                                     success: function (data) {
                                         swal({title: "", text: "Updating Success!", type: "success"},
                                             function () {
@@ -544,8 +612,11 @@
                                 jQuery.ajax({
                                     type: "POST",
                                     url: "<?= base_url(); ?>Stock/brd_update",
-                                    data: $("#app_brnd_form").serialize(),
-                                    dataType: 'json',
+                                    data: formData,
+                                    mimeType: "multipart/form-data",
+                                    contentType: false,
+                                    cache: false,
+                                    processData: false,
                                     success: function (data) {
                                         swal({title: "", text: "Approved!", type: "success"},
                                             function () {
