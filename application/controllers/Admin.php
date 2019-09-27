@@ -26,6 +26,18 @@ class Admin extends CI_Controller
             $user = $this->Generic_model->chckVlidUsr();    // IF CHECK VALIDE USER SESSION
             if ($user > 0) {
 
+                // CHECK CURRENT TIME IN SYSTEM UPDATE
+                $this->db->select("*");
+                $this->db->from("syst_update");
+                $this->db->where(" stat = 0 AND date = CURDATE() AND DATE_FORMAT(NOW(), '%H:%i:%s') BETWEEN frtm AND totm ");
+                $query = $this->db->get();
+                $chkupdt = $query->result();
+
+                if (count($chkupdt) > 0 && $_SESSION['role'] != 1 ) { /// && $_SESSION['role'] != 1
+                    redirect('/Welcome/sysupdate');
+                }
+                // END CHECK CURRENT TIME IN SYSTEM UPDATE
+
             } else {
                 $this->session->sess_destroy();
                 redirect('/');
@@ -1889,6 +1901,9 @@ class Admin extends CI_Controller
             echo json_encode(true);
         }
     }
+
+//******************************************************* //
+
 
 
 }

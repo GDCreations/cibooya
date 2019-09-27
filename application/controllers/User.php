@@ -24,6 +24,7 @@ class User extends CI_Controller
 
             $user = $this->Generic_model->chckVlidUsr();    // IF CHECK VALIDE USER SESSION
             if ($user > 0) {
+
                 // CHECK CURRENT TIME IN SYSTEM UPDATE
                 $this->db->select("*");
                 $this->db->from("syst_update");
@@ -35,6 +36,7 @@ class User extends CI_Controller
                     redirect('/Welcome/sysupdate');
                 }
                 // END CHECK CURRENT TIME IN SYSTEM UPDATE
+
             } else {
                 $this->session->sess_destroy();
                 redirect('/');

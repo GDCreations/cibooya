@@ -1,5 +1,5 @@
-<!--<script type="text/javascript" src="<?/*= base_url(); */?>assets/js/custom-js/full_width.js"></script>
--->
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/custom-js/full_width.js"></script>
+
 <!-- START PAGE HEADING -->
 <div class="app-heading-container app-heading-bordered bottom">
     <ul class="breadcrumb">
