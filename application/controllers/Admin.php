@@ -1308,19 +1308,12 @@ class Admin extends CI_Controller
         foreach ($result as $row) {
             $auid = $row->auid;
 
-            /*  if ($row->stat == 0) {
-                  $stat = "<label class='label label-warning'>Pending</label>";
-                  $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                      "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                      "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
-                      "<button type='button' $rejt onclick='rejectSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
-              } else */
             if ($row->stat == 1) {
                 $stat = "<label class='label label-success'>Active</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' $dac onclick='inactUser($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+                    "<button type='button' $dac onclick='inactUser($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button> " .
+                    "<button type='button' onclick='resetPass($auid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reset Password'><i class='fa fa-key' aria-hidden='true'></i></button> ";
             } else if ($row->stat == 0) {
                 $stat = "<label class='label label-danger'>Inactive</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -1332,7 +1325,7 @@ class Admin extends CI_Controller
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' $reac onclick='reactUser($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reset Password'><i class='fa fa-key' aria-hidden='true'></i></button>";
             } else {
                 $stat = "--";
                 $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -1598,10 +1591,10 @@ class Admin extends CI_Controller
         $auid = $this->input->post('id');
         $this->Generic_model->updateData('user_mas',
             array(
-            'stat' => 2,
-            'mdby' => $_SESSION['userId'],
-            'mddt' => date('Y-m-d H:i:s')
-        ), array('auid' => $auid));
+                'stat' => 2,
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s')
+            ), array('auid' => $auid));
 
         $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "User Deactivated ($auid)");
@@ -1623,13 +1616,43 @@ class Admin extends CI_Controller
         $spid = $this->input->post('id');
         $this->Generic_model->updateData('user_mas',
             array(
-            'stat' => 1,
-            'mdby' => $_SESSION['userId'],
-            'mddt' => date('Y-m-d H:i:s')
-        ), array('auid' => $spid));
+                'stat' => 1,
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s')
+            ), array('auid' => $spid));
 
         $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "User Reactivated ($spid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    // PASSWORD RESET
+    function userPassReset()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+        $spid = $this->input->post('id');
+
+        //$podt = $this->Generic_model->getData('sys_policy', array('pov3'), array('poid' => 34), '');
+        //$eycd = $podt[0]->pov3;
+
+        $this->Generic_model->updateData('user_mas',
+            array(
+                'lgps' => '$2y$10$KgBH6wkYF0/B1GF/dyvuxukPt/nObT9mzNmrf84SjJJM9IUD1RBfC', // asd@123
+                'lgcd' => 123456,
+
+                'upby' => $_SESSION['userId'],
+                'updt' => date('Y-m-d H:i:s'),
+            ), array('auid' => $spid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "User Password Reset ( auid: $spid)");
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
