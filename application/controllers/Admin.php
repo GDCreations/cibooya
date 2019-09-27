@@ -26,6 +26,18 @@ class Admin extends CI_Controller
             $user = $this->Generic_model->chckVlidUsr();    // IF CHECK VALIDE USER SESSION
             if ($user > 0) {
 
+                // CHECK CURRENT TIME IN SYSTEM UPDATE
+                $this->db->select("*");
+                $this->db->from("syst_update");
+                $this->db->where(" stat = 0 AND date = CURDATE() AND DATE_FORMAT(NOW(), '%H:%i:%s') BETWEEN frtm AND totm ");
+                $query = $this->db->get();
+                $chkupdt = $query->result();
+
+                if (count($chkupdt) > 0 && $_SESSION['role'] != 1 ) { /// && $_SESSION['role'] != 1
+                    redirect('/Welcome/sysupdate');
+                }
+                // END CHECK CURRENT TIME IN SYSTEM UPDATE
+
             } else {
                 $this->session->sess_destroy();
                 redirect('/');
@@ -1308,19 +1320,18 @@ class Admin extends CI_Controller
         foreach ($result as $row) {
             $auid = $row->auid;
 
-            /*  if ($row->stat == 0) {
-                  $stat = "<label class='label label-warning'>Pending</label>";
-                  $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                      "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                      "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
-                      "<button type='button' $rejt onclick='rejectSupp($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
-              } else */
+            if ($row->prmd == 0) {
+                $prmd = "<label class='label label-info' title='Default Permission'>DP</label>";
+            } else {
+                $prmd = "<label class='label label-warning' title='Manual Permission'>MP</label>";
+            }
+
             if ($row->stat == 1) {
                 $stat = "<label class='label label-success'>Active</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' $dac onclick='inactUser($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+                    "<button type='button' $dac onclick='inactUser($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button> " .
+                    "<button type='button' onclick='resetPass($auid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reset Password'><i class='fa fa-key' aria-hidden='true'></i></button> ";
             } else if ($row->stat == 0) {
                 $stat = "<label class='label label-danger'>Inactive</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -1332,7 +1343,7 @@ class Admin extends CI_Controller
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' $reac onclick='reactUser($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reset Password'><i class='fa fa-key' aria-hidden='true'></i></button>";
             } else {
                 $stat = "--";
                 $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -1349,7 +1360,7 @@ class Admin extends CI_Controller
             $sub_arr[] = $row->almo;
             $sub_arr[] = $row->unic;
             $sub_arr[] = $row->lvnm;
-            $sub_arr[] = $stat;
+            $sub_arr[] = $stat . ' ' . $prmd;
             $sub_arr[] = $option;
             $data[] = $sub_arr;
         }
@@ -1598,10 +1609,10 @@ class Admin extends CI_Controller
         $auid = $this->input->post('id');
         $this->Generic_model->updateData('user_mas',
             array(
-            'stat' => 2,
-            'mdby' => $_SESSION['userId'],
-            'mddt' => date('Y-m-d H:i:s')
-        ), array('auid' => $auid));
+                'stat' => 2,
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s')
+            ), array('auid' => $auid));
 
         $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "User Deactivated ($auid)");
@@ -1623,10 +1634,10 @@ class Admin extends CI_Controller
         $spid = $this->input->post('id');
         $this->Generic_model->updateData('user_mas',
             array(
-            'stat' => 1,
-            'mdby' => $_SESSION['userId'],
-            'mddt' => date('Y-m-d H:i:s')
-        ), array('auid' => $spid));
+                'stat' => 1,
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s')
+            ), array('auid' => $spid));
 
         $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "User Reactivated ($spid)");
@@ -1640,7 +1651,37 @@ class Admin extends CI_Controller
         }
     }
 
-    //******************************************************* //
+    // PASSWORD RESET
+    function userPassReset()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+        $spid = $this->input->post('id');
+
+        //$podt = $this->Generic_model->getData('sys_policy', array('pov3'), array('poid' => 34), '');
+        //$eycd = $podt[0]->pov3;
+
+        $this->Generic_model->updateData('user_mas',
+            array(
+                'lgps' => '$2y$10$KgBH6wkYF0/B1GF/dyvuxukPt/nObT9mzNmrf84SjJJM9IUD1RBfC', // asd@123
+                'lgcd' => 123456,
+
+                'upby' => $_SESSION['userId'],
+                'updt' => date('Y-m-d H:i:s'),
+            ), array('auid' => $spid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "User Password Reset ( auid: $spid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+//******************************************************* //
     // SYSTEM COMPONENT - USER LEVEL
     public function usrLvl()
     {
@@ -1688,4 +1729,181 @@ class Admin extends CI_Controller
         );
         echo json_encode($output);
     }
+
+//******************************************************* //
+// SYSTEM UPDATE
+    public function sysUpdate()
+    {
+        $data['acm'] = ''; //Module
+        $data['acp'] = 'sysUpdate'; //Page
+
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('usrMng');
+        $dataArr['policyinfo'] = $this->Generic_model->getData('sys_policy', '', '');
+
+        $dataArr['branchinfo'] = $this->Generic_model->getBranch();
+        $dataArr['uslvlinfo'] = $this->Generic_model->getData('user_level', '', "stat = 1 AND id != 1");
+
+        $this->load->view('admin/systmUpdate', $dataArr);
+        $this->load->view('common/tmpFooter', $data);
+    }
+
+    //SEARCH
+    function srchSystmUpdte()
+    {
+        $result = $this->Admin_model->get_systmUpdtDtils();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+
+            if ($row->stat == 0) {
+                if (date('Y-m-d', strtotime($row->date)) == date('Y-m-d') && (date('H:i:s', strtotime($row->totm)) > date('H:i:s') && date('H:i:s') >= date('H:i:s', strtotime($row->frtm)))) {
+                    $mode = '<label class="label label-info"> Executing </label>';
+                } else {
+                    $mode = '<label class="label label-warning"> Pending </label>';
+                }
+                $edt = "";
+                $edtt = "";
+            } else if ($row->stat == 1) {
+                $mode = '<label class="label label-success"> Executed </label>';
+                $edt = "disabled";
+                $edtt = "disabled";
+            } else if ($row->stat == 2) {
+                $mode = '<label class="label label-danger"> Reject </label>';
+                $edt = "disabled";
+                $edtt = "disabled";
+            } else {
+                $mode = '';
+                $edtt = "";
+            }
+
+            $option = "<button $edt type='button' id='edt' data-toggle='modal' data-target='#modal-view' onclick='edtSchedule($row->auid,this.id);' class='btn btn-xs btn-default btn-condensed' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                " <button type='button'  $edtt id='rej'  onclick='doneSchedule($row->auid);' class='btn btn-xs btn-default btn-condensed' title='Done'><i class='fa fa-check' aria-hidden='true'></i></button> ";
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->date;
+            $sub_arr[] = $row->mesg;
+            $sub_arr[] = $row->frtm;
+            $sub_arr[] = $row->totm;
+            $sub_arr[] = $row->innm;
+            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $mode;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Admin_model->count_all_systmUpdt(),
+            "recordsFiltered" => $this->Admin_model->count_filtered_systmUpdt(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+
+    // INSERT
+    function addSysDown()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $this->Generic_model->insertData('syst_update',
+            array(
+                'mesg' => $this->input->post('mssg'),
+                'date' => $this->input->post('scdt'),
+                'frtm' => $this->input->post('sttm'),
+                'totm' => $this->input->post('entm'),
+                'crby' => $_SESSION['userId'],
+                'crdt' => date('Y-m-d H:i:s'),
+                'stat' => 0
+            ));
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $this->Log_model->ErrorLog('0', '1', '2', '3');
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    // VIEW USER for edit approval
+    function getDetSysDown()
+    {
+        $id = $this->input->post('id');
+        $result = $this->Generic_model->getData('syst_update', '', array('auid' => $id));
+        echo json_encode($result);
+    }
+
+    // UPDATE
+    function edtSysDown()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        if (date_create($this->input->post('entmEdt')) < date_create(date('H:i:s'))) {
+            $stat = 1;
+        } else {
+            $stat = 0;
+        }
+
+        $this->Generic_model->updateData('syst_update',
+            array(
+                'mesg' => $this->input->post('mssgEdt'),
+                'date' => $this->input->post('scdtEdt'),
+                'frtm' => $this->input->post('sttmEdt'),
+                'totm' => $this->input->post('entmEdt'),
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+                'stat' => $stat
+            ),
+            array('auid' => $this->input->post('auid')));
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $this->Log_model->ErrorLog('0', '1', '2', '3');
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    //down finish
+    function SysDownFinished()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+        $this->Generic_model->updateData('syst_update', array('stat' => $this->input->post('stat')), array('auid' => $this->input->post('auid')));
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $this->Log_model->ErrorLog('0', '1', '2', '3');
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    function doneSchedule()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+        $this->Generic_model->updateData('syst_update', array('stat' => 1), array('auid' => $this->input->post('auid')));
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $this->Log_model->ErrorLog('0', '1', '2', '3');
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+//******************************************************* //
+
+
+
 }

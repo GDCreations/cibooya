@@ -48,17 +48,17 @@
                             <ul>
                                 <?php if (in_array("sysBrnc", $permission, TRUE)) { ?>
                                     <li><a id="sysBrnc" href="<?= base_url() ?>admin/sysBrnc">
-                                            <span class="nav-icon-hexa fa fa-sliders"></span> Branch Management</a>
+                                            <span class="nav-icon-hexa fa fa-columns"></span> Branch Management</a>
                                     </li>
                                 <?php } ?>
                                 <?php if (in_array("usrMng", $permission, TRUE)) { ?>
                                     <li><a id="usrMng" href="<?= base_url() ?>admin/usrMng">
-                                            <span class="nav-icon-hexa fa fa-sliders"></span> User Management</a>
+                                            <span class="nav-icon-hexa fa fa-users"></span> User Management</a>
                                     </li>
                                 <?php } ?>
                                 <?php if (in_array("usrLvl", $permission, TRUE)) { ?>
                                     <li><a id="usrLvl" href="<?= base_url() ?>admin/usrLvl">
-                                            <span class="nav-icon-hexa fa fa-sliders"></span> User Level</a>
+                                            <span class="nav-icon-hexa fa fa-sitemap"></span> User Level</a>
                                     </li>
                                 <?php } ?>
 
@@ -148,6 +148,18 @@
                             $('#Stock_title').css('display', 'none');
                         </script>
                     <?php } ?>
+
+
+                    <?php if ($_SESSION['role'] == 1) { ?>
+                        <li class="title" id="Settings_title">MIT SETTINGS</li>
+                        <li><a id="sysUpdate" href="<?= base_url() ?>admin/sysUpdate">
+                                <span class="nav-icon-hexa fa fa-wrench"></span> system update</a>
+                        </li>
+                        <li><a id="usrMng" href="<?= base_url() ?>admin/sysChanlg">
+                                <span class="nav-icon-hexa fa fa-upload"></span> change log</a>
+                        </li>
+                    <?php } ?>
+
                 </ul>
             </nav>
         </div>

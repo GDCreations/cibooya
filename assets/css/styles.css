@@ -25631,7 +25631,7 @@ input[type="file"] {
 }
 .btn.btn-default span[class^="icon-"],
 .btn.btn-default .fa {
-  color: #5f5f5f;
+  color: #211f1f; /* #5f5f5f*/
 }
 .btn.btn-icon-fixed {
   position: relative;

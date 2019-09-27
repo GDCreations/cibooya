@@ -637,7 +637,7 @@
                         {sWidth: '10%'}, //Mobile
                         {sWidth: '10%'}, //Created By
                         {sWidth: '10%'}, //Created date
-                        {sWidth: '8%'}, //Status
+                        {sWidth: '10%'}, //Status
                         {sWidth: '15%'} //Option
                     ],
                     "ajax": {
@@ -980,6 +980,56 @@
                     }
                 });
         }
+
+        //PASSWORD RESET
+        function resetPass(id) {
+            swal({
+                    title: "Are you sure to Password Reset ?",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3bdd59",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        swal({
+                            title: "Processing...",
+                            text: "Activating...",
+                            imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                            showConfirmButton: false
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: "<?= base_url(); ?>admin/userPassReset",
+                            data: {
+                                id: id
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                swal({title: "", text: "Successful Password Reset!", type: "success"},
+                                    function () {
+                                        srchUser();
+                                    });
+                            },
+                            error: function (data, textStatus) {
+                                swal({title: "Faild", text: textStatus, type: "error"},
+                                    function () {
+                                        location.reload();
+                                    });
+                            }
+                        });
+                    } else {
+                        swal("Cancelled", " ", "warning");
+                    }
+                });
+        }
+
+
     </script>
 </div>
 <!-- END PAGE CONTAINER -->
