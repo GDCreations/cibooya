@@ -1308,6 +1308,12 @@ class Admin extends CI_Controller
         foreach ($result as $row) {
             $auid = $row->auid;
 
+            if ($row->prmd == 0) {
+                $prmd = "<label class='label label-info' title='Default Permission'>DP</label>";
+            } else {
+                $prmd = "<label class='label label-warning' title='Manual Permission'>MP</label>";
+            }
+
             if ($row->stat == 1) {
                 $stat = "<label class='label label-success'>Active</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -1342,7 +1348,7 @@ class Admin extends CI_Controller
             $sub_arr[] = $row->almo;
             $sub_arr[] = $row->unic;
             $sub_arr[] = $row->lvnm;
-            $sub_arr[] = $stat;
+            $sub_arr[] = $stat . ' ' . $prmd;
             $sub_arr[] = $option;
             $data[] = $sub_arr;
         }

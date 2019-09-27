@@ -637,7 +637,7 @@
                         {sWidth: '10%'}, //Mobile
                         {sWidth: '10%'}, //Created By
                         {sWidth: '10%'}, //Created date
-                        {sWidth: '8%'}, //Status
+                        {sWidth: '10%'}, //Status
                         {sWidth: '15%'} //Option
                     ],
                     "ajax": {
