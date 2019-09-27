@@ -32,11 +32,14 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/moment/moment.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/plugins/jquery-validation/dist/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/custom-js/custom-validation.js"></script>
+
+
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/jquery.userTimeout.js"></script>
 <script type="text/javascript">  // common function
-    //$(document).userTimeout({
-    //    logouturl: '<?//= base_url() ?>//welcome/auto_lgout',
-    //    session: 900000 //15 Minutes    1's= 1000ms
-    //});
+    $(document).userTimeout({
+        logouturl: '<?= base_url() ?>welcome/auto_lgout',
+        session: 900000 //15 Minutes    1's= 1000ms  // 900000
+    });
 
     //SYSTEM DATE TIME
     var weekdaystxt = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
