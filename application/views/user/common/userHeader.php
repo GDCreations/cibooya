@@ -35,8 +35,8 @@
                     </li>
                     <?php }?>
 <!--                    TESTING AREA-->
-<!--                    <li><a href="--><?//= base_url() ?><!--User/Test"><span class="nav-icon-hexa fa fa-thumbs-up"></span>-->
-<!--                            Testing </a></li>-->
+                    <li><a href="<?= base_url() ?>User/Test"><span class="nav-icon-hexa fa fa-thumbs-up"></span>
+                            Testing </a></li>
                 </ul>
             </nav>
         </div>

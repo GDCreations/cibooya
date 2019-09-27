@@ -146,9 +146,9 @@ class Stock_model extends CI_Model
     }
     //END SEARCH CATEGORY DETAILS </JANAKA 2019-09-25>
 
-    //SEARCH CATEGORY DETAILS </JANAKA 2019-09-26>
+    //SEARCH BRAND DETAILS </JANAKA 2019-09-26>
     var $cl_srch3 = array('bdcd','bdnm'); //set column field database for datatable searchable
-    var $cl_odr3 = array(null, 'bdcd', 'bdnm', 'user_mas.innm', 'crdt', 'stat',''); //set column field database for datatable orderable
+    var $cl_odr3 = array(null, 'bdcd','','bdnm', 'user_mas.innm', 'crdt', 'stat',''); //set column field database for datatable orderable
     var $order3 = array('crdt' => 'DESC'); // default order
 
     function brdDet_query()
@@ -216,7 +216,7 @@ class Stock_model extends CI_Model
         $this->brdDet_query();
         return $this->db->count_all_results();
     }
-    //END SEARCH CATEGORY DETAILS </JANAKA 2019-09-26>
+    //END SEARCH BRAND DETAILS </JANAKA 2019-09-26>
 }
 
 ?>

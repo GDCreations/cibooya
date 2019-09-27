@@ -1,6 +1,8 @@
 
 -----------------------------------------------------
 -----------------------------------------------------
+2019-09-27 JANAKA
+ALTER TABLE `brand` ADD `logo` VARCHAR(200) NOT NULL COMMENT 'Picture of logo' AFTER `bdnm`;
 -----------------------------------------------------
 2019-09-26 JANAKA
 ALTER TABLE `stock_mng`.`item`

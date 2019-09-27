@@ -21,8 +21,12 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/custom-css/common.css">
     <link rel="stylesheet" href="<?= base_url(); ?>assets/plugins/jquery-validation/css/screen.css">
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/glyphicon_icon.css">
-<!--    https://github.com/Eonasdan/bootstrap-datetimepicker-->
+    <!--  DATE TIME PICKER -- https://github.com/Eonasdan/bootstrap-datetimepicker-->
     <link rel="stylesheet" href="<?= base_url(); ?>assets/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css">
+    <!--  DATE TIME PICKER-->
+    <!-- FILE UPLOADS -- https://plugins.krajee.com/file-input#ajax-resumable-->
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/plugins/file-uploader/css/fileinput.css">
+    <!--    FILE UPLOADS-->
     <!-- EOF CSS INCLUDE -->
 </head>
 <body>

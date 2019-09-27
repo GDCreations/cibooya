@@ -22,13 +22,19 @@
     <script type="text/javascript"
             src="<?= base_url(); ?>assets/js/vendor/bootstrap-select/bootstrap-select.js"></script>
     <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/select2/select2.full.min.js"></script>
-    <script type="text/javascript" src="<?= base_url(); ?>assets/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript"
+            src="<?= base_url(); ?>assets/plugins/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <!-- CSS INCLUDE -->
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/styles.css">
     <link rel="stylesheet"
           href="<?= base_url(); ?>assets/css/glyphicon_icon.css">
     <link rel="stylesheet"
           href="<?= base_url(); ?>assets/plugins/datetimepicker/css/bootstrap-datetimepicker.min.css">
+
+    <!--    FILE UPLOADS-->
+    <!--    https://plugins.krajee.com/file-input#ajax-resumable-->
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/test/css/fileinput.css">
+    <!--    FILE UPLOADS-->
     <!-- EOF CSS INCLUDE -->
 </head>
 <body>
@@ -92,7 +98,7 @@
                     <div class='col-sm-6'>
                         <div class="form-group">
                             <div class='input-group date datetimepicker'>
-                                <input type='text' class="form-control datetimepicker" value="<?= date('Y-m-d')?>"/>
+                                <input type='text' class="form-control datetimepicker" value="<?= date('Y-m-d') ?>"/>
                                 <span class="input-group-addon">
                         <span class="fa fa-calendar"></span>
                     </span>
@@ -106,6 +112,23 @@
                             });
                         });
                     </script>
+                </div>
+
+                <div class="row">
+                    <h2>File Uploader</h2>
+                    <form enctype="multipart/form-data" id="data_form" name="data_form">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input id="input-id" name="input-id[]" type="file" multiple/>
+                            </div>
+                            <div class="form-group">
+                                <input id="files" name="files" type="text" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" id="add_file" class="btn btn-sm btn-warning btn-rounded">SUBMIT</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             <!-- END PAGE CONTAINER -->
@@ -201,7 +224,8 @@
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/tableexport/jspdf/jspdf.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/tableexport/jspdf/libs/base64.js"></script>
 
-<!--<script type="text/javascript" src="--><?//= base_url(); ?><!--assets/js/vendor/bootstrap-daterange/daterangepicker.js"></script>-->
+<!--<script type="text/javascript" src="-->
+<? //= base_url(); ?><!--assets/js/vendor/bootstrap-daterange/daterangepicker.js"></script>-->
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap-tour/bootstrap-tour.min.js"></script>
 <script type="text/javascript"
         src="<?= base_url(); ?>assets/js/vendor/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
@@ -211,6 +235,56 @@
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/app.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/app_plugins.js"></script>
 <!--        <script type="text/javascript" src="assets/js/app_demo.js"></script>-->
+
+<!--FILE UPLOADS-->
+<!--https://plugins.krajee.com/file-input#ajax-resumable-->
+<script type="text/javascript" src="<?= base_url(); ?>assets/test/js/plugins/piexif.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/test/js/plugins/sortable.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/test/js/fileinput.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/test/js/locales/fr.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/test/js/locales/es.js"></script>
+<!--<script type="text/javascript" src="--><?//= base_url(); ?><!--assets/test/js/fas/theme.js"></script>-->
+<!--<script type="text/javascript" src="--><?//= base_url(); ?><!--assets/test/js/explorer-fas/theme.js"></script>-->
+<script type="text/javascript">
+    $().ready(function () {
+        $("#input-id").fileinput({
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'doc','pdf'],
+            showUpload: false,
+            showCaption: false,
+            browseClass: "btn btn-primary btn-sm btn-rounded",
+            uploadClass: "btn btn-success btn-sm btn-rounded",
+            removeClass: "btn btn-warning btn-sm btn-rounded",
+            previewFileType: 'any'
+        });
+    });
+
+    $('#add_file').click(function (e) {
+        e.preventDefault();
+        var formObj = document.getElementById('data_form');
+        var formData = new FormData(formObj);
+
+        $.ajax({
+            url: '<?= base_url()?>User/upload',
+            type: 'POST',
+            data: formData,
+            mimeType: "multipart/form-data",
+            contentType: false,
+            cache: false,
+            processData: false,
+
+            success: function (data, textStatus, jqXHR) {
+                swal({title: "", text: "Normal Customer Added successful", type: "success"},
+                    function () {
+
+                    });
+            },
+            error: function (data, jqXHR, textStatus, errorThrown) {
+                swal(" Added Failed!", "You", "error");
+            }
+        });
+    });
+</script>
+<!--FILE UPLOADS-->
 <!-- END SCRIPTS -->
 </body>
 </html>

@@ -79,6 +79,14 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
 
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/app.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/app_plugins.js"></script>
+
+<!--FILE UPLOADS -- https://plugins.krajee.com/file-input#ajax-resumable-->
+<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/file-uploader/js/plugins/piexif.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/file-uploader/js/plugins/sortable.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/file-uploader/js/fileinput.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/file-uploader/js/locales/fr.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>assets/plugins/file-uploader/js/locales/es.js"></script>
+<!--FILE UPLOADS-->
 <!--        <script type="text/javascript" src="assets/js/app_demo.js"></script>-->
 <!-- END SCRIPTS -->
 <!--            Show Active Page on Navigation Bar-->
