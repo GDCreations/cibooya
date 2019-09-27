@@ -42,7 +42,7 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
     });
 
     //SYSTEM DATE TIME
-    var weekdaystxt = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
+    var weekdaystxt = ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"]
 
     function showLocalTime(container, servermode, offsetMinutes, displayversion) {
         if (!document.getElementById || !document.getElementById(container)) return
