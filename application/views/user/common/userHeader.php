@@ -35,6 +35,23 @@
                             </ul>
                         </li>
                     <?php } ?>
+
+                    <li class="title" id="msgModule_titl">MESSAGE MODULE</li>
+                    <?php if (in_array('msgModul', $permMdul, TRUE)) { ?>
+                        <li id="msgModul">
+                            <a href="#"><span class="nav-icon-hexa fa fa-envelope"></span> MESSAGE MODULE</a>
+                            <ul>
+                                <?php if (in_array("systMsg", $permission, TRUE)) { ?>
+                                    <li>
+                                        <a id="systMsg" href="<?= base_url() ?>user/systMsg">
+                                            <span class="nav-icon-hexa fa fa-th-large"></span> System Message </a>
+                                    </li>
+                                <?php } ?>
+
+                            </ul>
+                        </li>
+                    <?php } ?>
+
                     <li class="title" id="Settings_title">SYSTEM SUPPORT</li>
                     <li id="sysCmp">
                         <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> SYSTEM SUPPORT</a>
@@ -60,8 +77,6 @@
                             <span class="nav-icon-hexa fa fa-headphones"></span> Support Ticket
                             <span class="label label-warning animated infinite rubberBand">New !</span>
                         </a></li>
-
-
                 </ul>
             </nav>
         </div>
