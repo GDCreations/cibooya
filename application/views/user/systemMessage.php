@@ -1,5 +1,5 @@
-<!--<script type="text/javascript" src="<? /*= base_url(); */ ?>assets/js/custom-js/full_width.js"></script>
--->
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/custom-js/full_width.js"></script>
+
 <!-- START PAGE HEADING -->
 <div class="app-heading-container app-heading-bordered bottom">
     <ul class="breadcrumb">
@@ -49,7 +49,7 @@
                     <label class="col-md-4 col-xs-12 control-label">From Date</label>
                     <div class="col-md-8 col-xs-12">
                         <div class='input-group date'>
-                            <input type='text' class="form-control datetimepicker" id="frdt" name="frdt"
+                            <input type='text' class="form-control daterange" id="dteRng" name="dteRng"
                                    value="<?= date('Y-m-d') ?>"/>
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
@@ -64,26 +64,14 @@
                     <label class="col-md-4 col-xs-12 control-label">User Level </label>
                     <div class="col-md-8 col-xs-12">
                         <select class="bs-select" name="srcUslv" id="srcUslv"
-                                onchange="chckBtn(this.value,'srcUslv')">
+                                onchange="chckBtn(this.value,'srcUslv'); getusersrh(this.value)">
                             <option value="0"> -- Select User Level --</option>
                             <?php
                             foreach ($uslvlinfo as $uslv) {
-                                echo "<option value='$uslv->id]'>$uslv->lvnm</option>";
+                                echo "<option value='$uslv->id'>$uslv->lvnm</option>";
                             }
                             ?>
                         </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">To Date</label>
-                    <div class="col-md-8 col-xs-12">
-                        <div class='input-group date'>
-                            <input type='text' class="form-control datetimepicker" id="todt" name="todt"
-                                   value="<?= date('Y-m-d') ?>"/>
-                            <span class="input-group-addon">
-                                <span class="fa fa-calendar"></span>
-                            </span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -91,7 +79,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">User</label>
-                    <div class="col-md-8 col-xs-12">
+                    <div class="col-md-8 col-xs-12" id="srcUsrDiv">
                         <select id="srcUsr" name="srcUsr" class="bs-select" onchange="chckBtn(this.value,'srcUsr')">
                             <option value="0"> -- Select User --</option>
                         </select>
@@ -614,30 +602,67 @@
             });
             //srchUser();
 
-            $('#srcUslv').prop('disabled', true);
-            $('#srcUsr').prop('disabled', true);
+            disableSelct('srcUslv');
+            disableSelct('srcUsr');
         });
 
+        // type div change
         function chngDiv(val) {
+
             if (val == 1) {
-                $("#srcUslv").prop("disabled",false);
-                $("#srcUslv").parent().removeClass("disabled");
-                $("#srcUslv").prev().prev().removeClass("disabled");
+                enableSelct('srcUslv');
+                disableSelct('srcUsr');
 
             } else if (val == 2) {
-                $("#srcUslv").prop("disabled",false);
-                $("#srcUslv").parent().removeClass("disabled");
-                $("#srcUslv").prev().prev().removeClass("disabled");
+                enableSelct('srcUslv');
+                enableSelct('srcUsr');
 
-                $("#srcUsr").prop("disabled",false);
-                $("#srcUsr").parent().removeClass("disabled");
-                $("#srcUsr").prev().prev().removeClass("disabled");
-
-            }else{
-                $('#srcUslv').prop('disabled', true);
-                $('#srcUsr').prop('disabled', true);
+            } else {
+                disableSelct('srcUslv');
+                disableSelct('srcUsr');
             }
+        }
 
+        //load search users
+        function getusersrh(uslv) {
+            //var user = document.getElementById('srlevel').value;
+            $.ajax({
+                url: '<?= base_url(); ?>user/getusersrh',
+                type: 'post',
+                data: {
+                    uslv: uslv,
+                },
+                dataType: 'json',
+                success: function (response) {
+                    var len = response.length;
+                    var child1 = $('#srcUsrDiv').children();
+                    var child2 = child1.find('div').children();
+                    child2.empty();
+
+                    if (len != 0) {
+                        $('#srcUsr').empty();
+                        $('#srcUsr').append("<option value='0'>-- Select A User --</option>");
+                        child2.append("<li data-original-index=\"0\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">-- Select A User --\n" +
+                            "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
+                        for (var i = 0; i < len; i++) {
+                            var id = response[i]['auid'];
+                            var name = response[i]['usnm'];
+                            var $el = $('#srcUsr');
+                            $el.append($("<option  > Select User</option>")
+                                .attr("value", id).text(name));
+
+                            child2.append("<li data-original-index=\"" + (i + 1) + "\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">" + name + "\n" +
+                                "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
+                        }
+                    } else {
+                        $('#srcUsr').empty();
+                        $('#srcUsr').append("<option value=''>No User</option>");
+
+                        child2.append("<li data-original-index=\"0\" class=\"\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\"><span class=\"text\">-- No User --</span><span class=\" fa fa-check check-mark\"></span></a></li>");
+                    }
+                    default_Selector(child1.find('div'));
+                },
+            });
         }
 
         //Search
@@ -737,7 +762,7 @@
         function viewBrnc(id, func) {
             swal({
                 title: "Loading Data...",
-                text: "Supplier's Details",
+                text: "Details Loading",
                 imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                 showConfirmButton: false
             });
@@ -912,150 +937,6 @@
                             dataType: 'json',
                             success: function (data) {
                                 swal({title: "", text: "Branch was rejected!", type: "success"},
-                                    function () {
-                                        srchUser();
-                                    });
-                            },
-                            error: function (data, textStatus) {
-                                swal({title: "Faild", text: textStatus, type: "error"},
-                                    function () {
-                                        location.reload();
-                                    });
-                            }
-                        });
-                    } else {
-                        swal("Cancelled", " ", "warning");
-                    }
-                });
-        }
-
-        //Deactivate
-        function inactUser(id) {
-            swal({
-                    title: "Are you sure to deactivate ?",
-                    text: "",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3bdd59",
-                    confirmButtonText: "Yes",
-                    cancelButtonText: "No",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        swal({
-                            title: "Processing...",
-                            text: "",
-                            imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                            showConfirmButton: false
-                        });
-
-                        $.ajax({
-                            type: "POST",
-                            url: "<?= base_url(); ?>admin/userDeactive",
-                            data: {
-                                id: id
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                swal({title: "", text: "Deactivated!", type: "success"},
-                                    function () {
-                                        srchUser();
-                                    });
-                            },
-                            error: function (data, textStatus) {
-                                swal({title: "Faild", text: textStatus, type: "error"},
-                                    function () {
-                                        location.reload();
-                                    });
-                            }
-                        });
-                    } else {
-                        swal("Cancelled", " ", "warning");
-                    }
-                });
-        }
-
-        //activate Supplier
-        function reactUser(id) {
-            swal({
-                    title: "Are you sure to activate ?",
-                    text: "",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3bdd59",
-                    confirmButtonText: "Yes",
-                    cancelButtonText: "No",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        swal({
-                            title: "Processing...",
-                            text: "Activating...",
-                            imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                            showConfirmButton: false
-                        });
-
-                        $.ajax({
-                            type: "POST",
-                            url: "<?= base_url(); ?>admin/userReactiv",
-                            data: {
-                                id: id
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                swal({title: "", text: "Activated!", type: "success"},
-                                    function () {
-                                        srchUser();
-                                    });
-                            },
-                            error: function (data, textStatus) {
-                                swal({title: "Faild", text: textStatus, type: "error"},
-                                    function () {
-                                        location.reload();
-                                    });
-                            }
-                        });
-                    } else {
-                        swal("Cancelled", " ", "warning");
-                    }
-                });
-        }
-
-        //PASSWORD RESET
-        function resetPass(id) {
-            swal({
-                    title: "Are you sure to Password Reset ?",
-                    text: "",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3bdd59",
-                    confirmButtonText: "Yes",
-                    cancelButtonText: "No",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        swal({
-                            title: "Processing...",
-                            text: "Activating...",
-                            imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                            showConfirmButton: false
-                        });
-
-                        $.ajax({
-                            type: "POST",
-                            url: "<?= base_url(); ?>admin/userPassReset",
-                            data: {
-                                id: id
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                swal({title: "", text: "Successful Password Reset!", type: "success"},
                                     function () {
                                         srchUser();
                                     });

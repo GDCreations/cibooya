@@ -89,7 +89,7 @@ class User extends CI_Controller
 // MESSAGE MODULE
     public function systMsg()
     {
-        $data['acm'] = 'msgModul'; //Module
+        $data['acm'] = ''; //Module
         $data['acp'] = 'systMsg'; //Page
 
         $this->load->view('common/tmpHeader');
@@ -101,6 +101,19 @@ class User extends CI_Controller
 
         $this->load->view('user/systemMessage',$dataArr);
         $this->load->view('common/tmpFooter', $data);
+    }
+
+    //get user search
+    function getusersrh()
+    {
+        $user = $this->input->post('uslv');
+        $this->db->select("user_mas.usnm,user_mas.auid, user_level.id,user_level.lvnm");
+        $this->db->from("user_mas");
+        $this->db->join('user_level', 'user_level.id = user_mas.usmd');
+        $this->db->where('user_level.id', $user);
+        $query = $this->db->get();
+        $data = $query->result();
+        echo json_encode($data);
     }
 
     //SEARCH
