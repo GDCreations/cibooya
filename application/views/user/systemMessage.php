@@ -49,7 +49,7 @@
                     <label class="col-md-4 col-xs-12 control-label">From Date</label>
                     <div class="col-md-8 col-xs-12">
                         <div class='input-group date'>
-                            <input type='text' class="form-control daterange" id="dteRng" name="dteRng"
+                            <input type='text' class="form-control dateranger" id="dteRng" name="dteRng"
                                    value="<?= date('Y-m-d') ?>"/>
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
@@ -101,13 +101,14 @@
                     <thead>
                     <tr>
                         <th class="text-left">#</th>
-                        <th class="text-left">BRNC</th>
-                        <th class="text-left">USERNAME</th>
-                        <th class="text-left">NAME</th>
-                        <th class="text-left">MOBILE</th>
-                        <th class="text-left">NIC</th>
-                        <th class="text-left">LEVEL</th>
-                        <th class="text-left">STATUS</th>
+                        <th class="text-left">TYPE</th>
+                        <th class="text-left">USER LEVEL</th>
+                        <th class="text-left">USER</th>
+                        <th class="text-left">TITLE</th>
+                        <th class="text-left">MESSAGE</th>
+                        <th class="text-left">NOTIFY</th>
+                        <th class="text-left">MSG BY</th>
+                        <th class="text-left">MSG DATE</th>
                         <th class="text-left">ACTION</th>
                     </tr>
                     </thead>
@@ -693,7 +694,7 @@
                     "serverSide": true,
                     "columnDefs": [
                         {className: "text-left", "targets": [2, 3, 5, 6]},
-                        {className: "text-center", "targets": [0, 1, 4, 7, 8]},
+                        {className: "text-center", "targets": [0, 1, 4, 7, 8,9]},
                         {className: "text-right", "targets": [0]},
                         {className: "text-nowrap", "targets": [2, 3]},
                     ],
@@ -707,7 +708,8 @@
                         {sWidth: '10%'}, //Created By
                         {sWidth: '10%'}, //Created date
                         {sWidth: '10%'}, //Status
-                        {sWidth: '15%'} //Option
+                        {sWidth: '10%'}, //Status
+                        {sWidth: '10%'} //Option
                     ],
                     "ajax": {
                         url: '<?= base_url(); ?>admin/searchUser',

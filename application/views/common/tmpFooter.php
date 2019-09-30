@@ -118,7 +118,7 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             },
             alwaysShowCalendars : true,
-            opens: 'left',
+            opens: 'center',
             locale: {
                 format: 'YYYY-MM-DD'
             }

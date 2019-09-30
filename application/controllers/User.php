@@ -111,6 +111,7 @@ class User extends CI_Controller
         $this->db->from("user_mas");
         $this->db->join('user_level', 'user_level.id = user_mas.usmd');
         $this->db->where('user_level.id', $user);
+        $this->db->where('user_mas.stat', 1);
         $query = $this->db->get();
         $data = $query->result();
         echo json_encode($data);
