@@ -217,6 +217,78 @@ class Stock_model extends CI_Model
         return $this->db->count_all_results();
     }
     //END SEARCH BRAND DETAILS </JANAKA 2019-09-26>
+
+    //SEARCH BRAND DETAILS </JANAKA 2019-09-27>
+    var $cl_srch4 = array('tpcd','tpnm'); //set column field database for datatable searchable
+    var $cl_odr4 = array(null, 'tpcd','tpnm', 'user_mas.innm', 'crdt', 'stat',''); //set column field database for datatable orderable
+    var $order4 = array('crdt' => 'DESC'); // default order
+
+    function typDet_query()
+    {
+        $stat = $this->input->post('stat');
+
+        $this->db->select("type.*,user_mas.innm");
+        $this->db->from('type');
+        $this->db->join('user_mas','user_mas.auid=type.crby');
+        if($stat!='all'){
+            $this->db->where("type.stat=$stat");
+        }
+    }
+
+    private function typDet_queryData()
+    {
+        $this->typDet_query();
+        $i = 0;
+        foreach ($this->cl_srch4 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch4) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr4[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order4)) {
+            $order4 = $this->order4;
+            $this->db->order_by(key($order4), $order4[key($order4)]);
+        }
+    }
+
+    function get_typDtils()
+    {
+        $this->typDet_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_typ()
+    {
+        $this->typDet_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_typ()
+    {
+        // $this->db->from($this->table);
+        $this->typDet_query();
+        return $this->db->count_all_results();
+    }
+    //END SEARCH TYPE DETAILS </JANAKA 2019-09-27>
 }
 
 ?>
