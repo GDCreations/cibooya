@@ -133,9 +133,9 @@
                                                     class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
                                     </li>
                                 <?php } ?>
-                                <li>
-                                    <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>
-                                </li>
+<!--                                <li>-->
+<!--                                    <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>-->
+<!--                                </li>-->
                             </ul>
                         </li>
                         <?php $Stock_title = false;

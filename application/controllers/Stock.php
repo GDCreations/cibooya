@@ -1548,4 +1548,33 @@ class Stock extends CI_Controller
 //************************************************
 //***      END TYPE REGISTRATION               ***
 //************************************************
+
+//************************************************
+//***          ITEM REGISTRATION               ***
+//************************************************
+//OPEN PAGE </JANAKA 2019-09-30>
+    function itemMng()
+    {
+        $data['acm'] = 'stcCmp'; //Module
+        $data['acp'] = 'itemMng'; //Page
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('itemMng');
+        $data2['category'] = $this->Generic_model->getData('category',array('ctid','ctcd','ctnm'),"stat IN(1,3)");
+        $data2['brand'] = $this->Generic_model->getData('brand',array('bdid','bdcd','bdnm','logo'),"stat IN(1,3)");
+        $data2['type'] = $this->Generic_model->getData('type',array('tpid','tpcd','tpnm'),"stat IN(1,3)");
+        $data2['nature'] = $this->Generic_model->getData('nature',array('ntid','ntnm','dscr'),array('stat'=>1));
+        $data2['store'] = $this->Generic_model->getData('str_type',array('strid','stnm'),array('stat'=>1));
+        $data2['storeScl'] = $this->Generic_model->getData('scale',array('slid','scl','scnm'),array('stat'=>1));
+        $this->load->view('admin/stock/item_Manage', $data2);
+
+        $this->load->view('common/tmpFooter', $data);
+    }
+//END OPEN PAGE </JANAKA 2019-09-30>
+
+//************************************************
+//***      END ITEM REGISTRATION               ***
+//************************************************
 }
