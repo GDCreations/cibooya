@@ -407,7 +407,50 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr>
+                            <div class="row form-horizontal" id="view_Area">
+                                <div class="col-md-12">
+                                    <!--<div class="form-group">
+                                        <label class="col-md-4 control-label">Status</label>
+                                        <label class="col-md-8 control-label" id="sup_stat"></label>
+                                    </div>-->
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Created By</label>
+                                        <label class="col-md-8 control-label" id="crby"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Created Date</label>
+                                        <label class="col-md-8 control-label" id="crdt"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Updated By</label>
+                                        <label class="col-md-8 control-label" id="mdby"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Updated Date</label>
+                                        <label class="col-md-8 control-label" id="mddt"></label>
+                                    </div>
+                                    <!--<div class="form-group">
+                                        <label class="col-md-4 control-label">Approved By</label>
+                                        <label class="col-md-8 control-label" id="apby"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Approved Date</label>
+                                        <label class="col-md-8 control-label" id="apdt"></label>
+                                    </div>-->
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Rejected By</label>
+                                        <label class="col-md-8 control-label" id="rjby"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">Rejected Date</label>
+                                        <label class="col-md-8 control-label" id="rjdt"></label>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
+
                     </div>
 
                     <div class="modal-footer">
@@ -711,6 +754,8 @@
                 $("#modal-view").find('.bootstrap-select').addClass("disabled dropup");
                 $("#modal-view").find('.bootstrap-select').children().addClass("disabled dropup");
                 var des = "disabled";
+
+                $("#view_Area").css('display', 'block');
                 //VIEW MODEL
             } else if (func == 'edit') {
                 //EDIT MODEL
@@ -727,6 +772,8 @@
                 $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
                 $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
                 var des = "";
+
+                $("#view_Area").css('display', 'none');
                 //EDIT MODEL
             }
 
@@ -741,29 +788,43 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var len = data.length;
+                    var len = data['usrBasic'].length;
                     if (len > 0) {
-                        set_select('brchNwEdt', data[0]['brch']);
-                        set_select('uslvNwEdt', data[0]['usmd']);
-                        set_select('ugndEdt', data[0]['gend']);
+                        set_select('brchNwEdt', data['usrBasic'][0]['brch']);
+                        set_select('uslvNwEdt', data['usrBasic'][0]['usmd']);
+                        set_select('ugndEdt', data['usrBasic'][0]['gend']);
 
-                        $('#frnmEdt').val(data[0]['fnme']);
-                        $('#lsnmEdt').val(data[0]['lnme']);
+                        $('#frnmEdt').val(data['usrBasic'][0]['fnme']);
+                        $('#lsnmEdt').val(data['usrBasic'][0]['lnme']);
 
-                        $('#emilEdt').val(data[0]['emid']);
-                        $('#usnmEdt').val(data[0]['usnm']);
+                        $('#emilEdt').val(data['usrBasic'][0]['emid']);
+                        $('#usnmEdt').val(data['usrBasic'][0]['usnm']);
 
-                        $('#unicEdt').val(data[0]['unic']);
-                        $('#udobEdt').val(data[0]['udob']);
-                        //$('#ugndEdt').val(data[0]['gend']);
-                        $('#teleEdt').val(data[0]['tpno']);
-                        $('#mobiEdt').val(data[0]['almo']);
+                        $('#unicEdt').val(data['usrBasic'][0]['unic']);
+                        $('#udobEdt').val(data['usrBasic'][0]['udob']);
+                        //$('#ugndEdt').val(data['usrBasic'][0]['gend']);
+                        $('#teleEdt').val(data['usrBasic'][0]['tpno']);
+                        $('#mobiEdt').val(data['usrBasic'][0]['almo']);
 
-                        if (data[0]['prmd'] == 1) {
+                        if (data['usrBasic'][0]['prmd'] == 1) {
                             $("#prmTpEdt").prop("checked", true);
                         } else {
                             $("#prmTpEdt").prop("checked", false);
                         }
+
+
+                        //$('#sup_stat').html(": " + stat);
+                        //$('#code').html(": " + data['usrSub'][0]['spcd']);
+                        $('#crby').html(": " + data['usrSub'][0]['crby']);
+                        $('#crdt').html(": " + data['usrSub'][0]['crdt']);
+                        // $('#apby').html(": " + ((data['usrSub'][0]['apby'] != null) ? data['usrSub'][0]['apby'] : "--"));
+                        // $('#apdt').html(": " + ((data['usrSub'][0]['apdt'] != null && data['usrSub'][0]['apdt'] != "0000-00-00 00:00:00") ? data['usrSub'][0]['apdt'] : "--"));
+                        $('#rjby').html(": " + ((data['usrSub'][0]['rjnm'] != null) ? data['usrSub'][0]['rjnm'] : "--"));
+                        $('#rjdt').html(": " + ((data['usrSub'][0]['rjdt'] != null && data['usrSub'][0]['rjdt'] != "0000-00-00 00:00:00") ? data['usrSub'][0]['rjdt'] : "--"));
+                        $('#mdby').html(": " + ((data['usrSub'][0]['mdby'] != null) ? data['usrSub'][0]['mdby'] : "--"));
+                        $('#mddt').html(": " + ((data['usrSub'][0]['mddt'] != null && data['usrSub'][0]['mddt'] != "0000-00-00 00:00:00") ? data['usrSub'][0]['mddt'] : "--"));
+
+
                     }
                     swal.close();
                 },

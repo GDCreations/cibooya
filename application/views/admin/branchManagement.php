@@ -236,12 +236,12 @@
                                 </div>
                             </div>
 
-                            <!--<div class="form-horizontal view_Area">
+                            <div class="form-horizontal" id="view_Area">
                                 <div class="col-md-12">
-                                    <div class="form-group">
+                                    <!--<div class="form-group">
                                         <label class="col-md-4 control-label">Status</label>
                                         <label class="col-md-8 control-label" id="sup_stat"></label>
-                                    </div>
+                                    </div>-->
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Created By</label>
                                         <label class="col-md-8 control-label" id="crby"></label>
@@ -258,14 +258,14 @@
                                         <label class="col-md-4 control-label">Approved Date</label>
                                         <label class="col-md-8 control-label" id="apdt"></label>
                                     </div>
-                                    <div class="form-group">
+                                    <!--<div class="form-group">
                                         <label class="col-md-4 control-label">Rejected By</label>
                                         <label class="col-md-8 control-label" id="rjby"></label>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Rejected Date</label>
                                         <label class="col-md-8 control-label" id="rjdt"></label>
-                                    </div>
+                                    </div>-->
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Updated By</label>
                                         <label class="col-md-8 control-label" id="mdby"></label>
@@ -275,7 +275,7 @@
                                         <label class="col-md-8 control-label" id="mddt"></label>
                                     </div>
                                 </div>
-                            </div>-->
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -566,7 +566,7 @@
                 $('#edtBtn').css('display', 'none');
                 $("#modal-view").find('.edit_req').css("display", "none");
                 $("#edit_Area").css('display', 'none');
-                $(".view_Area").css('display', 'block');
+                $("#view_Area").css('display', 'block');
                 //Make readonly all fields
                 $("#modal-view :input").attr("readonly", true);
                 $("#modal-view").find('.bootstrap-select').addClass("disabled dropup");
@@ -580,7 +580,7 @@
                 $('#edtBtn').html('Update');
                 $("#modal-view").find('.edit_req').css("display", "inline");
                 $("#edit_Area").css('display', 'block');
-                $(".view_Area").css('display', 'none');
+                $("#view_Area").css('display', 'none');
                 //Remove readonly all fields
                 $("#modal-view :input").attr("readonly", false);
                 $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
@@ -594,7 +594,7 @@
                 $('#edtBtn').html('Approve');
                 $("#modal-view").find('.edit_req').css("display", "inline");
                 $("#edit_Area").css('display', 'block');
-                $(".view_Area").css('display', 'none');
+                $("#view_Area").css('display', 'none');
                 //Remove readonly all fields
                 $("#modal-view :input").attr("readonly", false);
                 $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
@@ -614,27 +614,27 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var len = data.length;
+                    var len = data['brnch'].length;
                     if (len > 0) {
-                        $('#nameEdt').val(data[0]['brnm']);
-                        $('#codeEdt').val(data[0]['brcd']);
-                        $('#addrEdt').val(data[0]['brad']);
-                        $('#mobiEdt').val(data[0]['brmb']);
-                        $('#teleEdt').val(data[0]['brtp']);
-                        $('#emailEdt').val(data[0]['brem']);
-                        $('#remkEdt').val(data[0]['remk']);
+                        $('#nameEdt').val(data['brnch'][0]['brnm']);
+                        $('#codeEdt').val(data['brnch'][0]['brcd']);
+                        $('#addrEdt').val(data['brnch'][0]['brad']);
+                        $('#mobiEdt').val(data['brnch'][0]['brmb']);
+                        $('#teleEdt').val(data['brnch'][0]['brtp']);
+                        $('#emailEdt').val(data['brnch'][0]['brem']);
+                        $('#remkEdt').val(data['brnch'][0]['remk']);
 
-                        // $('#sup_stat').html(": " + stat);
-                        // $('#code').html(": " + spdet[0]['spcd']);
-                        // $('#crby').html(": " + spdet[0]['crnm']);
-                        // $('#crdt').html(": " + spdet[0]['crdt']);
-                        // $('#apby').html(": " + ((spdet[0]['apnm'] != null) ? spdet[0]['apnm'] : "--"));
-                        // $('#apdt').html(": " + ((spdet[0]['apdt'] != null && spdet[0]['apdt'] != "0000-00-00 00:00:00") ? spdet[0]['apdt'] : "--"));
-                        // $('#rjby').html(": " + ((spdet[0]['rjnm'] != null) ? spdet[0]['rjnm'] : "--"));
-                        // $('#rjdt').html(": " + ((spdet[0]['rjdt'] != null && spdet[0]['rjdt'] != "0000-00-00 00:00:00") ? spdet[0]['rjdt'] : "--"));
-                        // $('#mdby').html(": " + ((spdet[0]['mdnm'] != null) ? spdet[0]['mdnm'] : "--"));
-                        // $('#mddt').html(": " + ((spdet[0]['mddt'] != null && spdet[0]['mddt'] != "0000-00-00 00:00:00") ? spdet[0]['mddt'] : "--"));
-                        //
+                        //$('#sup_stat').html(": " + stat);
+                        //$('#code').html(": " + data['subDtil'][0]['spcd']);
+                        $('#crby').html(": " + data['subDtil'][0]['crby']);
+                        $('#crdt').html(": " + data['subDtil'][0]['crdt']);
+                        $('#apby').html(": " + ((data['subDtil'][0]['apby'] != null) ? data['subDtil'][0]['apby'] : "--"));
+                        $('#apdt').html(": " + ((data['subDtil'][0]['apdt'] != null && data['subDtil'][0]['apdt'] != "0000-00-00 00:00:00") ? data['subDtil'][0]['apdt'] : "--"));
+                        //$('#rjby').html(": " + ((data['subDtil'][0]['rjnm'] != null) ? data['subDtil'][0]['rjnm'] : "--"));
+                        //$('#rjdt').html(": " + ((data['subDtil'][0]['rjdt'] != null && data['subDtil'][0]['rjdt'] != "0000-00-00 00:00:00") ? data['subDtil'][0]['rjdt'] : "--"));
+                        $('#mdby').html(": " + ((data['subDtil'][0]['mdby'] != null) ? data['subDtil'][0]['mdby'] : "--"));
+                        $('#mddt').html(": " + ((data['subDtil'][0]['mddt'] != null && data['subDtil'][0]['mddt'] != "0000-00-00 00:00:00") ? data['subDtil'][0]['mddt'] : "--"));
+
 
                     }
                     swal.close();
