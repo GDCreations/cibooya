@@ -155,7 +155,7 @@
                         <li><a id="sysUpdate" href="<?= base_url() ?>admin/sysUpdate">
                                 <span class="nav-icon-hexa fa fa-wrench"></span> system update</a>
                         </li>
-                        <li><a id="usrMng" href="<?= base_url() ?>admin/sysChanlg">
+                        <li><a id="sysChanlg" href="<?= base_url() ?>admin/sysChanlg">
                                 <span class="nav-icon-hexa fa fa-upload"></span> change log</a>
                         </li>
                     <?php } ?>

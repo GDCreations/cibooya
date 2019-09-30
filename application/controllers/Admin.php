@@ -1741,13 +1741,9 @@ class Admin extends CI_Controller
         $per['permission'] = $this->Generic_model->getPermision();
         $this->load->view('admin/common/adminHeader', $per);
 
-        $dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('usrMng');
-        $dataArr['policyinfo'] = $this->Generic_model->getData('sys_policy', '', '');
+        //$dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('sysUpdate');
 
-        $dataArr['branchinfo'] = $this->Generic_model->getBranch();
-        $dataArr['uslvlinfo'] = $this->Generic_model->getData('user_level', '', "stat = 1 AND id != 1");
-
-        $this->load->view('admin/systmUpdate', $dataArr);
+        $this->load->view('admin/systmUpdate');
         $this->load->view('common/tmpFooter', $data);
     }
 
@@ -1903,7 +1899,176 @@ class Admin extends CI_Controller
     }
 
 //******************************************************* //
+// SYSTEM CHANGE LOG
+    function sysChanlg()
+    {
+        $data['acm'] = ''; //Module
+        $data['acp'] = 'sysChanlg'; //Page
 
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+        //$dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('sysChanlg');
+
+        $this->load->view('admin/systmChangLog');
+        $this->load->view('common/tmpFooter', $data);
+    }
+
+    function srchRelenseNt()
+    {
+        $frdt = $this->input->post('frdt');
+        $todt = $this->input->post('todt');
+
+        $this->db->select(" * ");
+        $this->db->from("syst_changelog");
+        $this->db->where("DATE_FORMAT(syst_changelog.rcdt, '%Y-%m-%d') BETWEEN '$frdt' AND '$todt'");
+        //$this->db->where('test.uslv', $srlv);
+        $query = $this->db->get();
+        $result = $query->result();
+
+        $data = array();
+        $i = 0;
+
+        if ($_SESSION['role'] == 1) {
+            $dis = "";
+        } else {
+            $dis = "disabled";
+        }
+
+        foreach ($result as $row) {
+
+            if ($row->stat == 0) {
+                $st = " <span class='label label-warning'> Pending </span> ";
+                $option =
+                    "<button type='button'   data-toggle='modal' data-target='#modal-view'  onclick='edtReleseNote($row->chid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app' $dis onclick='sendMail($row->chid);' class='btn btn-xs btn-default btn-condensed' title='Send Mail' ><i class='fa fa-envelope' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej' $dis onclick='rejecSppy($row->chid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+
+            } else if ($row->stat == 1) {
+                $st = " <span class='label label-success'> Send Mail</span> ";
+                $option =
+                    "<button type='button'  data-toggle='modal' data-target='#modal-view'  onclick='edtReleseNote($row->chid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled id='app'  onclick='sendMail($row->chid);' class='btn btn-xs btn-default btn-condensed' title='Send Mail' ><i class='fa fa-envelope' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled id='rej'  onclick='rejecSppy($row->chid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+
+            } else if ($row->stat == 2) {
+                $st = " <span class='label label-danger'> Reject </span> ";
+                $option =
+                    "<button type='button'  data-toggle='modal' data-target='#modal-view'  onclick='edtReleseNote($row->chid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled id='app'  onclick='sendMail($row->chid);' class='btn btn-xs btn-default btn-condensed' title='Send Mail' ><i class='fa fa-envelope' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled id='rej'  onclick='rejecSppy($row->chid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->rcdt;
+            $sub_arr[] = $row->rfno;
+            $sub_arr[] = $st;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+        $output = array(
+            "sEcho" => 2,
+            "iTotalRecords" => count($data),
+            "iTotalDisplayRecords" => count($data),
+            "aaData" => $data
+        );
+        echo json_encode($output);
+    }
+
+    // ADD
+    function addRelesNote()
+    {
+        $data_arr = array(
+            'rfno' => $this->input->post('tag'),
+            'rmks' => $this->input->post('remk'),
+            'rcdt' => $this->input->post('rcdt'),
+            'poby' => ucwords($this->input->post('poby')),
+            'stat' => 0,
+            'crby' => $_SESSION['userId'],
+            'crdt' => date('Y-m-d H:i:s'),
+        );
+        $result = $this->Generic_model->insertData('syst_changelog', $data_arr);
+        if (count($result) > 0) {
+            echo json_encode(true);
+        } else {
+            echo json_encode(false);
+        }
+    }
+
+    function getReleseNote()
+    {
+        $chid = $this->input->post('chid');
+        $this->db->select("*");
+        $this->db->from("syst_changelog");
+        $this->db->where('chid', $chid);
+        $query = $this->db->get();
+        echo json_encode($query->result());
+    }
+
+    // SEND EMAIL
+    public function sendMail()
+    {
+        $chid = $this->input->post('chid');
+
+        $this->db->select("*");
+        $this->db->from("syst_changelog");
+        $this->db->where('chid', $chid);
+        $data = $this->db->get()->result();
+
+        // SEND MAIL CONFIGURATION
+        /* https://stackoverflow.com/questions/13469891/smtp-gmail-error-with-codeigniter-2-1-3 */
+        $config = Array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.gmail.com',      //'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'support@gdcreations.com',   // change it to yours
+            'smtp_pass' => 'S!upp#ort@*19',                  // change it to yours
+            'mailtype' => 'html',
+            'charset' => 'iso-8859-1',
+            // 'charset' => 'utf-8',
+            'wordwrap' => TRUE
+        );
+
+        // ALL CC MAIL USER
+        $tomlcc = $data[0]->rfno;
+        //$tomlcc = 'cronjobs@gdcreations.com';
+        // EMAIL MESSAGE
+        $comDt = $this->Generic_model->getData('com_det', '', array('stat' => 1), '');
+        $message = " This is a " . $data[0]->rcdt . ', ' . ucfirst($comDt[0]->synm) . " System update Release Notes <br> " . $data[0]->rmks . " <br> From  " . $data[0]->poby . " <br> (This is a system generated email.)";
+
+        $this->load->library('email', $config);
+        $this->email->set_newline("\r\n");
+        $this->email->from('support@gdcreations.com', 'GDC support');   // change it to yours
+        $this->email->to($tomlcc);                                      // change it to yours    'gamunu@gdcreations.com'
+        //$this->email->cc('geeth@gdcreations.com');                      // change it to yours
+        $this->email->bcc('gemunu@gdcreations.com');                    // change it to yours
+        $this->email->subject('System Updates Release Notes ' . $data[0]->rcdt);
+        $this->email->message($message);
+
+        if ($this->email->send()) {
+            $this->Generic_model->updateData('syst_changelog', array('stat' => 1, 'snby' => $_SESSION['userId'], 'sndt' => date('Y-m-d H:i:s')), array('chid' => $chid));
+
+            echo json_encode(true);
+        } else {
+            show_error($this->email->print_debugger());
+            echo json_encode(false);
+        }
+    }
+
+    //reject System Update Release Notes
+    function rejecSppy()
+    {
+        $id = $this->input->post('id');
+        $result = $this->Generic_model->updateData('syst_changelog', array('stat' => 2), array('chid' => $id));
+        if (count($result) > 0) {
+            echo json_encode(true);
+        } else {
+            echo json_encode(false);
+        }
+    }
+
+// END SYSTEM UPDATE RELEASE NOTE
 
 
 }
