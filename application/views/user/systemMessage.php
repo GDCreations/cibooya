@@ -3,8 +3,8 @@
 <!-- START PAGE HEADING -->
 <div class="app-heading-container app-heading-bordered bottom">
     <ul class="breadcrumb">
-        <li><a href="#">System Component</a></li>
-        <li class="active">User Management</li>
+        <li><a href="#">Message Module</a></li>
+        <li class="active">System Message</li>
     </ul>
 </div>
 <div class="app-heading app-heading-bordered app-heading-page">
@@ -12,14 +12,14 @@
         <span class="fa fa-user" style="color: #e69c0f;"></span>
     </div>
     <div class="title">
-        <h1>User Management</h1>
+        <h1>System Message</h1>
         <p>Create / Edit / Inactive / Active </p>
     </div>
     <?php
     if ($funcPerm[0]->inst == 1) { ?>
         <div class="pull-right">
             <button class="btn btn-sm btn-info btn-icon-fixed btn-rounded" data-toggle="modal" data-target="#modal-add">
-                <span class="fa fa-plus"></span>Register
+                <span class="fa fa-plus"></span>New Message
             </button>
         </div>
     <?php }
@@ -35,30 +35,40 @@
 
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">Branch</label>
+                    <label class="col-md-4 col-xs-12 control-label">Type</label>
                     <div class="col-md-8 col-xs-12">
-                        <select class="bs-select" name="brch" id="brch"
-                                onchange="chckBtn(this.value,'brch')">
-                            <?php
-                            foreach ($branchinfo as $branch) {
-                                echo "<option value='$branch[brch_id]'>$branch[brch_name]</option>";
-                            }
-                            ?>
+                        <select class="bs-select" name="type" id="type"
+                                onchange="chngDiv(this.value)">
+                            <option value="0"> All User</option>
+                            <option value="1"> User Level</option>
+                            <option value="2"> User</option>
                         </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 col-xs-12 control-label">From Date</label>
+                    <div class="col-md-8 col-xs-12">
+                        <div class='input-group date'>
+                            <input type='text' class="form-control dateranger" id="dteRng" name="dteRng"
+                                   value="<?= date('Y-m-d') ?>"/>
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">User </label>
-                    <div class="col-md-8 col-xs-12" id="userSclt">
-                        <select class="bs-select" name="uslv" id="uslv"
-                                onchange="chckBtn(this.value,'uslv')">
-                            <option value="all"> -- All Level --</option>
+                    <label class="col-md-4 col-xs-12 control-label">User Level </label>
+                    <div class="col-md-8 col-xs-12">
+                        <select class="bs-select" name="srcUslv" id="srcUslv"
+                                onchange="chckBtn(this.value,'srcUslv'); getusersrh(this.value)">
+                            <option value="0"> -- Select User Level --</option>
                             <?php
                             foreach ($uslvlinfo as $uslv) {
-                                echo "<option value='$uslv->id]'>$uslv->lvnm</option>";
+                                echo "<option value='$uslv->id'>$uslv->lvnm</option>";
                             }
                             ?>
                         </select>
@@ -68,14 +78,10 @@
 
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">Status</label>
-                    <div class="col-md-8 col-xs-12">
-                        <select id="stat" name="stat" class="bs-select">
-                            <option value="all">All</option>
-                            <!--<option value="0">Pending</option>-->
-                            <option value="1">Active</option>
-                            <option value="2">Tmp Disable</option>
-                            <option value="0">Inactive</option>
+                    <label class="col-md-4 col-xs-12 control-label">User</label>
+                    <div class="col-md-8 col-xs-12" id="srcUsrDiv">
+                        <select id="srcUsr" name="srcUsr" class="bs-select" onchange="chckBtn(this.value,'srcUsr')">
+                            <option value="0"> -- Select User --</option>
                         </select>
                     </div>
                 </div>
@@ -95,13 +101,14 @@
                     <thead>
                     <tr>
                         <th class="text-left">#</th>
-                        <th class="text-left">BRNC</th>
-                        <th class="text-left">USERNAME</th>
-                        <th class="text-left">NAME</th>
-                        <th class="text-left">MOBILE</th>
-                        <th class="text-left">NIC</th>
-                        <th class="text-left">LEVEL</th>
-                        <th class="text-left">STATUS</th>
+                        <th class="text-left">TYPE</th>
+                        <th class="text-left">USER LEVEL</th>
+                        <th class="text-left">USER</th>
+                        <th class="text-left">TITLE</th>
+                        <th class="text-left">MESSAGE</th>
+                        <th class="text-left">NOTIFY</th>
+                        <th class="text-left">MSG BY</th>
+                        <th class="text-left">MSG DATE</th>
                         <th class="text-left">ACTION</th>
                     </tr>
                     </thead>
@@ -254,7 +261,8 @@
                     <div class="modal-footer">
                         <div class="pull-left">
                             <span class="fa fa-hand-o-right"></span>
-                            <label style="color: red"> <span class="fa fa-asterisk req-astrick"></span> Required Fields </label>
+                            <label style="color: red"> <span class="fa fa-asterisk req-astrick"></span> Required Fields
+                            </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
                         <button type="button" id="addBtn" class="btn btn-warning btn-sm btn-rounded">Submit
@@ -407,50 +415,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <hr>
-                            <div class="row form-horizontal" id="view_Area">
-                                <div class="col-md-12">
-                                    <!--<div class="form-group">
-                                        <label class="col-md-4 control-label">Status</label>
-                                        <label class="col-md-8 control-label" id="sup_stat"></label>
-                                    </div>-->
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Created By</label>
-                                        <label class="col-md-8 control-label" id="crby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Created Date</label>
-                                        <label class="col-md-8 control-label" id="crdt"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Updated By</label>
-                                        <label class="col-md-8 control-label" id="mdby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Updated Date</label>
-                                        <label class="col-md-8 control-label" id="mddt"></label>
-                                    </div>
-                                    <!--<div class="form-group">
-                                        <label class="col-md-4 control-label">Approved By</label>
-                                        <label class="col-md-8 control-label" id="apby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Approved Date</label>
-                                        <label class="col-md-8 control-label" id="apdt"></label>
-                                    </div>-->
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Rejected By</label>
-                                        <label class="col-md-8 control-label" id="rjby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Rejected Date</label>
-                                        <label class="col-md-8 control-label" id="rjdt"></label>
-                                    </div>
-
-                                </div>
-                            </div>
                         </div>
-
                     </div>
 
                     <div class="modal-footer">
@@ -637,7 +602,69 @@
                 }
             });
             //srchUser();
+
+            disableSelct('srcUslv');
+            disableSelct('srcUsr');
         });
+
+        // type div change
+        function chngDiv(val) {
+
+            if (val == 1) {
+                enableSelct('srcUslv');
+                disableSelct('srcUsr');
+
+            } else if (val == 2) {
+                enableSelct('srcUslv');
+                enableSelct('srcUsr');
+
+            } else {
+                disableSelct('srcUslv');
+                disableSelct('srcUsr');
+            }
+        }
+
+        //load search users
+        function getusersrh(uslv) {
+            //var user = document.getElementById('srlevel').value;
+            $.ajax({
+                url: '<?= base_url(); ?>user/getusersrh',
+                type: 'post',
+                data: {
+                    uslv: uslv,
+                },
+                dataType: 'json',
+                success: function (response) {
+                    var len = response.length;
+                    var child1 = $('#srcUsrDiv').children();
+                    var child2 = child1.find('div').children();
+                    child2.empty();
+
+                    if (len != 0) {
+                        $('#srcUsr').empty();
+                        $('#srcUsr').append("<option value='0'>-- Select A User --</option>");
+                        child2.append("<li data-original-index=\"0\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">-- Select A User --\n" +
+                            "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
+                        for (var i = 0; i < len; i++) {
+                            var id = response[i]['auid'];
+                            var name = response[i]['usnm'];
+                            var $el = $('#srcUsr');
+                            $el.append($("<option  > Select User</option>")
+                                .attr("value", id).text(name));
+
+                            child2.append("<li data-original-index=\"" + (i + 1) + "\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">" + name + "\n" +
+                                "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
+                        }
+                    } else {
+                        $('#srcUsr').empty();
+                        $('#srcUsr').append("<option value=''>No User</option>");
+
+                        child2.append("<li data-original-index=\"0\" class=\"\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\"><span class=\"text\">-- No User --</span><span class=\" fa fa-check check-mark\"></span></a></li>");
+                    }
+                    default_Selector(child1.find('div'));
+                },
+            });
+        }
 
         //Search
         function srchUser() {
@@ -667,7 +694,7 @@
                     "serverSide": true,
                     "columnDefs": [
                         {className: "text-left", "targets": [2, 3, 5, 6]},
-                        {className: "text-center", "targets": [0, 1, 4, 7, 8]},
+                        {className: "text-center", "targets": [0, 1, 4, 7, 8,9]},
                         {className: "text-right", "targets": [0]},
                         {className: "text-nowrap", "targets": [2, 3]},
                     ],
@@ -681,7 +708,8 @@
                         {sWidth: '10%'}, //Created By
                         {sWidth: '10%'}, //Created date
                         {sWidth: '10%'}, //Status
-                        {sWidth: '15%'} //Option
+                        {sWidth: '10%'}, //Status
+                        {sWidth: '10%'} //Option
                     ],
                     "ajax": {
                         url: '<?= base_url(); ?>admin/searchUser',
@@ -736,7 +764,7 @@
         function viewBrnc(id, func) {
             swal({
                 title: "Loading Data...",
-                text: "Supplier's Details",
+                text: "Details Loading",
                 imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                 showConfirmButton: false
             });
@@ -754,8 +782,6 @@
                 $("#modal-view").find('.bootstrap-select').addClass("disabled dropup");
                 $("#modal-view").find('.bootstrap-select').children().addClass("disabled dropup");
                 var des = "disabled";
-
-                $("#view_Area").css('display', 'block');
                 //VIEW MODEL
             } else if (func == 'edit') {
                 //EDIT MODEL
@@ -772,8 +798,6 @@
                 $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
                 $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
                 var des = "";
-
-                $("#view_Area").css('display', 'none');
                 //EDIT MODEL
             }
 
@@ -788,43 +812,29 @@
                 },
                 dataType: 'json',
                 success: function (data) {
-                    var len = data['usrBasic'].length;
+                    var len = data.length;
                     if (len > 0) {
-                        set_select('brchNwEdt', data['usrBasic'][0]['brch']);
-                        set_select('uslvNwEdt', data['usrBasic'][0]['usmd']);
-                        set_select('ugndEdt', data['usrBasic'][0]['gend']);
+                        set_select('brchNwEdt', data[0]['brch']);
+                        set_select('uslvNwEdt', data[0]['usmd']);
+                        set_select('ugndEdt', data[0]['gend']);
 
-                        $('#frnmEdt').val(data['usrBasic'][0]['fnme']);
-                        $('#lsnmEdt').val(data['usrBasic'][0]['lnme']);
+                        $('#frnmEdt').val(data[0]['fnme']);
+                        $('#lsnmEdt').val(data[0]['lnme']);
 
-                        $('#emilEdt').val(data['usrBasic'][0]['emid']);
-                        $('#usnmEdt').val(data['usrBasic'][0]['usnm']);
+                        $('#emilEdt').val(data[0]['emid']);
+                        $('#usnmEdt').val(data[0]['usnm']);
 
-                        $('#unicEdt').val(data['usrBasic'][0]['unic']);
-                        $('#udobEdt').val(data['usrBasic'][0]['udob']);
-                        //$('#ugndEdt').val(data['usrBasic'][0]['gend']);
-                        $('#teleEdt').val(data['usrBasic'][0]['tpno']);
-                        $('#mobiEdt').val(data['usrBasic'][0]['almo']);
+                        $('#unicEdt').val(data[0]['unic']);
+                        $('#udobEdt').val(data[0]['udob']);
+                        //$('#ugndEdt').val(data[0]['gend']);
+                        $('#teleEdt').val(data[0]['tpno']);
+                        $('#mobiEdt').val(data[0]['almo']);
 
-                        if (data['usrBasic'][0]['prmd'] == 1) {
+                        if (data[0]['prmd'] == 1) {
                             $("#prmTpEdt").prop("checked", true);
                         } else {
                             $("#prmTpEdt").prop("checked", false);
                         }
-
-
-                        //$('#sup_stat').html(": " + stat);
-                        //$('#code').html(": " + data['usrSub'][0]['spcd']);
-                        $('#crby').html(": " + data['usrSub'][0]['crby']);
-                        $('#crdt').html(": " + data['usrSub'][0]['crdt']);
-                        // $('#apby').html(": " + ((data['usrSub'][0]['apby'] != null) ? data['usrSub'][0]['apby'] : "--"));
-                        // $('#apdt').html(": " + ((data['usrSub'][0]['apdt'] != null && data['usrSub'][0]['apdt'] != "0000-00-00 00:00:00") ? data['usrSub'][0]['apdt'] : "--"));
-                        $('#rjby').html(": " + ((data['usrSub'][0]['rjnm'] != null) ? data['usrSub'][0]['rjnm'] : "--"));
-                        $('#rjdt').html(": " + ((data['usrSub'][0]['rjdt'] != null && data['usrSub'][0]['rjdt'] != "0000-00-00 00:00:00") ? data['usrSub'][0]['rjdt'] : "--"));
-                        $('#mdby').html(": " + ((data['usrSub'][0]['mdby'] != null) ? data['usrSub'][0]['mdby'] : "--"));
-                        $('#mddt').html(": " + ((data['usrSub'][0]['mddt'] != null && data['usrSub'][0]['mddt'] != "0000-00-00 00:00:00") ? data['usrSub'][0]['mddt'] : "--"));
-
-
                     }
                     swal.close();
                 },
@@ -929,150 +939,6 @@
                             dataType: 'json',
                             success: function (data) {
                                 swal({title: "", text: "Branch was rejected!", type: "success"},
-                                    function () {
-                                        srchUser();
-                                    });
-                            },
-                            error: function (data, textStatus) {
-                                swal({title: "Faild", text: textStatus, type: "error"},
-                                    function () {
-                                        location.reload();
-                                    });
-                            }
-                        });
-                    } else {
-                        swal("Cancelled", " ", "warning");
-                    }
-                });
-        }
-
-        //Deactivate
-        function inactUser(id) {
-            swal({
-                    title: "Are you sure to deactivate ?",
-                    text: "",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3bdd59",
-                    confirmButtonText: "Yes",
-                    cancelButtonText: "No",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        swal({
-                            title: "Processing...",
-                            text: "",
-                            imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                            showConfirmButton: false
-                        });
-
-                        $.ajax({
-                            type: "POST",
-                            url: "<?= base_url(); ?>admin/userDeactive",
-                            data: {
-                                id: id
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                swal({title: "", text: "Deactivated!", type: "success"},
-                                    function () {
-                                        srchUser();
-                                    });
-                            },
-                            error: function (data, textStatus) {
-                                swal({title: "Faild", text: textStatus, type: "error"},
-                                    function () {
-                                        location.reload();
-                                    });
-                            }
-                        });
-                    } else {
-                        swal("Cancelled", " ", "warning");
-                    }
-                });
-        }
-
-        //activate Supplier
-        function reactUser(id) {
-            swal({
-                    title: "Are you sure to activate ?",
-                    text: "",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3bdd59",
-                    confirmButtonText: "Yes",
-                    cancelButtonText: "No",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        swal({
-                            title: "Processing...",
-                            text: "Activating...",
-                            imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                            showConfirmButton: false
-                        });
-
-                        $.ajax({
-                            type: "POST",
-                            url: "<?= base_url(); ?>admin/userReactiv",
-                            data: {
-                                id: id
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                swal({title: "", text: "Activated!", type: "success"},
-                                    function () {
-                                        srchUser();
-                                    });
-                            },
-                            error: function (data, textStatus) {
-                                swal({title: "Faild", text: textStatus, type: "error"},
-                                    function () {
-                                        location.reload();
-                                    });
-                            }
-                        });
-                    } else {
-                        swal("Cancelled", " ", "warning");
-                    }
-                });
-        }
-
-        //PASSWORD RESET
-        function resetPass(id) {
-            swal({
-                    title: "Are you sure to Password Reset ?",
-                    text: "",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3bdd59",
-                    confirmButtonText: "Yes",
-                    cancelButtonText: "No",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        swal({
-                            title: "Processing...",
-                            text: "Activating...",
-                            imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                            showConfirmButton: false
-                        });
-
-                        $.ajax({
-                            type: "POST",
-                            url: "<?= base_url(); ?>admin/userPassReset",
-                            data: {
-                                id: id
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                swal({title: "", text: "Successful Password Reset!", type: "success"},
                                     function () {
                                         srchUser();
                                     });

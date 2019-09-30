@@ -1,23 +1,38 @@
 
 -----------------------------------------------------
 -----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+2019-09-30 Gemunu
+INSERT INTO `user_page_mdl` (`aid`, `mdcd`, `mdnm`, `remk`, `stat`) VALUES (NULL, 'msgModul', 'Message Module', '', '1');
+INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'systMsg', 'System Message', '', '0', '1', '0', '7');
+
+
+-----------------------------------------------------
 2019-09-27 JANAKA
-ALTER TABLE `brand` ADD `logo` VARCHAR(200) NOT NULL COMMENT 'Picture of logo' AFTER `bdnm`;
+**DONE || ALTER TABLE `brand` ADD `logo` VARCHAR(200) NOT NULL COMMENT 'Picture of logo' AFTER `bdnm`;
+-----------------------------------------------------
 2019-09-27 Gemunu
+=======
+ALTER TABLE `type` DROP `ctid`, DROP `bdid`;
+ALTER TABLE `type` ADD `tpcd` VARCHAR(10) NOT NULL COMMENT 'Type Code' AFTER `tpid`;
+ALTER TABLE `brand` ADD `logo` VARCHAR(200) NOT NULL COMMENT 'Picture of logo' AFTER `bdnm`;
+-----------------------------------------------------
+2019-09-27 Gemunu **DONE
 added new folder Dbs.
 New creation table save in this folder.
 -----------------------------------------------------
-2019-09-26 JANAKA  **DONE
-ALTER TABLE `stock_mng`.`item`
-ADD COLUMN `ntid` INT(11) NOT NULL COMMENT 'Nature type id' AFTER `tpid`,
-ADD COLUMN `strid` INT(11) NOT NULL COMMENT 'Store type id' AFTER `ntid`,
-ADD COLUMN `scli` INT(11) NOT NULL COMMENT 'Scale (One piece)' AFTER `mdl`,
-item
-type
-brand
-nature
-scale
-str_type
+2019-09-26 JANAKA
+**DONE || ALTER TABLE `stock_mng`.`item`
+**DONE || ADD COLUMN `ntid` INT(11) NOT NULL COMMENT 'Nature type id' AFTER `tpid`,
+**DONE || ADD COLUMN `strid` INT(11) NOT NULL COMMENT 'Store type id' AFTER `ntid`,
+**DONE || ADD COLUMN `scli` INT(11) NOT NULL COMMENT 'Scale (One piece)' AFTER `mdl`,
+**DONE || item
+**DONE || type
+**DONE || brand
+**DONE || nature
+**DONE || scale
+**DONE || str_type
 -----------------------------------------------------
 2019-09-26 Gemunu **DONE
 INSERT INTO `sys_policy` (`poid`, `popg`, `ponm`, `pods`, `pov1`, `pov2`, `pov3`, `post`, `remk`, `crby`, `crdt`, `mdby`, `mddt`, `stat`) VALUES (NULL, '', 'User Register Email', 'This policy enable, User Registration login details automation send to user. If policy disable Not send to email', '', '', '', '0', '0-disable/1-enable', '1', '2018-05-01 00:00:00', '1', '2019-09-26 10:55:25', '1');

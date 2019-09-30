@@ -61,6 +61,22 @@ function chckBtn(id, inpu) {
         $('#' + inpu).parent().css('border', '0px');
     }
 }
+
+//Selectors Enables
+//id - Selector ID
+function enableSelct(id) {
+    $('#'+id).prop('disabled',false);
+    $('#'+id).parent().removeClass("disabled");
+    $('#'+id).prev().prev().removeClass("disabled");
+}
+
+//Selectors Disable
+//id - Selector ID
+function disableSelct(id) {
+    $('#'+id).prop('disabled',true);
+    $('#'+id).parent().addClass("disabled");
+    $('#'+id).prev().prev().addClass("disabled");
+}
 // NIC VALIDATION AND FIND DOB & GENDER USEING NIC
 
 // nic - NIC no / vlid - passing value html id / htid - htmal id (disable enable button) / dob - DOB html id / gend - Gender html id / genDiv - gend parent div
