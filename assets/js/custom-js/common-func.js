@@ -227,3 +227,21 @@ function checkNic(nic, vlid, htid, dob, gend, genDiv) {
 
     // document.getElementById('msg_text').innerHTML = "<div></div>";
 };
+
+//SMART WIZARD RESET
+//id - Wizard ID
+//fst - First Step id
+//sunmt - Submit button id
+function resetSmWizard(id,fst,submt) {
+    $('#'+id).children().first().children().children().removeClass('done');
+    $('#'+id).children().first().children().children().removeClass('selected');
+    $('#'+id).children().first().children().children().removeClass('active');
+    $('#'+id).children().first().children().first().children().addClass('selected');
+
+    $('#'+id).find('.stepContainer').children().css('display','none');
+    $('#'+fst).css('display','block');
+    $('#'+submt).css('display','none');
+
+    $('.buttonNext').removeClass('buttonDisabled disabled');
+    $('.buttonPrevious').addClass('buttonDisabled disabled');
+}

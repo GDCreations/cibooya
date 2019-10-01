@@ -218,7 +218,7 @@ class Stock_model extends CI_Model
     }
     //END SEARCH BRAND DETAILS </JANAKA 2019-09-26>
 
-    //SEARCH BRAND DETAILS </JANAKA 2019-09-27>
+    //SEARCH TYPE DETAILS </JANAKA 2019-09-27>
     var $cl_srch4 = array('tpcd','tpnm'); //set column field database for datatable searchable
     var $cl_odr4 = array(null, 'tpcd','tpnm', 'user_mas.innm', 'crdt', 'stat',''); //set column field database for datatable orderable
     var $order4 = array('crdt' => 'DESC'); // default order
@@ -289,6 +289,98 @@ class Stock_model extends CI_Model
         return $this->db->count_all_results();
     }
     //END SEARCH TYPE DETAILS </JANAKA 2019-09-27>
+
+    //SEARCH TYPE DETAILS </JANAKA 2019-10-01>
+    var $cl_srch5 = array('itcd','itnm','ctcd','bdcd','tpcd','mdl','mlcd'); //set column field database for datatable searchable
+    var $cl_odr5 = array(null, 'itcd','itnm','ctcd','bdcd','tpcd','mdl','mlcd','item.stat',''); //set column field database for datatable orderable
+    var $order5 = array('item.crdt' => 'DESC'); // default order
+
+    function itmDet_query()
+    {
+        $cat = $this->input->post('cat');
+        $brd = $this->input->post('brd');
+        $typ = $this->input->post('typ');
+        $dtrg = explode('/',$this->input->post('dtrg'));
+        $frdt = trim($dtrg[0],' ');
+        $todt = trim($dtrg[1],' ');
+        $stat = $this->input->post('stat');
+
+        $this->db->select("item.itid,item.itnm,item.itcd,item.mdl,item.mlcd,item.size,item.szof,item.clr,item.clcd,item.stat,item.crdt,
+        user_mas.innm,cat.ctcd,brd.bdcd,typ.tpcd");
+        $this->db->from('item');
+        $this->db->join('user_mas','user_mas.auid=item.crby');
+        $this->db->join('category cat','cat.ctid=item.ctid');
+        $this->db->join('brand brd','brd.bdid=item.bdid');
+        $this->db->join('type typ','typ.tpid=item.tpid');
+        if($stat!='all'){
+            $this->db->where("item.stat=$stat");
+        }
+        if($cat!='all'){
+            $this->db->where("item.ctid=$cat");
+        }
+        if($brd!='all'){
+            $this->db->where("item.bdid=$brd");
+        }
+        if($typ!='all'){
+            $this->db->where("item.tpid=$typ");
+        }
+        $this->db->where("DATE_FORMAT(item.crdt,'%Y-%m-%d') BETWEEN '$frdt' AND '$todt'");
+    }
+
+    private function itmDet_queryData()
+    {
+        $this->itmDet_query();
+        $i = 0;
+        foreach ($this->cl_srch5 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch5) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr5[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order5)) {
+            $order5 = $this->order5;
+            $this->db->order_by(key($order5), $order5[key($order5)]);
+        }
+    }
+
+    function get_itmDtils()
+    {
+        $this->itmDet_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_itm()
+    {
+        $this->itmDet_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_itm()
+    {
+        // $this->db->from($this->table);
+        $this->itmDet_query();
+        return $this->db->count_all_results();
+    }
+    //END SEARCH TYPE DETAILS </JANAKA 2019-10-01>
 }
 
 ?>

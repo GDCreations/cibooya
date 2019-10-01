@@ -33,8 +33,9 @@
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">Category</label>
                     <div class="col-md-8 col-xs-12">
-                        <select id="cats" name="cats" class="bs-select">
+                        <select id="cats" name="cats" class="bs-select" onchange="chckBtn(this.value,this.id)">
                             <option value="0">-- Select Category --</option>
+                            <option value="all">All Categories</option>
                             <?php
                             foreach ($category as $cat) {
                                 echo "<option value='$cat->ctid'>" . $cat->ctcd . " - " . $cat->ctnm . "</option>";
@@ -60,8 +61,9 @@
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">Brand</label>
                     <div class="col-md-8 col-xs-12">
-                        <select id="brds" name="brds" class="bs-select">
+                        <select id="brds" name="brds" class="bs-select" onchange="chckBtn(this.value,this.id)">
                             <option value="0">-- Select Brand --</option>
+                            <option value="all">All Brands</option>
                             <?php
                             foreach ($brand as $brd) {
                                 echo "<option value='$brd->bdid'>" . $brd->bdcd . " - " . $brd->bdnm . "</option>";
@@ -87,8 +89,9 @@
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">Type</label>
                     <div class="col-md-8 col-xs-12">
-                        <select id="typs" name="typs" class="bs-select">
+                        <select id="typs" name="typs" class="bs-select" onchange="chckBtn(this.value,this.id)">
                             <option value="0">-- Select Type --</option>
+                            <option value="all">All Types</option>
                             <?php
                             foreach ($type as $tp) {
                                 echo "<option value='$tp->tpid'>" . $tp->tpcd . " - " . $tp->tpnm . "</option>";
@@ -100,7 +103,7 @@
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label"><br></label>
                     <div class="col-md-8 col-xs-12">
-                        <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed"><span
+                        <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed" onclick="srch_Item()"><span
                                     class="fa fa-search"></span>Search
                         </button>
                     </div>
@@ -149,7 +152,7 @@
                     <div class="modal-body">
                         <div class="container">
                             <div class="block-content">
-                                <div class="wizard show-submit">
+                                <div id="smartwizard" class="wizard show-submit">
                                     <ul>
                                         <li>
                                             <a href="#step-1">
@@ -252,10 +255,88 @@
                                                             <option value="0">-- Select Store Scale --</option>
                                                             <?php
                                                             foreach ($storeScl as $stscl) {
-                                                                echo "<option value='$stscl->slid'> (".$stscl->scl.") - ".$stscl->scnm."</option>";
+                                                                echo "<option value='$stscl->slid'> (" . $stscl->scl . ") - " . $stscl->scnm . "</option>";
                                                             }
                                                             ?>
                                                         </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Remark</label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <textarea class="form-control" id="remk" name="remk"
+                                                                  rows="3"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Item Name <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="name" name="name" class="form-control"
+                                                               placeholder="Item Name"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Item Code <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="it_code" name="it_code"
+                                                               class="form-control text-uppercase"
+                                                               placeholder="Item Code"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Model <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="model" name="model" class="form-control"
+                                                               placeholder="Model"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Model Code <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="md_code" name="md_code"
+                                                               class="form-control text-uppercase"
+                                                               placeholder="Model Code"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Size Of <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="szof" name="szof" class="form-control"
+                                                               placeholder="Size Area Of Item"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Size <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="size" name="size" class="form-control"
+                                                               placeholder="Size & Scale"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Color</label>
+                                                    <div class="col-md-4 col-xs-6">
+                                                        <input type="text" id="clr" name="clr"
+                                                               class="form-control bs-colorpicker-lg"
+                                                               placeholder="Color Code"/>
+                                                    </div>
+                                                    <div class="col-md-4 col-xs-6">
+                                                        <input type="text" id="clrnm" name="clrnm" class="form-control"
+                                                               placeholder="Color Name"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Discription</label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <textarea class="form-control" id="dscr" name="dscr"
+                                                                  rows="3"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -263,20 +344,13 @@
                                     </div>
                                     <div id="step-2">
                                         <div class="row form-horizontal">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="col-md-4 col-xs-12">Logo</label>
-                                                    <div class="col-md-8 col-xs-12">
-                                                        <input type="file" id="pics1" name="pics[]"/>
+                                                    <div class="col-md-12 col-xs-12">
+                                                        <input type="file" multiple id="pics1" class="item_pics"
+                                                               name="pics[]"/>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="col-md-4 col-xs-12">Logo</label>
-                                                    <div class="col-md-8 col-xs-12">
-                                                        <input type="file" id="pics2" name="pics[]"/>
-                                                    </div>
+                                                    <span style="color: red">* Maximum 5 photos can be uploaded of the item</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -291,7 +365,8 @@
                                         class="fa fa-asterisk req-astrick"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="add_item_btn" class="btn btn-warning btn-xs btn-rounded">Submit
+                        <button type="button" style="display: none;" id="add_item_btn"
+                                class="btn btn-warning btn-sm btn-rounded">Submit
                         </button>
                     </div>
                 </div>
@@ -379,7 +454,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="app_brd_btn" class="btn btn-warning btn-xs btn-rounded">
+                        <button type="button" id="app_brd_btn" class="btn btn-warning btn-sm btn-rounded">
                         </button>
                     </div>
                 </div>
@@ -418,22 +493,33 @@
                 browseClass: "btn btn-primary btn-sm btn-rounded",
                 removeClass: "btn btn-warning btn-sm btn-rounded",
                 maxFileSize: 5000, //Kb
-            });
-            $("#pics2").fileinput({
-                allowedFileExtensions: ['jpg', 'png', 'jpeg'],
-                showUpload: false,
-                showCaption: false,
-                browseClass: "btn btn-primary btn-sm btn-rounded",
-                removeClass: "btn btn-warning btn-sm btn-rounded",
-                maxFileSize: 5000, //Kb
+                maxFileCount: 5,
             });
 
-            $('#add_brnd_form').validate({
+            $('#add_item_form').validate({
                 rules: {
+                    cat: {
+                        notEqual: 0
+                    },
+                    brd: {
+                        notEqual: 0
+                    },
+                    typ: {
+                        notEqual: 0
+                    },
+                    ntr: {
+                        notEqual: 0
+                    },
+                    strtp: {
+                        notEqual: 0
+                    },
+                    strscl: {
+                        notEqual: 0
+                    },
                     name: {
                         required: true,
                         remote: {
-                            url: "<?= base_url(); ?>Stock/chk_brdName",
+                            url: "<?= base_url(); ?>Stock/chk_itmName",
                             type: "post",
                             data: {
                                 name: function () {
@@ -443,30 +529,92 @@
                             }
                         }
                     },
-                    code: {
+                    it_code: {
                         required: true,
-                        minlength: 3,
-                        maxlength: 3,
                         remote: {
-                            url: "<?= base_url(); ?>Stock/chk_brdCode",
+                            url: "<?= base_url(); ?>Stock/chk_itmCode",
                             type: "post",
                             data: {
-                                code: function () {
-                                    return $("#code").val();
+                                it_code: function () {
+                                    return $("#it_code").val();
                                 },
                                 stat: 0
                             }
                         }
+                    },
+                    model: {
+                        required: true,
+                        remote: {
+                            url: "<?= base_url(); ?>Stock/chk_mdlName",
+                            type: "post",
+                            data: {
+                                model: function () {
+                                    return $("#model").val();
+                                },
+                                stat: 0
+                            }
+                        }
+                    },
+                    md_code: {
+                        required: true,
+                        remote: {
+                            url: "<?= base_url(); ?>Stock/chk_mdlCode",
+                            type: "post",
+                            data: {
+                                md_code: function () {
+                                    return $("#md_code").val();
+                                },
+                                stat: 0
+                            }
+                        }
+                    },
+                    szof: {
+                        required: true,
+                    },
+                    size: {
+                        required: true
                     }
                 },
                 messages: {
-                    name: {
-                        required: "Enter brand name",
-                        remote: "Already entered name"
+                    cat: {
+                        notEqual: "Select a category"
                     },
-                    code: {
-                        required: "Enter brand code",
-                        remote: "Already entered code"
+                    brd: {
+                        notEqual: "Select a brand"
+                    },
+                    typ: {
+                        notEqual: "Select a type"
+                    },
+                    ntr: {
+                        notEqual: "Select a nature"
+                    },
+                    strtp: {
+                        notEqual: "Select a store type"
+                    },
+                    strscl: {
+                        notEqual: "Select a store scale"
+                    },
+                    name: {
+                        required: "Enter item name",
+                        remote: "Already entered item name"
+                    },
+                    it_code: {
+                        required: "Enter item code",
+                        remote: "Already entered item code"
+                    },
+                    model: {
+                        required: "Enter model",
+                        remote: "Already entered model"
+                    },
+                    md_code: {
+                        required: "Enter model code",
+                        remote: "Already entered model code"
+                    },
+                    szof: {
+                        required: "Enter size area of item",
+                    },
+                    size: {
+                        required: "Enter size & scale"
                     }
                 }
             });
@@ -519,44 +667,53 @@
                     }
                 }
             });
-            srch_Brnd();
         });
 
-        $('.buttonNext').click(function (e) {
-            console.log('awa');
-            e.preventDefault();
-            $('.buttonFinish').css('display','none');
-        })
+        //Next Button
+        function nextBtnActn() {
+            if ($('#add_item_form').valid()) {
+                $('#add_item_btn').css('display', 'inline');
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        //Previous Button
+        function prevBtnActn() {
+            return true;
+        }
 
         //Add New Brand
-        $('#add_brnd_btn').click(function (e) {
+        $('#add_item_btn').click(function (e) {
             e.preventDefault();
-            var formObj = document.getElementById('add_brnd_form');
+            var formObj = document.getElementById('add_item_form');
             var formData = new FormData(formObj);
-            if ($('#add_brnd_form').valid()) {
-                $('#add_brnd_btn').prop('disabled', true);
+            if ($('#add_item_form').valid()) {
+                $('#add_item_btn').prop('disabled', true);
                 swal({
                     title: "Processing...",
-                    text: "Brand data saving..",
+                    text: "Item data saving..",
                     imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                     showConfirmButton: false
                 });
 
                 jQuery.ajax({
                     type: "POST",
-                    url: "<?= base_url(); ?>Stock/brnd_Add",
+                    url: "<?= base_url(); ?>Stock/item_Add",
                     data: formData,
                     mimeType: "multipart/form-data",
                     contentType: false,
                     cache: false,
                     processData: false,
                     success: function (data) {
-                        swal({title: "", text: "Brand Added!", type: "success"},
+                        swal({title: "", text: "Item Added!", type: "success"},
                             function () {
-                                $('#add_brnd_btn').prop('disabled', false);
-                                clear_Form('add_brnd_form');
+                                $('#add_item_btn').prop('disabled', false);
+                                clear_Form('add_item_form');
                                 $('#modal-add').modal('hide');
-                                srch_Brnd();
+                                resetSmWizard('smartwizard', 'step-1', 'add_item_btn');
+                                srch_Item();
                             });
                     },
                     error: function (data, textStatus) {
@@ -570,49 +727,79 @@
         });
 
         //Search Brand
-        function srch_Brnd() {
-            var stat = $('#stat').val();
+        function srch_Item() {
+            var check = true;
+            if($('#cats').val()==0){
+                check = false;
+            }
+            if($('#brds').val()==0){
+                check = false;
+            }
+            if($('#typs').val()==0){
+                check = false;
+            }
+            chckBtn($('#cats').val(),'cats');
+            chckBtn($('#brds').val(),'brds');
+            chckBtn($('#typs').val(),'typs');
 
-            $('#brnd_table').DataTable().clear();
-            $('#brnd_table').DataTable({
-                "destroy": true,
-                "cache": false,
-                "processing": true,
-                "orderable": true,
-                "language": {
-                    processing: '<i class="fa fa-spinner fa-spin fa-fw" style="font-size:20px;color:red;"></i><span class=""> Loading...</span> '
-                },
-                "lengthMenu": [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
-                ],
-                "serverSide": true,
-                "columnDefs": [
-                    {className: "text-left", "targets": [3, 4]},
-                    {className: "text-center", "targets": [0, 1, 2, 5, 6, 7]},
-                    {className: "text-right", "targets": [0]},
-                    {className: "text-nowrap", "targets": [3, 4]},
-                ],
-                "order": [[4, "DESC"]], //ASC  desc
-                "aoColumns": [
-                    {sWidth: '3%'}, //#
-                    {sWidth: '5%'}, //Code
-                    {sWidth: '5%'}, //LOGO
-                    {sWidth: '20%'}, //Category
-                    {sWidth: '10%'}, //Created By
-                    {sWidth: '10%'}, //Created date
-                    {sWidth: '8%'}, //Status
-                    {sWidth: '12%'} //Option
-                ],
+            if(check){
+                $('#item_table').DataTable().clear();
+                $('#item_table').DataTable({
+                    "destroy": true,
+                    "cache": false,
+                    "processing": true,
+                    "orderable": true,
+                    "language": {
+                        processing: '<i class="fa fa-spinner fa-spin fa-fw" style="font-size:20px;color:red;"></i><span class=""> Loading...</span> '
+                    },
+                    "lengthMenu": [
+                        [10, 25, 50, 100, -1],
+                        [10, 25, 50, 100, "All"]
+                    ],
+                    "serverSide": true,
+                    "columnDefs": [
+                        {className: "text-left", "targets": [2, 6]},
+                        {className: "text-center", "targets": [0, 1, 3, 4, 5, 7, 8, 9]},
+                        {className: "text-right", "targets": []},
+                        {className: "text-nowrap", "targets": [2, 6]},
+                    ],
+                    "order": [[4, "DESC"]], //ASC  desc
+                    "aoColumns": [
+                        {sWidth: '3%'},
+                        {sWidth: '7%'},
+                        {sWidth: '15%'},
+                        {sWidth: '7%'},
+                        {sWidth: '7%'},
+                        {sWidth: '7%'},
+                        {sWidth: '15%'},
+                        {sWidth: '7%'},
+                        {sWidth: '5%'},
+                        {sWidth: '12%'}
+                    ],
 
-                "ajax": {
-                    url: '<?= base_url(); ?>Stock/searchBrnd',
-                    type: 'post',
-                    data: {
-                        stat: stat
+                    "ajax": {
+                        url: '<?= base_url(); ?>Stock/searchItem',
+                        type: 'post',
+                        data: {
+                            cat: function () {
+                                return $('#cats').val();
+                            },
+                            brd: function () {
+                                return $('#brds').val();
+                            },
+                            typ: function () {
+                                return $('#typs').val();
+                            },
+                            stat: function () {
+                                return $('#stat').val();
+                            },
+                            dtrg: function () {
+                                return $('#dtrng').val();
+                            }
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         //View Supplier

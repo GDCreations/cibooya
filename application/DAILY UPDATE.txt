@@ -19,6 +19,10 @@ INSERT INTO `str_type` (`strid`, `stnm`, `remk`, `stat`) VALUES (NULL, 'Shelves 
 INSERT INTO `str_type` (`strid`, `stnm`, `remk`, `stat`) VALUES (NULL, 'Dry Storage', 'Restaurants, grocers and other food businesses use dry storage for bread, pasta and other dry foods', '1'), (NULL, 'Cold Storage', 'Certain food inventory is stored in refrigerators, coolers and freezers to maintain safety and preserve quality', '1');
 INSERT INTO `scale` (`slid`, `scl`, `scnm`, `stat`) VALUES (NULL, 'm', 'Meter', '1'), (NULL, 'kg', 'Kilogram', '1');
 INSERT INTO `scale` (`slid`, `scl`, `scnm`, `stat`) VALUES (NULL, 'L', 'Liter', '1'), (NULL, 'Pieces', 'Pieces', '1');
+ALTER TABLE `item_pics` CHANGE `pccd` `pcnm` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'Picture Name';
+ALTER TABLE `item_pics` ADD `size` DOUBLE NOT NULL COMMENT 'File Size' AFTER `pcnm`;
+ALTER TABLE `item_pics` ADD `crby` INT NOT NULL COMMENT 'Created by' AFTER `stat`;
+ALTER TABLE `item_pics` ADD `crdt` DATETIME NOT NULL COMMENT 'Created date' AFTER `crby`;
 -----------------------------------------------------
 -----------------------------------------------------
 -----------------------------------------------------

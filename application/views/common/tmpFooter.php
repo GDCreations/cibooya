@@ -76,6 +76,8 @@ $data = $this->Generic_model->getData('com_det', array('cmne', 'synm'), array('s
         src="<?= base_url(); ?>assets/js/vendor/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/fullcalendar/fullcalendar.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/smartwizard/jquery.smartWizard.js"></script>
+<!--Color Picker-->
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
 
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/app.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/app_plugins.js"></script>

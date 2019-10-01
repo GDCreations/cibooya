@@ -1562,9 +1562,9 @@ class Stock extends CI_Controller
         $this->load->view('admin/common/adminHeader', $per);
 
         $data2['funcPerm'] = $this->Generic_model->getFuncPermision('itemMng');
-        $data2['category'] = $this->Generic_model->getData('category',array('ctid','ctcd','ctnm'),"stat IN(1,3)");
-        $data2['brand'] = $this->Generic_model->getData('brand',array('bdid','bdcd','bdnm','logo'),"stat IN(1,3)");
-        $data2['type'] = $this->Generic_model->getData('type',array('tpid','tpcd','tpnm'),"stat IN(1,3)");
+        $data2['category'] = $this->Generic_model->getData('category',array('ctid','ctcd','ctnm','stat'),"stat IN(1,3)");
+        $data2['brand'] = $this->Generic_model->getData('brand',array('bdid','bdcd','bdnm','logo','stat'),"stat IN(1,3)");
+        $data2['type'] = $this->Generic_model->getData('type',array('tpid','tpcd','tpnm','stat'),"stat IN(1,3)");
         $data2['nature'] = $this->Generic_model->getData('nature',array('ntid','ntnm','dscr'),array('stat'=>1));
         $data2['store'] = $this->Generic_model->getData('str_type',array('strid','stnm'),array('stat'=>1));
         $data2['storeScl'] = $this->Generic_model->getData('scale',array('slid','scl','scnm'),array('stat'=>1));
@@ -1574,6 +1574,271 @@ class Stock extends CI_Controller
     }
 //END OPEN PAGE </JANAKA 2019-09-30>
 
+//CHECK ALREADY EXIST ITEM NAME </JANAKA 2019-10-01>
+    function chk_itmName(){
+        $name = $this->input->post('name');
+        $id = $this->input->post('itid');
+        $stat = $this->input->post('stat');
+
+        $this->db->select("itid");
+        $this->db->from('item');
+        $this->db->where('itnm',$name);
+        if($stat==1){
+            $this->db->where("itid!=$id");
+        }
+        $res = $this->db->get()->result();
+        if(sizeof($res)>0){
+            echo json_encode(false);
+        }else{
+            echo json_encode(true);
+        }
+    }
+//END CHECK ALREADY EXIST ITEM NAME </JANAKA 2019-10-01>
+
+//CHECK ALREADY EXIST ITEM CODE </JANAKA 2019-10-01>
+    function chk_itmCode(){
+        $it_code = $this->input->post('it_code');
+        $id = $this->input->post('itid');
+        $stat = $this->input->post('stat');
+
+        $this->db->select("itid");
+        $this->db->from('item');
+        $this->db->where('itcd',$it_code);
+        if($stat==1){
+            $this->db->where("itid!=$id");
+        }
+        $res = $this->db->get()->result();
+        if(sizeof($res)>0){
+            echo json_encode(false);
+        }else{
+            echo json_encode(true);
+        }
+    }
+//END CHECK ALREADY EXIST ITEM CODE </JANAKA 2019-10-01>
+
+//CHECK ALREADY EXIST MODEL </JANAKA 2019-10-01>
+    function chk_mdlName(){
+        $model = $this->input->post('model');
+        $id = $this->input->post('itid');
+        $stat = $this->input->post('stat');
+
+        $this->db->select("itid");
+        $this->db->from('item');
+        $this->db->where('mdl',$model);
+        if($stat==1){
+            $this->db->where("itid!=$id");
+        }
+        $res = $this->db->get()->result();
+        if(sizeof($res)>0){
+            echo json_encode(false);
+        }else{
+            echo json_encode(true);
+        }
+    }
+//END CHECK ALREADY EXIST MODEL </JANAKA 2019-10-01>
+
+//CHECK ALREADY EXIST MODEL CODE </JANAKA 2019-10-01>
+    function chk_mdlCode(){
+        $md_code = $this->input->post('md_code');
+        $id = $this->input->post('itid');
+        $stat = $this->input->post('stat');
+
+        $this->db->select("itid");
+        $this->db->from('item');
+        $this->db->where('mlcd',$md_code);
+        if($stat==1){
+            $this->db->where("itid!=$id");
+        }
+        $res = $this->db->get()->result();
+        if(sizeof($res)>0){
+            echo json_encode(false);
+        }else{
+            echo json_encode(true);
+        }
+    }
+//END CHECK ALREADY EXIST MODEL CODE </JANAKA 2019-10-01>
+
+//ADD NEW ITEM </JANAKA 2019-10-01>
+    function item_Add(){
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $code = strtoupper($this->input->post('it_code'));
+        $year = date('Y');
+
+        $this->Generic_model->insertData('item',array(
+            'ctid' => $this->input->post('cat'),
+            'bdid' => $this->input->post('brd'),
+            'tpid' => $this->input->post('typ'),
+            'ntid' => $this->input->post('ntr'),
+            'strid' => $this->input->post('strtp'),
+            'itnm' => $this->input->post('name'),
+            'itcd' => strtoupper($this->input->post('it_code')),
+            'mdl' => $this->input->post('model'),
+            'mlcd' => strtoupper($this->input->post('md_code')),
+            'szof' => $this->input->post('szof'),
+            'size' => $this->input->post('size'),
+            'clr' => $this->input->post('clrnm'),
+            'clcd' => $this->input->post('clr'),
+            'dscr' => $this->input->post('dscr'),
+            'scli' => $this->input->post('strscl'),
+            'stat' => 0,
+            'remk' => $this->input->post('remk'),
+            'crby' => $_SESSION['userId'],
+            'crdt' => date('Y-m-d H:i:s'),
+        ));
+        $lstId = $this->db->insert_id();
+
+        if(!empty($_FILES['pics']['name'][0])){
+            $flCount = sizeof($_FILES['pics']['name']);
+            $files = $_FILES['pics'];
+
+            for ($it = 0; $it < $flCount; $it++) {
+                if (is_dir('uploads/img/item/' . $year)) {
+                    $config['upload_path'] = 'uploads/img/item/' . $year;  //'uploads/images/'
+                } else {
+                    mkdir('uploads/img/item/' . $year, 0777, true);
+                    $config['upload_path'] = 'uploads/img/item/'.$year;  //'uploads/images/'
+                }
+
+                $flnme = $code . '_' . (sizeof(glob("uploads/img/item/$year/*")) + 1);
+                $config['allowed_types'] = 'jpg|png|jpeg';
+//                $config['encrypt_name'] = true;
+                $config['max_size'] = '5000'; //KB
+                $config['file_name'] = $flnme;
+                //Load upload library and initialize configuration
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+
+                $_FILES['pics']['name'] = $files['name'][$it];
+                $_FILES['pics']['type'] = $files['type'][$it];
+                $_FILES['pics']['tmp_name'] = $files['tmp_name'][$it];
+                $_FILES['pics']['error'] = $files['error'][$it];
+                $_FILES['pics']['size'] = $files['size'][$it];
+
+                if ($this->upload->do_upload('pics')) {
+                    $uploadData = $this->upload->data();
+                    $picture = $uploadData['file_name'];
+                    $this->Generic_model->insertData('item_pics', array(
+                        'itid' => $lstId,
+                        'pcnm' => $picture,
+                        'size' => $_FILES['pics']['size'],
+                        'stat' => 1,
+                        'crby' => $_SESSION['userId'],
+                        'crdt' => date('Y-m-d H:i:s'),
+                    ));
+                }
+            }
+        }
+
+        $funcPerm = $this->Generic_model->getFuncPermision('itemMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Item Added ($lstId)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ADD NEW ITEM </JANAKA 2019-10-01>
+
+//SEARCH ITEMS
+    function searchItem(){
+        $funcPerm = $this->Generic_model->getFuncPermision('itemMng');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edit = "";
+        } else {
+            $edit = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rejt = "";
+        } else {
+            $rejt = "disabled";
+        }
+        if ($funcPerm[0]->dact == 1) {
+            $dac = "";
+        } else {
+            $dac = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
+
+        $result = $this->Stock_model->get_itmDtils();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            if ($row->stat == 0) {
+                $stat = "<label class='label label-warning'>Pending</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' $rejt onclick='rejectItm($row->itid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 1) {
+                $stat = "<label class='label label-success'>Active</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' $dac onclick='inactItm($row->itid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 2) {
+                $stat = "<label class='label label-danger'>Reject</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 3) {
+                $stat = "<label class='label label-indi'>Inactive</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $reac onclick='reactItm($row->itid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+            } else {
+                $stat = "--";
+                $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='viewItm($row->itid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='viewItm($row->itid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='rejectItm($row->itid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+//            $sub_arr[] = "<button data-toggle='tooltip' data-placement='top' title='' data-original-title='Woow'>".$row->itcd."</button>";
+            $sub_arr[] = '<label data-html="true" data-container="body" class="label label-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Tooltip on left">Hover Me</label>';
+            $sub_arr[] = $row->itnm;
+            $sub_arr[] = $row->ctcd;
+            $sub_arr[] = $row->bdcd;
+            $sub_arr[] = $row->tpcd;
+            $sub_arr[] = $row->mdl;
+            $sub_arr[] = $row->mlcd;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Stock_model->count_all_itm(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_itm(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+//END SEARCH ITEMS
 //************************************************
 //***      END ITEM REGISTRATION               ***
 //************************************************
