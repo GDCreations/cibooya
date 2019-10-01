@@ -1113,12 +1113,17 @@ class Admin extends CI_Controller
 
         $this->db->select(" * ");
         $this->db->from('brch_mas');
-        /*$this->db->join('user_mas cr', 'cr.auid=sup.crby');
-        $this->db->join('user_mas ap', 'ap.auid=sup.apby', 'LEFT');
-        $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
-        $this->db->join('user_mas rj', 'rj.auid=sup.rjby', 'LEFT');*/
         $this->db->where("brch_mas.brid", $auid);
-        $data = $this->db->get()->result();
+        $data['brnch'] = $this->db->get()->result();
+
+        $this->db->select("brch_mas.crdt, cr.usnm AS crby, brch_mas.mddt, md.usnm AS mdby, brch_mas.apdt, ap.usnm AS apby ");
+        $this->db->from('brch_mas');
+        $this->db->join('user_mas cr', 'cr.auid= brch_mas.crby');
+        $this->db->join('user_mas ap', 'ap.auid= brch_mas.apby', 'LEFT');
+        $this->db->join('user_mas md', 'md.auid= brch_mas.mdby', 'LEFT');
+        //$this->db->join('user_mas rj', 'rj.auid=sup.rjby', 'LEFT');
+        $this->db->where("brch_mas.brid", $auid);
+        $data['subDtil'] = $this->db->get()->result();
 
         echo json_encode($data);
     }
@@ -1520,7 +1525,16 @@ class Admin extends CI_Controller
         $this->db->select(" * ");
         $this->db->from('user_mas');
         $this->db->where("user_mas.auid", $auid);
-        $data = $this->db->get()->result();
+        $data['usrBasic'] = $this->db->get()->result();
+
+        $this->db->select("user_mas.crdt, cr.usnm AS crby, user_mas.mddt, md.usnm AS mdby, user_mas.tmdt, rj.usnm AS tmby ");
+        $this->db->from('user_mas');
+        $this->db->join('user_mas cr', 'cr.auid= user_mas.crby');
+        //$this->db->join('user_mas ap', 'ap.auid= user_mas.apby', 'LEFT');
+        $this->db->join('user_mas md', 'md.auid= user_mas.mdby', 'LEFT');
+        $this->db->join('user_mas rj', 'rj.auid=user_mas.tmby', 'LEFT');
+        $this->db->where("user_mas.auid", $auid);
+        $data['usrSub'] = $this->db->get()->result();
 
         echo json_encode($data);
     }
