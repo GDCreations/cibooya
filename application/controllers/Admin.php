@@ -105,6 +105,71 @@ class Admin extends CI_Controller
     {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
+
+        // REPORT LOGO
+        if (!empty($_FILES['rptLgo']['name'])) {
+            // previous image delete
+            $path = "uploads/report_logo/";
+            $rplg_old = $this->input->post('rptLgoOld');
+            // Default User image not delete
+            if ($rplg_old != 'default.jpg') {
+                unlink($path . $rplg_old);
+            }
+            // User profile image upload
+            $config['upload_path'] = 'uploads/report_logo/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['encrypt_name'] = TRUE;
+            $config['max_size'] = '5000'; //KB
+            // $config['max_width'] = '1024';
+            // $config['max_height'] = '768';
+            $config['file_name'] = $_FILES["rptLgo"]['name'];
+
+            //Load upload library and initialize configuration
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('rptLgo')) {
+                $uploadData = $this->upload->data();
+                $rplg = $uploadData['file_name'];
+            } else {
+                $rplg = 'default.jpg';
+            }
+        } else {
+            $rplg = $this->input->post('rptLgoOld');
+        }
+        // LOGIN LOGO
+        if (!empty($_FILES['logImg']['name'])) {
+            // previous image delete
+            $path = "uploads/loginImg/";
+            $cplg_old = $this->input->post('logImgOld');
+            // Default User image not delete
+            if ($cplg_old != 'default.jpg') {
+                unlink($path . $cplg_old);
+            }
+            // User profile image upload
+            $config['upload_path'] = 'uploads/loginImg/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['encrypt_name'] = TRUE;
+            $config['max_size'] = '5000'; //KB
+            // $config['max_width'] = '1024';
+            // $config['max_height'] = '768';
+            $config['file_name'] = $_FILES["logImg"]['name'];
+
+            //Load upload library and initialize configuration
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('logImg')) {
+                $uploadData = $this->upload->data();
+                $cplg = $uploadData['file_name'];
+            } else {
+                $cplg = 'default.jpg';
+            }
+        } else {
+            $cplg = $this->input->post('logImgOld');
+        }
+
+        //die();
         $data_ar1 = array(
             'cmne' => $this->input->post('cmne'),
             'synm' => strtoupper($this->input->post('synm')),
@@ -114,6 +179,9 @@ class Admin extends CI_Controller
             'regd' => $this->input->post('regd'),
             'syln' => $this->input->post('syln'),
             'wbml' => $this->input->post('wbml'),
+
+            'rplg' => $rplg,
+            'cplg' => $cplg,
 
             'mdby' => $_SESSION['userId'],
             'mddt' => date('Y-m-d H:i:s'),

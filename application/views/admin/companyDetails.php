@@ -20,7 +20,7 @@
 <div class="container">
     <div class="block">
 
-        <form class="form-horizontal" id="brandingEdt" method="post">
+        <form class="form-horizontal" id="brandingEdt" enctype="multipart/form-data">
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="col-md-4 control-label">Company Name</label>
@@ -50,7 +50,16 @@
                                id="syln"/>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-md-4 col-xs-12">Report Logo</label>
+                    <div class="col-md-8 col-xs-12">
+                        <input type="file" id="rptLgo" name="rptLgo"/>
+                    </div>
+                </div>
             </div>
+            <input type="hidden" name="rptLgoOld" value="<?= $compInfo[0]->rplg?>">
+            <input type="hidden" name="logImgOld" value="<?= $compInfo[0]->cplg?>">
+
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="col-md-4 control-label">System Name</label>
@@ -69,7 +78,8 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label">Register Date</label>
                     <div class="col-md-8">
-                            <input type='text' class="form-control datetimepicker" id="regd" name="regd" value="<?= $compInfo[0]->regd ?>"/>
+                        <input type='text' class="form-control datetimepicker" id="regd" name="regd"
+                               value="<?= $compInfo[0]->regd ?>"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -77,6 +87,12 @@
                     <div class="col-md-8">
                         <input type="text" class="form-control" value="<?= $compInfo[0]->wbml ?>" name="wbml"
                                id="wbml"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 col-xs-12">Login Image</label>
+                    <div class="col-md-8 col-xs-12">
+                        <input type="file" id="logImg" name="logImg"/>
                     </div>
                 </div>
 
@@ -125,12 +141,67 @@
                     },
                 }
             });
+
+
+            //File Uploader Initialiting
+            $("#rptLgo").fileinput('enable');
+            $("#rptLgo").fileinput('destroy');
+            $("#rptLgo").fileinput({
+                allowedFileExtensions: ['jpg', 'png', 'jpeg'],
+                showUpload: false,
+                showCaption: false,
+                browseClass: "btn btn-primary btn-sm btn-rounded",
+                removeClass: "btn btn-warning btn-sm btn-rounded",
+                maxFileSize: 5000, //Kb
+                initialPreviewAsData: true,
+                initialPreview: [
+                    "<?= base_url()?>uploads/report_logo/<?= $compInfo[0]->rplg?>"
+                ]
+            });
+
+            $("#logImg").fileinput('enable');
+            $("#logImg").fileinput('destroy');
+            $("#logImg").fileinput({
+                allowedFileExtensions: ['jpg', 'png', 'jpeg'],
+                showUpload: false,
+                showCaption: false,
+                browseClass: "btn btn-primary btn-sm btn-rounded",
+                removeClass: "btn btn-warning btn-sm btn-rounded",
+                maxFileSize: 5000, //Kb
+                initialPreviewAsData: true,
+                initialPreview: [
+                    "<?= base_url()?>uploads/loginImg/<?= $compInfo[0]->cplg ?>"
+                ]
+            });
+
+
+            /* //File Uploader Initialiting
+             $("#rptLgo").fileinput({
+                 allowedFileExtensions: ['jpg', 'png', 'jpeg'],
+                 showUpload: false,
+                 showCaption: false,
+                 browseClass: "btn btn-primary btn-sm btn-rounded",
+                 removeClass: "btn btn-warning btn-sm btn-rounded",
+                 maxFileSize: 5000, //Kb
+             });
+             $("#logImg").fileinput({
+                 allowedFileExtensions: ['jpg', 'png', 'jpeg'],
+                 showUpload: false,
+                 showCaption: false,
+                 browseClass: "btn btn-primary btn-sm btn-rounded",
+                 removeClass: "btn btn-warning btn-sm btn-rounded",
+                 maxFileSize: 5000, //Kb
+             });*/
         });
 
         //Add New Supplier
         $('#save').click(function (e) {
             e.preventDefault();
             if ($('#brandingEdt').valid()) {
+
+                var formObj = document.getElementById('brandingEdt');
+                var formData = new FormData(formObj);
+
                 $('#save').prop('disabled', true);
 
                 swal({
@@ -143,8 +214,11 @@
                 jQuery.ajax({
                     type: "POST",
                     url: "<?= base_url(); ?>admin/updateBranding",
-                    data: $("#brandingEdt").serialize(),
-                    dataType: 'json',
+                    data: formData,
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
                     success: function (data) {
                         swal({title: "", text: "Update Success!", type: "success"},
                             function () {
