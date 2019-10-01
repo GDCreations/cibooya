@@ -227,7 +227,7 @@
                     <li>
                         <div class="contact contact-rounded contact-bordered contact-lg contact-ps-controls hidden-xs">
 
-                            <img src="<?= base_url(); ?>assets/images/users/user_1.jpg" alt="John Doe">
+                            <img src="<?= base_url(); ?>uploads/user-image/<?= $_SESSION['uimg'] ?>" alt="">
                             <div class="contact-container">
                                 <a href="#"> <?= $_SESSION['username'] ?></a>
                                 <span> <?= $_SESSION['roleText'] ?> </span>

@@ -1478,6 +1478,32 @@ class Admin extends CI_Controller
             $prmd = $this->input->post('prmTp');
         }
 
+        // USER PROFILE UPLOAD
+        if (!empty($_FILES['usrImg']['name'])) {
+
+            // User profile image upload
+            $config['upload_path'] = 'uploads/user-image/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['encrypt_name'] = TRUE;
+            $config['max_size'] = '5000'; //KB
+            // $config['max_width'] = '1024';
+            // $config['max_height'] = '768';
+            $config['file_name'] = $_FILES["usrImg"]['name'];
+
+            //Load upload library and initialize configuration
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('usrImg')) {
+                $uploadData = $this->upload->data();
+                $usrImg = $uploadData['file_name'];
+            } else {
+                $usrImg = 'no-image.png';
+            }
+        } else {
+            $usrImg = 'no-image.png';
+        }
+
         /* https://arjunphp.com/generating-alphanumeric-unique-id-in-codeigniter/ */
         /*  1) alpha: A string with lower and uppercase letters only.
             2) alnum: Alpha-numeric string with lower and uppercase characters.
@@ -1505,6 +1531,8 @@ class Admin extends CI_Controller
                 'fnme' => $fnme,
                 'lnme' => $lnme,
                 'emid' => $email,
+
+                'uimg' => $usrImg,
 
                 'unic' => $this->input->post('unic'),
                 'tpno' => $this->input->post('tele'),
@@ -1620,6 +1648,38 @@ class Admin extends CI_Controller
             $prmd = $this->input->post('prmTpEdt');
         }
 
+        // USER PROFILE UPLOAD EDIT
+        if (!empty($_FILES['usrImgEdt']['name'])) {
+            // previous image delete
+            $path = "uploads/user-image/";
+            $cplg_old = $this->input->post('usrImgOld');
+            // Default User image not delete
+            if ($cplg_old != 'no-image.png') {
+                unlink($path . $cplg_old);
+            }
+            // User profile image upload
+            $config['upload_path'] = 'uploads/user-image/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['encrypt_name'] = TRUE;
+            $config['max_size'] = '5000'; //KB
+            // $config['max_width'] = '1024';
+            // $config['max_height'] = '768';
+            $config['file_name'] = $_FILES["usrImgEdt"]['name'];
+
+            //Load upload library and initialize configuration
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('usrImgEdt')) {
+                $uploadData = $this->upload->data();
+                $cplg = $uploadData['file_name'];
+            } else {
+                $cplg = 'default.jpg';
+            }
+        } else {
+            $cplg = $this->input->post('usrImgOld');
+        }
+
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         if ($func == 'edit') {
@@ -1630,6 +1690,8 @@ class Admin extends CI_Controller
                     'brch' => $this->input->post('brchNwEdt'),
                     'usmd' => $this->input->post('uslvNwEdt'),
                     'prmd' => $prmd,
+
+                    'uimg' => $cplg,
 
                     'fnme' => $this->input->post('frnmEdt'),
                     'lnme' => $this->input->post('lsnmEdt'),
