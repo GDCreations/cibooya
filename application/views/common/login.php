@@ -22,7 +22,7 @@
 
     <!-- START APP CONTAINER -->
     <div class="app-container"
-         style="background: url(<?= base_url(); ?>uploads/loginImg/<?= $sysinfo[0]->cplg ?>); center center no-repeat fixed;"> <!-- assets/images/background/bg-1.jpg-->
+         style="background: url(<?= base_url(); ?>uploads/loginImg/<?= $sysinfo[0]->cplg ?>) center center no-repeat fixed;"> <!-- assets/images/background/bg-1.jpg-->
 
         <div class="app-login-box" style="margin-top: 8%">
             <div class="app-login-box-user"><img src="<?= base_url(); ?>assets/img/user/no-image.png"></div>
