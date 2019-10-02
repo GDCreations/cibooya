@@ -142,57 +142,50 @@
 if (isset($_GET['message'])) {
     $message = $_GET['message'];
 
-    if ($message === "fail") {
-        ?>
+    if ($message === "fail") { ?>
         <script type="text/javascript">
-            //toastr.error('Error - Wrong login data!');
             toastr.error('Please check login data !');
         </script>
-        <?php
-    } else if ($message === "userlock") {
-        ?>
+    <?php } else if ($message === "userlock") { ?>
         <script type="text/javascript">
             toastr.error('Your Account Lock ! <br>Contact System Admin !!');
         </script>
-        <?php
-    } else if ($message === "sys_update") {
-        ?>
+    <?php } else if ($message === "sys_update") { ?>
         <script type="text/javascript">
             toastr.error('Night Schedule Processing.!!!');
         </script>
-        <?php
-    } else if ($message === "wrngTry1") {
-        ?>
+    <?php } else if ($message === "wrngTry1") { ?>
         <script type="text/javascript">
             toastr.error('You tried wrong password 1 times !!');
         </script>
-        <?php
-    } else if ($message === "wrngTry2") {
-        ?>
+    <?php } else if ($message === "wrngTry2") { ?>
         <script type="text/javascript">
             toastr.error('You tried wrong password 2 times !!');
         </script>
-        <?php
-    } else if ($message === "wrngTry3") {
-        ?>
+    <?php } else if ($message === "wrngTry3") { ?>
         <script type="text/javascript">
             toastr.error('You tried wrong password 3 times !!');
         </script>
-        <?php
-    } else if ($message === "wrngLgcd") {
-        ?>
+    <?php } else if ($message === "wrngLgcd") { ?>
         <script type="text/javascript">
             toastr.error('Wrong Digital eye code !!');
         </script>
-        <?php
-    } //locked user day end reconsi 2018-11-13
-    else if ($message === "Delock") {
-        ?>
+    <?php } else if ($message === "Delock") { ?>
         <script type="text/javascript">
             toastr.info("You Are Locked !<br/>Day End Reconciliation Is Not Done At Last Day, Please Concat Operation Manager..");
         </script>
+    <?php } else if ($message === "tmpDisable") { ?>
+        <script type="text/javascript">
+            toastr.warning("Account Disable !<br/> Please Contact System Admin..");
+        </script>
+    <?php } else if ($message === "accDnid") { ?>
+        <script type="text/javascript">
+            toastr.info("Access Denied for user !<br/> Please Contact System Admin..");
+        </script>
         <?php
     }
+
+
 }
 
 //}
