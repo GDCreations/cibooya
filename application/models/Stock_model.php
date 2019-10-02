@@ -4,14 +4,14 @@ class Stock_model extends CI_Model
 {
     //SEARCH SUPPLIER DETAILS </JANAKA 2019-09-19>
     var $cl_srch1 = array('spcd','spnm','addr','mbno','tele','email'); //set column field database for datatable searchable
-    var $cl_odr1 = array(null, 'spcd', 'spnm', 'addr', 'mbno', 'user_mas.innm', 'crdt', 'stat',''); //set column field database for datatable orderable
+    var $cl_odr1 = array(null, 'spcd', 'spnm', 'addr', 'mbno', 'user_mas.fnme', 'crdt', 'stat',''); //set column field database for datatable orderable
     var $order1 = array('crdt' => 'DESC'); // default order
 
     function suppDet_query()
     {
         $stat = $this->input->post('stat');
 
-        $this->db->select("supp_mas.*,user_mas.innm");
+        $this->db->select("supp_mas.*,CONCAT(user_mas.fnme,' ',user_mas.lnme) AS innm");
         $this->db->from('supp_mas');
         $this->db->join('user_mas','user_mas.auid=supp_mas.crby');
         if($stat!='all'){
@@ -76,14 +76,14 @@ class Stock_model extends CI_Model
 
     //SEARCH CATEGORY DETAILS </JANAKA 2019-09-25>
     var $cl_srch2 = array('ctcd','ctnm'); //set column field database for datatable searchable
-    var $cl_odr2 = array(null, 'ctcd', 'ctnm', 'user_mas.innm', 'crdt', 'stat',''); //set column field database for datatable orderable
+    var $cl_odr2 = array(null, 'ctcd', 'ctnm', 'user_mas.fnme', 'crdt', 'stat',''); //set column field database for datatable orderable
     var $order2 = array('crdt' => 'DESC'); // default order
 
     function catDet_query()
     {
         $stat = $this->input->post('stat');
 
-        $this->db->select("category.*,user_mas.innm");
+        $this->db->select("category.*, CONCAT(user_mas.fnme,' ',user_mas.lnme) AS innm");
         $this->db->from('category');
         $this->db->join('user_mas','user_mas.auid=category.crby');
         if($stat!='all'){
@@ -148,14 +148,14 @@ class Stock_model extends CI_Model
 
     //SEARCH BRAND DETAILS </JANAKA 2019-09-26>
     var $cl_srch3 = array('bdcd','bdnm'); //set column field database for datatable searchable
-    var $cl_odr3 = array(null, 'bdcd','','bdnm', 'user_mas.innm', 'crdt', 'stat',''); //set column field database for datatable orderable
+    var $cl_odr3 = array(null, 'bdcd','','bdnm', 'user_mas.fnme', 'crdt', 'stat',''); //set column field database for datatable orderable
     var $order3 = array('crdt' => 'DESC'); // default order
 
     function brdDet_query()
     {
         $stat = $this->input->post('stat');
 
-        $this->db->select("brand.*,user_mas.innm");
+        $this->db->select("brand.*,CONCAT(user_mas.fnme,' ',user_mas.lnme) AS innm");
         $this->db->from('brand');
         $this->db->join('user_mas','user_mas.auid=brand.crby');
         if($stat!='all'){
@@ -220,14 +220,14 @@ class Stock_model extends CI_Model
 
     //SEARCH TYPE DETAILS </JANAKA 2019-09-27>
     var $cl_srch4 = array('tpcd','tpnm'); //set column field database for datatable searchable
-    var $cl_odr4 = array(null, 'tpcd','tpnm', 'user_mas.innm', 'crdt', 'stat',''); //set column field database for datatable orderable
+    var $cl_odr4 = array(null, 'tpcd','tpnm', 'user_mas.fnme', 'crdt', 'stat',''); //set column field database for datatable orderable
     var $order4 = array('crdt' => 'DESC'); // default order
 
     function typDet_query()
     {
         $stat = $this->input->post('stat');
 
-        $this->db->select("type.*,user_mas.innm");
+        $this->db->select("type.*,CONCAT(user_mas.fnme,' ',user_mas.lnme) AS innm");
         $this->db->from('type');
         $this->db->join('user_mas','user_mas.auid=type.crby');
         if($stat!='all'){
@@ -306,7 +306,7 @@ class Stock_model extends CI_Model
         $stat = $this->input->post('stat');
 
         $this->db->select("item.itid,item.itnm,item.itcd,item.mdl,item.mlcd,item.size,item.szof,item.clr,item.clcd,item.stat,item.crdt,item.dscr,
-        user_mas.innm,cat.ctcd,cat.ctnm,brd.bdcd,brd.bdnm,typ.tpcd,typ.tpnm");
+        CONCAT(user_mas.fnme,' ',user_mas.lnme) AS innm,cat.ctcd,cat.ctnm,brd.bdcd,brd.bdnm,typ.tpcd,typ.tpnm");
         $this->db->from('item');
         $this->db->join('user_mas','user_mas.auid=item.crby');
         $this->db->join('category cat','cat.ctid=item.ctid');
