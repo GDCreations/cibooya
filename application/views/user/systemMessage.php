@@ -171,7 +171,7 @@
                                         <label class="col-md-4 col-xs-12 control-label">User Level </label>
                                         <div class="col-md-8 col-xs-12">
                                             <select class="bs-select" name="srcUslv" id="srcUslv"
-                                                    onchange="chckBtn(this.value,'srcUslv'); getusersrh(this.value,'srcUsrDiv','srcUsr')">
+                                                    onchange="chckBtn(this.value,'srcUslv'); getusersrh(this.value,'srcUsrDiv','srcUsr','',true)">
                                                 <option value="0"> -- Select User Level --</option>
                                                 <?php
                                                 foreach ($uslvlinfo as $uslv) {
@@ -280,7 +280,7 @@
                                         <label class="col-md-4 col-xs-12 control-label">User Level </label>
                                         <div class="col-md-8 col-xs-12">
                                             <select class="bs-select" name="srcUslvEdt" id="srcUslvEdt"
-                                                    onchange="chckBtn(this.value,'srcUslvEdt'); getusersrh(this.value,'srcUsrDivEdt','srcUsrEdt')">
+                                                    onchange="chckBtn(this.value,'srcUslvEdt'); getusersrh(this.value,'srcUsrDivEdt','srcUsrEdt','',true)">
                                                 <option value="0"> -- Select User Level --</option>
                                                 <?php
                                                 foreach ($uslvlinfo as $uslv) {
@@ -415,6 +415,7 @@
                     },
                     srcUsrEdt: {
                         required: "Select User ",
+                        notEqual: "Select User "
                     },
                     msgsEdt: {
                         required: "Enter Message",
@@ -457,7 +458,7 @@
         }
 
         //load search users
-        function getusersrh(uslv, div, htid) {
+        function getusersrh(uslv, div, htid, seltdid, init) {
             //var user = document.getElementById('srlevel').value;
             $.ajax({
                 url: '<?= base_url(); ?>user/getusersrh',
@@ -486,6 +487,10 @@
 
                             child2.append("<li data-original-index=\"" + (i + 1) + "\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">" + name + "\n" +
                                 "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
+
+                            if (seltdid == id) {
+                                set_select( htid, seltdid);
+                            }
                         }
                     } else {
                         $('#' + htid).empty();
@@ -493,7 +498,8 @@
 
                         child2.append("<li data-original-index=\"0\" class=\"\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\"><span class=\"text\">-- No User --</span><span class=\" fa fa-check check-mark\"></span></a></li>");
                     }
-                    default_Selector(child1.find('div'));
+                    // Default selector enable disable
+                    if (init) default_Selector(child1.find('div'));
                 },
             });
         }
@@ -624,8 +630,8 @@
                         set_select('srcUslvEdt', data[0]['uslv']);
 
                         //getusersrh(data[0]['uslv']);
-                        getusersrh(data[0]['uslv'], 'srcUsrDivEdt', 'srcUsrEdt');
-                        set_select('srcUsrEdt', data[0]['mgus']);
+                        getusersrh(data[0]['uslv'], 'srcUsrDivEdt', 'srcUsrEdt', data[0]['mgus'], false);
+                        //set_select('srcUsrEdt', data[0]['mgus']);
 
                         $('#titlEdt').val(data[0]['mdle']);
                         $('#msgsEdt').val(data[0]['chng']);

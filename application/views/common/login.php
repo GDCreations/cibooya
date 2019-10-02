@@ -22,7 +22,8 @@
 
     <!-- START APP CONTAINER -->
     <div class="app-container"
-         style="background: url(<?= base_url(); ?>uploads/loginImg/<?= $sysinfo[0]->cplg ?>) center center no-repeat fixed;"> <!-- assets/images/background/bg-1.jpg-->
+         style="background: url(<?= base_url(); ?>uploads/loginImg/<?= $sysinfo[0]->cplg ?>) center center no-repeat fixed;">
+        <!-- assets/images/background/bg-1.jpg-->
 
         <div class="app-login-box" style="margin-top: 8%">
             <div class="app-login-box-user"><img src="<?= base_url(); ?>assets/img/user/no-image.png"></div>
@@ -63,10 +64,7 @@
                                 <button class="btn btn-success btn-block">Sign In</button>
                             </div>
                         </div>
-
                     </div>
-
-
                 </form>
             </div>
 
@@ -80,6 +78,8 @@
 
 </div>
 <!-- END APP WRAPPER -->
+</body>
+</html>
 
 <!-- IMPORTANT SCRIPTS -->
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery.min.js"></script>
@@ -87,15 +87,10 @@
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript"
         src="<?= base_url(); ?>assets/js/vendor/form-validator/jquery.form-validator.min.js"></script>
-
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/moment/moment.min.js"></script>
-
-</body>
-</html>
 
 <script src="<?= base_url(); ?>assets/plugins/toastr/toastr.min.js" type="text/javascript"></script>
 <link href="<?= base_url(); ?>assets/plugins/toastr/toastr.css" rel="stylesheet" type="text/css"/>
-
 
 <script type="text/javascript">
     // Toastr options
@@ -118,14 +113,22 @@
     };
 
     $().ready(function () {
+        $("#logps").on({
+            mouseenter: function(){
+                $('#logps').attr('type', 'text');
+            },
+            mouseleave: function(){
+                $('#logps').attr('type', 'password');
+            },
+        });
     });
 
     // SHOW HIDE PASSWORD
     function showPass(md) {
         if (md == 0) {
-            if ($('#logps').attr('type', 'text')) ;
+            $('#logps').attr('type', 'text');
         } else {
-            if ($('#logps').attr('type', 'password')) ;
+            $('#logps').attr('type', 'password');
         }
     }
 
