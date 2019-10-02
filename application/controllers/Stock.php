@@ -1564,7 +1564,7 @@ class Stock extends CI_Controller
 //OPEN PAGE </JANAKA 2019-09-30>
     function itemMng()
     {
-        $data['acm'] = 'stcCmp'; //Module
+        $data['acm'] = ''; //Module
         $data['acp'] = 'itemMng'; //Page
         $this->load->view('common/tmpHeader');
         $per['permission'] = $this->Generic_model->getPermision();
@@ -1859,18 +1859,223 @@ class Stock extends CI_Controller
     {
         $id = $this->input->post('id');
 
-        $this->db->select("item.itid,item.itnm,item.itcd,item.mdl,item.mlcd,item.size,item.szof,item.clr,item.clcd,item.stat,item.crdt,item.dscr,
-        user_mas.innm,cat.ctcd,cat.ctnm,brd.bdcd,brd.bdnm,typ.tpcd,typ.tpnm");
+        $this->db->select("item.*,
+        CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(ap.fnme,' ',ap.lnme) AS apnm, CONCAT(md.fnme,' ',md.lnme) AS mdnm, CONCAT(rj.fnme,' ',rj.lnme) AS rjnm");
         $this->db->from('item');
-        $this->db->join('user_mas', 'user_mas.auid=item.crby');
-        $this->db->join('category cat', 'cat.ctid=item.ctid');
-        $this->db->join('brand brd', 'brd.bdid=item.bdid');
-        $this->db->join('type typ', 'typ.tpid=item.tpid');
+        $this->db->join('user_mas cr', 'cr.auid=item.crby');
+        $this->db->join('user_mas ap', 'ap.auid=item.apby', 'LEFT');
+        $this->db->join('user_mas md', 'md.auid=item.mdby', 'LEFT');
+        $this->db->join('user_mas rj', 'rj.auid=item.rjby', 'LEFT');
         $this->db->where('item.itid', $id);
-        $res = $this->db->get()->result();
+        $res['item'] = $this->db->get()->result();
+
+        $this->db->select("*");
+        $this->db->from('item_pics');
+        $this->db->where("itid=$id AND stat=1");
+        $res['pics'] = $this->db->get()->result();
         echo json_encode($res);
     }
 //END GET ITEM DETAILS
+
+//UPDATE & APPROVE ITEM </JANAKA 2019-10-02>
+    function itm_update()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $code = strtoupper($this->input->post('it_code_edt'));
+        $id = $this->input->post('itid');
+        $func = $this->input->post('func');
+        $year = date('Y');
+
+        if($func=='edit'){
+            $msg = "Item Updated";
+            $this->Generic_model->updateData('item', array(
+                'ctid' => $this->input->post('cat_edt'),
+                'bdid' => $this->input->post('brd_edt'),
+                'tpid' => $this->input->post('typ_edt'),
+                'ntid' => $this->input->post('ntr_edt'),
+                'strid' => $this->input->post('strtp_edt'),
+                'itnm' => $this->input->post('name_edt'),
+                'itcd' => strtoupper($this->input->post('it_code_edt')),
+                'mdl' => $this->input->post('model_edt'),
+                'mlcd' => strtoupper($this->input->post('md_code_edt')),
+                'szof' => $this->input->post('szof_edt'),
+                'size' => $this->input->post('size_edt'),
+                'clr' => $this->input->post('clrnm_edt'),
+                'clcd' => $this->input->post('clr_edt'),
+                'dscr' => $this->input->post('dscr_edt'),
+                'scli' => $this->input->post('strscl_edt'),
+                'remk' => $this->input->post('remk_edt'),
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ),array('itid'=>$id));
+        }else if($func=='app'){
+            $msg = "Item Approved";
+            $this->Generic_model->updateData('item', array(
+                'ctid' => $this->input->post('cat_edt'),
+                'bdid' => $this->input->post('brd_edt'),
+                'tpid' => $this->input->post('typ_edt'),
+                'ntid' => $this->input->post('ntr_edt'),
+                'strid' => $this->input->post('strtp_edt'),
+                'itnm' => $this->input->post('name_edt'),
+                'itcd' => strtoupper($this->input->post('it_code_edt')),
+                'mdl' => $this->input->post('model_edt'),
+                'mlcd' => strtoupper($this->input->post('md_code_edt')),
+                'szof' => $this->input->post('szof_edt'),
+                'size' => $this->input->post('size_edt'),
+                'clr' => $this->input->post('clrnm_edt'),
+                'clcd' => $this->input->post('clr_edt'),
+                'dscr' => $this->input->post('dscr_edt'),
+                'scli' => $this->input->post('strscl_edt'),
+                'stat' => 1,
+                'remk' => $this->input->post('remk_edt'),
+                'apby' => $_SESSION['userId'],
+                'apdt' => date('Y-m-d H:i:s'),
+            ),array('itid'=>$id));
+        }
+
+        if (!empty($_FILES['pics_edt']['name'][0])) {
+            $flCount = sizeof($_FILES['pics_edt']['name']);
+            $files = $_FILES['pics_edt'];
+            $hsImg = $this->input->post('hsImg');
+
+            if($hsImg==1){//unlink exist images
+                //Get Exist Pics
+                $this->db->select("pcid,pcnm,crdt");
+                $this->db->from('item_pics');
+                $this->db->where("itid=$id AND stat=1");
+                $ePics = $this->db->get()->result();
+                foreach ($ePics as $pic){
+                    unlink('uploads/img/item/' . date('Y',strtotime($pic->crdt))."/".$pic->pcnm);
+                    $this->Generic_model->updateData('item_pics',array('stat'=>0),array('pcid'=>$pic->pcid));
+                }
+            }
+
+            for ($it = 0; $it < $flCount; $it++) {
+                if (is_dir('uploads/img/item/' . $year)) {
+                    $config['upload_path'] = 'uploads/img/item/' . $year;  //'uploads/images/'
+                } else {
+                    mkdir('uploads/img/item/' . $year, 0777, true);
+                    $config['upload_path'] = 'uploads/img/item/' . $year;  //'uploads/images/'
+                }
+
+                $flnme = $code . '_' . (sizeof(glob("uploads/img/item/$year/*")) + 1);
+                $config['allowed_types'] = 'jpg|png|jpeg';
+//                $config['encrypt_name'] = true;
+                $config['max_size'] = '5000'; //KB
+                $config['file_name'] = $flnme;
+                //Load upload library and initialize configuration
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+
+                $_FILES['pics_edt']['name'] = $files['name'][$it];
+                $_FILES['pics_edt']['type'] = $files['type'][$it];
+                $_FILES['pics_edt']['tmp_name'] = $files['tmp_name'][$it];
+                $_FILES['pics_edt']['error'] = $files['error'][$it];
+                $_FILES['pics_edt']['size'] = $files['size'][$it];
+
+                if ($this->upload->do_upload('pics_edt')) {
+                    $uploadData = $this->upload->data();
+                    $picture = $uploadData['file_name'];
+                    $this->Generic_model->insertData('item_pics', array(
+                        'itid' => $id,
+                        'pcnm' => $picture,
+                        'size' => $_FILES['pics_edt']['size'],
+                        'stat' => 1,
+                        'crby' => $_SESSION['userId'],
+                        'crdt' => date('Y-m-d H:i:s'),
+                    ));
+                }
+            }
+        }
+
+        $funcPerm = $this->Generic_model->getFuncPermision('itemMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "$msg ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END UPDATE & APPROVE ITEM </JANAKA 2019-10-02>
+
+//REJECT ITEM </JANAKA 2019-10-02>
+    function itm_Reject()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $id = $this->input->post('id');
+        $this->Generic_model->updateData('item', array(
+            'stat' => 2,
+            'rjby' => $_SESSION['userId'],
+            'rjdt' => date('Y-m-d H:i:s')
+        ), array('itid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('itemMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Item Rejected ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END REJECT ITEM </JANAKA 2019-10-02>
+
+//DEACTIVATE ITEM </JANAKA 2019-10-02>
+    function itm_Deactive()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $id = $this->input->post('id');
+        $this->Generic_model->updateData('item', array(
+            'stat' => 3,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('itid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('itemMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Item Deactivated ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END DEACTIVATE ITEM </JANAKA 2019-10-02>
+
+//ACTIVATE ITEM </JANAKA 2019-10-02>
+    function itm_Activate()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $id = $this->input->post('id');
+        $this->Generic_model->updateData('item', array(
+            'stat' => 1,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('itid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('itemMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Item Reactivated ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ACTIVATE ITEM </JANAKA 2019-10-02>
 //************************************************
 //***      END ITEM REGISTRATION               ***
 //************************************************

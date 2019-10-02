@@ -1,4 +1,9 @@
-
+-----------------------------------------------------
+2019-10-01 JANAKA
+ALTER TABLE `item` ADD `apby` INT NULL COMMENT 'approved by' AFTER `crdt`;
+ALTER TABLE `item` ADD `apdt` DATETIME NULL COMMENT 'approved date' AFTER `apby`;
+ALTER TABLE `item` ADD `rjby` INT NULL COMMENT 'Reject by' AFTER `mddt`;
+ALTER TABLE `item` ADD `rjdt` DATETIME NULL COMMENT 'Reject date' AFTER `rjby`;
 -----------------------------------------------------
 2019-09-30 JANAKA
 ALTER TABLE `item` ADD `ctid` INT NOT NULL COMMENT 'Category Id (category tbl)' AFTER `itid`;
@@ -25,12 +30,12 @@ ALTER TABLE `item_pics` ADD `crby` INT NOT NULL COMMENT 'Created by' AFTER `stat
 ALTER TABLE `item_pics` ADD `crdt` DATETIME NOT NULL COMMENT 'Created date' AFTER `crby`;
 -----------------------------------------------------
 -----------------------------------------------------
-2019-10-01 Gemunu
+2019-10-01 Gemunu **DONE
 syst_mesg tb
 -----------------------------------------------------
 2019-09-30 Gemunu
-INSERT INTO `user_page_mdl` (`aid`, `mdcd`, `mdnm`, `remk`, `stat`) VALUES (NULL, 'msgModul', 'Message Module', '', '1');
-INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'systMsg', 'System Message', '', '0', '1', '0', '7');
+**DONE || INSERT INTO `user_page_mdl` (`aid`, `mdcd`, `mdnm`, `remk`, `stat`) VALUES (NULL, 'msgModul', 'Message Module', '', '1');
+**DONE || INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'systMsg', 'System Message', '', '0', '1', '0', '7');
 -----------------------------------------------------
 2019-09-27 JANAKA
 **DONE || ALTER TABLE `brand` ADD `logo` VARCHAR(200) NOT NULL COMMENT 'Picture of logo' AFTER `bdnm`;
