@@ -1,3 +1,4 @@
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/custom-js/full_width.js"></script>
 <!-- START PAGE HEADING -->
 <div class="app-heading-container app-heading-bordered bottom">
     <ul class="breadcrumb">
@@ -388,7 +389,7 @@
                             Management <span class="text-muted" id="subTitle_edit"></span></h4>
                         <input type="hidden" id="func" name="func"/>
                         <input type="hidden" id="itid" name="itid"/>
-<!--                        <input type="hidden" id="brd_logo" name="brd_logo"/>-->
+                        <input type="hidden" id="hsImg" name="hsImg"/>
                     </div>
                     <div class="modal-body">
                         <div class="container">
@@ -515,7 +516,8 @@
                                                     <label class="col-md-4 col-xs-12 control-label">Item Name <span
                                                                 class="fa fa-asterisk req-astrick"></span></label>
                                                     <div class="col-md-8 col-xs-12">
-                                                        <input type="text" id="name_edt" name="name_edt" class="form-control"
+                                                        <input type="text" id="name_edt" name="name_edt"
+                                                               class="form-control"
                                                                placeholder="Item Name"/>
                                                     </div>
                                                 </div>
@@ -532,7 +534,8 @@
                                                     <label class="col-md-4 col-xs-12 control-label">Model <span
                                                                 class="fa fa-asterisk req-astrick"></span></label>
                                                     <div class="col-md-8 col-xs-12">
-                                                        <input type="text" id="model_edt" name="model_edt" class="form-control"
+                                                        <input type="text" id="model_edt" name="model_edt"
+                                                               class="form-control"
                                                                placeholder="Model"/>
                                                     </div>
                                                 </div>
@@ -549,7 +552,8 @@
                                                     <label class="col-md-4 col-xs-12 control-label">Size Of <span
                                                                 class="fa fa-asterisk req-astrick"></span></label>
                                                     <div class="col-md-8 col-xs-12">
-                                                        <input type="text" id="szof_edt" name="szof_edt" class="form-control"
+                                                        <input type="text" id="szof_edt" name="szof_edt"
+                                                               class="form-control"
                                                                placeholder="Size Area Of Item"/>
                                                     </div>
                                                 </div>
@@ -557,7 +561,8 @@
                                                     <label class="col-md-4 col-xs-12 control-label">Size <span
                                                                 class="fa fa-asterisk req-astrick"></span></label>
                                                     <div class="col-md-8 col-xs-12">
-                                                        <input type="text" id="size_edt" name="size_edt" class="form-control"
+                                                        <input type="text" id="size_edt" name="size_edt"
+                                                               class="form-control"
                                                                placeholder="Size & Scale"/>
                                                     </div>
                                                 </div>
@@ -569,7 +574,8 @@
                                                                placeholder="Color Code"/>
                                                     </div>
                                                     <div class="col-md-4 col-xs-6">
-                                                        <input type="text" id="clrnm_edt" name="clrnm_edt" class="form-control"
+                                                        <input type="text" id="clrnm_edt" name="clrnm_edt"
+                                                               class="form-control"
                                                                placeholder="Color Name"/>
                                                     </div>
                                                 </div>
@@ -583,8 +589,8 @@
                                             </div>
                                         </div>
                                         <div class="form-horizontal view_Area">
-                                            <hr/>
-                                            <div class="col-md-12">
+                                            <hr>
+                                            <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label">Status</label>
                                                     <label class="col-md-8 control-label" id="itm_stat"></label>
@@ -596,6 +602,24 @@
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label">Created Date</label>
                                                     <label class="col-md-8 control-label" id="crdt"></label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Approved By</label>
+                                                    <label class="col-md-8 control-label" id="apby"></label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Approved Date</label>
+                                                    <label class="col-md-8 control-label" id="apdt"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Rejected By</label>
+                                                    <label class="col-md-8 control-label" id="rjby"></label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Rejected Date</label>
+                                                    <label class="col-md-8 control-label" id="rjdt"></label>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-md-4 control-label">Updated By</label>
@@ -820,7 +844,7 @@
                             type: "post",
                             data: {
                                 name: function () {
-                                    return $("#name").val();
+                                    return $("#name_edt").val();
                                 },
                                 itid: function () {
                                     return $("#itid").val();
@@ -836,7 +860,7 @@
                             type: "post",
                             data: {
                                 it_code: function () {
-                                    return $("#it_code").val();
+                                    return $("#it_code_edt").val();
                                 },
                                 itid: function () {
                                     return $("#itid").val();
@@ -852,7 +876,7 @@
                             type: "post",
                             data: {
                                 model: function () {
-                                    return $("#model").val();
+                                    return $("#model_edt").val();
                                 },
                                 itid: function () {
                                     return $("#itid").val();
@@ -868,7 +892,7 @@
                             type: "post",
                             data: {
                                 md_code: function () {
-                                    return $("#md_code").val();
+                                    return $("#md_code_edt").val();
                                 },
                                 itid: function () {
                                     return $("#itid").val();
@@ -929,23 +953,40 @@
             });
         });
         // Required for Bootstrap tooltips in DataTables
-        $(document).ajaxComplete(function() {
+        $(document).ajaxComplete(function () {
             $('[data-toggle="tooltip"]').tooltip({
                 "html": true
             });
         });
+
         //Next Button
         function nextBtnActn() {
-            if ($('#add_item_form').valid()) {
-                $('#add_item_btn').css('display', 'inline');
-                return true;
-            } else {
-                return false;
+            if($('#modal-view').hasClass('in')){
+                if($('#func').val()=='view'){
+                    $('#app_item_btn').css('display', 'none');
+                    return true;
+                }else{
+                    if ($('#app_item_form').valid()) {
+                        $('#app_item_btn').css('display', 'inline');
+                        return true;
+                    }else {
+                        return false;
+                    }
+                }
+            }else{
+                if ($('#add_item_form').valid()) {
+                    $('#add_item_btn').css('display', 'inline');
+                    return true;
+                }else {
+                    return false;
+                }
             }
         }
 
         //Previous Button
         function prevBtnActn() {
+            $('#add_item_btn').css('display', 'none');
+            $('#app_item_btn').css('display', 'none');
             return true;
         }
 
@@ -994,20 +1035,20 @@
         //Search Brand
         function srch_Item() {
             var check = true;
-            if($('#cats').val()==0){
+            if ($('#cats').val() == 0) {
                 check = false;
             }
-            if($('#brds').val()==0){
+            if ($('#brds').val() == 0) {
                 check = false;
             }
-            if($('#typs').val()==0){
+            if ($('#typs').val() == 0) {
                 check = false;
             }
-            chckBtn($('#cats').val(),'cats');
-            chckBtn($('#brds').val(),'brds');
-            chckBtn($('#typs').val(),'typs');
+            chckBtn($('#cats').val(), 'cats');
+            chckBtn($('#brds').val(), 'brds');
+            chckBtn($('#typs').val(), 'typs');
 
-            if(check){
+            if (check) {
                 $('#item_table').DataTable().clear();
                 $('#item_table').DataTable({
                     "destroy": true,
@@ -1096,6 +1137,7 @@
                         //Make readonly all fields
                         $("#modal-view :input").attr("readonly", true);
                         $('.file-input').css('pointer-events', 'none');
+                        $('#clr_edt').css('pointer-events', 'none');
                         readonlyAllSelct('modal-view');
                         //VIEW MODEL
                     } else if (func == 'edit') {
@@ -1108,6 +1150,7 @@
                         //Remove readonly all fields
                         $("#modal-view :input").attr("readonly", false);
                         $('.file-input').css('pointer-events', '');
+                        $('#clr_edt').css('pointer-events', '');
                         editAllSelct('modal-view');
                         //EDIT MODEL
                     } else if (func == 'app') {
@@ -1120,22 +1163,43 @@
                         //Remove readonly all fields
                         $("#modal-view :input").attr("readonly", false);
                         $('.file-input').css('pointer-events', '');
+                        $('#clr_edt').css('pointer-events', '');
                         editAllSelct('modal-view');
                         //APPROVE MODEL
                     }
-                    var len = data.length;
+                    var len = data['item'].length;
 
                     if (len > 0) {
-                        $('#name_edt').val(data[0]['itnm']);
-                        $('#it_code_edt').val(data[0]['itcd']);
-                        $('#model_edt').val(data[0]['mdl']);
-                        $('#md_code_edt').val(data[0]['mlcd']);
-                        $('#szof_edt').val(data[0]['szof']);
-                        $('#size_edt').val(data[0]['size']);
-                        $('#clr_edt').val(data[0]['clcd']);
-                        $('#clrnm_edt').val(data[0]['clr']);
-                        $('#remk_edt').val(data[0]['remk']);
-                        $('#dscr_edt').val(data[0]['dscr']);
+                        $('#name_edt').val(data['item'][0]['itnm']);
+                        $('#it_code_edt').val(data['item'][0]['itcd']);
+                        $('#model_edt').val(data['item'][0]['mdl']);
+                        $('#md_code_edt').val(data['item'][0]['mlcd']);
+                        $('#szof_edt').val(data['item'][0]['szof']);
+                        $('#size_edt').val(data['item'][0]['size']);
+                        $('#clr_edt').val(data['item'][0]['clcd']);
+                        $('#clrnm_edt').val(data['item'][0]['clr']);
+                        $('#remk_edt').val(data['item'][0]['remk']);
+                        $('#dscr_edt').val(data['item'][0]['dscr']);
+
+                        set_select('cat_edt', data['item'][0]['ctid']);
+                        set_select('brd_edt', data['item'][0]['bdid']);
+                        set_select('typ_edt', data['item'][0]['tpid']);
+                        set_select('ntr_edt', data['item'][0]['ntid']);
+                        set_select('strtp_edt', data['item'][0]['strid']);
+                        set_select('strscl_edt', data['item'][0]['scli']);
+
+                        var len2 = data['pics'].length;
+                        var picsVw = new Array();
+                        if (len2 > 0) {
+                            $('#hsImg').val(1);
+                            for (var itt = 0; itt < len2; itt++) {
+                                var date = new Date(data['pics'][itt]['crdt']);
+                                var year = date.getFullYear();
+                                picsVw.push("<?= base_url()?>uploads/img/item/" + year + "/"+data['pics'][itt]['pcnm']);
+                            }
+                        }else{
+                            $('#hsImg').val(0);
+                        }
 
                         //File Uploader Initialiting
                         $("#pics1_edt").fileinput('enable');
@@ -1147,28 +1211,31 @@
                             browseClass: "btn btn-primary btn-sm btn-rounded",
                             removeClass: "btn btn-warning btn-sm btn-rounded",
                             maxFileSize: 5000, //Kb
-                            //initialPreviewAsData: true,
-                            //initialPreview: [
-                            //    "<?//= base_url()?>//uploads/img/brand/" + data[0]['logo']
-                            //]
+                            initialPreviewAsData: true,
+                            initialPreview: picsVw
                         });
-                    
-                        if (data[0]['stat'] == 0) {
+                        var picsVw = new Array();
+
+                        if (data['item'][0]['stat'] == 0) {
                             var stat = "<label class='label label-warning'>Pending</label>";
-                        } else if (data[0]['stat'] == 1) {
+                        } else if (data['item'][0]['stat'] == 1) {
                             var stat = "<label class='label label-success'>Active</label>";
-                        } else if (data[0]['stat'] == 2) {
+                        } else if (data['item'][0]['stat'] == 2) {
                             var stat = "<label class='label label-danger'>Reject</label>";
-                        } else if (data[0]['stat'] == 3) {
+                        } else if (data['item'][0]['stat'] == 3) {
                             var stat = "<label class='label label-info'>Inactive</label>";
                         } else {
                             var stat = "--";
                         }
                         $('#itm_stat').html(": " + stat);
-                        // $('#crby').html(": " + data[0]['crnm']);
-                        // $('#crdt').html(": " + data[0]['crdt']);
-                        // $('#mdby').html(": " + ((data[0]['mdnm'] != null) ? data[0]['mdnm'] : "--"));
-                        // $('#mddt').html(": " + ((data[0]['mddt'] != null && data[0]['mddt'] != "0000-00-00 00:00:00") ? data[0]['mddt'] : "--"));
+                        $('#crby').html(": " + data['item'][0]['crnm']);
+                        $('#crdt').html(": " + data['item'][0]['crdt']);
+                        $('#apby').html(": " + ((data['item'][0]['apnm'] != null) ? data['item'][0]['apnm'] : "--"));
+                        $('#apdt').html(": " + ((data['item'][0]['apdt'] != null && data['item'][0]['apdt'] != "0000-00-00 00:00:00") ? data['item'][0]['apdt'] : "--"));
+                        $('#rjby').html(": " + ((data['item'][0]['rjnm'] != null) ? data['item'][0]['rjnm'] : "--"));
+                        $('#rjdt').html(": " + ((data['item'][0]['rjdt'] != null && data['item'][0]['rjdt'] != "0000-00-00 00:00:00") ? data['item'][0]['rjdt'] : "--"));
+                        $('#mdby').html(": " + ((data['item'][0]['mdnm'] != null) ? data['item'][0]['mdnm'] : "--"));
+                        $('#mddt').html(": " + ((data['item'][0]['mddt'] != null && data['item'][0]['mddt'] != "0000-00-00 00:00:00") ? data['item'][0]['mddt'] : "--"));
                     }
                     swal.close();
                 },
@@ -1182,11 +1249,11 @@
         }
 
         //APPROVE || EDIT HERE
-        $('#app_brd_btn').click(function (e) {
+        $('#app_item_btn').click(function (e) {
             e.preventDefault();
-            var formObj = document.getElementById('app_brnd_form');
+            var formObj = document.getElementById('app_item_form');
             var formData = new FormData(formObj);
-            if ($('#app_brnd_form').valid()) {
+            if ($('#app_item_form').valid()) {
                 swal({
                         title: "Are you sure to do this ?",
                         text: "",
@@ -1201,18 +1268,18 @@
                     function (isConfirm) {
                         if (isConfirm) {
                             var func = $('#func').val();
-                            $('#app_brd_btn').prop('disabled', true);
+                            $('#app_item_btn').prop('disabled', true);
                             if (func == 'edit') {
                                 swal({
                                     title: "Processing...",
-                                    text: "Brand details updating..",
+                                    text: "Item details updating..",
                                     imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                                     showConfirmButton: false
                                 });
 
                                 jQuery.ajax({
                                     type: "POST",
-                                    url: "<?= base_url(); ?>Stock/brd_update",
+                                    url: "<?= base_url(); ?>Stock/itm_update",
                                     data: formData,
                                     mimeType: "multipart/form-data",
                                     contentType: false,
@@ -1221,10 +1288,11 @@
                                     success: function (data) {
                                         swal({title: "", text: "Updating Success!", type: "success"},
                                             function () {
-                                                $('#app_brd_btn').prop('disabled', false);
-                                                clear_Form('app_brnd_form');
+                                                $('#app_item_btn').prop('disabled', false);
+                                                clear_Form('app_item_form');
+                                                $("#pics1_edt").fileinput('destroy');
                                                 $('#modal-view').modal('hide');
-                                                srch_Brnd();
+                                                srch_Item();
                                             });
                                     },
                                     error: function (data, textStatus) {
@@ -1244,7 +1312,7 @@
 
                                 jQuery.ajax({
                                     type: "POST",
-                                    url: "<?= base_url(); ?>Stock/brd_update",
+                                    url: "<?= base_url(); ?>Stock/itm_update",
                                     data: formData,
                                     mimeType: "multipart/form-data",
                                     contentType: false,
@@ -1253,10 +1321,11 @@
                                     success: function (data) {
                                         swal({title: "", text: "Approved!", type: "success"},
                                             function () {
-                                                $('#app_brd_btn').prop('disabled', false);
-                                                clear_Form('app_brnd_form');
+                                                $('#app_item_btn').prop('disabled', false);
+                                                clear_Form('app_item_form');
+                                                $("#pics1_edt").fileinput('destroy');
                                                 $('#modal-view').modal('hide');
-                                                srch_Brnd();
+                                                srch_Item();
                                             });
                                     },
                                     error: function (data, textStatus) {
@@ -1277,7 +1346,7 @@
         });
 
         //Reject Supplier
-        function rejectBrd(id) {
+        function rejectItm(id) {
             swal({
                     title: "Are you sure reject ?",
                     text: "",
@@ -1300,15 +1369,15 @@
 
                         $.ajax({
                             type: "POST",
-                            url: "<?= base_url(); ?>Stock/brd_Reject",
+                            url: "<?= base_url(); ?>Stock/itm_Reject",
                             data: {
                                 id: id
                             },
                             dataType: 'json',
                             success: function (data) {
-                                swal({title: "", text: "Brand was rejected!", type: "success"},
+                                swal({title: "", text: "Item was rejected!", type: "success"},
                                     function () {
-                                        srch_Brnd();
+                                        srch_Item();
                                     });
                             },
                             error: function (data, textStatus) {
@@ -1325,7 +1394,7 @@
         }
 
         //Deactivate Supplier
-        function inactBrd(id) {
+        function inactItm(id) {
             swal({
                     title: "Are you sure to deactivate ?",
                     text: "",
@@ -1348,15 +1417,15 @@
 
                         $.ajax({
                             type: "POST",
-                            url: "<?= base_url(); ?>Stock/brd_Deactive",
+                            url: "<?= base_url(); ?>Stock/itm_Deactive",
                             data: {
                                 id: id
                             },
                             dataType: 'json',
                             success: function (data) {
-                                swal({title: "", text: "Brand was deactivated!", type: "success"},
+                                swal({title: "", text: "Item was deactivated!", type: "success"},
                                     function () {
-                                        srch_Brnd();
+                                        srch_Item();
                                     });
                             },
                             error: function (data, textStatus) {
@@ -1373,7 +1442,7 @@
         }
 
         //activate Supplier
-        function reactBrd(id) {
+        function reactItm(id) {
             swal({
                     title: "Are you sure to activate ?",
                     text: "",
@@ -1396,15 +1465,15 @@
 
                         $.ajax({
                             type: "POST",
-                            url: "<?= base_url(); ?>Stock/brd_Activate",
+                            url: "<?= base_url(); ?>Stock/itm_Activate",
                             data: {
                                 id: id
                             },
                             dataType: 'json',
                             success: function (data) {
-                                swal({title: "", text: "Brand was activated!", type: "success"},
+                                swal({title: "", text: "Item was activated!", type: "success"},
                                     function () {
-                                        srch_Brnd();
+                                        srch_Item();
                                     });
                             },
                             error: function (data, textStatus) {
