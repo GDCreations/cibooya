@@ -305,8 +305,8 @@ class Stock_model extends CI_Model
         $todt = trim($dtrg[1],' ');
         $stat = $this->input->post('stat');
 
-        $this->db->select("item.itid,item.itnm,item.itcd,item.mdl,item.mlcd,item.size,item.szof,item.clr,item.clcd,item.stat,item.crdt,
-        user_mas.innm,cat.ctcd,brd.bdcd,typ.tpcd");
+        $this->db->select("item.itid,item.itnm,item.itcd,item.mdl,item.mlcd,item.size,item.szof,item.clr,item.clcd,item.stat,item.crdt,item.dscr,
+        user_mas.innm,cat.ctcd,cat.ctnm,brd.bdcd,brd.bdnm,typ.tpcd,typ.tpnm");
         $this->db->from('item');
         $this->db->join('user_mas','user_mas.auid=item.crby');
         $this->db->join('category cat','cat.ctid=item.ctid');

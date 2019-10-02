@@ -538,7 +538,8 @@ class Stock extends CI_Controller
 //END OPEN PAGE </JANAKA 2019-09-25>
 
 //ADD NEW CATEGORY </JANAKA 2019-09-25>
-    function cat_Add(){
+    function cat_Add()
+    {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         //Inserting Category details
@@ -566,44 +567,46 @@ class Stock extends CI_Controller
 //END ADD NEW CATEGORY </JANAKA 2019-09-25>
 
 //CHECK CATEGORY NAME ALREADY EXIST </JANAKA 2019-09-25>
-    function chk_catName(){
+    function chk_catName()
+    {
         $stat = $this->input->post('stat');
         $name = $this->input->post('name');
         $ctid = $this->input->post('ctid');
 
         $this->db->select("ctid");
         $this->db->from('category');
-        $this->db->where('ctnm',$name);
-        if($stat==1){
+        $this->db->where('ctnm', $name);
+        if ($stat == 1) {
             $this->db->where("ctid!=$ctid");
         }
         $res = $this->db->get()->result();
 
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
 //END CHECK CATEGORY NAME ALREADY EXIST </JANAKA 2019-09-25>
 
 //CHECK CATEGORY CODE ALREADY EXIST </JANAKA 2019-09-25>
-    function chk_catCode(){
+    function chk_catCode()
+    {
         $stat = $this->input->post('stat');
         $code = $this->input->post('code');
         $ctid = $this->input->post('ctid');
 
         $this->db->select("ctid");
         $this->db->from('category');
-        $this->db->where('ctcd',$code);
-        if($stat==1){
+        $this->db->where('ctcd', $code);
+        if ($stat == 1) {
             $this->db->where("ctid!=$ctid");
         }
         $res = $this->db->get()->result();
 
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
@@ -863,11 +866,12 @@ class Stock extends CI_Controller
 //END OPEN PAGE </JANAKA 2019-09-26>
 
 //ADD NEW BRAND </JANAKA 2019-09-26>
-    function brnd_Add(){
+    function brnd_Add()
+    {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         $code = strtoupper($this->input->post('code'));
-        if(!empty($_FILES['logo']['name'])){
+        if (!empty($_FILES['logo']['name'])) {
             $flnme = $code;
             $config['upload_path'] = 'uploads/img/brand';
             $config['allowed_types'] = 'jpg|png|jpeg';
@@ -884,7 +888,7 @@ class Stock extends CI_Controller
             } else {
                 $logo = 'brand-def.png';
             }
-        }else{
+        } else {
             $logo = "brand-def.png";
         }
 
@@ -914,44 +918,46 @@ class Stock extends CI_Controller
 //END ADD NEW CATEGORY </JANAKA 2019-09-26>
 
 //CHECK BRAND NAME ALREADY EXIST </JANAKA 2019-09-26>
-    function chk_brdName(){
+    function chk_brdName()
+    {
         $stat = $this->input->post('stat');
         $name = $this->input->post('name');
         $bdid = $this->input->post('bdid');
 
         $this->db->select("bdid");
         $this->db->from('brand');
-        $this->db->where('bdnm',$name);
-        if($stat==1){
+        $this->db->where('bdnm', $name);
+        if ($stat == 1) {
             $this->db->where("bdid!=$bdid");
         }
         $res = $this->db->get()->result();
 
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
 //END CHECK BRAND NAME ALREADY EXIST </JANAKA 2019-09-26>
 
 //CHECK BRAND CODE ALREADY EXIST </JANAKA 2019-09-26>
-    function chk_brdCode(){
+    function chk_brdCode()
+    {
         $stat = $this->input->post('stat');
         $code = $this->input->post('code');
         $bdid = $this->input->post('bdid');
 
         $this->db->select("bdid");
         $this->db->from('brand');
-        $this->db->where('bdcd',$code);
-        if($stat==1){
+        $this->db->where('bdcd', $code);
+        if ($stat == 1) {
             $this->db->where("bdid!=$bdid");
         }
         $res = $this->db->get()->result();
 
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
@@ -1030,7 +1036,7 @@ class Stock extends CI_Controller
                     "<button type='button' disabled onclick='rejectBrd($row->bdid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             }
 
-            $img = "<img class='sm-image' src='".base_url()."uploads/img/brand/".$row->logo."'/>";
+            $img = "<img class='sm-image' src='" . base_url() . "uploads/img/brand/" . $row->logo . "'/>";
 
             $sub_arr = array();
             $sub_arr[] = ++$i;
@@ -1079,7 +1085,7 @@ class Stock extends CI_Controller
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         $code = strtoupper($this->input->post('code_edt'));
-        if(!empty($_FILES['logo_edt']['name'])){
+        if (!empty($_FILES['logo_edt']['name'])) {
             $flnme = $code;
             $config['upload_path'] = 'uploads/img/brand';
             $config['allowed_types'] = 'jpg|png|jpeg';
@@ -1101,7 +1107,7 @@ class Stock extends CI_Controller
             } else {
                 $logo = 'brand-def.png';
             }
-        }else{
+        } else {
             $logo = $this->input->post('brd_logo');
         }
 
@@ -1243,51 +1249,54 @@ class Stock extends CI_Controller
 //END OPEN PAGE </JANAKA 2019-09-27>
 
 //CHECK TYPE NAME ALREADY EXIST </JANAKA 2019-09-27>
-    function chk_typName(){
+    function chk_typName()
+    {
         $stat = $this->input->post('stat');
         $name = $this->input->post('name');
         $tpid = $this->input->post('tpid');
 
         $this->db->select("tpid");
         $this->db->from('type');
-        $this->db->where('tpnm',$name);
-        if($stat==1){
+        $this->db->where('tpnm', $name);
+        if ($stat == 1) {
             $this->db->where("tpid!=$tpid");
         }
         $res = $this->db->get()->result();
 
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
 //END CHECK TYPE NAME ALREADY EXIST </JANAKA 2019-09-27>
 
 //CHECK TYPE CODE ALREADY EXIST </JANAKA 2019-09-27>
-    function chk_typCode(){
+    function chk_typCode()
+    {
         $stat = $this->input->post('stat');
         $code = $this->input->post('code');
         $tpid = $this->input->post('tpid');
 
         $this->db->select("tpid");
         $this->db->from('type');
-        $this->db->where('tpcd',$code);
-        if($stat==1){
+        $this->db->where('tpcd', $code);
+        if ($stat == 1) {
             $this->db->where("tpid!=$tpid");
         }
         $res = $this->db->get()->result();
 
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
 //END CHECK TYPE CODE ALREADY EXIST </JANAKA 2019-09-27>
 
 //ADD NEW TYPE </JANAKA 2019-09-27>
-    function typ_Add(){
+    function typ_Add()
+    {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         $code = strtoupper($this->input->post('code'));
@@ -1562,12 +1571,12 @@ class Stock extends CI_Controller
         $this->load->view('admin/common/adminHeader', $per);
 
         $data2['funcPerm'] = $this->Generic_model->getFuncPermision('itemMng');
-        $data2['category'] = $this->Generic_model->getData('category',array('ctid','ctcd','ctnm','stat'),"stat IN(1,3)");
-        $data2['brand'] = $this->Generic_model->getData('brand',array('bdid','bdcd','bdnm','logo','stat'),"stat IN(1,3)");
-        $data2['type'] = $this->Generic_model->getData('type',array('tpid','tpcd','tpnm','stat'),"stat IN(1,3)");
-        $data2['nature'] = $this->Generic_model->getData('nature',array('ntid','ntnm','dscr'),array('stat'=>1));
-        $data2['store'] = $this->Generic_model->getData('str_type',array('strid','stnm'),array('stat'=>1));
-        $data2['storeScl'] = $this->Generic_model->getData('scale',array('slid','scl','scnm'),array('stat'=>1));
+        $data2['category'] = $this->Generic_model->getData('category', array('ctid', 'ctcd', 'ctnm', 'stat'), "stat IN(1,3)");
+        $data2['brand'] = $this->Generic_model->getData('brand', array('bdid', 'bdcd', 'bdnm', 'logo', 'stat'), "stat IN(1,3)");
+        $data2['type'] = $this->Generic_model->getData('type', array('tpid', 'tpcd', 'tpnm', 'stat'), "stat IN(1,3)");
+        $data2['nature'] = $this->Generic_model->getData('nature', array('ntid', 'ntnm', 'dscr'), array('stat' => 1));
+        $data2['store'] = $this->Generic_model->getData('str_type', array('strid', 'stnm'), array('stat' => 1));
+        $data2['storeScl'] = $this->Generic_model->getData('scale', array('slid', 'scl', 'scnm'), array('stat' => 1));
         $this->load->view('admin/stock/item_Manage', $data2);
 
         $this->load->view('common/tmpFooter', $data);
@@ -1575,97 +1584,102 @@ class Stock extends CI_Controller
 //END OPEN PAGE </JANAKA 2019-09-30>
 
 //CHECK ALREADY EXIST ITEM NAME </JANAKA 2019-10-01>
-    function chk_itmName(){
+    function chk_itmName()
+    {
         $name = $this->input->post('name');
         $id = $this->input->post('itid');
         $stat = $this->input->post('stat');
 
         $this->db->select("itid");
         $this->db->from('item');
-        $this->db->where('itnm',$name);
-        if($stat==1){
+        $this->db->where('itnm', $name);
+        if ($stat == 1) {
             $this->db->where("itid!=$id");
         }
         $res = $this->db->get()->result();
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
 //END CHECK ALREADY EXIST ITEM NAME </JANAKA 2019-10-01>
 
 //CHECK ALREADY EXIST ITEM CODE </JANAKA 2019-10-01>
-    function chk_itmCode(){
+    function chk_itmCode()
+    {
         $it_code = $this->input->post('it_code');
         $id = $this->input->post('itid');
         $stat = $this->input->post('stat');
 
         $this->db->select("itid");
         $this->db->from('item');
-        $this->db->where('itcd',$it_code);
-        if($stat==1){
+        $this->db->where('itcd', $it_code);
+        if ($stat == 1) {
             $this->db->where("itid!=$id");
         }
         $res = $this->db->get()->result();
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
 //END CHECK ALREADY EXIST ITEM CODE </JANAKA 2019-10-01>
 
 //CHECK ALREADY EXIST MODEL </JANAKA 2019-10-01>
-    function chk_mdlName(){
+    function chk_mdlName()
+    {
         $model = $this->input->post('model');
         $id = $this->input->post('itid');
         $stat = $this->input->post('stat');
 
         $this->db->select("itid");
         $this->db->from('item');
-        $this->db->where('mdl',$model);
-        if($stat==1){
+        $this->db->where('mdl', $model);
+        if ($stat == 1) {
             $this->db->where("itid!=$id");
         }
         $res = $this->db->get()->result();
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
 //END CHECK ALREADY EXIST MODEL </JANAKA 2019-10-01>
 
 //CHECK ALREADY EXIST MODEL CODE </JANAKA 2019-10-01>
-    function chk_mdlCode(){
+    function chk_mdlCode()
+    {
         $md_code = $this->input->post('md_code');
         $id = $this->input->post('itid');
         $stat = $this->input->post('stat');
 
         $this->db->select("itid");
         $this->db->from('item');
-        $this->db->where('mlcd',$md_code);
-        if($stat==1){
+        $this->db->where('mlcd', $md_code);
+        if ($stat == 1) {
             $this->db->where("itid!=$id");
         }
         $res = $this->db->get()->result();
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
 //END CHECK ALREADY EXIST MODEL CODE </JANAKA 2019-10-01>
 
 //ADD NEW ITEM </JANAKA 2019-10-01>
-    function item_Add(){
+    function item_Add()
+    {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         $code = strtoupper($this->input->post('it_code'));
         $year = date('Y');
 
-        $this->Generic_model->insertData('item',array(
+        $this->Generic_model->insertData('item', array(
             'ctid' => $this->input->post('cat'),
             'bdid' => $this->input->post('brd'),
             'tpid' => $this->input->post('typ'),
@@ -1688,7 +1702,7 @@ class Stock extends CI_Controller
         ));
         $lstId = $this->db->insert_id();
 
-        if(!empty($_FILES['pics']['name'][0])){
+        if (!empty($_FILES['pics']['name'][0])) {
             $flCount = sizeof($_FILES['pics']['name']);
             $files = $_FILES['pics'];
 
@@ -1697,7 +1711,7 @@ class Stock extends CI_Controller
                     $config['upload_path'] = 'uploads/img/item/' . $year;  //'uploads/images/'
                 } else {
                     mkdir('uploads/img/item/' . $year, 0777, true);
-                    $config['upload_path'] = 'uploads/img/item/'.$year;  //'uploads/images/'
+                    $config['upload_path'] = 'uploads/img/item/' . $year;  //'uploads/images/'
                 }
 
                 $flnme = $code . '_' . (sizeof(glob("uploads/img/item/$year/*")) + 1);
@@ -1744,7 +1758,8 @@ class Stock extends CI_Controller
 //END ADD NEW ITEM </JANAKA 2019-10-01>
 
 //SEARCH ITEMS
-    function searchItem(){
+    function searchItem()
+    {
         $funcPerm = $this->Generic_model->getFuncPermision('itemMng');
 
         if ($funcPerm[0]->view == 1) {
@@ -1817,12 +1832,11 @@ class Stock extends CI_Controller
 
             $sub_arr = array();
             $sub_arr[] = ++$i;
-//            $sub_arr[] = "<button data-toggle='tooltip' data-placement='top' title='' data-original-title='Woow'>".$row->itcd."</button>";
-            $sub_arr[] = '<label data-html="true" data-container="body" class="label label-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Tooltip on left">Hover Me</label>';
-            $sub_arr[] = $row->itnm;
-            $sub_arr[] = $row->ctcd;
-            $sub_arr[] = $row->bdcd;
-            $sub_arr[] = $row->tpcd;
+            $sub_arr[] = $row->itcd;
+            $sub_arr[] = "<span data-html='true' data-toggle='tooltip' data-placement='top' title='' data-original-title='$row->dscr'>" . $row->itnm . "</span>";
+            $sub_arr[] = "<span data-html='true' data-toggle='tooltip' data-placement='top' title='' data-original-title='$row->ctnm'>" . $row->ctcd . "</span>";
+            $sub_arr[] = "<span data-html='true' data-toggle='tooltip' data-placement='top' title='' data-original-title='$row->bdnm'>" . $row->bdcd . "</span>";
+            $sub_arr[] = "<span data-html='true' data-toggle='tooltip' data-placement='top' title='' data-original-title='$row->tpnm'>" . $row->tpcd . "</span>";
             $sub_arr[] = $row->mdl;
             $sub_arr[] = $row->mlcd;
             $sub_arr[] = $stat;
@@ -1839,6 +1853,24 @@ class Stock extends CI_Controller
         echo json_encode($output);
     }
 //END SEARCH ITEMS
+
+//GET ITEM DETAILS
+    function get_ItmDet()
+    {
+        $id = $this->input->post('id');
+
+        $this->db->select("item.itid,item.itnm,item.itcd,item.mdl,item.mlcd,item.size,item.szof,item.clr,item.clcd,item.stat,item.crdt,item.dscr,
+        user_mas.innm,cat.ctcd,cat.ctnm,brd.bdcd,brd.bdnm,typ.tpcd,typ.tpnm");
+        $this->db->from('item');
+        $this->db->join('user_mas', 'user_mas.auid=item.crby');
+        $this->db->join('category cat', 'cat.ctid=item.ctid');
+        $this->db->join('brand brd', 'brd.bdid=item.bdid');
+        $this->db->join('type typ', 'typ.tpid=item.tpid');
+        $this->db->where('item.itid', $id);
+        $res = $this->db->get()->result();
+        echo json_encode($res);
+    }
+//END GET ITEM DETAILS
 //************************************************
 //***      END ITEM REGISTRATION               ***
 //************************************************

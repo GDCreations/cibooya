@@ -77,6 +77,55 @@ function disableSelct(id) {
     $('#'+id).parent().addClass("disabled");
     $('#'+id).prev().prev().addClass("disabled");
 }
+
+//Enable All selectors in <DIV>
+// id - <DIV> id
+function enableAllSelct(id) {
+    sltr_chld = $('#'+id).find('select');
+    sltr_chld.map(function () {
+        var id2 = $(this).attr('id');
+        $('#'+id2).prop('disabled',false);
+        $('#'+id2).parent().removeClass("disabled");
+        $('#'+id2).prev().prev().removeClass("disabled");
+    });
+}
+
+//Desable All selectors in <DIV>
+// id - <DIV> id
+function disableAllSelct(id) {
+    sltr_chld = $('#'+id).find('select');
+    sltr_chld.map(function () {
+        var id2 = $(this).attr('id');
+        $('#'+id2).prop('disabled',true);
+        $('#'+id2).parent().addClass("disabled");
+        $('#'+id2).prev().prev().addClass("disabled");
+    });
+}
+
+//Readonly OFF All selectors in <DIV>
+// id - <DIV> id
+function editAllSelct(id) {
+    sltr_chld = $('#'+id).find('select');
+    sltr_chld.map(function () {
+        var id2 = $(this).attr('id');
+        $('#'+id2).prop('readonly',false);
+        $('#'+id2).parent().removeClass("disabled");
+        $('#'+id2).prev().prev().removeClass("disabled");
+    });
+}
+
+//Readonly ON All selectors in <DIV>
+// id - <DIV> id
+function readonlyAllSelct(id) {
+    sltr_chld = $('#'+id).find('select');
+    sltr_chld.map(function () {
+        var id2 = $(this).attr('id');
+        $('#'+id2).prop('readonly',true);
+        $('#'+id2).parent().addClass("disabled");
+        $('#'+id2).prev().prev().addClass("disabled");
+    });
+}
+
 // NIC VALIDATION AND FIND DOB & GENDER USEING NIC
 
 // nic - NIC no / vlid - passing value html id / htid - htmal id (disable enable button) / dob - DOB html id / gend - Gender html id / genDiv - gend parent div

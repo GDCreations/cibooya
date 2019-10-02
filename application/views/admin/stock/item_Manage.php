@@ -377,76 +377,249 @@
 
     <!-- MODAL VIEW BRAND -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
-            <form id="app_brnd_form" enctype="multipart/form-data">
+            <form id="app_item_form" enctype="multipart/form-data">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Brand
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Item
                             Management <span class="text-muted" id="subTitle_edit"></span></h4>
                         <input type="hidden" id="func" name="func"/>
-                        <input type="hidden" id="bdid" name="bdid"/>
-                        <input type="hidden" id="brd_logo" name="brd_logo"/>
+                        <input type="hidden" id="itid" name="itid"/>
+<!--                        <input type="hidden" id="brd_logo" name="brd_logo"/>-->
                     </div>
                     <div class="modal-body">
                         <div class="container">
-                            <div class="form-horizontal">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Brand Name <span
-                                                    class="fa fa-asterisk req-astrick edit_req"</span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="name_edt" id="name_edt"
-                                                   placeholder="Brand Name"/>
+                            <div class="block-content">
+                                <div id="smartwizard2" class="wizard show-submit">
+                                    <ul>
+                                        <li>
+                                            <a href="#step-3">
+                                                <span class="stepNumber">1</span>
+                                                <span class="stepDesc"><span class="fa fa-info fa-2x"></span><br/><small>Item Informations</small></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#step-4">
+                                                <span class="stepNumber">2</span>
+                                                <span class="stepDesc"><span class="fa fa-image fa-2x"></span><br/><small>Item Pictures</small></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                    <div id="step-3">
+                                        <div class="row form-horizontal">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Category <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <select id="cat_edt" name="cat_edt" class="bs-select">
+                                                            <option value="0">-- Select Category --</option>
+                                                            <?php
+                                                            foreach ($category as $cat) {
+                                                                if ($cat->stat == 1) {
+                                                                    echo "<option value='$cat->ctid'>" . $cat->ctcd . " - " . $cat->ctnm . "</option>";
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Brand <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <select id="brd_edt" name="brd_edt" class="bs-select">
+                                                            <option value="0">-- Select Brand --</option>
+                                                            <?php
+                                                            foreach ($brand as $brd) {
+                                                                if ($brd->stat == 1) {
+                                                                    echo "<option value='$brd->bdid'>" . $brd->bdcd . " - " . $brd->bdnm . "</option>";
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Type <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <select id="typ_edt" name="typ_edt" class="bs-select">
+                                                            <option value="0">-- Select Type --</option>
+                                                            <?php
+                                                            foreach ($type as $tp) {
+                                                                if ($tp->stat == 1) {
+                                                                    echo "<option value='$tp->tpid'>" . $tp->tpcd . " - " . $tp->tpnm . "</option>";
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Nature <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <select id="ntr_edt" name="ntr_edt" class="bs-select">
+                                                            <option value="0">-- Select Nature --</option>
+                                                            <?php
+                                                            foreach ($nature as $nt) {
+                                                                echo "<option value='$nt->ntid'>$nt->ntnm</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Store Type <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <select id="strtp_edt" name="strtp_edt" class="bs-select">
+                                                            <option value="0">-- Select Store Type --</option>
+                                                            <?php
+                                                            foreach ($store as $str) {
+                                                                echo "<option value='$str->strid'>$str->stnm</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Store Scale <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <select id="strscl_edt" name="strscl_edt" class="bs-select">
+                                                            <option value="0">-- Select Store Scale --</option>
+                                                            <?php
+                                                            foreach ($storeScl as $stscl) {
+                                                                echo "<option value='$stscl->slid'> (" . $stscl->scl . ") - " . $stscl->scnm . "</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Remark</label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <textarea class="form-control" id="remk_edt" name="remk_edt"
+                                                                  rows="3"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Item Name <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="name_edt" name="name_edt" class="form-control"
+                                                               placeholder="Item Name"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Item Code <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="it_code_edt" name="it_code_edt"
+                                                               class="form-control text-uppercase"
+                                                               placeholder="Item Code"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Model <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="model_edt" name="model_edt" class="form-control"
+                                                               placeholder="Model"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Model Code <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="md_code_edt" name="md_code_edt"
+                                                               class="form-control text-uppercase"
+                                                               placeholder="Model Code"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Size Of <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="szof_edt" name="szof_edt" class="form-control"
+                                                               placeholder="Size Area Of Item"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Size <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="size_edt" name="size_edt" class="form-control"
+                                                               placeholder="Size & Scale"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Color</label>
+                                                    <div class="col-md-4 col-xs-6">
+                                                        <input type="text" id="clr_edt" name="clr_edt"
+                                                               class="form-control bs-colorpicker-lg"
+                                                               placeholder="Color Code"/>
+                                                    </div>
+                                                    <div class="col-md-4 col-xs-6">
+                                                        <input type="text" id="clrnm_edt" name="clrnm_edt" class="form-control"
+                                                               placeholder="Color Name"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Discription</label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <textarea class="form-control" id="dscr_edt" name="dscr_edt"
+                                                                  rows="3"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-horizontal view_Area">
+                                            <hr/>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Status</label>
+                                                    <label class="col-md-8 control-label" id="itm_stat"></label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Created By</label>
+                                                    <label class="col-md-8 control-label" id="crby"></label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Created Date</label>
+                                                    <label class="col-md-8 control-label" id="crdt"></label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Updated By</label>
+                                                    <label class="col-md-8 control-label" id="mdby"></label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label">Updated Date</label>
+                                                    <label class="col-md-8 control-label" id="mddt"></label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Brand Code <span
-                                                    class="fa fa-asterisk req-astrick edit_req"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input class="form-control text-uppercase" type="text" name="code_edt"
-                                                   id="code_edt"
-                                                   placeholder="Brand Code"/>
+                                    <div id="step-4">
+                                        <div class="row form-horizontal">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-md-12 col-xs-12">
+                                                        <input type="file" multiple id="pics1_edt" class="item_pics"
+                                                               name="pics_edt[]"/>
+                                                    </div>
+                                                    <span style="color: red">* Maximum 5 photos can be uploaded of the item</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12">Logo</label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input type="file" id="logo_edt" name="logo_edt"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Remark</label>
-                                        <div class="col-md-8 col-xs-12">
-                                        <textarea class="form-control" rows="5" name="remk_edt" id="remk_edt"
-                                                  placeholder="Remark"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-horizontal view_Area">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Status</label>
-                                        <label class="col-md-8 control-label" id="brd_stat"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Created By</label>
-                                        <label class="col-md-8 control-label" id="crby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Created Date</label>
-                                        <label class="col-md-8 control-label" id="crdt"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Updated By</label>
-                                        <label class="col-md-8 control-label" id="mdby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Updated Date</label>
-                                        <label class="col-md-8 control-label" id="mddt"></label>
                                     </div>
                                 </div>
                             </div>
@@ -454,7 +627,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="app_brd_btn" class="btn btn-warning btn-sm btn-rounded">
+                        <button type="button" style="display: none;" id="app_item_btn"
+                                class="btn btn-warning btn-sm btn-rounded">
                         </button>
                     </div>
                 </div>
@@ -619,56 +793,147 @@
                 }
             });
 
-            $('#app_brnd_form').validate({
+            $('#app_item_form').validate({
                 rules: {
+                    cat_edt: {
+                        notEqual: 0
+                    },
+                    brd_edt: {
+                        notEqual: 0
+                    },
+                    typ_edt: {
+                        notEqual: 0
+                    },
+                    ntr_edt: {
+                        notEqual: 0
+                    },
+                    strtp_edt: {
+                        notEqual: 0
+                    },
+                    strscl_edt: {
+                        notEqual: 0
+                    },
                     name_edt: {
                         required: true,
                         remote: {
-                            url: "<?= base_url(); ?>Stock/chk_brdName",
+                            url: "<?= base_url(); ?>Stock/chk_itmName",
                             type: "post",
                             data: {
                                 name: function () {
-                                    return $("#name_edt").val();
+                                    return $("#name").val();
                                 },
-                                bdid: function () {
-                                    return $("#bdid").val();
+                                itid: function () {
+                                    return $("#itid").val();
                                 },
                                 stat: 1
                             }
                         }
                     },
-                    code_edt: {
+                    it_code_edt: {
                         required: true,
-                        minlength: 3,
-                        maxlength: 3,
                         remote: {
-                            url: "<?= base_url(); ?>Stock/chk_brdCode",
+                            url: "<?= base_url(); ?>Stock/chk_itmCode",
                             type: "post",
                             data: {
-                                code: function () {
-                                    return $("#code_edt").val();
+                                it_code: function () {
+                                    return $("#it_code").val();
                                 },
-                                bdid: function () {
-                                    return $("#bdid").val();
+                                itid: function () {
+                                    return $("#itid").val();
                                 },
                                 stat: 1
                             }
                         }
+                    },
+                    model_edt: {
+                        required: true,
+                        remote: {
+                            url: "<?= base_url(); ?>Stock/chk_mdlName",
+                            type: "post",
+                            data: {
+                                model: function () {
+                                    return $("#model").val();
+                                },
+                                itid: function () {
+                                    return $("#itid").val();
+                                },
+                                stat: 1
+                            }
+                        }
+                    },
+                    md_code_edt: {
+                        required: true,
+                        remote: {
+                            url: "<?= base_url(); ?>Stock/chk_mdlCode",
+                            type: "post",
+                            data: {
+                                md_code: function () {
+                                    return $("#md_code").val();
+                                },
+                                itid: function () {
+                                    return $("#itid").val();
+                                },
+                                stat: 1
+                            }
+                        }
+                    },
+                    szof_edt: {
+                        required: true,
+                    },
+                    size_edt: {
+                        required: true
                     }
                 },
                 messages: {
-                    name_edt: {
-                        required: "Enter brand name",
-                        remote: "Already entered name"
+                    cat_edt: {
+                        notEqual: "Select a category"
                     },
-                    code_edt: {
-                        required: "Enter brand code",
-                        remote: "Already entered code"
+                    brd_edt: {
+                        notEqual: "Select a brand"
+                    },
+                    typ_edt: {
+                        notEqual: "Select a type"
+                    },
+                    ntr_edt: {
+                        notEqual: "Select a nature"
+                    },
+                    strtp_edt: {
+                        notEqual: "Select a store type"
+                    },
+                    strscl_edt: {
+                        notEqual: "Select a store scale"
+                    },
+                    name_edt: {
+                        required: "Enter item name",
+                        remote: "Already entered item name"
+                    },
+                    it_code_edt: {
+                        required: "Enter item code",
+                        remote: "Already entered item code"
+                    },
+                    model_edt: {
+                        required: "Enter model",
+                        remote: "Already entered model"
+                    },
+                    md_code_edt: {
+                        required: "Enter model code",
+                        remote: "Already entered model code"
+                    },
+                    szof_edt: {
+                        required: "Enter size area of item",
+                    },
+                    size_edt: {
+                        required: "Enter size & scale"
                     }
                 }
             });
         });
-
+        // Required for Bootstrap tooltips in DataTables
+        $(document).ajaxComplete(function() {
+            $('[data-toggle="tooltip"]').tooltip({
+                "html": true
+            });
+        });
         //Next Button
         function nextBtnActn() {
             if ($('#add_item_form').valid()) {
@@ -797,13 +1062,13 @@
                                 return $('#dtrng').val();
                             }
                         }
-                    }
+                    },
                 });
             }
         }
 
         //View Supplier
-        function viewBrd(id, func) {
+        function viewItm(id, func) {
             swal({
                 title: "Loading Data...",
                 text: "Brand Details",
@@ -812,11 +1077,11 @@
             });
 
             $('#func').val(func);
-            $('#bdid').val(id);
+            $('#itid').val(id);
 
             jQuery.ajax({
                 type: "POST",
-                url: "<?= base_url(); ?>Stock/get_BrdDet",
+                url: "<?= base_url(); ?>Stock/get_ItmDet",
                 data: {
                     id: id
                 },
@@ -825,63 +1090,69 @@
                     if (func == 'view') {
                         //VIEW MODEL
                         $('#subTitle_edit').html(' - View');
-                        $('#app_brd_btn').css('display', 'none');
                         $("#modal-view").find('.edit_req').css("display", "none");
                         $("#edit_Area").css('display', 'none');
                         $(".view_Area").css('display', 'block');
                         //Make readonly all fields
                         $("#modal-view :input").attr("readonly", true);
                         $('.file-input').css('pointer-events', 'none');
+                        readonlyAllSelct('modal-view');
                         //VIEW MODEL
                     } else if (func == 'edit') {
                         //EDIT MODEL
                         $('#subTitle_edit').html(' - Edit');
-                        $('#app_brd_btn').css('display', 'inline');
-                        $('#app_brd_btn').html('Update');
+                        $('#app_item_btn').html('Update');
                         $("#modal-view").find('.edit_req').css("display", "inline");
                         $("#edit_Area").css('display', 'block');
                         $(".view_Area").css('display', 'none');
                         //Remove readonly all fields
                         $("#modal-view :input").attr("readonly", false);
                         $('.file-input').css('pointer-events', '');
+                        editAllSelct('modal-view');
                         //EDIT MODEL
                     } else if (func == 'app') {
                         //APPROVE MODEL
                         $('#subTitle_edit').html(' - Approve');
-                        $('#app_brd_btn').css('display', 'inline');
-                        $('#app_brd_btn').html('Approve');
+                        $('#app_item_btn').html('Approve');
                         $("#modal-view").find('.edit_req').css("display", "inline");
                         $("#edit_Area").css('display', 'block');
                         $(".view_Area").css('display', 'none');
                         //Remove readonly all fields
                         $("#modal-view :input").attr("readonly", false);
                         $('.file-input').css('pointer-events', '');
+                        editAllSelct('modal-view');
                         //APPROVE MODEL
                     }
                     var len = data.length;
 
                     if (len > 0) {
-                        $('#name_edt').val(data[0]['bdnm']);
-                        $('#code_edt').val(data[0]['bdcd']);
+                        $('#name_edt').val(data[0]['itnm']);
+                        $('#it_code_edt').val(data[0]['itcd']);
+                        $('#model_edt').val(data[0]['mdl']);
+                        $('#md_code_edt').val(data[0]['mlcd']);
+                        $('#szof_edt').val(data[0]['szof']);
+                        $('#size_edt').val(data[0]['size']);
+                        $('#clr_edt').val(data[0]['clcd']);
+                        $('#clrnm_edt').val(data[0]['clr']);
                         $('#remk_edt').val(data[0]['remk']);
-                        $('#brd_logo').val(data[0]['logo']);
+                        $('#dscr_edt').val(data[0]['dscr']);
 
                         //File Uploader Initialiting
-                        $("#logo_edt").fileinput('enable');
-                        $("#logo_edt").fileinput('destroy');
-                        $("#logo_edt").fileinput({
+                        $("#pics1_edt").fileinput('enable');
+                        $("#pics1_edt").fileinput('destroy');
+                        $("#pics1_edt").fileinput({
                             allowedFileExtensions: ['jpg', 'png', 'jpeg'],
                             showUpload: false,
                             showCaption: false,
                             browseClass: "btn btn-primary btn-sm btn-rounded",
                             removeClass: "btn btn-warning btn-sm btn-rounded",
                             maxFileSize: 5000, //Kb
-                            initialPreviewAsData: true,
-                            initialPreview: [
-                                "<?= base_url()?>uploads/img/brand/" + data[0]['logo']
-                            ]
+                            //initialPreviewAsData: true,
+                            //initialPreview: [
+                            //    "<?//= base_url()?>//uploads/img/brand/" + data[0]['logo']
+                            //]
                         });
-
+                    
                         if (data[0]['stat'] == 0) {
                             var stat = "<label class='label label-warning'>Pending</label>";
                         } else if (data[0]['stat'] == 1) {
@@ -893,11 +1164,11 @@
                         } else {
                             var stat = "--";
                         }
-                        $('#brd_stat').html(": " + stat);
-                        $('#crby').html(": " + data[0]['crnm']);
-                        $('#crdt').html(": " + data[0]['crdt']);
-                        $('#mdby').html(": " + ((data[0]['mdnm'] != null) ? data[0]['mdnm'] : "--"));
-                        $('#mddt').html(": " + ((data[0]['mddt'] != null && data[0]['mddt'] != "0000-00-00 00:00:00") ? data[0]['mddt'] : "--"));
+                        $('#itm_stat').html(": " + stat);
+                        // $('#crby').html(": " + data[0]['crnm']);
+                        // $('#crdt').html(": " + data[0]['crdt']);
+                        // $('#mdby').html(": " + ((data[0]['mdnm'] != null) ? data[0]['mdnm'] : "--"));
+                        // $('#mddt').html(": " + ((data[0]['mddt'] != null && data[0]['mddt'] != "0000-00-00 00:00:00") ? data[0]['mddt'] : "--"));
                     }
                     swal.close();
                 },
