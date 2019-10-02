@@ -16,7 +16,7 @@ class User extends CI_Controller
 
         $this->load->database();                // load database
         $this->load->model('Generic_model');    // load model
-        //$this->load->model('User_model');       // load model
+        $this->load->model('User_model');       // load model
 
         date_default_timezone_set('Asia/Colombo');
 
@@ -118,74 +118,61 @@ class User extends CI_Controller
     }
 
     //SEARCH
-    function srchSystmUpdte()
+    function srchSysMsg()
     {
-        $result = $this->Admin_model->get_systmUpdtDtils();
+        $result = $this->User_model->get_systmMsg();
         $data = array();
         $i = $_POST['start'];
 
         foreach ($result as $row) {
 
-            if ($row->stat == 0) {
-                if (date('Y-m-d', strtotime($row->date)) == date('Y-m-d') && (date('H:i:s', strtotime($row->totm)) > date('H:i:s') && date('H:i:s') >= date('H:i:s', strtotime($row->frtm)))) {
-                    $mode = '<label class="label label-info"> Executing </label>';
-                } else {
-                    $mode = '<label class="label label-warning"> Pending </label>';
-                }
-                $edt = "";
-                $edtt = "";
-            } else if ($row->stat == 1) {
-                $mode = '<label class="label label-success"> Executed </label>';
-                $edt = "disabled";
-                $edtt = "disabled";
-            } else if ($row->stat == 2) {
-                $mode = '<label class="label label-danger"> Reject </label>';
-                $edt = "disabled";
-                $edtt = "disabled";
-            } else {
-                $mode = '';
-                $edtt = "";
-            }
-
-            $option = "<button $edt type='button' id='edt' data-toggle='modal' data-target='#modal-view' onclick='edtSchedule($row->auid,this.id);' class='btn btn-xs btn-default btn-condensed' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                " <button type='button'  $edtt id='rej'  onclick='doneSchedule($row->auid);' class='btn btn-xs btn-default btn-condensed' title='Done'><i class='fa fa-check' aria-hidden='true'></i></button> ";
+            $option = "<button  type='button' id='edt' data-toggle='modal' data-target='#modal-view' onclick='edtModule($row->chid,this.id);' class='btn btn-xs btn-default btn-condensed' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> ";
 
             $sub_arr = array();
             $sub_arr[] = ++$i;
-            $sub_arr[] = $row->date;
-            $sub_arr[] = $row->mesg;
-            $sub_arr[] = $row->frtm;
-            $sub_arr[] = $row->totm;
-            $sub_arr[] = $row->innm;
+            $sub_arr[] = $row->msgTp;
+            $sub_arr[] = $row->lvnm;
+            $sub_arr[] = $row->usnm;
+            $sub_arr[] = $row->mdle;
+            $sub_arr[] = $row->chng;
+            $sub_arr[] = "<label class='label label-info' title='Notification'>$row->ntfy</label>";
+            $sub_arr[] = $row->crby;
             $sub_arr[] = $row->crdt;
-            $sub_arr[] = $mode;
             $sub_arr[] = $option;
             $data[] = $sub_arr;
         }
 
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" => $this->Admin_model->count_all_systmUpdt(),
-            "recordsFiltered" => $this->Admin_model->count_filtered_systmUpdt(),
+            "recordsTotal" => $this->User_model->all_systmMsg(),
+            "recordsFiltered" => $this->User_model->filtered_systmMsg(),
             "data" => $data,
         );
         echo json_encode($output);
     }
 
     // INSERT
-    function addSysDown()
+    function addNewmessg()
     {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
-        $this->Generic_model->insertData('syst_update',
+        if ($this->input->post('ntfy') == '') {
+            $swnt = 0;
+        } else {
+            $swnt = $this->input->post('ntfy');
+        }
+
+        $this->Generic_model->insertData('syst_mesg',
             array(
-                'mesg' => $this->input->post('mssg'),
-                'date' => $this->input->post('scdt'),
-                'frtm' => $this->input->post('sttm'),
-                'totm' => $this->input->post('entm'),
+                'cmtp' => $this->input->post('type'),
+                'uslv' => $this->input->post('srcUslv'),
+                'mgus' => $this->input->post('srcUsr'),
+                'swnt' => $swnt,
+                'mdle' => ucwords(strtolower($this->input->post('titl'))),
+                'chng' => ucwords(strtolower($this->input->post('msgs'))),
+                'stat' => 1,
                 'crby' => $_SESSION['userId'],
                 'crdt' => date('Y-m-d H:i:s'),
-                'stat' => 0
             ));
 
         if ($this->db->trans_status() === FALSE) {
@@ -199,35 +186,37 @@ class User extends CI_Controller
     }
 
     // VIEW USER for edit approval
-    function getDetSysDown()
+    function getSysMsgDet()
     {
         $id = $this->input->post('id');
-        $result = $this->Generic_model->getData('syst_update', '', array('auid' => $id));
+        $result = $this->Generic_model->getData('syst_mesg', '', array('chid' => $id));
         echo json_encode($result);
     }
 
     // UPDATE
-    function edtSysDown()
+    function sysMsgEdit()
     {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
-        if (date_create($this->input->post('entmEdt')) < date_create(date('H:i:s'))) {
-            $stat = 1;
+        if ($this->input->post('ntfyEdt') == '') {
+            $swnt = 0;
         } else {
-            $stat = 0;
+            $swnt = $this->input->post('ntfyEdt');
         }
 
-        $this->Generic_model->updateData('syst_update',
+        $this->Generic_model->updateData('syst_mesg',
             array(
-                'mesg' => $this->input->post('mssgEdt'),
-                'date' => $this->input->post('scdtEdt'),
-                'frtm' => $this->input->post('sttmEdt'),
-                'totm' => $this->input->post('entmEdt'),
+                'cmtp' => $this->input->post('typeEdt'),
+                'uslv' => $this->input->post('srcUslvEdt'),
+                'mgus' => $this->input->post('srcUsrEdt'),
+                'swnt' => $swnt,
+                'mdle' => ucwords(strtolower($this->input->post('titlEdt'))),
+                'chng' => ucwords(strtolower($this->input->post('msgsEdt'))),
+                'stat' => 1,
                 'mdby' => $_SESSION['userId'],
                 'mddt' => date('Y-m-d H:i:s'),
-                'stat' => $stat
             ),
-            array('auid' => $this->input->post('auid')));
+            array('chid' => $this->input->post('auid')));
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
@@ -239,34 +228,7 @@ class User extends CI_Controller
         }
     }
 
-    //down finish
-    function SysDownFinished()
-    {
-        $this->db->trans_begin(); // SQL TRANSACTION START
-        $this->Generic_model->updateData('syst_update', array('stat' => $this->input->post('stat')), array('auid' => $this->input->post('auid')));
-        if ($this->db->trans_status() === FALSE) {
-            $this->db->trans_rollback();
-            $this->Log_model->ErrorLog('0', '1', '2', '3');
-            echo json_encode(false);
-        } else {
-            $this->db->trans_commit(); // SQL TRANSACTION END
-            echo json_encode(true);
-        }
-    }
 
-    function doneSchedule()
-    {
-        $this->db->trans_begin(); // SQL TRANSACTION START
-        $this->Generic_model->updateData('syst_update', array('stat' => 1), array('auid' => $this->input->post('auid')));
-        if ($this->db->trans_status() === FALSE) {
-            $this->db->trans_rollback();
-            $this->Log_model->ErrorLog('0', '1', '2', '3');
-            echo json_encode(false);
-        } else {
-            $this->db->trans_commit(); // SQL TRANSACTION END
-            echo json_encode(true);
-        }
-    }
 
 //******************************************************* //
 }

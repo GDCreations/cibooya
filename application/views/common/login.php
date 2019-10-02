@@ -22,7 +22,7 @@
 
     <!-- START APP CONTAINER -->
     <div class="app-container"
-         style="background: url(assets/images/background/bg-1.jpg) center center no-repeat fixed;">
+         style="background: url(<?= base_url(); ?>uploads/loginImg/<?= $sysinfo[0]->cplg ?>) center center no-repeat fixed;"> <!-- assets/images/background/bg-1.jpg-->
 
         <div class="app-login-box" style="margin-top: 8%">
             <div class="app-login-box-user"><img src="<?= base_url(); ?>assets/img/user/no-image.png"></div>
@@ -32,13 +32,20 @@
             </div>
             <div class="app-login-box-container">
                 <form action="<?= base_url(); ?>login/loginMe" method="post">
+
                     <div class="form-group">
-                        <input type="text" class="form-control" name="lognm" id="lognm" placeholder="Username"
+                        <input type="text" class="form-control col-md-6" name="lognm" id="lognm" placeholder="Username"
                                required>
                     </div>
-                    <div class="form-group">
+                    <div class="input-group">
                         <input type="password" class="form-control" name="logps" id="logps" placeholder="Password"
                                required>
+                        <span class="input-group-btn">
+                            <button class="btn btn-sm btn-default" type="button" onmousedown="showPass(0)"
+                                    onmouseup="showPass(1)"
+                                    style="margin-top: 0px; height: 33px; !important;">
+                                <span class="fa fa-eye"></span> </button>
+                         </span>
                     </div>
 
                     <?php if ($polyinfo[0]->post == 1) { ?>
@@ -58,6 +65,8 @@
                         </div>
 
                     </div>
+
+
                 </form>
             </div>
 
@@ -108,10 +117,17 @@
         "hideMethod": "fadeOut"
     };
 
-
     $().ready(function () {
-
     });
+
+    // SHOW HIDE PASSWORD
+    function showPass(md) {
+        if (md == 0) {
+            if ($('#logps').attr('type', 'text')) ;
+        } else {
+            if ($('#logps').attr('type', 'password')) ;
+        }
+    }
 
 </script>
 
