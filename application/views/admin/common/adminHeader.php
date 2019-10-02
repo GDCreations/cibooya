@@ -421,7 +421,7 @@
                                 <ul class="dropdown-menu dropdown-left">
                                     <li><a href="<?= base_url(); ?>User"><span class="icon-users"></span> User </a></li>
                                     <li class="divider"></li>
-                                    <li><a href=""><span class="icon-user"></span>Your Profile</a></li>
+                                    <li><a href="<?= base_url(); ?>welcome/userProfile"><span class="icon-user"></span>Your Profile</a></li>
                                     <li><a href="<?= base_url(); ?>welcome/lockScren"><span class="fa fa-lock"></span>
                                             Lock Screen</a></li>
                                     <li class="divider"></li>

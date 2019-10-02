@@ -63,8 +63,9 @@ class Welcome extends CI_Controller
     }
 
     // USER LOCK
-    function lockScren(){
-        $_SESSION['userId'] ='';
+    function lockScren()
+    {
+        $_SESSION['userId'] = '';
         $data['sysinfo'] = $this->Generic_model->getData('com_det', array('cmne', 'synm', 'cplg', 'syvr'), array('stat' => 1));
         $this->load->view('common/lock_screen', $data);
     }
@@ -139,6 +140,32 @@ class Welcome extends CI_Controller
         }
     }
 
+    // userProfile
+    function userProfile()
+    {
+        $data['acm'] = ''; //Module
+        $data['acp'] = 'systMsg'; //Page
 
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('user/common/userHeader', $per);
+
+        //$dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('userProfile');
+
+        $usid = $_SESSION['userId'];
+
+        $this->db->select("user_mas.*, user_level.lvnm, brch_mas.brcd, brch_mas.brnm, ");
+        $this->db->from("user_mas");
+        $this->db->join("user_level",'user_level.id = user_mas.usmd');
+        $this->db->join("brch_mas",'brch_mas.brid = user_mas.brch');
+        $this->db->where(" user_mas.auid", $usid);
+        $query = $this->db->get();
+        $dataArr['userinfo'] = $query->result();
+
+        //$dataArr['uslvlinfo'] = $this->Generic_model->getData('user_level', '', "stat = 1 AND id != 1");
+
+        $this->load->view('common/userProfile', $dataArr);
+        $this->load->view('common/tmpFooter', $data);
+    }
 
 }
