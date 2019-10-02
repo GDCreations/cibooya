@@ -283,7 +283,7 @@ class Stock extends CI_Controller
     {
         $id = $this->input->post('id');
         //Supplier Details
-        $this->db->select("sup.*,cr.innm AS crnm,ap.innm AS apnm,md.innm AS mdnm,rj.innm AS rjnm");
+        $this->db->select("sup.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(ap.fnme,' ',ap.lnme) AS apnm, CONCAT(md.fnme,' ',md.lnme) AS mdnm, CONCAT(rj.fnme,' ',rj.lnme) AS rjnm");
         $this->db->from('supp_mas sup');
         $this->db->join('user_mas cr', 'cr.auid=sup.crby');
         $this->db->join('user_mas ap', 'ap.auid=sup.apby', 'LEFT');
@@ -538,7 +538,8 @@ class Stock extends CI_Controller
 //END OPEN PAGE </JANAKA 2019-09-25>
 
 //ADD NEW CATEGORY </JANAKA 2019-09-25>
-    function cat_Add(){
+    function cat_Add()
+    {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         //Inserting Category details
@@ -566,44 +567,46 @@ class Stock extends CI_Controller
 //END ADD NEW CATEGORY </JANAKA 2019-09-25>
 
 //CHECK CATEGORY NAME ALREADY EXIST </JANAKA 2019-09-25>
-    function chk_catName(){
+    function chk_catName()
+    {
         $stat = $this->input->post('stat');
         $name = $this->input->post('name');
         $ctid = $this->input->post('ctid');
 
         $this->db->select("ctid");
         $this->db->from('category');
-        $this->db->where('ctnm',$name);
-        if($stat==1){
+        $this->db->where('ctnm', $name);
+        if ($stat == 1) {
             $this->db->where("ctid!=$ctid");
         }
         $res = $this->db->get()->result();
 
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
 //END CHECK CATEGORY NAME ALREADY EXIST </JANAKA 2019-09-25>
 
 //CHECK CATEGORY CODE ALREADY EXIST </JANAKA 2019-09-25>
-    function chk_catCode(){
+    function chk_catCode()
+    {
         $stat = $this->input->post('stat');
         $code = $this->input->post('code');
         $ctid = $this->input->post('ctid');
 
         $this->db->select("ctid");
         $this->db->from('category');
-        $this->db->where('ctcd',$code);
-        if($stat==1){
+        $this->db->where('ctcd', $code);
+        if ($stat == 1) {
             $this->db->where("ctid!=$ctid");
         }
         $res = $this->db->get()->result();
 
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
@@ -708,7 +711,7 @@ class Stock extends CI_Controller
     {
         $id = $this->input->post('id');
         //Category Details
-        $this->db->select("sup.*,cr.innm AS crnm,md.innm AS mdnm");
+        $this->db->select("sup.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(md.fnme,' ',md.lnme) AS mdnm");
         $this->db->from('category sup');
         $this->db->join('user_mas cr', 'cr.auid=sup.crby');
         $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
@@ -863,11 +866,12 @@ class Stock extends CI_Controller
 //END OPEN PAGE </JANAKA 2019-09-26>
 
 //ADD NEW BRAND </JANAKA 2019-09-26>
-    function brnd_Add(){
+    function brnd_Add()
+    {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         $code = strtoupper($this->input->post('code'));
-        if(!empty($_FILES['logo']['name'])){
+        if (!empty($_FILES['logo']['name'])) {
             $flnme = $code;
             $config['upload_path'] = 'uploads/img/brand';
             $config['allowed_types'] = 'jpg|png|jpeg';
@@ -884,7 +888,7 @@ class Stock extends CI_Controller
             } else {
                 $logo = 'brand-def.png';
             }
-        }else{
+        } else {
             $logo = "brand-def.png";
         }
 
@@ -914,44 +918,46 @@ class Stock extends CI_Controller
 //END ADD NEW CATEGORY </JANAKA 2019-09-26>
 
 //CHECK BRAND NAME ALREADY EXIST </JANAKA 2019-09-26>
-    function chk_brdName(){
+    function chk_brdName()
+    {
         $stat = $this->input->post('stat');
         $name = $this->input->post('name');
         $bdid = $this->input->post('bdid');
 
         $this->db->select("bdid");
         $this->db->from('brand');
-        $this->db->where('bdnm',$name);
-        if($stat==1){
+        $this->db->where('bdnm', $name);
+        if ($stat == 1) {
             $this->db->where("bdid!=$bdid");
         }
         $res = $this->db->get()->result();
 
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
 //END CHECK BRAND NAME ALREADY EXIST </JANAKA 2019-09-26>
 
 //CHECK BRAND CODE ALREADY EXIST </JANAKA 2019-09-26>
-    function chk_brdCode(){
+    function chk_brdCode()
+    {
         $stat = $this->input->post('stat');
         $code = $this->input->post('code');
         $bdid = $this->input->post('bdid');
 
         $this->db->select("bdid");
         $this->db->from('brand');
-        $this->db->where('bdcd',$code);
-        if($stat==1){
+        $this->db->where('bdcd', $code);
+        if ($stat == 1) {
             $this->db->where("bdid!=$bdid");
         }
         $res = $this->db->get()->result();
 
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
@@ -1030,7 +1036,7 @@ class Stock extends CI_Controller
                     "<button type='button' disabled onclick='rejectBrd($row->bdid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             }
 
-            $img = "<img class='sm-image' src='".base_url()."uploads/img/brand/".$row->logo."'/>";
+            $img = "<img class='sm-image' src='" . base_url() . "uploads/img/brand/" . $row->logo . "'/>";
 
             $sub_arr = array();
             $sub_arr[] = ++$i;
@@ -1059,7 +1065,7 @@ class Stock extends CI_Controller
     {
         $id = $this->input->post('id');
         //Category Details
-        $this->db->select("sup.*,cr.innm AS crnm,md.innm AS mdnm");
+        $this->db->select("sup.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(md.fnme,' ',md.lnme) AS mdnm");
         $this->db->from('brand sup');
         $this->db->join('user_mas cr', 'cr.auid=sup.crby');
         $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
@@ -1079,7 +1085,7 @@ class Stock extends CI_Controller
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         $code = strtoupper($this->input->post('code_edt'));
-        if(!empty($_FILES['logo_edt']['name'])){
+        if (!empty($_FILES['logo_edt']['name'])) {
             $flnme = $code;
             $config['upload_path'] = 'uploads/img/brand';
             $config['allowed_types'] = 'jpg|png|jpeg';
@@ -1101,7 +1107,7 @@ class Stock extends CI_Controller
             } else {
                 $logo = 'brand-def.png';
             }
-        }else{
+        } else {
             $logo = $this->input->post('brd_logo');
         }
 
@@ -1243,51 +1249,54 @@ class Stock extends CI_Controller
 //END OPEN PAGE </JANAKA 2019-09-27>
 
 //CHECK TYPE NAME ALREADY EXIST </JANAKA 2019-09-27>
-    function chk_typName(){
+    function chk_typName()
+    {
         $stat = $this->input->post('stat');
         $name = $this->input->post('name');
         $tpid = $this->input->post('tpid');
 
         $this->db->select("tpid");
         $this->db->from('type');
-        $this->db->where('tpnm',$name);
-        if($stat==1){
+        $this->db->where('tpnm', $name);
+        if ($stat == 1) {
             $this->db->where("tpid!=$tpid");
         }
         $res = $this->db->get()->result();
 
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
 //END CHECK TYPE NAME ALREADY EXIST </JANAKA 2019-09-27>
 
 //CHECK TYPE CODE ALREADY EXIST </JANAKA 2019-09-27>
-    function chk_typCode(){
+    function chk_typCode()
+    {
         $stat = $this->input->post('stat');
         $code = $this->input->post('code');
         $tpid = $this->input->post('tpid');
 
         $this->db->select("tpid");
         $this->db->from('type');
-        $this->db->where('tpcd',$code);
-        if($stat==1){
+        $this->db->where('tpcd', $code);
+        if ($stat == 1) {
             $this->db->where("tpid!=$tpid");
         }
         $res = $this->db->get()->result();
 
-        if(sizeof($res)>0){
+        if (sizeof($res) > 0) {
             echo json_encode(false);
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
 //END CHECK TYPE CODE ALREADY EXIST </JANAKA 2019-09-27>
 
 //ADD NEW TYPE </JANAKA 2019-09-27>
-    function typ_Add(){
+    function typ_Add()
+    {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         $code = strtoupper($this->input->post('code'));
@@ -1414,7 +1423,7 @@ class Stock extends CI_Controller
     {
         $id = $this->input->post('id');
         //Category Details
-        $this->db->select("sup.*,cr.innm AS crnm,md.innm AS mdnm");
+        $this->db->select("sup.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(md.fnme,' ',md.lnme) AS mdnm");
         $this->db->from('type sup');
         $this->db->join('user_mas cr', 'cr.auid=sup.crby');
         $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
@@ -1547,5 +1556,527 @@ class Stock extends CI_Controller
 //END ACTIVATE TYPE </JANAKA 2019-09-27>
 //************************************************
 //***      END TYPE REGISTRATION               ***
+//************************************************
+
+//************************************************
+//***          ITEM REGISTRATION               ***
+//************************************************
+//OPEN PAGE </JANAKA 2019-09-30>
+    function itemMng()
+    {
+        $data['acm'] = ''; //Module
+        $data['acp'] = 'itemMng'; //Page
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('itemMng');
+        $data2['category'] = $this->Generic_model->getData('category', array('ctid', 'ctcd', 'ctnm', 'stat'), "stat IN(1,3)");
+        $data2['brand'] = $this->Generic_model->getData('brand', array('bdid', 'bdcd', 'bdnm', 'logo', 'stat'), "stat IN(1,3)");
+        $data2['type'] = $this->Generic_model->getData('type', array('tpid', 'tpcd', 'tpnm', 'stat'), "stat IN(1,3)");
+        $data2['nature'] = $this->Generic_model->getData('nature', array('ntid', 'ntnm', 'dscr'), array('stat' => 1));
+        $data2['store'] = $this->Generic_model->getData('str_type', array('strid', 'stnm'), array('stat' => 1));
+        $data2['storeScl'] = $this->Generic_model->getData('scale', array('slid', 'scl', 'scnm'), array('stat' => 1));
+        $this->load->view('admin/stock/item_Manage', $data2);
+
+        $this->load->view('common/tmpFooter', $data);
+    }
+//END OPEN PAGE </JANAKA 2019-09-30>
+
+//CHECK ALREADY EXIST ITEM NAME </JANAKA 2019-10-01>
+    function chk_itmName()
+    {
+        $name = $this->input->post('name');
+        $id = $this->input->post('itid');
+        $stat = $this->input->post('stat');
+
+        $this->db->select("itid");
+        $this->db->from('item');
+        $this->db->where('itnm', $name);
+        if ($stat == 1) {
+            $this->db->where("itid!=$id");
+        }
+        $res = $this->db->get()->result();
+        if (sizeof($res) > 0) {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
+    }
+//END CHECK ALREADY EXIST ITEM NAME </JANAKA 2019-10-01>
+
+//CHECK ALREADY EXIST ITEM CODE </JANAKA 2019-10-01>
+    function chk_itmCode()
+    {
+        $it_code = $this->input->post('it_code');
+        $id = $this->input->post('itid');
+        $stat = $this->input->post('stat');
+
+        $this->db->select("itid");
+        $this->db->from('item');
+        $this->db->where('itcd', $it_code);
+        if ($stat == 1) {
+            $this->db->where("itid!=$id");
+        }
+        $res = $this->db->get()->result();
+        if (sizeof($res) > 0) {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
+    }
+//END CHECK ALREADY EXIST ITEM CODE </JANAKA 2019-10-01>
+
+//CHECK ALREADY EXIST MODEL </JANAKA 2019-10-01>
+    function chk_mdlName()
+    {
+        $model = $this->input->post('model');
+        $id = $this->input->post('itid');
+        $stat = $this->input->post('stat');
+
+        $this->db->select("itid");
+        $this->db->from('item');
+        $this->db->where('mdl', $model);
+        if ($stat == 1) {
+            $this->db->where("itid!=$id");
+        }
+        $res = $this->db->get()->result();
+        if (sizeof($res) > 0) {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
+    }
+//END CHECK ALREADY EXIST MODEL </JANAKA 2019-10-01>
+
+//CHECK ALREADY EXIST MODEL CODE </JANAKA 2019-10-01>
+    function chk_mdlCode()
+    {
+        $md_code = $this->input->post('md_code');
+        $id = $this->input->post('itid');
+        $stat = $this->input->post('stat');
+
+        $this->db->select("itid");
+        $this->db->from('item');
+        $this->db->where('mlcd', $md_code);
+        if ($stat == 1) {
+            $this->db->where("itid!=$id");
+        }
+        $res = $this->db->get()->result();
+        if (sizeof($res) > 0) {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
+    }
+//END CHECK ALREADY EXIST MODEL CODE </JANAKA 2019-10-01>
+
+//ADD NEW ITEM </JANAKA 2019-10-01>
+    function item_Add()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $code = strtoupper($this->input->post('it_code'));
+        $year = date('Y');
+
+        $this->Generic_model->insertData('item', array(
+            'ctid' => $this->input->post('cat'),
+            'bdid' => $this->input->post('brd'),
+            'tpid' => $this->input->post('typ'),
+            'ntid' => $this->input->post('ntr'),
+            'strid' => $this->input->post('strtp'),
+            'itnm' => $this->input->post('name'),
+            'itcd' => strtoupper($this->input->post('it_code')),
+            'mdl' => $this->input->post('model'),
+            'mlcd' => strtoupper($this->input->post('md_code')),
+            'szof' => $this->input->post('szof'),
+            'size' => $this->input->post('size'),
+            'clr' => $this->input->post('clrnm'),
+            'clcd' => $this->input->post('clr'),
+            'dscr' => $this->input->post('dscr'),
+            'scli' => $this->input->post('strscl'),
+            'stat' => 0,
+            'remk' => $this->input->post('remk'),
+            'crby' => $_SESSION['userId'],
+            'crdt' => date('Y-m-d H:i:s'),
+        ));
+        $lstId = $this->db->insert_id();
+
+        if (!empty($_FILES['pics']['name'][0])) {
+            $flCount = sizeof($_FILES['pics']['name']);
+            $files = $_FILES['pics'];
+
+            for ($it = 0; $it < $flCount; $it++) {
+                if (is_dir('uploads/img/item/' . $year)) {
+                    $config['upload_path'] = 'uploads/img/item/' . $year;  //'uploads/images/'
+                } else {
+                    mkdir('uploads/img/item/' . $year, 0777, true);
+                    $config['upload_path'] = 'uploads/img/item/' . $year;  //'uploads/images/'
+                }
+
+                $flnme = $code . '_' . (sizeof(glob("uploads/img/item/$year/*")) + 1);
+                $config['allowed_types'] = 'jpg|png|jpeg';
+//                $config['encrypt_name'] = true;
+                $config['max_size'] = '5000'; //KB
+                $config['file_name'] = $flnme;
+                //Load upload library and initialize configuration
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+
+                $_FILES['pics']['name'] = $files['name'][$it];
+                $_FILES['pics']['type'] = $files['type'][$it];
+                $_FILES['pics']['tmp_name'] = $files['tmp_name'][$it];
+                $_FILES['pics']['error'] = $files['error'][$it];
+                $_FILES['pics']['size'] = $files['size'][$it];
+
+                if ($this->upload->do_upload('pics')) {
+                    $uploadData = $this->upload->data();
+                    $picture = $uploadData['file_name'];
+                    $this->Generic_model->insertData('item_pics', array(
+                        'itid' => $lstId,
+                        'pcnm' => $picture,
+                        'size' => $_FILES['pics']['size'],
+                        'stat' => 1,
+                        'crby' => $_SESSION['userId'],
+                        'crdt' => date('Y-m-d H:i:s'),
+                    ));
+                }
+            }
+        }
+
+        $funcPerm = $this->Generic_model->getFuncPermision('itemMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Item Added ($lstId)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ADD NEW ITEM </JANAKA 2019-10-01>
+
+//SEARCH ITEMS
+    function searchItem()
+    {
+        $funcPerm = $this->Generic_model->getFuncPermision('itemMng');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edit = "";
+        } else {
+            $edit = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rejt = "";
+        } else {
+            $rejt = "disabled";
+        }
+        if ($funcPerm[0]->dact == 1) {
+            $dac = "";
+        } else {
+            $dac = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
+
+        $result = $this->Stock_model->get_itmDtils();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            if ($row->stat == 0) {
+                $stat = "<label class='label label-warning'>Pending</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' $rejt onclick='rejectItm($row->itid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 1) {
+                $stat = "<label class='label label-success'>Active</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' $dac onclick='inactItm($row->itid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 2) {
+                $stat = "<label class='label label-danger'>Reject</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 3) {
+                $stat = "<label class='label label-indi'>Inactive</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $reac onclick='reactItm($row->itid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+            } else {
+                $stat = "--";
+                $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewItm($row->itid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='viewItm($row->itid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='viewItm($row->itid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='rejectItm($row->itid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->itcd;
+            $sub_arr[] = "<span data-html='true' data-toggle='tooltip' data-placement='top' title='' data-original-title='$row->dscr'>" . $row->itnm . "</span>";
+            $sub_arr[] = "<span data-html='true' data-toggle='tooltip' data-placement='top' title='' data-original-title='$row->ctnm'>" . $row->ctcd . "</span>";
+            $sub_arr[] = "<span data-html='true' data-toggle='tooltip' data-placement='top' title='' data-original-title='$row->bdnm'>" . $row->bdcd . "</span>";
+            $sub_arr[] = "<span data-html='true' data-toggle='tooltip' data-placement='top' title='' data-original-title='$row->tpnm'>" . $row->tpcd . "</span>";
+            $sub_arr[] = $row->mdl;
+            $sub_arr[] = $row->mlcd;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Stock_model->count_all_itm(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_itm(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+//END SEARCH ITEMS
+
+//GET ITEM DETAILS
+    function get_ItmDet()
+    {
+        $id = $this->input->post('id');
+
+        $this->db->select("item.*,
+        CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(ap.fnme,' ',ap.lnme) AS apnm, CONCAT(md.fnme,' ',md.lnme) AS mdnm, CONCAT(rj.fnme,' ',rj.lnme) AS rjnm");
+        $this->db->from('item');
+        $this->db->join('user_mas cr', 'cr.auid=item.crby');
+        $this->db->join('user_mas ap', 'ap.auid=item.apby', 'LEFT');
+        $this->db->join('user_mas md', 'md.auid=item.mdby', 'LEFT');
+        $this->db->join('user_mas rj', 'rj.auid=item.rjby', 'LEFT');
+        $this->db->where('item.itid', $id);
+        $res['item'] = $this->db->get()->result();
+
+        $this->db->select("*");
+        $this->db->from('item_pics');
+        $this->db->where("itid=$id AND stat=1");
+        $res['pics'] = $this->db->get()->result();
+        echo json_encode($res);
+    }
+//END GET ITEM DETAILS
+
+//UPDATE & APPROVE ITEM </JANAKA 2019-10-02>
+    function itm_update()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $code = strtoupper($this->input->post('it_code_edt'));
+        $id = $this->input->post('itid');
+        $func = $this->input->post('func');
+        $year = date('Y');
+
+        if($func=='edit'){
+            $msg = "Item Updated";
+            $this->Generic_model->updateData('item', array(
+                'ctid' => $this->input->post('cat_edt'),
+                'bdid' => $this->input->post('brd_edt'),
+                'tpid' => $this->input->post('typ_edt'),
+                'ntid' => $this->input->post('ntr_edt'),
+                'strid' => $this->input->post('strtp_edt'),
+                'itnm' => $this->input->post('name_edt'),
+                'itcd' => strtoupper($this->input->post('it_code_edt')),
+                'mdl' => $this->input->post('model_edt'),
+                'mlcd' => strtoupper($this->input->post('md_code_edt')),
+                'szof' => $this->input->post('szof_edt'),
+                'size' => $this->input->post('size_edt'),
+                'clr' => $this->input->post('clrnm_edt'),
+                'clcd' => $this->input->post('clr_edt'),
+                'dscr' => $this->input->post('dscr_edt'),
+                'scli' => $this->input->post('strscl_edt'),
+                'remk' => $this->input->post('remk_edt'),
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ),array('itid'=>$id));
+        }else if($func=='app'){
+            $msg = "Item Approved";
+            $this->Generic_model->updateData('item', array(
+                'ctid' => $this->input->post('cat_edt'),
+                'bdid' => $this->input->post('brd_edt'),
+                'tpid' => $this->input->post('typ_edt'),
+                'ntid' => $this->input->post('ntr_edt'),
+                'strid' => $this->input->post('strtp_edt'),
+                'itnm' => $this->input->post('name_edt'),
+                'itcd' => strtoupper($this->input->post('it_code_edt')),
+                'mdl' => $this->input->post('model_edt'),
+                'mlcd' => strtoupper($this->input->post('md_code_edt')),
+                'szof' => $this->input->post('szof_edt'),
+                'size' => $this->input->post('size_edt'),
+                'clr' => $this->input->post('clrnm_edt'),
+                'clcd' => $this->input->post('clr_edt'),
+                'dscr' => $this->input->post('dscr_edt'),
+                'scli' => $this->input->post('strscl_edt'),
+                'stat' => 1,
+                'remk' => $this->input->post('remk_edt'),
+                'apby' => $_SESSION['userId'],
+                'apdt' => date('Y-m-d H:i:s'),
+            ),array('itid'=>$id));
+        }
+
+        if (!empty($_FILES['pics_edt']['name'][0])) {
+            $flCount = sizeof($_FILES['pics_edt']['name']);
+            $files = $_FILES['pics_edt'];
+            $hsImg = $this->input->post('hsImg');
+
+            if($hsImg==1){//unlink exist images
+                //Get Exist Pics
+                $this->db->select("pcid,pcnm,crdt");
+                $this->db->from('item_pics');
+                $this->db->where("itid=$id AND stat=1");
+                $ePics = $this->db->get()->result();
+                foreach ($ePics as $pic){
+                    unlink('uploads/img/item/' . date('Y',strtotime($pic->crdt))."/".$pic->pcnm);
+                    $this->Generic_model->updateData('item_pics',array('stat'=>0),array('pcid'=>$pic->pcid));
+                }
+            }
+
+            for ($it = 0; $it < $flCount; $it++) {
+                if (is_dir('uploads/img/item/' . $year)) {
+                    $config['upload_path'] = 'uploads/img/item/' . $year;  //'uploads/images/'
+                } else {
+                    mkdir('uploads/img/item/' . $year, 0777, true);
+                    $config['upload_path'] = 'uploads/img/item/' . $year;  //'uploads/images/'
+                }
+
+                $flnme = $code . '_' . (sizeof(glob("uploads/img/item/$year/*")) + 1);
+                $config['allowed_types'] = 'jpg|png|jpeg';
+//                $config['encrypt_name'] = true;
+                $config['max_size'] = '5000'; //KB
+                $config['file_name'] = $flnme;
+                //Load upload library and initialize configuration
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+
+                $_FILES['pics_edt']['name'] = $files['name'][$it];
+                $_FILES['pics_edt']['type'] = $files['type'][$it];
+                $_FILES['pics_edt']['tmp_name'] = $files['tmp_name'][$it];
+                $_FILES['pics_edt']['error'] = $files['error'][$it];
+                $_FILES['pics_edt']['size'] = $files['size'][$it];
+
+                if ($this->upload->do_upload('pics_edt')) {
+                    $uploadData = $this->upload->data();
+                    $picture = $uploadData['file_name'];
+                    $this->Generic_model->insertData('item_pics', array(
+                        'itid' => $id,
+                        'pcnm' => $picture,
+                        'size' => $_FILES['pics_edt']['size'],
+                        'stat' => 1,
+                        'crby' => $_SESSION['userId'],
+                        'crdt' => date('Y-m-d H:i:s'),
+                    ));
+                }
+            }
+        }
+
+        $funcPerm = $this->Generic_model->getFuncPermision('itemMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "$msg ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END UPDATE & APPROVE ITEM </JANAKA 2019-10-02>
+
+//REJECT ITEM </JANAKA 2019-10-02>
+    function itm_Reject()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $id = $this->input->post('id');
+        $this->Generic_model->updateData('item', array(
+            'stat' => 2,
+            'rjby' => $_SESSION['userId'],
+            'rjdt' => date('Y-m-d H:i:s')
+        ), array('itid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('itemMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Item Rejected ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END REJECT ITEM </JANAKA 2019-10-02>
+
+//DEACTIVATE ITEM </JANAKA 2019-10-02>
+    function itm_Deactive()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $id = $this->input->post('id');
+        $this->Generic_model->updateData('item', array(
+            'stat' => 3,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('itid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('itemMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Item Deactivated ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END DEACTIVATE ITEM </JANAKA 2019-10-02>
+
+//ACTIVATE ITEM </JANAKA 2019-10-02>
+    function itm_Activate()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $id = $this->input->post('id');
+        $this->Generic_model->updateData('item', array(
+            'stat' => 1,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('itid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('itemMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Item Reactivated ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ACTIVATE ITEM </JANAKA 2019-10-02>
+//************************************************
+//***      END ITEM REGISTRATION               ***
 //************************************************
 }

@@ -17,13 +17,17 @@ function SmartWizard(target, options) {
     this.curStepIdx   = options.selected;
     this.steps        = $(target).children("ul").children("li").children("a"); // Get all anchors
     this.contentWidth = 0;
-    this.msgBox = '';//$('<div class="msgBox"><div class="content"></div><a href="#" class="close">X</a></div>');
+    this.msgBox = '<div class="msgBox"></div>'//$('<div class="msgBox"><div class="content"></div><a href="#" class="close">X</a></div>');
     this.elmStepContainer = $('<div></div>').addClass("stepContainer");
     this.loader = $('<div>Loading</div>').addClass("loader");
     this.buttons = {
-        next : $('<a>'+options.labelNext+'</a>').attr("href","#").addClass("buttonNext btn btn-default pull-right"),
-        previous : $('<a>'+options.labelPrevious+'</a>').attr("href","#").addClass("buttonPrevious btn btn-default pull-left"),
-        finish  : $('<a>'+options.labelFinish+'</a>').attr("href","#").addClass("buttonFinish btn btn-primary pull-right")
+        // next : $('<a>'+options.labelNext+'</a>').attr("href","#").addClass("buttonNext btn btn-default pull-right"),
+        // previous : $('<a>'+options.labelPrevious+'</a>').attr("href","#").addClass("buttonPrevious btn btn-default pull-left"),
+        // finish  : $('<a>'+options.labelFinish+'</a>').attr("href","#").addClass("buttonFinish btn btn-default pull-right"),
+
+        next : $('<button type="button">'+options.labelNext+'</button>').addClass("buttonNext btn btn-sm btn-rounded btn-default pull-right"),
+        previous : $('<button type="button">'+options.labelPrevious+'</button>').addClass("buttonPrevious btn btn-sm btn-rounded btn-default pull-left"),
+
     };
 
     /*
@@ -84,12 +88,18 @@ function SmartWizard(target, options) {
         this.contentWidth = $this.elmStepContainer.width();
 
         $($this.buttons.next).click(function() {
-            $this.goForward();
-            return false;
+            if(nextBtnActn()){
+                $this.goForward();
+            }else{
+                return false;
+            }
         });
         $($this.buttons.previous).click(function() {
-            $this.goBackward();
-            return false;
+            if(prevBtnActn()){
+                $this.goBackward();
+            }else{
+                return false;
+            }
         });
         $($this.buttons.finish).click(function() {
             
@@ -332,7 +342,6 @@ function SmartWizard(target, options) {
     /*
      * Public methods
      */
-
     SmartWizard.prototype.goForward = function(){
         var nextStepIdx = this.curStepIdx + 1;
         if (this.steps.length <= nextStepIdx){

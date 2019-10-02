@@ -118,7 +118,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
-            <form id="addForm">
+            <form id="addForm" enctype="multipart/form-data">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> User Creation
@@ -183,6 +183,13 @@
                                         <div class="col-md-4 col-xs-12">
                                             <input class="form-control" type="text" name="tele" id="tele"
                                                    placeholder="Land Tele."/>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12">User Profile</label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <input type="file" id="usrImg" name="usrImg"/>
                                         </div>
                                     </div>
                                 </div>
@@ -342,7 +349,15 @@
                                                    placeholder="Land Tele."/>
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12">User Profile</label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <input type="file" id="usrImgEdt" name="usrImgEdt"/>
+                                        </div>
+                                    </div>
                                 </div>
+                                <input type="hidden" id="usrImgOld" name="usrImgOld">
 
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -637,6 +652,26 @@
                 }
             });
             //srchUser();
+
+            //File Uploader Initialiting
+            $("#usrImg").fileinput({
+                allowedFileExtensions: ['jpg', 'png', 'jpeg'],
+                showUpload: false,
+                showCaption: false,
+                browseClass: "btn btn-primary btn-sm btn-rounded",
+                removeClass: "btn btn-warning btn-sm btn-rounded",
+                maxFileSize: 5000, //Kb
+            });
+
+            $("#usrImgEdt").fileinput({
+                allowedFileExtensions: ['jpg', 'png', 'jpeg'],
+                showUpload: false,
+                showCaption: false,
+                browseClass: "btn btn-primary btn-sm btn-rounded",
+                removeClass: "btn btn-warning btn-sm btn-rounded",
+                maxFileSize: 5000, //Kb
+                initialPreviewAsData: true,
+            });
         });
 
         //Search
@@ -699,6 +734,10 @@
         //Add New
         $('#addBtn').click(function (e) {
             e.preventDefault();
+
+            var formObj = document.getElementById('addForm');
+            var formData = new FormData(formObj);
+
             if ($('#addForm').valid()) {
                 $('#addBtn').prop('disabled', true);
                 swal({
@@ -711,8 +750,11 @@
                 jQuery.ajax({
                     type: "POST",
                     url: "<?= base_url(); ?>admin/userCreate",
-                    data: $("#addForm").serialize(),
-                    dataType: 'json',
+                    data: formData,
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
                     success: function (data) {
                         swal({title: "", text: "Registration Success!", type: "success"},
                             function () {
@@ -825,6 +867,24 @@
                         $('#mddt').html(": " + ((data['usrSub'][0]['mddt'] != null && data['usrSub'][0]['mddt'] != "0000-00-00 00:00:00") ? data['usrSub'][0]['mddt'] : "--"));
 
 
+                        $('#usrImgOld').val(data['usrBasic'][0]['uimg']);
+
+                        //File Uploader Initialiting
+                        $("#usrImgEdt").fileinput('enable');
+                        $("#usrImgEdt").fileinput('destroy');
+                        $("#usrImgEdt").fileinput({
+                            allowedFileExtensions: ['jpg', 'png', 'jpeg'],
+                            showUpload: false,
+                            showCaption: false,
+                            browseClass: "btn btn-primary btn-sm btn-rounded",
+                            removeClass: "btn btn-warning btn-sm btn-rounded",
+                            maxFileSize: 5000, //Kb
+                            initialPreviewAsData: true,
+                            initialPreview: [
+                                "<?= base_url()?>uploads/user-image/"+data['usrBasic'][0]['uimg']
+                            ]
+                        });
+
                     }
                     swal.close();
                 },
@@ -841,6 +901,9 @@
         $('#edtBtn').click(function (e) {
             e.preventDefault();
             if ($('#edtform').valid()) {
+
+                var formObj = document.getElementById('edtform');
+                var formData = new FormData(formObj);
 
                 swal({
                         title: "Are you sure to do this ?",
@@ -869,8 +932,11 @@
                                 jQuery.ajax({
                                     type: "POST",
                                     url: "<?= base_url(); ?>admin/userEdit",
-                                    data: $("#edtform").serialize(),
-                                    dataType: 'json',
+                                    data: formData,
+                                    mimeType: "multipart/form-data",
+                                    contentType: false,
+                                    cache: false,
+                                    processData: false,
                                     success: function (data) {
                                         swal({title: "", text: "Updating Success!", type: "success"},
                                             function () {
@@ -922,13 +988,13 @@
 
                         $.ajax({
                             type: "POST",
-                            url: "<?= base_url(); ?>admin/brnReject",
+                            url: "<?= base_url(); ?>admin/userReject",
                             data: {
                                 id: id
                             },
                             dataType: 'json',
                             success: function (data) {
-                                swal({title: "", text: "Branch was rejected!", type: "success"},
+                                swal({title: "", text: "User was rejected!", type: "success"},
                                     function () {
                                         srchUser();
                                     });

@@ -41,7 +41,6 @@
                     <?php } ?>
                     <li class="title" id="Settings_title">SETTINGS</li>
                     <?php $Settings_title = true; ?>
-
                     <?php if (in_array('sysCmp', $permMdul, TRUE)) { ?>
                         <li id="sysCmp">
                             <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> System Components</a>
@@ -133,9 +132,9 @@
                                                     class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
                                     </li>
                                 <?php } ?>
-                                <li>
-                                    <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>
-                                </li>
+<!--                                <li>-->
+<!--                                    <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>-->
+<!--                                </li>-->
                             </ul>
                         </li>
                         <?php $Stock_title = false;
@@ -196,11 +195,39 @@
                         </div>
                     </li>
                 </ul>
+
+                <!-- START TOP RIGHT CORNER NOTIFICATION PANEL-->
+                <?php
+                $tody = date('Y-m-d');
+                $role = $_SESSION['role'];
+                $usid = $_SESSION['userId'];
+                $this->load->model('Generic_model'); // load model
+                if ($role == 1) {
+                    $this->db->select("syst_mesg.mdle,syst_mesg.chng,user_mas.usnm AS desg, DATE_FORMAT(syst_mesg.crdt, '%Y-%m-%d') AS crdt");
+                    $this->db->from("syst_mesg");
+                    $this->db->join('user_mas', 'user_mas.auid = syst_mesg.crby');
+                    $this->db->where('syst_mesg.stat', 1);
+                    $this->db->where(" DATE_ADD(DATE_FORMAT(syst_mesg.crdt, '%Y-%m-%d'), INTERVAL +7 DAY) > '$tody'");
+                    $this->db->order_by("syst_mesg.crdt", "desc");
+                } else {
+                    $this->db->select("test.*, user_mas.usnm AS desg, user_mas.auid , DATE_FORMAT(test.crdt, '%Y-%m-%d') AS crdt");
+                    $this->db->from("user_mas");
+                    $this->db->join("( SELECT * FROM syst_mesg WHERE cmtp=1
+                         UNION SELECT * FROM syst_mesg WHERE cmtp=2 AND uslv='$role' 
+                         UNION SELECT * FROM syst_mesg WHERE mgus='$usid') AS test ", "test.crby=user_mas.auid");
+                    $this->db->where(" DATE_ADD(DATE_FORMAT(test.crdt, '%Y-%m-%d'), INTERVAL +7 DAY) > '$tody'");
+                    $this->db->order_by("test.crdt", "desc");
+                }
+                $query = $this->db->get();
+                $syschng = $query->result();
+                ?>
+                <!-- END TOP RIGHT CORNER NOTIFICATION PANEL-->
+
                 <ul class="app-header-buttons pull-right">
                     <li>
                         <div class="contact contact-rounded contact-bordered contact-lg contact-ps-controls hidden-xs">
 
-                            <img src="<?= base_url(); ?>assets/images/users/user_1.jpg" alt="John Doe">
+                            <img src="<?= base_url(); ?>uploads/user-image/<?= $_SESSION['uimg'] ?>" alt="">
                             <div class="contact-container">
                                 <a href="#"> <?= $_SESSION['username'] ?></a>
                                 <span> <?= $_SESSION['roleText'] ?> </span>
@@ -208,20 +235,107 @@
 
                             <div class="contact-controls">
                                 <div class="dropdown">
-                                    <button type="button" class="btn btn-default btn-icon" data-toggle="dropdown"><span
-                                                class="icon-envelope"></span></button>
-                                    <ul class="dropdown-menu dropdown-left">
+                                    <button type="button" class="btn btn-default btn-icon btn-informer"
+                                            data-toggle="dropdown"
+                                            title="Notification">
+                                        <span class="icon-envelope"></span>
+                                        <span class="informer informer-warning informer-sm informer-square"><?= sizeof($syschng); ?></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-form dropdown-left dropdown-form-wide">
+                                        <li class="padding-0">
+                                            <div class="app-heading title-only app-heading-bordered-bottom">
+                                                <div class="icon">
+                                                    <span class="icon-text-align-left"></span>
+                                                </div>
+                                                <div class="title">
+                                                    <h2>New Message</h2>
+                                                </div>
+                                                <div class="heading-elements">
+                                                    <a href="#"
+                                                       class="btn btn-default btn-icon"><?= sizeof($syschng); ?></a>
+                                                </div>
+                                            </div>
 
-                                        <!-- <li><a href="pages-messages-chat.html"><span class="icon-envelope"></span>
-                                                 Messages</a></li>
-                                         <li><a href="pages-profile-card.html"><span class="icon-users"></span> Contacts</a>
-                                         </li>
-                                         <li class="divider"></li>
-                                         <li><a href="pages-email-inbox.html"><span class="icon-envelope"></span> E-mail
-                                                 <span class="label label-danger pull-right">19/2,399</span></a></li>-->
+                                            <div class="app-timeline scroll app-timeline-simple text-sm"
+                                                 style="height: 240px;">
+
+                                                <?php for ($i = 0; $i < sizeof($syschng); $i++) { ?>
+                                                    <!--<a href="#" class="list-group-item">
+                                                        <div class="list-group-status status-online"></div>
+                                                        <img src="<? /*= base_url(); */ ?>uploads/user_default.png"
+                                                             class="pull-left"
+                                                             alt="John Doe"/>
+                                                        <span class="contacts-title"><? /*= $syschng[$i]->desg; */ ?></span><span
+                                                                class="pull-right"> <? /*= $syschng[$i]->crdt; */ ?></span>
+                                                        <p><? /*= $syschng[$i]->mdle . ' - ' . $syschng[$i]->chng; */ ?></p>
+                                                    </a>-->
+
+                                                    <div class="app-timeline-item">
+                                                        <div class="dot dot-warning"></div>
+                                                        <div class="content">
+                                                            <div class="title margin-bottom-0">
+                                                                <a href="#"><?= $syschng[$i]->desg; ?></a>
+                                                                <?= $syschng[$i]->mdle; ?>
+                                                                <strong><?= $syschng[$i]->chng ?></strong></div>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+
+                                                <!--<div class="app-timeline-item">
+                                                    <div class="dot dot-primary"></div>
+                                                    <div class="content">
+                                                        <div class="title margin-bottom-0"><a href="#">Jessie
+                                                                Franklin</a>
+                                                            uploaded new file <strong>844_jswork.pdf</strong></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="app-timeline-item">
+                                                    <div class="dot dot-warning"></div>
+                                                    <div class="content">
+                                                        <div class="title margin-bottom-0"><a href="#">Taylor Watson</a>
+                                                            changed
+                                                            work status <strong>PSD Dashboard</strong></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="app-timeline-item">
+                                                    <div class="dot dot-success"></div>
+                                                    <div class="content">
+                                                        <div class="title margin-bottom-0"><a href="#">Dmitry
+                                                                Ivaniuk</a>
+                                                            approved project <strong>Boooya</strong></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="app-timeline-item">
+                                                    <div class="dot dot-success"></div>
+                                                    <div class="content">
+                                                        <div class="title margin-bottom-0"><a href="#">Boris Shaw</a>
+                                                            finished
+                                                            work on <strong>Boooya</strong></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="app-timeline-item">
+                                                    <div class="dot dot-danger"></div>
+                                                    <div class="content">
+                                                        <div class="title margin-bottom-0"><a href="#">Jasmine Voyer</a>
+                                                            declined order <strong>Project 155</strong></div>
+                                                    </div>
+                                                </div>-->
+
+                                            </div>
+
+                                        </li>
+                                        <li class="padding-top-0">
+                                            <button class="btn btn-block btn-link"><a
+                                                        href="<?= base_url() ?>user/systMsg"> Preview All </a></button>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
+
                         </div>
                     </li>
                     <li>
@@ -307,7 +421,7 @@
                                 <ul class="dropdown-menu dropdown-left">
                                     <li><a href="<?= base_url(); ?>User"><span class="icon-users"></span> User </a></li>
                                     <li class="divider"></li>
-                                    <li><a href=""><span class="icon-user"></span>Your Profile</a></li>
+                                    <li><a href="<?= base_url(); ?>welcome/userProfile"><span class="icon-user"></span>Your Profile</a></li>
                                     <li><a href="<?= base_url(); ?>welcome/lockScren"><span class="fa fa-lock"></span>
                                             Lock Screen</a></li>
                                     <li class="divider"></li>

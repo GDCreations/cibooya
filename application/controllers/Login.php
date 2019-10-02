@@ -48,10 +48,10 @@ class Login extends CI_Controller
         $username = $this->input->post('lognm');
         $password = $this->input->post('logps');
 
-        $pol = $this->Generic_model->getData('sys_policy',array('post'),array('poid'=>1));
-        if(sizeof($pol)>0 && $pol[0]->post==1){
+        $pol = $this->Generic_model->getData('sys_policy', array('post'), array('poid' => 1));
+        if (sizeof($pol) > 0 && $pol[0]->post == 1) {
             $digeye = $this->input->post('logcd');
-        }else{
+        } else {
             $digeye = '';
         }
         $result = $this->login_model->loginMe($username, $password);
@@ -139,69 +139,13 @@ class Login extends CI_Controller
 
             if (count($result) > 0) {
 
-                if ($result[0]->acst == '3') {
-
-                    if ($result[0]->usmd == 1) {
-                        foreach ($result as $res) {
-                            $sessionArray = array('userId' => $res->auid,
-                                'username' => $res->usnm,
-                                'role' => $res->usmd,
-                                'roleText' => $res->lvnm,
-                                'fname' => $res->fnme,
-                                'lname' => $res->lnme,
-                                'uimg' => $res->uimg,
-                                'lsip' => $res->llip,
-                                'lsdt' => $res->lldt,
-                                'usrbrnc' => $res->brch,
-                                'isLoggedIn' => TRUE
-                            );
-                            $ip = $_SERVER['REMOTE_ADDR'];
-                            //MAC Accress Code for PHP
-                            ob_start(); // Turn on output buffering
-                            system('ipconfig /all'); //Execute external program to display output
-                            $mycom = ob_get_contents(); // Capture the output into a variable
-                            ob_clean(); // Clean (erase) the output buffer
-                            $findme = "Physical";
-                            $pmac = strpos($mycom, $findme); // Find the position of Physical text
-                            $mac = substr($mycom, ($pmac + 36), 17); // Get Physical Address
-                            //echo $mac;
-
-                            $this->Generic_model->updateDataWithoutlog('user_mas', array('acst' => 0, 'lgcd' => null, 'llip' => $ip, 'lldt' => date('Y-m-d H:i:s'), 'islg' => 1), array('auid' => $res->auid));
-                            $logdata_arr = array(
-                                'usid' => $res->auid,
-                                'usnm' => $res->usnm,
-                                'func' => 'User Login --> ' . $res->usnm,
-                                'stat' => 1,
-                                'lgdt' => date('Y-m-d H:i:s'),
-                                'lgip' => $_SERVER['REMOTE_ADDR'],
-                                'mcid' => $mac,
-                            );
-                            $this->db->insert('user_log', $logdata_arr);
-
-                            $this->session->set_userdata($sessionArray);
-                            redirect('/user?message=success');
-                        }
-
-                    } else {
-                        $badlog_arr = array(
-                            'usnm' => $username,
-                            'pswd' => $password,
-                            'eycd' => $digeye,
-                            'lgip' => $ipp,
-                            'lgdt' => date('Y-m-d H:i:s'),
-                            'brdt' => $yourbrowser,
-                            'macd' => $mac,
-                        );
-                        $this->Generic_model->insertData('user_bad_log', $badlog_arr);
-                          redirect('/welcome?message=userlock'); // User lock 3 times use wrong password
-                    }
-
+                if ($result[0]->stat == 0) {
+                    redirect('/welcome?message=accDnid');
+                } else if ($result[0]->stat == 2) {
+                    redirect('/welcome?message=tmpDisable');
                 } else {
-                    if ($result[0]->lgcd == $digeye || $pol[0]->post==0) {
-                        //restric day end locked users 2018-11-13
-                        if ($result[0]->delc == 1) {
-                             redirect('/welcome?message=Delock');
-                        } else {
+                    if ($result[0]->acst == '3') {
+                        if ($result[0]->usmd == 1) {
                             foreach ($result as $res) {
                                 $sessionArray = array('userId' => $res->auid,
                                     'username' => $res->usnm,
@@ -239,35 +183,93 @@ class Login extends CI_Controller
                                 $this->db->insert('user_log', $logdata_arr);
 
                                 $this->session->set_userdata($sessionArray);
-                                 redirect('/user?message=success');
+                                redirect('/user?message=success');
                             }
+
+                        } else {
+                            $badlog_arr = array(
+                                'usnm' => $username,
+                                'pswd' => $password,
+                                'eycd' => $digeye,
+                                'lgip' => $ipp,
+                                'lgdt' => date('Y-m-d H:i:s'),
+                                'brdt' => $yourbrowser,
+                                'macd' => $mac,
+                            );
+                            $this->Generic_model->insertData('user_bad_log', $badlog_arr);
+                            redirect('/welcome?message=userlock'); // User lock 3 times use wrong password
                         }
                     } else {
+                        if ($result[0]->lgcd == $digeye || $pol[0]->post == 0) {
+                            //restric day end locked users 2018-11-13
+                            if ($result[0]->delc == 1) {
+                                redirect('/welcome?message=Delock');
+                            } else {
+                                foreach ($result as $res) {
+                                    $sessionArray = array('userId' => $res->auid,
+                                        'username' => $res->usnm,
+                                        'role' => $res->usmd,
+                                        'roleText' => $res->lvnm,
+                                        'fname' => $res->fnme,
+                                        'lname' => $res->lnme,
+                                        'uimg' => $res->uimg,
+                                        'lsip' => $res->llip,
+                                        'lsdt' => $res->lldt,
+                                        'usrbrnc' => $res->brch,
+                                        'isLoggedIn' => TRUE
+                                    );
+                                    $ip = $_SERVER['REMOTE_ADDR'];
+                                    //MAC Accress Code for PHP
+                                    ob_start(); // Turn on output buffering
+                                    system('ipconfig /all'); //Execute external program to display output
+                                    $mycom = ob_get_contents(); // Capture the output into a variable
+                                    ob_clean(); // Clean (erase) the output buffer
+                                    $findme = "Physical";
+                                    $pmac = strpos($mycom, $findme); // Find the position of Physical text
+                                    $mac = substr($mycom, ($pmac + 36), 17); // Get Physical Address
+                                    //echo $mac;
 
-                        $badlog_arr = array(
-                            'usnm' => $username,
-                            'pswd' => $password,
-                            'eycd' => $digeye,
-                            'lgip' => $ipp,
-                            'lgdt' => date('Y-m-d H:i:s'),
-                            'brdt' => $yourbrowser,
-                            'macd' => $mac,
-                        );
-                        $this->Generic_model->insertData('user_bad_log', $badlog_arr);
-                         redirect('/welcome?message=wrngLgcd'); // wrong login code
+                                    $this->Generic_model->updateDataWithoutlog('user_mas', array('acst' => 0, 'lgcd' => null, 'llip' => $ip, 'lldt' => date('Y-m-d H:i:s'), 'islg' => 1), array('auid' => $res->auid));
+                                    $logdata_arr = array(
+                                        'usid' => $res->auid,
+                                        'usnm' => $res->usnm,
+                                        'func' => 'User Login --> ' . $res->usnm,
+                                        'stat' => 1,
+                                        'lgdt' => date('Y-m-d H:i:s'),
+                                        'lgip' => $_SERVER['REMOTE_ADDR'],
+                                        'mcid' => $mac,
+                                    );
+                                    $this->db->insert('user_log', $logdata_arr);
+
+                                    $this->session->set_userdata($sessionArray);
+                                    redirect('/user?message=success');
+                                }
+                            }
+                        } else {
+
+                            $badlog_arr = array(
+                                'usnm' => $username,
+                                'pswd' => $password,
+                                'eycd' => $digeye,
+                                'lgip' => $ipp,
+                                'lgdt' => date('Y-m-d H:i:s'),
+                                'brdt' => $yourbrowser,
+                                'macd' => $mac,
+                            );
+                            $this->Generic_model->insertData('user_bad_log', $badlog_arr);
+                            redirect('/welcome?message=wrngLgcd'); // wrong login code
+                        }
                     }
                 }
-            }
-            else {
+            } else {
                 $result2 = $this->login_model->checkUserName($username, $password);
-                var_dump(count($result2));
-
+                //var_dump(count($result2));
                 if (count($result2) > 0) {
 
                     if ($result2[0]->acst == '3') {
                         $this->session->sess_destroy();
                         // redirect('Welcome');
-                         redirect('/welcome?message=userlock'); // User lock 3 times use wrong password
+                        redirect('/welcome?message=userlock'); // User lock 3 times use wrong password
                     } else {
                         unset ($_SESSION["userId"]);
 
@@ -284,7 +286,7 @@ class Login extends CI_Controller
                             'macd' => $mac,
                         );
                         $this->Generic_model->insertData('user_bad_log', $badlog_arr);
-                         redirect('/welcome?message=wrngTry' . $chnc);
+                        redirect('/welcome?message=wrngTry' . $chnc);
                     }
                 } else {
                     $badlog_arr = array(
@@ -297,10 +299,11 @@ class Login extends CI_Controller
                         'macd' => $mac,
                     );
                     $this->Generic_model->insertData('user_bad_log', $badlog_arr);
-                     redirect('/welcome?message=fail');
+                    redirect('/welcome?message=fail');
                 }
                 // redirect('/');
             }
+
         } else {
             $badlog_arr = array(
                 'usnm' => $username,
@@ -312,7 +315,7 @@ class Login extends CI_Controller
                 'macd' => $mac,
             );
             $this->Generic_model->insertData('user_bad_log', $badlog_arr);
-              redirect('/welcome?message=sys_update');
+            redirect('/welcome?message=sys_update');
         }
 
     }

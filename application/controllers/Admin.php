@@ -33,7 +33,7 @@ class Admin extends CI_Controller
                 $query = $this->db->get();
                 $chkupdt = $query->result();
 
-                if (count($chkupdt) > 0 && $_SESSION['role'] != 1 ) { /// && $_SESSION['role'] != 1
+                if (count($chkupdt) > 0 && $_SESSION['role'] != 1) { /// && $_SESSION['role'] != 1
                     redirect('/Welcome/sysupdate');
                 }
                 // END CHECK CURRENT TIME IN SYSTEM UPDATE
@@ -105,6 +105,71 @@ class Admin extends CI_Controller
     {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
+
+        // REPORT LOGO
+        if (!empty($_FILES['rptLgo']['name'])) {
+            // previous image delete
+            $path = "uploads/report_logo/";
+            $rplg_old = $this->input->post('rptLgoOld');
+            // Default User image not delete
+            if ($rplg_old != 'default.jpg') {
+                unlink($path . $rplg_old);
+            }
+            // User profile image upload
+            $config['upload_path'] = 'uploads/report_logo/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['encrypt_name'] = TRUE;
+            $config['max_size'] = '5000'; //KB
+            // $config['max_width'] = '1024';
+            // $config['max_height'] = '768';
+            $config['file_name'] = $_FILES["rptLgo"]['name'];
+
+            //Load upload library and initialize configuration
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('rptLgo')) {
+                $uploadData = $this->upload->data();
+                $rplg = $uploadData['file_name'];
+            } else {
+                $rplg = 'default.jpg';
+            }
+        } else {
+            $rplg = $this->input->post('rptLgoOld');
+        }
+        // LOGIN LOGO
+        if (!empty($_FILES['logImg']['name'])) {
+            // previous image delete
+            $path = "uploads/loginImg/";
+            $cplg_old = $this->input->post('logImgOld');
+            // Default User image not delete
+            if ($cplg_old != 'default.jpg') {
+                unlink($path . $cplg_old);
+            }
+            // User profile image upload
+            $config['upload_path'] = 'uploads/loginImg/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['encrypt_name'] = TRUE;
+            $config['max_size'] = '5000'; //KB
+            // $config['max_width'] = '1024';
+            // $config['max_height'] = '768';
+            $config['file_name'] = $_FILES["logImg"]['name'];
+
+            //Load upload library and initialize configuration
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('logImg')) {
+                $uploadData = $this->upload->data();
+                $cplg = $uploadData['file_name'];
+            } else {
+                $cplg = 'default.jpg';
+            }
+        } else {
+            $cplg = $this->input->post('logImgOld');
+        }
+
+        //die();
         $data_ar1 = array(
             'cmne' => $this->input->post('cmne'),
             'synm' => strtoupper($this->input->post('synm')),
@@ -114,6 +179,9 @@ class Admin extends CI_Controller
             'regd' => $this->input->post('regd'),
             'syln' => $this->input->post('syln'),
             'wbml' => $this->input->post('wbml'),
+
+            'rplg' => $rplg,
+            'cplg' => $cplg,
 
             'mdby' => $_SESSION['userId'],
             'mddt' => date('Y-m-d H:i:s'),
@@ -1344,11 +1412,11 @@ class Admin extends CI_Controller
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             } else if ($row->stat == 2) {
-                $stat = "<label class='label label-indi'> Tmp Disable</label>";
+                $stat = "<label class='label label-indi'> Disable</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' $reac onclick='reactUser($auid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reset Password'><i class='fa fa-key' aria-hidden='true'></i></button>";
+                    "<button type='button' $reac onclick='rejectUser($auid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject User'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             } else {
                 $stat = "--";
                 $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewBrnc($auid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -1410,6 +1478,32 @@ class Admin extends CI_Controller
             $prmd = $this->input->post('prmTp');
         }
 
+        // USER PROFILE UPLOAD
+        if (!empty($_FILES['usrImg']['name'])) {
+
+            // User profile image upload
+            $config['upload_path'] = 'uploads/user-image/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['encrypt_name'] = TRUE;
+            $config['max_size'] = '5000'; //KB
+            // $config['max_width'] = '1024';
+            // $config['max_height'] = '768';
+            $config['file_name'] = $_FILES["usrImg"]['name'];
+
+            //Load upload library and initialize configuration
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('usrImg')) {
+                $uploadData = $this->upload->data();
+                $usrImg = $uploadData['file_name'];
+            } else {
+                $usrImg = 'no-image.png';
+            }
+        } else {
+            $usrImg = 'no-image.png';
+        }
+
         /* https://arjunphp.com/generating-alphanumeric-unique-id-in-codeigniter/ */
         /*  1) alpha: A string with lower and uppercase letters only.
             2) alnum: Alpha-numeric string with lower and uppercase characters.
@@ -1438,11 +1532,15 @@ class Admin extends CI_Controller
                 'lnme' => $lnme,
                 'emid' => $email,
 
+                'uimg' => $usrImg,
+
                 'unic' => $this->input->post('unic'),
                 'tpno' => $this->input->post('tele'),
                 'almo' => $this->input->post('mobi'),
                 'udob' => $this->input->post('udob'),
                 'gend' => $this->input->post('ugnd'),
+
+                'pwxp' => date('Y-m-d', strtotime(date('Y-m-d') . ' + 7 days')),
 
                 'stat' => 1,
                 'crby' => $_SESSION['userId'],
@@ -1527,7 +1625,7 @@ class Admin extends CI_Controller
         $this->db->where("user_mas.auid", $auid);
         $data['usrBasic'] = $this->db->get()->result();
 
-        $this->db->select("user_mas.crdt, cr.usnm AS crby, user_mas.mddt, md.usnm AS mdby, user_mas.tmdt, rj.usnm AS tmby ");
+        $this->db->select("user_mas.crdt, cr.usnm AS crby, user_mas.mddt, md.usnm AS mdby, user_mas.tmdt AS rjdt, rj.usnm AS rjnm ");
         $this->db->from('user_mas');
         $this->db->join('user_mas cr', 'cr.auid= user_mas.crby');
         //$this->db->join('user_mas ap', 'ap.auid= user_mas.apby', 'LEFT');
@@ -1552,6 +1650,38 @@ class Admin extends CI_Controller
             $prmd = $this->input->post('prmTpEdt');
         }
 
+        // USER PROFILE UPLOAD EDIT
+        if (!empty($_FILES['usrImgEdt']['name'])) {
+            // previous image delete
+            $path = "uploads/user-image/";
+            $cplg_old = $this->input->post('usrImgOld');
+            // Default User image not delete
+            if ($cplg_old != 'no-image.png') {
+                unlink($path . $cplg_old);
+            }
+            // User profile image upload
+            $config['upload_path'] = 'uploads/user-image/';
+            $config['allowed_types'] = 'jpg|jpeg|png|gif';
+            $config['encrypt_name'] = TRUE;
+            $config['max_size'] = '5000'; //KB
+            // $config['max_width'] = '1024';
+            // $config['max_height'] = '768';
+            $config['file_name'] = $_FILES["usrImgEdt"]['name'];
+
+            //Load upload library and initialize configuration
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('usrImgEdt')) {
+                $uploadData = $this->upload->data();
+                $cplg = $uploadData['file_name'];
+            } else {
+                $cplg = 'default.jpg';
+            }
+        } else {
+            $cplg = $this->input->post('usrImgOld');
+        }
+
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         if ($func == 'edit') {
@@ -1562,6 +1692,8 @@ class Admin extends CI_Controller
                     'brch' => $this->input->post('brchNwEdt'),
                     'usmd' => $this->input->post('uslvNwEdt'),
                     'prmd' => $prmd,
+
+                    'uimg' => $cplg,
 
                     'fnme' => $this->input->post('frnmEdt'),
                     'lnme' => $this->input->post('lsnmEdt'),
@@ -1592,19 +1724,21 @@ class Admin extends CI_Controller
     }
 
     // USER REJECT
-    function brnRejectXX()
+    function userReject()
     {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
         $auid = $this->input->post('id');
-        $this->Generic_model->updateData('brch_mas',
+        $this->Generic_model->updateData('user_mas',
             array(
-                'stat' => 3,
+                'stat' => 0,
+                'tmby' => $_SESSION['userId'],
+                'tmdt' => date('Y-m-d H:i:s'),
             ),
-            array('brid' => $auid));
+            array('auid' => $auid));
 
         $funcPerm = $this->Generic_model->getFuncPermision('usrMng');
-        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Branch Rejected ($auid)");
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "User Rejected ($auid)");
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
@@ -1679,6 +1813,7 @@ class Admin extends CI_Controller
                 'lgps' => '$2y$10$KgBH6wkYF0/B1GF/dyvuxukPt/nObT9mzNmrf84SjJJM9IUD1RBfC', // asd@123
                 'lgcd' => 123456,
 
+                'pwxp' => date('Y-m-d', strtotime(date('Y-m-d') . ' + 14 days')),
                 'upby' => $_SESSION['userId'],
                 'updt' => date('Y-m-d H:i:s'),
             ), array('auid' => $spid));

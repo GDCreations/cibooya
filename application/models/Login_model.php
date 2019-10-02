@@ -8,7 +8,7 @@ class Login_model extends CI_Model
         $this->db->from('user_mas');
         $this->db->join('user_level', 'user_level.id = user_mas.usmd','left');
         $this->db->where('user_mas.usnm', $username);
-        $this->db->where('user_mas.stat', 1);
+        //$this->db->where('user_mas.stat', 1);
         $query = $this->db->get();
 
         $user = $query->result();

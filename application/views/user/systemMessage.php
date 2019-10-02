@@ -34,7 +34,7 @@
         <div class="row form-horizontal">
 
             <div class="col-md-4">
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">Type</label>
                     <div class="col-md-8 col-xs-12">
                         <select class="bs-select" name="type" id="type"
@@ -44,13 +44,12 @@
                             <option value="2"> User</option>
                         </select>
                     </div>
-                </div>
+                </div>-->
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">From Date</label>
                     <div class="col-md-8 col-xs-12">
                         <div class='input-group date'>
-                            <input type='text' class="form-control dateranger" id="dteRng" name="dteRng"
-                                   value="<?= date('Y-m-d') ?>"/>
+                            <input type='text' class="form-control dateranger" id="dteRng" name="dteRng"/>
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
                             </span>
@@ -60,31 +59,31 @@
             </div>
 
             <div class="col-md-4">
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">User Level </label>
                     <div class="col-md-8 col-xs-12">
                         <select class="bs-select" name="srcUslv" id="srcUslv"
                                 onchange="chckBtn(this.value,'srcUslv'); getusersrh(this.value)">
                             <option value="0"> -- Select User Level --</option>
                             <?php
-                            foreach ($uslvlinfo as $uslv) {
-                                echo "<option value='$uslv->id'>$uslv->lvnm</option>";
-                            }
-                            ?>
+                /*                            foreach ($uslvlinfo as $uslv) {
+                                                echo "<option value='$uslv->id'>$uslv->lvnm</option>";
+                                            }
+                                            */ ?>
                         </select>
                     </div>
-                </div>
+                </div>-->
             </div>
 
             <div class="col-md-4">
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">User</label>
                     <div class="col-md-8 col-xs-12" id="srcUsrDiv">
                         <select id="srcUsr" name="srcUsr" class="bs-select" onchange="chckBtn(this.value,'srcUsr')">
                             <option value="0"> -- Select User --</option>
                         </select>
                     </div>
-                </div>
+                </div>-->
                 <div class="form-group">
                     <button class="btn btn-sm btn-primary btn-rounded  btn-icon-fixed pull-right" onclick="srchUser()">
                         <span class="fa fa-search"></span>Search
@@ -101,7 +100,7 @@
                     <thead>
                     <tr>
                         <th class="text-left">#</th>
-                        <th class="text-left">TYPE</th>
+                        <th class="text-left">MESSAGE TYPE</th>
                         <th class="text-left">USER LEVEL</th>
                         <th class="text-left">USER</th>
                         <th class="text-left">TITLE</th>
@@ -128,132 +127,83 @@
             <form id="addForm">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> User Creation
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> New Message
                         </h4>
                     </div>
 
                     <div class="modal-body">
                         <div class="container">
                             <div class="row form-horizontal">
-                                <div class="col-md-6">
+
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Branch <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">Type</label>
                                         <div class="col-md-8 col-xs-12">
-                                            <select class="bs-select" name="brchNw" id="brchNw"
-                                                    onchange="chckBtn(this.value,'brchNw')">
-                                                <?php
-                                                foreach ($branchinfo as $branch) {
-                                                    if ($branch['brch_id'] == 'all') {
-                                                    } else {
-                                                        echo "<option value='$branch[brch_id]'>$branch[brch_name]</option>";
-                                                    }
-                                                }
-                                                ?>
+                                            <select class="bs-select" name="type" id="type"
+                                                    onchange="chngDiv(this.value)">
+                                                <option value="0"> All User</option>
+                                                <option value="1"> User Level</option>
+                                                <option value="2"> User</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">First Name <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">Title
+                                            <span class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="frnm" id="frnm"
-                                                   placeholder="First Name"/>
+                                            <input class="form-control" type="text" name="titl" id="titl"
+                                                   placeholder="Message Title"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">User Name <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="usnm" id="usnm"
-                                                   placeholder="User Name"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">NIC <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="unic" id="unic"
-                                                   onkeyup="checkNic(this.value,'unic','addBtn','udob','ugnd','ugndDiv')"
-                                                   placeholder="NIC"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Contact <span
-                                                    class="fa fa-asterisk req-astrick"
-                                            ></span></label>
-                                        <div class="col-md-4 col-xs-12">
-                                            <input class="form-control" type="text" name="mobi" id="mobi"
-                                                   placeholder="Mobile"/>
-                                        </div>
-                                        <div class="col-md-4 col-xs-12">
-                                            <input class="form-control" type="text" name="tele" id="tele"
-                                                   placeholder="Land Tele."/>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">User Level <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <select class="bs-select" name="uslvNw" id="uslvNw"
-                                                    onchange="chckBtn(this.value,'uslvNw')">
-                                                <option value="0"> -- Select Level --</option>
-                                                <?php
-                                                foreach ($uslvlinfo as $uslv) {
-                                                    echo "<option value='$uslv->id]'>$uslv->lvnm</option>";
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Last Name <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="lsnm" id="lsnm"
-                                                   placeholder="Last Name"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Email <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="email" name="emil"
-                                                   id="emil" placeholder="Email"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">DOB / Gender <span
-                                                    class="fa fa-asterisk req-astrick"
-                                            ></span></label>
-                                        <div class="col-md-4 col-xs-12">
-                                            <input class="form-control datetimepicker" type="text" name="udob" id="udob"
-                                                   placeholder="DOB" readonly/>
-                                        </div>
-                                        <div class="col-md-4 col-xs-12" id="ugndDiv">
-                                            <select class="bs-select" name="ugnd" id="ugnd"
-                                                    onchange="chckBtn(this.value,'ugnd')" readonly>
-                                                <option value='0'>-- Select --</option>
-                                                <option value='1'> Male</option>
-                                                <option value='2'> Female</option>
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Permission Type
+                                        <label class="col-md-4 col-xs-12 control-label">Notification
                                             <span class="fa fa-asterisk req-astrick "></span></label>
                                         <div class="col-md-8 col-xs-12">
                                             <label class="switch">
-                                                Default <input type="checkbox" value="1" id="prmTp" name="prmTp">
-                                            </label> Manual
+                                                No <input type="checkbox" value="1" id="ntfy" name="ntfy">
+                                            </label> Yes
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">User Level </label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <select class="bs-select" name="srcUslv" id="srcUslv"
+                                                    onchange="chckBtn(this.value,'srcUslv'); getusersrh(this.value,'srcUsrDiv','srcUsr','',true)">
+                                                <option value="0"> -- Select User Level --</option>
+                                                <?php
+                                                foreach ($uslvlinfo as $uslv) {
+                                                    echo "<option value='$uslv->id'>$uslv->lvnm</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Message
+                                            <span class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <textarea class="form-control" rows="5" name="msgs" id="msgs"
+                                                      placeholder="Message"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">User</label>
+                                        <div class="col-md-8 col-xs-12" id="srcUsrDiv">
+                                            <select id="srcUsr" name="srcUsr" class="bs-select"
+                                                    onchange="chckBtn(this.value,'srcUsr')">
+                                                <option value="0"> -- Select User --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -284,7 +234,7 @@
             <form id="edtform">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> User Creation
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> New Message
                             <span class="text-muted" id="subTitle_edit"></span></h4>
                         <input type="hidden" id="func" name="func"/>
                         <input type="hidden" id="auid" name="auid"/>
@@ -293,73 +243,45 @@
                     <div class="modal-body">
                         <div class="container">
                             <div class="row form-horizontal">
-                                <div class="col-md-6">
+
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Branch <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">Type</label>
                                         <div class="col-md-8 col-xs-12">
-                                            <select class="bs-select" name="brchNwEdt" id="brchNwEdt"
-                                                    onchange="chckBtn(this.value,'brchNwEdt')">
-                                                <?php
-                                                foreach ($branchinfo as $branch) {
-                                                    if ($branch['brch_id'] == 'all') {
-                                                    } else {
-                                                        echo "<option value='$branch[brch_id]'>$branch[brch_name]</option>";
-                                                    }
-                                                }
-                                                ?>
+                                            <select class="bs-select" name="typeEdt" id="typeEdt"
+                                                    onchange="chngDivEdt(this.value)">
+                                                <option value="0"> All User</option>
+                                                <option value="1"> User Level</option>
+                                                <option value="2"> User</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">First Name <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">Title
+                                            <span class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="frnmEdt" id="frnmEdt"
-                                                   placeholder="First Name"/>
+                                            <input class="form-control" type="text" name="titlEdt" id="titlEdt"
+                                                   placeholder="Message Title"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">User Name <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">Notification
+                                            <span class="fa fa-asterisk req-astrick "></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="usnmEdt" id="usnmEdt"
-                                                   placeholder="User Name"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">NIC <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="unicEdt" id="unicEdt"
-                                                   onkeyup="checkNic(this.value,'unicEdt','edtBtn','udobEdt','ugndEdt','ugndDivEdt')"
-                                                   placeholder="NIC"/>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Contact <span
-                                                    class="fa fa-asterisk req-astrick"
-                                            ></span></label>
-                                        <div class="col-md-4 col-xs-12">
-                                            <input class="form-control" type="text" name="mobiEdt" id="mobiEdt"
-                                                   placeholder="Mobile"/>
-                                        </div>
-                                        <div class="col-md-4 col-xs-12">
-                                            <input class="form-control" type="text" name="teleEdt" id="teleEdt"
-                                                   placeholder="Land Tele."/>
+                                            <label class="switch">
+                                                No <input type="checkbox" value="1" id="ntfyEdt" name="ntfyEdt">
+                                            </label> Yes
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">User Level <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">User Level </label>
                                         <div class="col-md-8 col-xs-12">
-                                            <select class="bs-select" name="uslvNwEdt" id="uslvNwEdt"
-                                                    onchange="chckBtn(this.value,'uslvNwEdt')">
-                                                <option value="0"> -- Select Level --</option>
+                                            <select class="bs-select" name="srcUslvEdt" id="srcUslvEdt"
+                                                    onchange="chckBtn(this.value,'srcUslvEdt'); getusersrh(this.value,'srcUsrDivEdt','srcUsrEdt','',true)">
+                                                <option value="0"> -- Select User Level --</option>
                                                 <?php
                                                 foreach ($uslvlinfo as $uslv) {
                                                     echo "<option value='$uslv->id'>$uslv->lvnm</option>";
@@ -368,52 +290,29 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Last Name <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="lsnmEdt" id="lsnmEdt"
-                                                   placeholder="Last Name"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Email <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="email" name="emilEdt"
-                                                   id="emilEdt" placeholder="Email"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">DOB / Gender <span
-                                                    class="fa fa-asterisk req-astrick"
-                                            ></span></label>
-                                        <div class="col-md-4 col-xs-12">
-                                            <input class="form-control datetimepicker" type="text" name="udobEdt"
-                                                   id="udobEdt"
-                                                   placeholder="DOB" readonly/>
-                                        </div>
-                                        <div class="col-md-4 col-xs-12" id="ugndDivEdt">
-                                            <select class="bs-select" name="ugndEdt" id="ugndEdt"
-                                                    onchange="chckBtn(this.value,'ugnd')" readonly>
-                                                <option value='0'>-- Select --</option>
-                                                <option value='1'> Male</option>
-                                                <option value='2'> Female</option>
 
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Permission Type <span
-                                                    class="fa fa-asterisk req-astrick "
-                                            ></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">Message
+                                            <span class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <label class="switch">
-                                                Default <input type="checkbox" value="1" id="prmTpEdt" name="prmTpEdt">
-                                            </label> Manual
+                                            <textarea class="form-control" rows="5" name="msgsEdt" id="msgsEdt"
+                                                      placeholder="Message"></textarea>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">User</label>
+                                        <div class="col-md-8 col-xs-12" id="srcUsrDivEdt">
+                                            <select id="srcUsrEdt" name="srcUsrEdt" class="bs-select"
+                                                    onchange="chckBtn(this.value,'srcUsrEdt')">
+                                                <option value="0"> -- Select User --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -429,7 +328,6 @@
     </div>
     <!-- END VIEW  -->
 
-
     <script type="text/javascript">
         $().ready(function () {
             //Table Initializing
@@ -442,165 +340,89 @@
 
             $('#addForm').validate({
                 rules: {
-                    brchNw: {
+                    type: {
                         required: true,
-                        notEqual: 0
+                        //notEqual: 0
                     },
-                    frnm: {
+                    titl: {
                         required: true
                     },
-                    emil: {
-                        required: true,
-                        email: true
-                    },
-                    usnm: {
-                        required: true,
-                        remote: {
-                            url: "<?= base_url(); ?>admin/chkUserName",
-                            type: "post",
-                            data: {
-                                usnm: function () {
-                                    return $("#usnm").val();
-                                },
-                                stat: 0
-                            }
-                        }
-                    },
-                    unic: {
-                        required: true,
-                        minlength: 10,
-                        maxlength: 12,
-                    },
-                    mobi: {
-                        required: true,
-                        digits: true,
-                        minlength: 10,
-                        maxlength: 10,
-                    },
-                    tele: {
-                        digits: true,
-                        minlength: 10,
-                        maxlength: 10,
-                    },
-                    uslvNw: {
+                    srcUslv: {
                         required: true,
                         notEqual: 0
                     },
-                    lsnm: {
+                    srcUsr: {
+                        required: true,
+                        notEqual: 0
+                    },
+                    msgs: {
                         required: true,
                     },
-                    udob: {
-                        required: true,
-                    },
-                    ugnd: {
-                        required: true,
-                    },
-
                 },
                 messages: {
-                    brchNw: {
-                        required: "Select Branch ",
-                        notEqual: "Select Branch"
+                    type: {
+                        required: "Select Message Type ",
+                        notEqual: "Select Message Type"
                     },
-                    uslvNw: {
+                    srcUslv: {
                         required: "Select User Level",
                         notEqual: "Select User Level"
                     },
-                    usnm: {
-                        required: "Enter User Name",
-                        remote: "Already entered User Name",
+                    titl: {
+                        required: "Enter Message title",
                     },
-                    mobi: {
-                        required: "Enter mobile number",
-                        digits: "Only numbers are allowed",
-                        minlength: "Please enter 10 digits number",
-                        maxlength: "Please enter 10 digits number",
-                        remote: "This number is already added"
+                    srcUsr: {
+                        required: "Select User ",
                     },
-                    tele: {
-                        digits: "Only numbers are allowed",
-                        minlength: "Please enter 10 digits number",
-                        maxlength: "Please enter 10 digits number",
-                        remote: "This number is already added"
-                    },
-                    email: {
-                        required: "Enter email address",
-                        email: "Please enter valid email address"
+                    msgs: {
+                        required: "Enter Message",
                     },
                 }
             });
 
             $('#edtform').validate({
                 rules: {
-                    usnmEdt: {
+                    typeEdt: {
                         required: true,
-                        remote: {
-                            url: "<?= base_url(); ?>admin/chkUserName",
-                            type: "post",
-                            data: {
-                                usnm: function () {
-                                    return $("#usnmEdt").val();
-                                },
-                                auid: function () {
-                                    return $("#auid").val();
-                                },
-                                stat: 1
-                            }
-                        }
+                        //notEqual: 0
                     },
-                    brchNwEdt: {
+                    titlEdt: {
+                        required: true
+                    },
+                    srcUslvEdt: {
                         required: true,
                         notEqual: 0
                     },
-                    frnmEdt: {
-                        required: true
-                    },
-                    emilEdt: {
+                    srcUsrEdt: {
                         required: true,
-                        email: true
+                        notEqual: 0
                     },
-                    mobiEdt: {
+                    msgsEdt: {
                         required: true,
-                        digits: true,
-                        minlength: 10,
-                        maxlength: 10,
-                    },
-                    teleEdt: {
-                        digits: true,
-                        minlength: 10,
-                        maxlength: 10,
                     },
                 },
                 messages: {
-                    nameEdt: {
-                        required: "Enter Branch name",
-                        remote: "Already entered name"
+                    typeEdt: {
+                        required: "Select Message Type ",
+                        notEqual: "Select Message Type"
                     },
-                    codeEdt: {
-                        required: "Enter Branch code",
-                        remote: "Already entered code"
+                    srcUslvEdt: {
+                        required: "Select User Level",
+                        notEqual: "Select User Level"
                     },
-
-                    addrEdt: {
-                        required: "Enter supplier address"
+                    titlEdt: {
+                        required: "Enter Message title",
                     },
-                    mobiEdt: {
-                        required: "Enter mobile number",
-                        digits: "Only numbers are allowed",
-                        minlength: "Please enter 10 digits number",
-                        maxlength: "Please enter 10 digits number",
+                    srcUsrEdt: {
+                        required: "Select User ",
+                        notEqual: "Select User "
                     },
-                    teleEdt: {
-                        digits: "Only numbers are allowed",
-                        minlength: "Please enter 10 digits number",
-                        maxlength: "Please enter 10 digits number",
-                    },
-                    emailEdt: {
-                        required: "Enter email address",
-                        email: "Please enter valid email address"
+                    msgsEdt: {
+                        required: "Enter Message",
                     },
                 }
             });
+
             //srchUser();
 
             disableSelct('srcUslv');
@@ -609,23 +431,34 @@
 
         // type div change
         function chngDiv(val) {
-
             if (val == 1) {
                 enableSelct('srcUslv');
                 disableSelct('srcUsr');
-
             } else if (val == 2) {
                 enableSelct('srcUslv');
                 enableSelct('srcUsr');
-
             } else {
                 disableSelct('srcUslv');
                 disableSelct('srcUsr');
             }
         }
 
+        // type div change edit
+        function chngDivEdt(val) {
+            if (val == 1) {
+                enableSelct('srcUslvEdt');
+                disableSelct('srcUsrEdt');
+            } else if (val == 2) {
+                enableSelct('srcUslvEdt');
+                enableSelct('srcUsrEdt');
+            } else {
+                disableSelct('srcUslvEdt');
+                disableSelct('srcUsrEdt');
+            }
+        }
+
         //load search users
-        function getusersrh(uslv) {
+        function getusersrh(uslv, div, htid, seltdid, init) {
             //var user = document.getElementById('srlevel').value;
             $.ajax({
                 url: '<?= base_url(); ?>user/getusersrh',
@@ -636,92 +469,86 @@
                 dataType: 'json',
                 success: function (response) {
                     var len = response.length;
-                    var child1 = $('#srcUsrDiv').children();
+                    var child1 = $('#' + div).children();
                     var child2 = child1.find('div').children();
                     child2.empty();
 
                     if (len != 0) {
-                        $('#srcUsr').empty();
-                        $('#srcUsr').append("<option value='0'>-- Select A User --</option>");
+                        $('#' + htid).empty();
+                        $('#' + htid).append("<option value='0'>-- Select A User --</option>");
                         child2.append("<li data-original-index=\"0\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">-- Select A User --\n" +
                             "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
                         for (var i = 0; i < len; i++) {
                             var id = response[i]['auid'];
                             var name = response[i]['usnm'];
-                            var $el = $('#srcUsr');
+                            var $el = $('#' + htid);
                             $el.append($("<option  > Select User</option>")
                                 .attr("value", id).text(name));
 
                             child2.append("<li data-original-index=\"" + (i + 1) + "\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">" + name + "\n" +
                                 "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
+
+                            if (seltdid == id) {
+                                set_select( htid, seltdid);
+                            }
                         }
                     } else {
-                        $('#srcUsr').empty();
-                        $('#srcUsr').append("<option value=''>No User</option>");
+                        $('#' + htid).empty();
+                        $('#' + htid).append("<option value=''>No User</option>");
 
                         child2.append("<li data-original-index=\"0\" class=\"\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\"><span class=\"text\">-- No User --</span><span class=\" fa fa-check check-mark\"></span></a></li>");
                     }
-                    default_Selector(child1.find('div'));
+                    // Default selector enable disable
+                    if (init) default_Selector(child1.find('div'));
                 },
             });
         }
 
         //Search
         function srchUser() {
-            var brch = $('#brch').val();
-            var uslv = $('#uslv').val();
-            var stat = $('#stat').val();
+            var dteRng = $('#dteRng').val();
 
-            if (brch == '0') {
-                $('#brch').parent().css('border', '1px solid red');
-                $('#brch').parent().css('border-radius', '4px');
-            } else {
-                $('#brch').parent().css('border', '0px');
-
-                $('#userDataTb').DataTable().clear();
-                $('#userDataTb').DataTable({
-                    "destroy": true,
-                    "cache": false,
-                    "processing": true,
-                    "orderable": true,
-                    "language": {
-                        processing: '<i class="fa fa-spinner fa-spin fa-fw" style="font-size:20px;color:red;"></i><span class=""> Loading...</span> '
-                    },
-                    "lengthMenu": [
-                        [10, 25, 50, 100, -1],
-                        [10, 25, 50, 100, "All"]
-                    ],
-                    "serverSide": true,
-                    "columnDefs": [
-                        {className: "text-left", "targets": [2, 3, 5, 6]},
-                        {className: "text-center", "targets": [0, 1, 4, 7, 8,9]},
-                        {className: "text-right", "targets": [0]},
-                        {className: "text-nowrap", "targets": [2, 3]},
-                    ],
-                    "order": [[6, "DESC"]], //ASC  desc
-                    "aoColumns": [
-                        {sWidth: '3%'}, //#
-                        {sWidth: '5%'}, //Code
-                        {sWidth: '10%'}, //Name
-                        {sWidth: '15%'}, //Address
-                        {sWidth: '10%'}, //Mobile
-                        {sWidth: '10%'}, //Created By
-                        {sWidth: '10%'}, //Created date
-                        {sWidth: '10%'}, //Status
-                        {sWidth: '10%'}, //Status
-                        {sWidth: '10%'} //Option
-                    ],
-                    "ajax": {
-                        url: '<?= base_url(); ?>admin/searchUser',
-                        type: 'post',
-                        data: {
-                            brch: brch,
-                            uslv: uslv,
-                            stat: stat,
-                        }
+            $('#userDataTb').DataTable().clear();
+            $('#userDataTb').DataTable({
+                "destroy": true,
+                "cache": false,
+                "processing": true,
+                "orderable": true,
+                "language": {
+                    processing: '<i class="fa fa-spinner fa-spin fa-fw" style="font-size:20px;color:red;"></i><span class=""> Loading...</span> '
+                },
+                "lengthMenu": [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                "serverSide": true,
+                "columnDefs": [
+                    {className: "text-left", "targets": [1, 2, 3, 5]},
+                    {className: "text-center", "targets": [0, 6, 7, 8, 9]},
+                    {className: "text-right", "targets": [0]},
+                    {className: "text-nowrap", "targets": [5]},
+                ],
+                "order": [[8, "DESC"]], //ASC  desc
+                "aoColumns": [
+                    {sWidth: '3%'}, //#
+                    {sWidth: '10%'}, //Code
+                    {sWidth: '10%'}, //Name
+                    {sWidth: '10%'}, //Address
+                    {sWidth: '10%'}, //Mobile
+                    {sWidth: '15%'}, //Created By
+                    {sWidth: '5%'}, //Created date
+                    {sWidth: '10%'}, //Status
+                    {sWidth: '10%'}, //Status
+                    {sWidth: '5%'} //Option
+                ],
+                "ajax": {
+                    url: '<?= base_url(); ?>user/srchSysMsg',
+                    type: 'post',
+                    data: {
+                        dteRng: dteRng,
                     }
-                });
-            }
+                }
+            });
         }
 
         //Add New
@@ -731,14 +558,14 @@
                 $('#addBtn').prop('disabled', true);
                 swal({
                     title: "Processing...",
-                    text: "User data saving..",
+                    text: "Data saving..",
                     imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                     showConfirmButton: false
                 });
 
                 jQuery.ajax({
                     type: "POST",
-                    url: "<?= base_url(); ?>admin/userCreate",
+                    url: "<?= base_url(); ?>user/addNewmessg",
                     data: $("#addForm").serialize(),
                     dataType: 'json',
                     success: function (data) {
@@ -761,7 +588,7 @@
         });
 
         //View
-        function viewBrnc(id, func) {
+        function edtModule(id, func) {
             swal({
                 title: "Loading Data...",
                 text: "Details Loading",
@@ -769,44 +596,27 @@
                 showConfirmButton: false
             });
 
-            if (func == 'view') {
-                //VIEW MODEL
-                $('#subTitle_edit').html(' - View');
-                $('#edtBtn').css('display', 'none');
-                $("#modal-view").find('.edit_req').css("display", "none");
+            //EDIT MODEL
+            $('#subTitle_edit').html(' - Edit');
+            $('#edtBtn').css('display', 'inline');
+            $('#edtBtn').html('Update');
+            $("#modal-view").find('.edit_req').css("display", "inline");
 
-                //Make readonly all fields
-                $("#modal-view :input").attr("readonly", true);
-                $("#prmTpEdt").attr("disabled", true);
+            //Remove readonly all fields
+            $("#modal-view :input").attr("readonly", false);
+            $("#prmTpEdt").attr("disabled", false);
+            $("#udobEdt").attr("readonly", true);
 
-                $("#modal-view").find('.bootstrap-select').addClass("disabled dropup");
-                $("#modal-view").find('.bootstrap-select').children().addClass("disabled dropup");
-                var des = "disabled";
-                //VIEW MODEL
-            } else if (func == 'edit') {
-                //EDIT MODEL
-                $('#subTitle_edit').html(' - Edit');
-                $('#edtBtn').css('display', 'inline');
-                $('#edtBtn').html('Update');
-                $("#modal-view").find('.edit_req').css("display", "inline");
-
-                //Remove readonly all fields
-                $("#modal-view :input").attr("readonly", false);
-                $("#prmTpEdt").attr("disabled", false);
-                $("#udobEdt").attr("readonly", true);
-
-                $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
-                $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
-                var des = "";
-                //EDIT MODEL
-            }
+            $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
+            $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
+            //EDIT MODEL
 
             $('#func').val(func);
             $('#auid').val(id);
 
             jQuery.ajax({
                 type: "POST",
-                url: "<?= base_url(); ?>admin/getUserDet",
+                url: "<?= base_url(); ?>user/getSysMsgDet",
                 data: {
                     id: id
                 },
@@ -814,26 +624,22 @@
                 success: function (data) {
                     var len = data.length;
                     if (len > 0) {
-                        set_select('brchNwEdt', data[0]['brch']);
-                        set_select('uslvNwEdt', data[0]['usmd']);
-                        set_select('ugndEdt', data[0]['gend']);
+                        chngDivEdt(data[0]['cmtp']);
 
-                        $('#frnmEdt').val(data[0]['fnme']);
-                        $('#lsnmEdt').val(data[0]['lnme']);
+                        set_select('typeEdt', data[0]['cmtp']);
+                        set_select('srcUslvEdt', data[0]['uslv']);
 
-                        $('#emilEdt').val(data[0]['emid']);
-                        $('#usnmEdt').val(data[0]['usnm']);
+                        //getusersrh(data[0]['uslv']);
+                        getusersrh(data[0]['uslv'], 'srcUsrDivEdt', 'srcUsrEdt', data[0]['mgus'], false);
+                        //set_select('srcUsrEdt', data[0]['mgus']);
 
-                        $('#unicEdt').val(data[0]['unic']);
-                        $('#udobEdt').val(data[0]['udob']);
-                        //$('#ugndEdt').val(data[0]['gend']);
-                        $('#teleEdt').val(data[0]['tpno']);
-                        $('#mobiEdt').val(data[0]['almo']);
+                        $('#titlEdt').val(data[0]['mdle']);
+                        $('#msgsEdt').val(data[0]['chng']);
 
-                        if (data[0]['prmd'] == 1) {
-                            $("#prmTpEdt").prop("checked", true);
+                        if (data[0]['swnt'] == 1) {
+                            $("#ntfyEdt").prop("checked", true);
                         } else {
-                            $("#prmTpEdt").prop("checked", false);
+                            $("#ntfyEdt").prop("checked", false);
                         }
                     }
                     swal.close();
@@ -868,94 +674,41 @@
                             var func = $('#func').val();
                             $('#edtBtn').prop('disabled', false);
 
-                            if (func == 'edit') {
-                                swal({
-                                    title: "Processing...",
-                                    text: "User's details updating..",
-                                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                                    showConfirmButton: false
-                                });
+                            swal({
+                                title: "Processing...",
+                                text: "User's details updating..",
+                                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                                showConfirmButton: false
+                            });
 
-                                jQuery.ajax({
-                                    type: "POST",
-                                    url: "<?= base_url(); ?>admin/userEdit",
-                                    data: $("#edtform").serialize(),
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        swal({title: "", text: "Updating Success!", type: "success"},
-                                            function () {
-                                                $('#edtBtn').prop('disabled', false);
-                                                clear_Form('edtform');
-                                                $('#modal-view').modal('hide');
-                                                srchUser();
-                                            });
-                                    },
-                                    error: function (data, textStatus) {
-                                        swal({title: "Updating Failed", text: textStatus, type: "error"},
-                                            function () {
-                                                location.reload();
-                                            });
-                                    }
-                                });
-                            }
-                            else {
-                                alert('Contact System Admin');
-                            }
+                            jQuery.ajax({
+                                type: "POST",
+                                url: "<?= base_url(); ?>user/sysMsgEdit",
+                                data: $("#edtform").serialize(),
+                                dataType: 'json',
+                                success: function (data) {
+                                    swal({title: "", text: "Updating Success!", type: "success"},
+                                        function () {
+                                            $('#edtBtn').prop('disabled', false);
+                                            clear_Form('edtform');
+                                            $('#modal-view').modal('hide');
+                                            srchUser();
+                                        });
+                                },
+                                error: function (data, textStatus) {
+                                    swal({title: "Updating Failed", text: textStatus, type: "error"},
+                                        function () {
+                                            location.reload();
+                                        });
+                                }
+                            });
+
                         } else {
                             swal("Cancelled", " ", "warning");
                         }
                     });
             }
         });
-
-        //Reject
-        function rejectUser(id) {
-            swal({
-                    title: "Are you sure reject ?",
-                    text: "",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3bdd59",
-                    confirmButtonText: "Yes",
-                    cancelButtonText: "No",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        swal({
-                            title: "Processing...",
-                            text: "Rejecting...",
-                            imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                            showConfirmButton: false
-                        });
-
-                        $.ajax({
-                            type: "POST",
-                            url: "<?= base_url(); ?>admin/brnReject",
-                            data: {
-                                id: id
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                swal({title: "", text: "Branch was rejected!", type: "success"},
-                                    function () {
-                                        srchUser();
-                                    });
-                            },
-                            error: function (data, textStatus) {
-                                swal({title: "Faild", text: textStatus, type: "error"},
-                                    function () {
-                                        location.reload();
-                                    });
-                            }
-                        });
-                    } else {
-                        swal("Cancelled", " ", "warning");
-                    }
-                });
-        }
-
 
     </script>
 </div>
