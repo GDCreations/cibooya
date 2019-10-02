@@ -113,14 +113,17 @@
     };
 
     $().ready(function () {
-        $("#logps").on({
+        /*$("#logps").on({
             mouseenter: function(){
                 $('#logps').attr('type', 'text');
             },
             mouseleave: function(){
                 $('#logps').attr('type', 'password');
             },
-        });
+            click: function(){
+                $('#logps').attr('type', 'password');
+            }
+        });*/
     });
 
     // SHOW HIDE PASSWORD
