@@ -1,5 +1,28 @@
 
 -----------------------------------------------------
+2019-09-30 JANAKA
+ALTER TABLE `item` ADD `ctid` INT NOT NULL COMMENT 'Category Id (category tbl)' AFTER `itid`;
+ALTER TABLE `item` ADD `bdid` INT NOT NULL COMMENT 'Brand id (brand tbl)' AFTER `ctid`;
+ALTER TABLE `item` ADD `mlcd` VARCHAR(200) NOT NULL COMMENT 'Model Code' AFTER `mdl`;
+ALTER TABLE `item` CHANGE `scli` `scli` INT(11) NOT NULL COMMENT 'Stocking scale (One piece)';
+ALTER TABLE `item` ADD `szof` VARCHAR(200) NOT NULL COMMENT 'Size of' AFTER `size`;
+ALTER TABLE `item` ADD `remk` TEXT NOT NULL COMMENT 'Remark' AFTER `stat`;
+ALTER TABLE `nature` ADD `dscr` TEXT NOT NULL COMMENT 'Discription' AFTER `ntnm`;
+INSERT INTO `nature` (`ntid`, `ntnm`, `dscr`, `stat`) VALUES (NULL, 'Fragile (Glassy)', 'Glass, Porcelain, Clay equipment etc', '1');
+INSERT INTO `nature` (`ntid`, `ntnm`, `dscr`, `stat`) VALUES (NULL, 'Flexible', 'Rubber, Aluminium, Metal Wire etc', '1');
+INSERT INTO `nature` (`ntid`, `ntnm`, `dscr`, `stat`) VALUES (NULL, 'Crackable', 'Plastic, Fiber Glass etc', '1');
+INSERT INTO `nature` (`ntid`, `ntnm`, `dscr`, `stat`) VALUES (NULL, 'Explosive', 'Balloons etc', '1');
+ALTER TABLE `str_type` ADD `remk` TEXT NOT NULL COMMENT 'Remark' AFTER `stnm`;
+INSERT INTO `str_type` (`strid`, `stnm`, `remk`, `stat`) VALUES (NULL, 'Block Stacking', 'Storage begins on a pallet or the floor', '1');
+INSERT INTO `str_type` (`strid`, `stnm`, `remk`, `stat`) VALUES (NULL, 'Racks', '', '1');
+INSERT INTO `str_type` (`strid`, `stnm`, `remk`, `stat`) VALUES (NULL, 'Shelves and Bins', 'Shelves and bins can take the stationary, mobile or flexible form', '1');
+INSERT INTO `str_type` (`strid`, `stnm`, `remk`, `stat`) VALUES (NULL, 'Dry Storage', 'Restaurants, grocers and other food businesses use dry storage for bread, pasta and other dry foods', '1'), (NULL, 'Cold Storage', 'Certain food inventory is stored in refrigerators, coolers and freezers to maintain safety and preserve quality', '1');
+INSERT INTO `scale` (`slid`, `scl`, `scnm`, `stat`) VALUES (NULL, 'm', 'Meter', '1'), (NULL, 'kg', 'Kilogram', '1');
+INSERT INTO `scale` (`slid`, `scl`, `scnm`, `stat`) VALUES (NULL, 'L', 'Liter', '1'), (NULL, 'Pieces', 'Pieces', '1');
+ALTER TABLE `item_pics` CHANGE `pccd` `pcnm` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'Picture Name';
+ALTER TABLE `item_pics` ADD `size` DOUBLE NOT NULL COMMENT 'File Size' AFTER `pcnm`;
+ALTER TABLE `item_pics` ADD `crby` INT NOT NULL COMMENT 'Created by' AFTER `stat`;
+ALTER TABLE `item_pics` ADD `crdt` DATETIME NOT NULL COMMENT 'Created date' AFTER `crby`;
 -----------------------------------------------------
 -----------------------------------------------------
 2019-10-01 Gemunu

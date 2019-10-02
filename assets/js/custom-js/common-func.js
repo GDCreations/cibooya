@@ -77,6 +77,55 @@ function disableSelct(id) {
     $('#'+id).parent().addClass("disabled");
     $('#'+id).prev().prev().addClass("disabled");
 }
+
+//Enable All selectors in <DIV>
+// id - <DIV> id
+function enableAllSelct(id) {
+    sltr_chld = $('#'+id).find('select');
+    sltr_chld.map(function () {
+        var id2 = $(this).attr('id');
+        $('#'+id2).prop('disabled',false);
+        $('#'+id2).parent().removeClass("disabled");
+        $('#'+id2).prev().prev().removeClass("disabled");
+    });
+}
+
+//Desable All selectors in <DIV>
+// id - <DIV> id
+function disableAllSelct(id) {
+    sltr_chld = $('#'+id).find('select');
+    sltr_chld.map(function () {
+        var id2 = $(this).attr('id');
+        $('#'+id2).prop('disabled',true);
+        $('#'+id2).parent().addClass("disabled");
+        $('#'+id2).prev().prev().addClass("disabled");
+    });
+}
+
+//Readonly OFF All selectors in <DIV>
+// id - <DIV> id
+function editAllSelct(id) {
+    sltr_chld = $('#'+id).find('select');
+    sltr_chld.map(function () {
+        var id2 = $(this).attr('id');
+        $('#'+id2).prop('readonly',false);
+        $('#'+id2).parent().removeClass("disabled");
+        $('#'+id2).prev().prev().removeClass("disabled");
+    });
+}
+
+//Readonly ON All selectors in <DIV>
+// id - <DIV> id
+function readonlyAllSelct(id) {
+    sltr_chld = $('#'+id).find('select');
+    sltr_chld.map(function () {
+        var id2 = $(this).attr('id');
+        $('#'+id2).prop('readonly',true);
+        $('#'+id2).parent().addClass("disabled");
+        $('#'+id2).prev().prev().addClass("disabled");
+    });
+}
+
 // NIC VALIDATION AND FIND DOB & GENDER USEING NIC
 
 // nic - NIC no / vlid - passing value html id / htid - htmal id (disable enable button) / dob - DOB html id / gend - Gender html id / genDiv - gend parent div
@@ -227,3 +276,21 @@ function checkNic(nic, vlid, htid, dob, gend, genDiv) {
 
     // document.getElementById('msg_text').innerHTML = "<div></div>";
 };
+
+//SMART WIZARD RESET
+//id - Wizard ID
+//fst - First Step id
+//sunmt - Submit button id
+function resetSmWizard(id,fst,submt) {
+    $('#'+id).children().first().children().children().removeClass('done');
+    $('#'+id).children().first().children().children().removeClass('selected');
+    $('#'+id).children().first().children().children().removeClass('active');
+    $('#'+id).children().first().children().first().children().addClass('selected');
+
+    $('#'+id).find('.stepContainer').children().css('display','none');
+    $('#'+fst).css('display','block');
+    $('#'+submt).css('display','none');
+
+    $('.buttonNext').removeClass('buttonDisabled disabled');
+    $('.buttonPrevious').addClass('buttonDisabled disabled');
+}
