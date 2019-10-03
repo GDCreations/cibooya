@@ -12,6 +12,12 @@ class Welcome extends CI_Controller
 
         $this->load->model('Generic_model', '', TRUE);
         date_default_timezone_set('Asia/Colombo');
+
+        if (!empty($_SESSION['userId'])) {
+        } else {
+            $this->session->sess_destroy();
+            $this->index();
+        }
     }
 
     public function index()
@@ -153,19 +159,105 @@ class Welcome extends CI_Controller
         //$dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('userProfile');
 
         $usid = $_SESSION['userId'];
+        $usbr = $_SESSION['usrbrnc'];
 
         $this->db->select("user_mas.*, user_level.lvnm, brch_mas.brcd, brch_mas.brnm, ");
         $this->db->from("user_mas");
-        $this->db->join("user_level",'user_level.id = user_mas.usmd');
-        $this->db->join("brch_mas",'brch_mas.brid = user_mas.brch');
+        $this->db->join("user_level", 'user_level.id = user_mas.usmd');
+        $this->db->join("brch_mas", 'brch_mas.brid = user_mas.brch');
         $this->db->where(" user_mas.auid", $usid);
         $query = $this->db->get();
         $dataArr['userinfo'] = $query->result();
 
-        //$dataArr['uslvlinfo'] = $this->Generic_model->getData('user_level', '', "stat = 1 AND id != 1");
+        $dataArr['memberinfo'] = $this->Generic_model->getData('user_mas', '', "stat = 1 AND usmd != 1 AND  auid != $usid AND brch = $usbr"); //
 
         $this->load->view('common/userProfile', $dataArr);
         $this->load->view('common/tmpFooter', $data);
     }
+
+    // USER PROFILE DETAILS EDIT
+    function editProfile()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $name = $this->input->post('name');
+        $value = $this->input->post('value');
+
+        if ($name == 'emil') {
+            $updtArr = array('emid' => $value);
+
+        } else if ($name == 'mobile') {
+            $updtArr = array('almo' => $value);
+        } else {
+        }
+
+        $this->Generic_model->updateData('user_mas', $updtArr, array('auid' => $this->input->post('pk')));
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $this->Log_model->ErrorLog('0', '1', '2', '3');
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    // USER PASSWORD CHANGES
+    public function upd_pass()
+    {
+        $cur_usr = $this->Generic_model->getData('user_mas', '', array('auid' => $_SESSION['userId']), '');
+        $pass = $this->input->post('olpss');
+        $nw_pswd = $this->input->post('nwpss');
+        //MAC Accress Code for PHP
+        ob_start(); // Turn on output buffering
+        system('ipconfig /all'); //Execute external program to display output
+        $mycom = ob_get_contents(); // Capture the output into a variable
+        ob_clean(); // Clean (erase) the output buffer
+        $findme = "Physical";
+        $pmac = strpos($mycom, $findme); // Find the position of Physical text
+        $mac = substr($mycom, ($pmac + 36), 17); // Get Physical Address
+        //echo $mac;
+
+        $res = password_verify($pass, $cur_usr[0]->lgps);
+
+        // GET NEW PASSWORD VALID DATE
+        $nxdt = date('Y-m-d', strtotime(date('Y-m-d') . ' + 45 days'));
+
+        if ($res == 1) {
+            $newpassword = password_hash($nw_pswd, PASSWORD_DEFAULT);
+            $where_arr = array(
+                'auid' => $_SESSION['userId']
+            );
+            $data_ar = array(
+                'lgps' => $newpassword,
+                'pwxp' => $nxdt,
+                'fslg' => 0,
+                'upby' => $_SESSION['userId'],
+                'updt' => date('Y-m-d'),
+            );
+            $this->Generic_model->updateDataWithoutlog('user_mas', $data_ar, $where_arr);
+
+            $username = $this->session->userdata('username');
+            $userid = $this->session->userdata('userId');
+
+            $logdata_arr = array(
+                'usid' => $userid,
+                'usnm' => $username,
+                'func' => 'User Update Password --> ' . $username,
+                'stat' => 1,
+                'lgdt' => date('Y-m-d H:i:s'),
+                'lgip' => $_SERVER['REMOTE_ADDR'],
+                'mcid' => $mac,
+            );
+            $this->db->insert('user_log', $logdata_arr);
+
+            echo json_encode(true);
+
+        } else {
+            echo json_encode(false);
+        }
+    }
+
 
 }
