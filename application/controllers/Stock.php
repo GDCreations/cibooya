@@ -47,7 +47,7 @@ class Stock extends CI_Controller
 //OPEN PAGE </JANAKA 2019-09-18>
     function supReg()
     {
-        $data['acm'] = 'supMng'; //Module
+        $data['acm'] = 'stcCmp'; //Module
         $data['acp'] = 'supReg'; //Page
         $this->load->view('common/tmpHeader');
         $per['permission'] = $this->Generic_model->getPermision();
@@ -1887,7 +1887,7 @@ class Stock extends CI_Controller
         $func = $this->input->post('func');
         $year = date('Y');
 
-        if($func=='edit'){
+        if ($func == 'edit') {
             $msg = "Item Updated";
             $this->Generic_model->updateData('item', array(
                 'ctid' => $this->input->post('cat_edt'),
@@ -1908,8 +1908,8 @@ class Stock extends CI_Controller
                 'remk' => $this->input->post('remk_edt'),
                 'mdby' => $_SESSION['userId'],
                 'mddt' => date('Y-m-d H:i:s'),
-            ),array('itid'=>$id));
-        }else if($func=='app'){
+            ), array('itid' => $id));
+        } else if ($func == 'app') {
             $msg = "Item Approved";
             $this->Generic_model->updateData('item', array(
                 'ctid' => $this->input->post('cat_edt'),
@@ -1931,7 +1931,7 @@ class Stock extends CI_Controller
                 'remk' => $this->input->post('remk_edt'),
                 'apby' => $_SESSION['userId'],
                 'apdt' => date('Y-m-d H:i:s'),
-            ),array('itid'=>$id));
+            ), array('itid' => $id));
         }
 
         if (!empty($_FILES['pics_edt']['name'][0])) {
@@ -1939,15 +1939,15 @@ class Stock extends CI_Controller
             $files = $_FILES['pics_edt'];
             $hsImg = $this->input->post('hsImg');
 
-            if($hsImg==1){//unlink exist images
+            if ($hsImg == 1) {//unlink exist images
                 //Get Exist Pics
                 $this->db->select("pcid,pcnm,crdt");
                 $this->db->from('item_pics');
                 $this->db->where("itid=$id AND stat=1");
                 $ePics = $this->db->get()->result();
-                foreach ($ePics as $pic){
-                    unlink('uploads/img/item/' . date('Y',strtotime($pic->crdt))."/".$pic->pcnm);
-                    $this->Generic_model->updateData('item_pics',array('stat'=>0),array('pcid'=>$pic->pcid));
+                foreach ($ePics as $pic) {
+                    unlink('uploads/img/item/' . date('Y', strtotime($pic->crdt)) . "/" . $pic->pcnm);
+                    $this->Generic_model->updateData('item_pics', array('stat' => 0), array('pcid' => $pic->pcid));
                 }
             }
 
@@ -2078,5 +2078,341 @@ class Stock extends CI_Controller
 //END ACTIVATE ITEM </JANAKA 2019-10-02>
 //************************************************
 //***      END ITEM REGISTRATION               ***
+//************************************************
+
+//************************************************
+//***           WAREHOUSE REGISTRATION         ***
+//************************************************
+//OPEN PAGE </JANAKA 2019-10-02>
+    function whsMng()
+    {
+        $data['acm'] = 'stcCmp'; //Module
+        $data['acp'] = 'whsMng'; //Page
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('whsMng');
+        $this->load->view('admin/stock/warehouse_Manage', $data2);
+
+        $this->load->view('common/tmpFooter', $data);
+    }
+//END OPEN PAGE </JANAKA 2019-10-02>
+
+//WAREHOUSE REGISTRATION </JANAKA 2019-10-03>
+    function wh_Add()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        //Inserting supplier details
+        $this->Generic_model->insertData('stock_wh', array(
+            'whcd' => $this->input->post('code'),
+            'whnm' => $this->input->post('name'),
+            'addr' => $this->input->post('addr'),
+            'mobi' => $this->input->post('mobi'),
+            'tele' => $this->input->post('tele'),
+            'email' => $this->input->post('email'),
+            'dscr' => $this->input->post('remk'),
+            'stat' => 0,
+            'crby' => $_SESSION['userId'],
+            'crdt' => date('Y-m-d H:i:s'),
+        ));
+        $lstId = $this->db->insert_id();
+
+        $funcPerm = $this->Generic_model->getFuncPermision('whsMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Warehouse Added ($lstId)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END WAREHOUSE REGISTRATION </JANAKA 2019-10-03>
+
+//CHECK EXIST WAREHOUSE NAME
+    function chk_whName(){
+        $name = $this->input->post('name');
+        $stat = $this->input->post('stat'); //0-Add/1-Edit
+
+        $this->db->select("whid");
+        $this->db->from('stock_wh');
+        $this->db->where('whnm',$name);
+        if ($stat == 1) {
+            $this->db->where("whid!=" . $this->input->post('whid'));
+        }
+        $res = $this->db->get()->result();
+        if (sizeof($res) > 0) {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
+    }
+//END CHECK EXIST WAREHOUSE NAME
+
+//CHECK EXIST WAREHOUSE CODE
+    function chk_whCode(){
+        $code = $this->input->post('code');
+        $stat = $this->input->post('stat'); //0-Add/1-Edit
+
+        $this->db->select("whid");
+        $this->db->from('stock_wh');
+        $this->db->where('whcd',$code);
+        if ($stat == 1) {
+            $this->db->where("whid!=" . $this->input->post('whid'));
+        }
+        $res = $this->db->get()->result();
+        if (sizeof($res) > 0) {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
+    }
+//END CHECK EXIST WAREHOUSE CODE
+
+//SEARCH WAREHOUSE </JANAKA 2019-10-03>
+    function searchWh()
+    {
+        $funcPerm = $this->Generic_model->getFuncPermision('whsMng');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edit = "";
+        } else {
+            $edit = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rejt = "";
+        } else {
+            $rejt = "disabled";
+        }
+        if ($funcPerm[0]->dact == 1) {
+            $dac = "";
+        } else {
+            $dac = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
+
+        $result = $this->Stock_model->get_whDtils();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            if ($row->stat == 0) {
+                $stat = "<label class='label label-warning'>Pending</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewWh($row->whid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewWh($row->whid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewWh($row->whid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' $rejt onclick='rejectWh($row->whid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 1) {
+                $stat = "<label class='label label-success'>Active</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewWh($row->whid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewWh($row->whid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' $dac onclick='inactWh($row->whid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 2) {
+                $stat = "<label class='label label-danger'>Reject</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewWh($row->whid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 3) {
+                $stat = "<label class='label label-indi'>Inactive</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewWh($row->whid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $reac onclick='reactWh($row->whid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+            } else {
+                $stat = "--";
+                $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewWh($row->whid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='editWh($row->whid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='approveWh($row->whid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='rejectWh($row->whid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->whcd;
+            $sub_arr[] = $row->whnm;
+            $sub_arr[] = $row->mobi."<span style='color: dodgerblue; font-weight: bold'> / </span>".$row->tele;
+            $sub_arr[] = $row->addr;
+            $sub_arr[] = $row->crnm;
+            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Stock_model->count_all_wh(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_wh(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+//END SEARCH WAREHOUSE </JANAKA 2019-10-03>
+
+//GET WAREHOUSE DETAILS </JANAKA 2019-10-03>
+    function get_WhDet()
+    {
+        $id = $this->input->post('id');
+        //Supplier Details
+        $this->db->select("sup.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm,CONCAT(md.fnme,' ',md.lnme) AS mdnm");
+        $this->db->from('stock_wh sup');
+        $this->db->join('user_mas cr', 'cr.auid=sup.crby');
+        $this->db->join('user_mas md', 'md.auid=sup.mdby','LEFT');
+        $this->db->where("sup.whid=$id");
+        $data = $this->db->get()->result();
+
+        echo json_encode($data);
+    }
+//END GET WAREHOUSE DETAILS </JANAKA 2019-10-03>
+
+//SUPPLIER UPDATE || APPROVE </JANAKA 2019-09-23>
+    function wh_update()
+    {
+        $func = $this->input->post('func');
+        $id = $this->input->post('whid');
+
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        if ($func == 'edit') {
+            //Updating supplier details
+            $this->Generic_model->updateData('stock_wh', array(
+                'whnm' => $this->input->post('name_edt'),
+                'whcd' => $this->input->post('code_edt'),
+                'addr' => $this->input->post('addr_edt'),
+                'mobi' => $this->input->post('mobi_edt'),
+                'tele' => $this->input->post('tele_edt'),
+                'email' => $this->input->post('email_edt'),
+                'dscr' => $this->input->post('remk_edt'),
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ), array('whid' => $id));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('whsMng');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Warehous Details Updated ($id)");
+
+        } else if ($func == 'app') {
+            //Updating supplier details
+            $this->Generic_model->updateData('stock_wh', array(
+                'whnm' => $this->input->post('name_edt'),
+                'whcd' => $this->input->post('code_edt'),
+                'addr' => $this->input->post('addr_edt'),
+                'mobi' => $this->input->post('mobi_edt'),
+                'tele' => $this->input->post('tele_edt'),
+                'email' => $this->input->post('email_edt'),
+                'dscr' => $this->input->post('remk_edt'),
+                'stat' => 1,
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ), array('whid' => $id));
+
+            $funcPerm = $this->Generic_model->getFuncPermision('whsMng');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Warehouse Approved ($id)");
+        }
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END SUPPLIER UPDATE || APPROVE </JANAKA 2019-09-23>
+
+//REJECT SUPPLIER </JANAKA 2019-09-23>
+    function wh_Reject()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $id = $this->input->post('id');
+        $this->Generic_model->updateData('stock_wh', array(
+            'stat' => 2,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('whid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('whsMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Warehouse Rejected ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END REJECT SUPPLIER </JANAKA 2019-09-23>
+
+//DEACTIVATE SUPPLIER </JANAKA 2019-09-23>
+    function wh_Deactive()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $id = $this->input->post('id');
+        $this->Generic_model->updateData('stock_wh', array(
+            'stat' => 3,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('whid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('whsMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Warehouse Deactivated ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END DEACTIVATE SUPPLIER </JANAKA 2019-09-23>
+
+//ACTIVATE SUPPLIER </JANAKA 2019-09-23>
+    function wh_Activate()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $id = $this->input->post('id');
+        $this->Generic_model->updateData('stock_wh', array(
+            'stat' => 1,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('whid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('whsMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Warehouse Reactivated ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ACTIVATE SUPPLIER </JANAKA 2019-09-23>
+//************************************************
+//***       END WAREHOUSE REGISTRATION         ***
 //************************************************
 }

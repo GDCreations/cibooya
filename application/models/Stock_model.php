@@ -290,7 +290,7 @@ class Stock_model extends CI_Model
     }
     //END SEARCH TYPE DETAILS </JANAKA 2019-09-27>
 
-    //SEARCH TYPE DETAILS </JANAKA 2019-10-01>
+    //SEARCH ITEM DETAILS </JANAKA 2019-10-01>
     var $cl_srch5 = array('itcd','itnm','ctcd','bdcd','tpcd','mdl','mlcd'); //set column field database for datatable searchable
     var $cl_odr5 = array(null, 'itcd','itnm','ctcd','bdcd','tpcd','mdl','mlcd','item.stat',''); //set column field database for datatable orderable
     var $order5 = array('item.crdt' => 'DESC'); // default order
@@ -380,7 +380,79 @@ class Stock_model extends CI_Model
         $this->itmDet_query();
         return $this->db->count_all_results();
     }
-    //END SEARCH TYPE DETAILS </JANAKA 2019-10-01>
+    //END SEARCH ITEM DETAILS </JANAKA 2019-10-01>
+
+    //SEARCH WAREHOUSE DETAILS </JANAKA 2019-10-013>
+    var $cl_srch6 = array('whcd','whnm','mobi','addr'); //set column field database for datatable searchable
+    var $cl_odr6 = array(null, 'whcd','whnm','mobi','addr','cr.fnme','wh.crdt','wh.stat',''); //set column field database for datatable orderable
+    var $order6 = array('wh.crdt' => 'DESC'); // default order
+
+    function whDet_query()
+    {
+        $stat = $this->input->post('stat');
+
+        $this->db->select("wh.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm");
+        $this->db->from('stock_wh wh');
+        $this->db->join('user_mas cr','cr.auid=wh.crby');
+        if($stat!='all'){
+            $this->db->where("wh.stat=$stat");
+        }
+    }
+
+    private function whDet_queryData()
+    {
+        $this->whDet_query();
+        $i = 0;
+        foreach ($this->cl_srch6 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch6) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr6[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order6)) {
+            $order6 = $this->order6;
+            $this->db->order_by(key($order6), $order6[key($order6)]);
+        }
+    }
+
+    function get_whDtils()
+    {
+        $this->whDet_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_wh()
+    {
+        $this->whDet_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_wh()
+    {
+        // $this->db->from($this->table);
+        $this->whDet_query();
+        return $this->db->count_all_results();
+    }
+    //END SEARCH WAREHOUSE DETAILS </JANAKA 2019-10-03>
 }
 
 ?>
