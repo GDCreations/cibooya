@@ -12,7 +12,7 @@
     </div>
     <div class="title">
         <h1>Item Management</h1>
-        <p>Add / Edit / Reject / Deactive / Search & View</p>
+        <p>Add / Photo Uploading / Edit / Reject / Deactive / Search & View</p>
     </div>
     <?php
     if ($funcPerm[0]->inst == 1) { ?>

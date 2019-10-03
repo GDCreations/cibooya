@@ -93,6 +93,12 @@
                         <li id="stcCmp">
                             <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> Stock Components</a>
                             <ul>
+                                <?php if (in_array("supReg", $permission, TRUE)) { ?>
+                                    <li>
+                                        <a id="supReg" href="<?= base_url() ?>Stock/supReg"><span
+                                                    class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
+                                    </li>
+                                <?php } ?>
                                 <?php if (in_array("catMng", $permission, TRUE)) { ?>
                                     <li>
                                         <a id="catMng" href="<?= base_url() ?>Stock/catMng"><span
@@ -117,21 +123,22 @@
                                                     class="nav-icon-hexa fa fa-cubes"></span> Item Management </a>
                                     </li>
                                 <?php } ?>
+                                <?php if (in_array("whsMng", $permission, TRUE)) { ?>
+                                    <li>
+                                        <a id="whsMng" href="<?= base_url() ?>Stock/whsMng"><span
+                                                    class="nav-icon-hexa fa fa-institution"></span> Warehouse Management </a>
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </li>
                         <?php $Stock_title = false;
                     } ?>
 
-                    <?php if (in_array('supMng', $permMdul, TRUE)) { ?>
-                        <li id="supMng">
+                    <?php if (in_array('xyz', $permMdul, TRUE)) { ?>
+                        <li id="xyz">
                             <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
                             <ul>
-                                <?php if (in_array("supReg", $permission, TRUE)) { ?>
-                                    <li>
-                                        <a id="supReg" href="<?= base_url() ?>Stock/supReg"><span
-                                                    class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
-                                    </li>
-                                <?php } ?>
+
 <!--                                <li>-->
 <!--                                    <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>-->
 <!--                                </li>-->
