@@ -126,7 +126,8 @@
                                 <?php if (in_array("whsMng", $permission, TRUE)) { ?>
                                     <li>
                                         <a id="whsMng" href="<?= base_url() ?>Stock/whsMng"><span
-                                                    class="nav-icon-hexa fa fa-institution"></span> Warehouse Management </a>
+                                                    class="nav-icon-hexa fa fa-institution"></span> Warehouse Management
+                                        </a>
                                     </li>
                                 <?php } ?>
                             </ul>
@@ -134,14 +135,16 @@
                         <?php $Stock_title = false;
                     } ?>
 
-                    <?php if (in_array('xyz', $permMdul, TRUE)) { ?>
-                        <li id="xyz">
-                            <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
+                    <?php if (in_array('stcAcs', $permMdul, TRUE)) { ?>
+                        <li id="stcAcs">
+                            <a href="#"><span class="nav-icon-hexa fa fa-database"></span> Stock Access</a>
                             <ul>
-
-<!--                                <li>-->
-<!--                                    <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>-->
-<!--                                </li>-->
+                                <?php if (in_array("pchOdr", $permission, TRUE)) { ?>
+                                    <li>
+                                        <a id="pchOdr" href="<?= base_url() ?>Stock/pchOdr"><span
+                                                    class="nav-icon-hexa fa fa-list-ul"></span> Purchase Order </a>
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </li>
                         <?php $Stock_title = false;
@@ -428,7 +431,8 @@
                                 <ul class="dropdown-menu dropdown-left">
                                     <li><a href="<?= base_url(); ?>User"><span class="icon-users"></span> User </a></li>
                                     <li class="divider"></li>
-                                    <li><a href="<?= base_url(); ?>welcome/userProfile"><span class="icon-user"></span>Your Profile</a></li>
+                                    <li><a href="<?= base_url(); ?>welcome/userProfile"><span class="icon-user"></span>Your
+                                            Profile</a></li>
                                     <li><a href="<?= base_url(); ?>welcome/lockScren"><span class="fa fa-lock"></span>
                                             Lock Screen</a></li>
                                     <li class="divider"></li>

@@ -2415,4 +2415,34 @@ class Stock extends CI_Controller
 //************************************************
 //***       END WAREHOUSE REGISTRATION         ***
 //************************************************
+
+//************************************************
+//***               PURCHASE ORDER             ***
+//************************************************
+//OPEN PAGE </JANAKA 2019-10-03>
+    function pchOdr()
+    {
+        $data['acm'] = 'stcAcs'; //Module
+        $data['acp'] = 'pchOdr'; //Page
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('pchOdr');
+        $data2['supplier'] = $this->Generic_model->getData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat'=>1));
+        $data2['warehouse'] = $this->Generic_model->getData('stock_wh', array('whid', 'whcd', 'whnm'), array('stat'=>1));
+        //Item With Storing Scale
+        $this->db->select("itid,itcd,itnm,scli,scnm,scl");
+        $this->db->from('item');
+        $this->db->join('scale','scale.slid=item.scli');
+        $this->db->where('item.stat',1);
+        $data2['item'] = $this->db->get()->result();
+        $this->load->view('admin/stock/purchase_Order', $data2);
+
+        $this->load->view('common/tmpFooter', $data);
+    }
+//END OPEN PAGE </JANAKA 2019-10-03>
+//************************************************
+//***             END PURCHASE ORDER           ***
+//************************************************
 }
