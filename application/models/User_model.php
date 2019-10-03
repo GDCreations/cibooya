@@ -4,20 +4,21 @@ class User_model extends CI_Model
 {
     // System Message
     var $cl_srch7 = array('', '', ''); //set column field database for datatable searchable
-    var $cl_odr7 = array(null, 'cmtp','cmtp','cmtp','cmtp','cmtp','cmtp', '', ''); //set column field database for datatable orderable
+    var $cl_odr7 = array(null, 'cmtp', 'cmtp', 'cmtp', 'cmtp', 'cmtp', 'cmtp', '', ''); //set column field database for datatable orderable
     var $order7 = array('cnnm' => 'asc'); // default order
 
     function systmMsg_query()
     {
         $dteRng = $this->input->post('dteRng');
-        $frdt = trim((explode("/",$dteRng))[0],' ');
-        $todt = trim((explode("/",$dteRng))[1],' ');
+        $dteRng2 = explode("/", $dteRng);
+        $frdt = trim($dteRng2[0], ' ');
+        $todt = trim($dteRng2[1], ' ');
 
         $this->db->select("syst_mesg.*, user_mas.usnm, user_level.lvnm, us.usnm AS crby, IF(cmtp = 0,'All User',IF(cmtp =1,'User Level',IF(cmtp=2,'User','--'))) AS msgTp, IF(swnt = 1,'Yes','No') AS ntfy ");
         $this->db->from("syst_mesg");
-        $this->db->join('user_mas', 'user_mas.auid = syst_mesg.mgus','left');
-        $this->db->join('user_mas us', 'us.auid = syst_mesg.crby','left');
-        $this->db->join('user_level', 'user_level.id = syst_mesg.uslv','left');
+        $this->db->join('user_mas', 'user_mas.auid = syst_mesg.mgus', 'left');
+        $this->db->join('user_mas us', 'us.auid = syst_mesg.crby', 'left');
+        $this->db->join('user_level', 'user_level.id = syst_mesg.uslv', 'left');
         $this->db->where("DATE_FORMAT(syst_mesg.crdt, '%Y-%m-%d') BETWEEN '$frdt' AND  '$todt' ");
     }
 
@@ -75,8 +76,6 @@ class User_model extends CI_Model
     }
 
 //  End
-
-
 
 
 }

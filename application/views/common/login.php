@@ -22,7 +22,8 @@
 
     <!-- START APP CONTAINER -->
     <div class="app-container"
-         style="background: url(<?= base_url(); ?>uploads/loginImg/<?= $sysinfo[0]->cplg ?>) center center no-repeat fixed;"> <!-- assets/images/background/bg-1.jpg-->
+         style="background: url(<?= base_url(); ?>uploads/loginImg/<?= $sysinfo[0]->cplg ?>) center center no-repeat fixed;">
+        <!-- assets/images/background/bg-1.jpg-->
 
         <div class="app-login-box" style="margin-top: 8%">
             <div class="app-login-box-user"><img src="<?= base_url(); ?>assets/img/user/no-image.png"></div>
@@ -63,10 +64,7 @@
                                 <button class="btn btn-success btn-block">Sign In</button>
                             </div>
                         </div>
-
                     </div>
-
-
                 </form>
             </div>
 
@@ -80,6 +78,8 @@
 
 </div>
 <!-- END APP WRAPPER -->
+</body>
+</html>
 
 <!-- IMPORTANT SCRIPTS -->
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/jquery/jquery.min.js"></script>
@@ -87,15 +87,10 @@
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript"
         src="<?= base_url(); ?>assets/js/vendor/form-validator/jquery.form-validator.min.js"></script>
-
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/vendor/moment/moment.min.js"></script>
-
-</body>
-</html>
 
 <script src="<?= base_url(); ?>assets/plugins/toastr/toastr.min.js" type="text/javascript"></script>
 <link href="<?= base_url(); ?>assets/plugins/toastr/toastr.css" rel="stylesheet" type="text/css"/>
-
 
 <script type="text/javascript">
     // Toastr options
@@ -118,14 +113,25 @@
     };
 
     $().ready(function () {
+        /*$("#logps").on({
+            mouseenter: function(){
+                $('#logps').attr('type', 'text');
+            },
+            mouseleave: function(){
+                $('#logps').attr('type', 'password');
+            },
+            click: function(){
+                $('#logps').attr('type', 'password');
+            }
+        });*/
     });
 
     // SHOW HIDE PASSWORD
     function showPass(md) {
         if (md == 0) {
-            if ($('#logps').attr('type', 'text')) ;
+            $('#logps').attr('type', 'text');
         } else {
-            if ($('#logps').attr('type', 'password')) ;
+            $('#logps').attr('type', 'password');
         }
     }
 
@@ -136,57 +142,50 @@
 if (isset($_GET['message'])) {
     $message = $_GET['message'];
 
-    if ($message === "fail") {
-        ?>
+    if ($message === "fail") { ?>
         <script type="text/javascript">
-            //toastr.error('Error - Wrong login data!');
             toastr.error('Please check login data !');
         </script>
-        <?php
-    } else if ($message === "userlock") {
-        ?>
+    <?php } else if ($message === "userlock") { ?>
         <script type="text/javascript">
             toastr.error('Your Account Lock ! <br>Contact System Admin !!');
         </script>
-        <?php
-    } else if ($message === "sys_update") {
-        ?>
+    <?php } else if ($message === "sys_update") { ?>
         <script type="text/javascript">
             toastr.error('Night Schedule Processing.!!!');
         </script>
-        <?php
-    } else if ($message === "wrngTry1") {
-        ?>
+    <?php } else if ($message === "wrngTry1") { ?>
         <script type="text/javascript">
             toastr.error('You tried wrong password 1 times !!');
         </script>
-        <?php
-    } else if ($message === "wrngTry2") {
-        ?>
+    <?php } else if ($message === "wrngTry2") { ?>
         <script type="text/javascript">
             toastr.error('You tried wrong password 2 times !!');
         </script>
-        <?php
-    } else if ($message === "wrngTry3") {
-        ?>
+    <?php } else if ($message === "wrngTry3") { ?>
         <script type="text/javascript">
             toastr.error('You tried wrong password 3 times !!');
         </script>
-        <?php
-    } else if ($message === "wrngLgcd") {
-        ?>
+    <?php } else if ($message === "wrngLgcd") { ?>
         <script type="text/javascript">
             toastr.error('Wrong Digital eye code !!');
         </script>
-        <?php
-    } //locked user day end reconsi 2018-11-13
-    else if ($message === "Delock") {
-        ?>
+    <?php } else if ($message === "Delock") { ?>
         <script type="text/javascript">
             toastr.info("You Are Locked !<br/>Day End Reconciliation Is Not Done At Last Day, Please Concat Operation Manager..");
         </script>
+    <?php } else if ($message === "tmpDisable") { ?>
+        <script type="text/javascript">
+            toastr.warning("Account Disable !<br/> Please Contact System Admin..");
+        </script>
+    <?php } else if ($message === "accDnid") { ?>
+        <script type="text/javascript">
+            toastr.info("Access Denied for user !<br/> Please Contact System Admin..");
+        </script>
         <?php
     }
+
+
 }
 
 //}

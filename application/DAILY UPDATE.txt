@@ -7,7 +7,7 @@ ALTER TABLE `item` ADD `apdt` DATETIME NULL COMMENT 'approved date' AFTER `apby`
 ALTER TABLE `item` ADD `rjby` INT NULL COMMENT 'Reject by' AFTER `mddt`;
 ALTER TABLE `item` ADD `rjdt` DATETIME NULL COMMENT 'Reject date' AFTER `rjby`;
 -----------------------------------------------------
-2019-09-30 JANAKA
+**DONE || 2019-09-30 JANAKA
 ALTER TABLE `item` ADD `ctid` INT NOT NULL COMMENT 'Category Id (category tbl)' AFTER `itid`;
 ALTER TABLE `item` ADD `bdid` INT NOT NULL COMMENT 'Brand id (brand tbl)' AFTER `ctid`;
 ALTER TABLE `item` ADD `mlcd` VARCHAR(200) NOT NULL COMMENT 'Model Code' AFTER `mdl`;

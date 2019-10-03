@@ -283,7 +283,7 @@ class Stock extends CI_Controller
     {
         $id = $this->input->post('id');
         //Supplier Details
-        $this->db->select("sup.*,cr.innm AS crnm,ap.innm AS apnm,md.innm AS mdnm,rj.innm AS rjnm");
+        $this->db->select("sup.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(ap.fnme,' ',ap.lnme) AS apnm, CONCAT(md.fnme,' ',md.lnme) AS mdnm, CONCAT(rj.fnme,' ',rj.lnme) AS rjnm");
         $this->db->from('supp_mas sup');
         $this->db->join('user_mas cr', 'cr.auid=sup.crby');
         $this->db->join('user_mas ap', 'ap.auid=sup.apby', 'LEFT');
@@ -711,7 +711,7 @@ class Stock extends CI_Controller
     {
         $id = $this->input->post('id');
         //Category Details
-        $this->db->select("sup.*,cr.innm AS crnm,md.innm AS mdnm");
+        $this->db->select("sup.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(md.fnme,' ',md.lnme) AS mdnm");
         $this->db->from('category sup');
         $this->db->join('user_mas cr', 'cr.auid=sup.crby');
         $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
@@ -1065,7 +1065,7 @@ class Stock extends CI_Controller
     {
         $id = $this->input->post('id');
         //Category Details
-        $this->db->select("sup.*,cr.innm AS crnm,md.innm AS mdnm");
+        $this->db->select("sup.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(md.fnme,' ',md.lnme) AS mdnm");
         $this->db->from('brand sup');
         $this->db->join('user_mas cr', 'cr.auid=sup.crby');
         $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
@@ -1423,7 +1423,7 @@ class Stock extends CI_Controller
     {
         $id = $this->input->post('id');
         //Category Details
-        $this->db->select("sup.*,cr.innm AS crnm,md.innm AS mdnm");
+        $this->db->select("sup.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(md.fnme,' ',md.lnme) AS mdnm");
         $this->db->from('type sup');
         $this->db->join('user_mas cr', 'cr.auid=sup.crby');
         $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');

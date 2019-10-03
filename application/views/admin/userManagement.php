@@ -357,7 +357,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <input type="text" id="usrImgOld" name="usrImgOld">
+                                <input type="hidden" id="usrImgOld" name="usrImgOld">
 
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -988,13 +988,13 @@
 
                         $.ajax({
                             type: "POST",
-                            url: "<?= base_url(); ?>admin/brnReject",
+                            url: "<?= base_url(); ?>admin/userReject",
                             data: {
                                 id: id
                             },
                             dataType: 'json',
                             success: function (data) {
-                                swal({title: "", text: "Branch was rejected!", type: "success"},
+                                swal({title: "", text: "User was rejected!", type: "success"},
                                     function () {
                                         srchUser();
                                     });

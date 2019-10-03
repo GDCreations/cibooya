@@ -179,7 +179,10 @@ class Admin_model extends CI_Model
         $this->db->join('brch_mas', 'brch_mas.brid = user_mas.brch');
         $this->db->join('user_level', 'user_level.id = user_mas.usmd');
 
-        $this->db->where("user_mas.usmd != 1");
+        if($_SESSION['role'] != 1){
+            $this->db->where("user_mas.usmd != 1");
+        }
+
         if ($brch != 'all') {
             $this->db->where("user_mas.brch", $brch);
         }

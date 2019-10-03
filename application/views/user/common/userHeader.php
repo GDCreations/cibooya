@@ -154,7 +154,7 @@
                     <li>
                         <div class="contact contact-rounded contact-bordered contact-lg contact-ps-controls hidden-xs">
 
-                            <img src="<?= base_url(); ?>uploads/user-image/<?= $_SESSION['uimg'] ?>" alt="John Doe">
+                            <img src="<?= base_url(); ?>uploads/user-image/<?= $_SESSION['uimg'] ?>" alt="">
                             <div class="contact-container">
                                 <a href="#"> <?= $_SESSION['username'] ?></a>
                                 <span> <?= $_SESSION['roleText'] ?> </span>
@@ -351,7 +351,7 @@
                                         <?php
                                     }
                                     ?>
-                                    <li><a href=""><span class="icon-user"></span>Your Profile</a></li>
+                                    <li><a href="<?= base_url(); ?>welcome/userProfile"><span class="icon-user"></span>Your Profile</a></li>
                                     <li><a href="<?= base_url(); ?>welcome/lockScren"><span class="icon-lock"></span>
                                             Lock Screen</a></li>
                                     <li class="divider"></li>
