@@ -65,9 +65,9 @@
                     <li id="sysCmp">
                         <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> SYSTEM SUPPORT</a>
                         <ul>
-                            <li><a href="http://northpony.com/software/AA_v3.6.zip" target='_blank'>
+                           <!-- <li><a href="http://northpony.com/software/AA_v3.6.zip" target='_blank'>
                                     <span class='nav-icon-hexa fa fa-cloud-download'></span> Ammyy Admin Software</a>
-                            </li>
+                            </li>-->
                             <li><a href="http://northpony.com/software/AnyDesk.zip" target='_blank'>
                                     <span class='nav-icon-hexa fa fa-cloud-download'></span> AnyDesk Software</a></li>
                             <li><a href="http://northpony.com/System_support/How_To_Enable_Popup_Chrome_Browser.pdf"

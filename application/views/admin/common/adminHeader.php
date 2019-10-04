@@ -161,12 +161,16 @@
 
                     <?php if ($_SESSION['role'] == 1) { ?>
                         <li class="title" id="Settings_title">MIT SETTINGS</li>
-                        <li><a id="sysUpdate" href="<?= base_url() ?>admin/sysUpdate">
+                        <li><a id="mitVers" href="<?= base_url() ?>MitAdmin/mitVers">
+                                <span class="nav-icon-hexa fa fa-code-fork"></span> MIT version Management</a>
+                        </li>
+                        <li><a id="sysUpdate" href="<?= base_url() ?>MitAdmin/sysUpdate">
                                 <span class="nav-icon-hexa fa fa-wrench"></span> system update</a>
                         </li>
-                        <li><a id="sysChanlg" href="<?= base_url() ?>admin/sysChanlg">
+                        <li><a id="sysChanlg" href="<?= base_url() ?>MitAdmin/sysChanlg">
                                 <span class="nav-icon-hexa fa fa-upload"></span> change log</a>
                         </li>
+
                     <?php } ?>
 
                 </ul>

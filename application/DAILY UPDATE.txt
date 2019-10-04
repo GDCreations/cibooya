@@ -10,9 +10,13 @@ UPDATE `user_page` SET `modu` = '6' WHERE `user_page`.`aid` = 8;
 INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'pchOdr', 'Purchase Order', '', '0', '1', '1', '4');
 -----------------------------------------------------
 2019-10-01 JANAKA
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+**DONE || 2019-10-01 JANAKA
 INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'whsMng', 'Warehouse Management', '', '0', '1', '1', '6');
 -----------------------------------------------------
-2019-10-01 JANAKA
+**DONE || 2019-10-01 JANAKA
 ALTER TABLE `item` ADD `apby` INT NULL COMMENT 'approved by' AFTER `crdt`;
 ALTER TABLE `item` ADD `apdt` DATETIME NULL COMMENT 'approved date' AFTER `apby`;
 ALTER TABLE `item` ADD `rjby` INT NULL COMMENT 'Reject by' AFTER `mddt`;

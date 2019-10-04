@@ -78,7 +78,7 @@
                     <div class="col-md-8 col-xs-12">
                         <div class='input-group'>
                             <input type='text' class="form-control dateranger" id="dtrng" name="dtrng"
-                                   value="<?= date('Y-m-d') ?>"/>
+                                   value="<?= date('Y-m-d') ?> / <?= date('Y-m-d') ?>"/>
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
                             </span>
