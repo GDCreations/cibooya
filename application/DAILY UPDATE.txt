@@ -1,4 +1,8 @@
 -----------------------------------------------------
+2019-10-04 JANAKA
+ALTER TABLE `item` ADD `mxlv` DOUBLE NOT NULL COMMENT 'Max store level' AFTER `scli`;
+
+-----------------------------------------------------
 2019-10-03 JANAKA
 UPDATE `user_page_mdl` SET `mdcd` = 'stcAcs' WHERE `user_page_mdl`.`aid` = 4;
 UPDATE `user_page_mdl` SET `mdnm` = 'Stock Access' WHERE `user_page_mdl`.`aid` = 4;

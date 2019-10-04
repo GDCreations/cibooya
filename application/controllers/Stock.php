@@ -2432,7 +2432,7 @@ class Stock extends CI_Controller
         $data2['supplier'] = $this->Generic_model->getData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat'=>1));
         $data2['warehouse'] = $this->Generic_model->getData('stock_wh', array('whid', 'whcd', 'whnm'), array('stat'=>1));
         //Item With Storing Scale
-        $this->db->select("itid,itcd,itnm,scli,scnm,scl");
+        $this->db->select("itid,itcd,itnm,slid,scnm,scl");
         $this->db->from('item');
         $this->db->join('scale','scale.slid=item.scli');
         $this->db->where('item.stat',1);
@@ -2442,6 +2442,28 @@ class Stock extends CI_Controller
         $this->load->view('common/tmpFooter', $data);
     }
 //END OPEN PAGE </JANAKA 2019-10-03>
+
+//CHECK MAX ITEM LEVEL AND AVAILABLE COUNT
+    function chk_Mx_ItmLvl(){
+        $item = $this->input->post('item');
+        $qnty = $this->input->post('qnty');
+
+        $this->db->select("(item.mxlv - IFNULL((SELECT SUM(IFNULL(avqn,0)) FROM stock WHERE stock.itid=item.itid),0)) AS mxlvn");
+        $this->db->from('item');
+        $this->db->where("item.itid=$item");
+        $res = $this->db->get()->result();
+
+        if(sizeof($res)>0){
+            if($qnty > $res[0]->mxlvn){
+                echo json_encode("Can't enter more than ".$res[0]->mxlvn);
+            }else{
+                echo json_encode(true);
+            }
+        }else{
+            echo json_encode(true);
+        }
+    }
+//CHECK MAX ITEM LEVEL AND AVAILABLE COUNT
 //************************************************
 //***             END PURCHASE ORDER           ***
 //************************************************

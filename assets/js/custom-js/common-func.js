@@ -19,9 +19,9 @@ function clear_Form(form) {
 }
 
 function default_Selector(node) {
-    node.children().children().removeClass('selected'); //remove selected classes
-    node.children().children().first().addClass('selected'); //add selected class
-    var selected = node.children().children().first().children().children().first().html(); //get selected valus
+    node.find('ul').children().removeClass('selected'); //remove selected classes
+    node.find('ul').children().first().addClass('selected'); //add selected class
+    var selected = node.find('ul').children().first().children().children().first().html(); //get selected valus
     node.prev().prop('title', selected); //set selected value as title
     node.prev().children().first().html(selected); //set selected value as <li> element
 }
@@ -55,10 +55,9 @@ function set_select(id,itm) {
 //Selectors Red Indicating
 function chckBtn(id, inpu) {
     if (id == 0) {
-        $('#' + inpu).parent().css('border', '1px solid red');
-        $('#' + inpu).parent().css('border-radius', '4px');
+        $('#' + inpu).prev().prev().css('border', '1px solid red');
     } else {
-        $('#' + inpu).parent().css('border', '0px');
+        $('#' + inpu).prev().prev().css('border-color', '');
     }
 }
 
