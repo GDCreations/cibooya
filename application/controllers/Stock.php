@@ -2508,7 +2508,7 @@ class Stock extends CI_Controller
             'whid' => $this->input->post('whs'),
             'pono' => $pono,
             'oddt' => $this->input->post('oddt'),
-            'rfno' => $this->input->post('refd'),
+            'rfno' => strtoupper($this->input->post('refd')),
             'sbtl' => $this->input->post('sbttl'),
             'vtrt' => $this->input->post('vtrt'),
             'vtvl' => $this->input->post('vtvl'),
@@ -2527,11 +2527,12 @@ class Stock extends CI_Controller
         ));
         $id = $this->db->insert_id();
 
-        $itmcd = $this->input->post("itnmcd[]");
+        $itmcd = $this->input->post("itid[]");
         $qunty = $this->input->post('qunty[]');
         $untpr = $this->input->post('unitpr[]');
         $subvl = $this->input->post('unttl[]');
         $siz = sizeof($itmcd);
+
         for ($it = 0; $it < $siz; $it++) {
             $this->Generic_model->insertData('stock_po_des', array(
                 'poid' => $id,
@@ -2601,13 +2602,13 @@ class Stock extends CI_Controller
             if ($row->stat == 0) {
                 $stat = "<label class='label label-warning'>Pending</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-edit' onclick='editPo($row->poid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' $rejt onclick='rejectPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             } else if ($row->stat == 1) {
                 $stat = "<label class='label label-success'>Active</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-edit' onclick='editPo($row->poid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
                     "<button type='button' $dac onclick='inactPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
             } else if ($row->stat == 2) {
@@ -2651,6 +2652,17 @@ class Stock extends CI_Controller
         echo json_encode($output);
     }
 //END SEARCH PO </2019-10-04>
+
+//GET PO DETAILS TO VIEW
+    function get_PoDet(){
+        $id = $this->input->post('id');
+
+        $data['po'] = $this->Generic_model->getData('stock_po','',array('poid'=>$id));
+        $data['pod'] = $this->Generic_model->getData('stock_po_des','',array('poid'=>$id,'stat'=>1));
+
+        echo json_encode($data);
+    }
+//END GET PO DETAILS TO VIEW
 //************************************************
 //***             END PURCHASE ORDER           ***
 //************************************************

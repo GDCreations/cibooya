@@ -156,7 +156,7 @@
                                         <label class="col-md-4 col-xs-12 control-label">Reference Details <span
                                                     class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-6 col-xs-12">
-                                            <input type="text" name="refd" id="refd" class="form-control"
+                                            <input type="text" name="refd" id="refd" class="form-control text-uppercase"
                                                    placeholder="Reference Number"/>
                                         </div>
                                     </div>
@@ -229,7 +229,6 @@
                                 </div>
                             </div>
                             <div class="row form-horizontal">
-                                <button type="button" onclick="clearTbl()">Clear</button>
                                 <div class="table-responsive" style="padding: 10px 25px 10px 10px">
                                     <table class="table dataTable table-striped table-bordered" id="poTbl" width="100%">
                                         <thead>
@@ -372,7 +371,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -391,50 +389,297 @@
     <!-- END ADD NEW BRAND -->
 
     <!-- MODAL VIEW BRAND -->
-    <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
+        <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
             <form id="app_po_form">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Type
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Purchase Order
                             Management <span class="text-muted" id="subTitle_edit"></span></h4>
                         <input type="hidden" id="func" name="func"/>
                         <input type="hidden" id="poid" name="poid"/>
                     </div>
                     <div class="modal-body">
                         <div class="container">
-                            <div class="form-horizontal">
-                                <div class="col-md-12">
+                            <div class="row form-horizontal">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Supplier Name <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <select class="bs-select" id="supp_edt" name="supp_edt"
+                                                    onchange="chckBtn(this.value,this.id)">
+                                                <option value="0">-- Select Supplier --</option>
+                                                <?php
+                                                foreach ($supplier as $sup) {
+                                                    echo "<option value='$sup->spid'>" . $sup->spcd . " - " . $sup->spnm . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Order Date <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control datetimepicker" id="oddt_edt"
+                                                       name="oddt_edt" value="<?= date('Y-m-d') ?>"
+                                                       style="cursor: pointer;">
+                                                <span class="input-group-addon">
+                                                    <span class="fa fa-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Reference Details <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <input type="text" name="refd_edt" id="refd_edt" class="form-control text-uppercase"
+                                                   placeholder="Reference Number"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Delivery To <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <select class="bs-select" id="whs_edt" name="whs_edt"
+                                                    onchange="chckBtn(this.value,this.id)">
+                                                <option value="0">-- Select Warehouse --</option>
+                                                <?php
+                                                foreach ($warehouse as $wh) {
+                                                    echo "<option value='$wh->whid'>" . $wh->whcd . " - " . $wh->whnm . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-horizontal">
+                                <h5 class="text-title"><span class="fa fa-tag"></span> Order Details</h5>
+                            </div>
+                            <div class="row form-horizontal">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Item Name</label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <select class="bs-select" data-live-search="true" id="item_edt" name="item_edt"
+                                                    onchange="chckBtn(this.value,this.id); getScale(this.value)">
+                                                <option value="0">-- Select Item --</option>
+                                                <script>
+                                                    scale = new Array();
+                                                </script>
+                                                <?php
+                                                foreach ($item as $itm) {
+                                                    echo "<option value='$itm->itid'>" . $itm->itcd . " - " . $itm->itnm . "</option>";
+                                                    ?>
+                                                    <script>
+                                                        scale.push([<?= $itm->itid?>, '<?= $itm->scnm . " (" . $itm->scl . ")"?>', <?= $itm->slid?>, '<?= $itm->itcd?>', '<?= $itm->itnm?>']);
+                                                    </script>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label" id="stScale">Quantity</label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <input type="text" id="cnty_edt" name="cnty_edt" class="form-control"
+                                                   placeholder="Quantity"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-md-4 col-xs-12 control-label" id="stScale">Unit Price</label>
+                                    <div class="col-md-6 col-xs-10">
+                                        <input type="text" id="price_edt" name="price_edt" class="form-control"
+                                               placeholder="Price 00.00"/>
+                                    </div>
+                                    <div class="col-md-2 col-xs-2">
+                                        <button type="button" class="btn btn-sm btn-info" style="margin: 0px"
+                                                onclick="addItem()"><span
+                                                    class="fa fa-plus"></span></button>
+                                    </div>
+                                    <input type="hidden" id="leng_edt" name="leng_edt">
+                                </div>
+                            </div>
+                            <div class="row form-horizontal">
+                                <div class="table-responsive" style="padding: 10px 25px 10px 10px">
+                                    <table class="table dataTable table-striped table-bordered" id="poTbl_edt" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-left">CODE</th>
+                                            <th class="text-left">ITEM NAME</th>
+                                            <th class="text-left">SCALE</th>
+                                            <th class="text-left">QTY</th>
+                                            <th class="text-left">UNIT PRICE</th>
+                                            <th class="text-left">TOTAL</th>
+                                            <th class="text-left">OPTION</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+                                        <th colspan="3"></th>
+                                        <th id="ttlQt_edt">00</th>
+                                        <th></th>
+                                        <th id="ttlSub_edt">00.00</th>
+                                        <th></th>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row form-horizontal">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-5 col-xs-12 control-label">Remarks / Interdiction</label>
+                                        <div class="col-md-7 col-xs-12">
+                                            <div class="form-group">
+                                                         <textarea class="form-control" name="remk_edt" id="remk_edt"
+                                                                   rows="8" placeholder="Description"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-6 col-xs-12 control-label">Sub Total</label>
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="sbttl_edt" placeholder="Sub Total" id="sbttl_edt"
+                                                       readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="form-group">
+                                        <label class="col-md-3  control-label">VAT</label>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="vtrt_edt" placeholder="VAT Rate" id="vtrt_edt"
+                                                       onchange="calVtEdt(this.value)"
+                                                       onkeyup="calVtEdt(this.value)"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="vtvl_edt" placeholder="VAT Value" id="vtvl_edt" readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3  control-label">NBT</label>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="nbrt_edt" placeholder="NBT Rate" id="nbrt_edt"
+                                                       onchange="calNbEdt(this.value)"
+                                                       onkeyup="calNbEdt(this.value)"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="nbvl_edt" placeholder="NBT Value" id="nbvl_edt" readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3  control-label">BTT</label>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="btrt_edt" placeholder="BTT Rate" id="btrt_edt"
+                                                       onchange="calBtEdt(this.value)"
+                                                       onkeyup="calBtEdt(this.value)"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="btvl_edt" placeholder="BTT Value" id="btvl_edt" readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3  control-label">Other Tax</label>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="txrt_edt" placeholder="Tax Rate" id="txrt_edt"
+                                                       onchange="calTxEdt(this.value)"
+                                                       onkeyup="calTxEdt(this.value)"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="tax_edt" placeholder="Tax Value" id="tax_edt" readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-6  control-label">Other Charge</label>
+                                        <div class="col-md-4 ">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="otchg_edt" placeholder="Other Charge" id="otchg_edt"
+                                                       onchange="calTtlEdt()"
+                                                       onkeyup="calTtlEdt()"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-6  control-label">Total</label>
+                                        <div class="col-md-4 ">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="ttlAmt_edt" placeholder="Total" id="ttlAmt_edt" readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-horizontal view_Area">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Status</label>
-                                        <label class="col-md-8 control-label" id="typ_stat"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Created By</label>
-                                        <label class="col-md-8 control-label" id="crby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Created Date</label>
-                                        <label class="col-md-8 control-label" id="crdt"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Updated By</label>
-                                        <label class="col-md-8 control-label" id="mdby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Updated Date</label>
-                                        <label class="col-md-8 control-label" id="mddt"></label>
-                                    </div>
-                                </div>
-                            </div>
+<!--                            <div class="form-horizontal view_Area">-->
+<!--                                <div class="col-md-12">-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label class="col-md-4 control-label">Status</label>-->
+<!--                                        <label class="col-md-8 control-label" id="typ_stat"></label>-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label class="col-md-4 control-label">Created By</label>-->
+<!--                                        <label class="col-md-8 control-label" id="crby"></label>-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label class="col-md-4 control-label">Created Date</label>-->
+<!--                                        <label class="col-md-8 control-label" id="crdt"></label>-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label class="col-md-4 control-label">Updated By</label>-->
+<!--                                        <label class="col-md-8 control-label" id="mdby"></label>-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label class="col-md-4 control-label">Updated Date</label>-->
+<!--                                        <label class="col-md-8 control-label" id="mddt"></label>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -799,51 +1044,51 @@
 
         // CAL VAT VALUE
         function calVtEdt(txrt) {
-            var sbttl = document.getElementById('sbttl').value;
+            var sbttl = document.getElementById('sbttl_edt').value;
             var txvl = (+sbttl * +txrt) / 100;
-            document.getElementById('vtvlEdt').value = txvl;
+            document.getElementById('vtvl_edt').value = txvl;
             calTtlEdt();
         }
 
         // CAL NBT VALUE
         function calNbEdt(txrt) {
-            var sbttl = document.getElementById('sbttl').value;
+            var sbttl = document.getElementById('sbttl_edt').value;
             var txvl = (+sbttl * +txrt) / 100;
-            document.getElementById('nbvlEdt').value = txvl;
+            document.getElementById('nbvl_edt').value = txvl;
             calTtlEdt();
         }
 
         // CAL BTT VALUE
         function calBtEdt(txrt) {
-            var sbttl = document.getElementById('sbttl').value;
+            var sbttl = document.getElementById('sbttl_edt').value;
             var txvl = (+sbttl * +txrt) / 100;
-            document.getElementById('btvlEdt').value = txvl;
+            document.getElementById('btvl_edt').value = txvl;
             calTtlEdt();
         }
 
         // CAL TAX VALUE
         function calTxEdt(txrt) {
-            var sbttl = document.getElementById('sbttlEdt').value;
+            var sbttl = document.getElementById('sbttl_edt').value;
             var txvl = (+sbttl * +txrt) / 100;
-            document.getElementById('taxEdt').value = txvl;
+            document.getElementById('tax_edt').value = txvl;
 
             calTtlEdt();
         }
 
         // CAL TOTAL
         function calTtlEdt() {
-            var sbttl = document.getElementById('sbttlEdt').value;
-            var otchg = document.getElementById('otchgEdt').value;
+            var sbttl = document.getElementById('sbttl_edt').value;
+            var otchg = document.getElementById('otchg_edt').value;
             //var dsvl = document.getElementById('dsvlEdt').value;
 
-            var tax = document.getElementById('taxEdt').value;
-            var vtvl = document.getElementById('vtvlEdt').value;
-            var nbvl = document.getElementById('nbvlEdt').value;
-            var btvl = document.getElementById('btvlEdt').value;
+            var tax = document.getElementById('tax_edt').value;
+            var vtvl = document.getElementById('vtvl_edt').value;
+            var nbvl = document.getElementById('nbvl_edt').value;
+            var btvl = document.getElementById('btvl_edt').value;
 
-            document.getElementById('ttlEdt').value = (+sbttl + +tax + +otchg + +vtvl + +nbvl + +btvl);
+            document.getElementById('ttlAmt_edt').value = (+sbttl + +tax + +otchg + +vtvl + +nbvl + +btvl);
 
-            if (document.getElementById('lengEdt').value > 0) {
+            if (document.getElementById('leng_edt').value > 0) {
                 $('#app_po_btn').attr('disabled', false);
             } else {
                 $('#app_po_btn').attr('disabled', true);
@@ -946,81 +1191,56 @@
         }
 
         //View Type
-        function viewTyp(id, func) {
+        function editPo(id, func) {
             swal({
                 title: "Loading Data...",
-                text: "Type Details",
+                text: "PO Details",
                 imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                 showConfirmButton: false
             });
 
             $('#func').val(func);
-            $('#tpid').val(id);
+            $('#poid').val(id);
 
             jQuery.ajax({
                 type: "POST",
-                url: "<?= base_url(); ?>Stock/get_TypDet",
+                url: "<?= base_url(); ?>Stock/get_PoDet",
                 data: {
                     id: id
                 },
                 dataType: 'json',
                 success: function (data) {
-                    if (func == 'view') {
-                        //VIEW MODEL
-                        $('#subTitle_edit').html(' - View');
-                        $('#app_typ_btn').css('display', 'none');
-                        $("#modal-view").find('.edit_req').css("display", "none");
-                        $("#edit_Area").css('display', 'none');
-                        $(".view_Area").css('display', 'block');
-                        //Make readonly all fields
-                        $("#modal-view :input").attr("readonly", true);
-                        //VIEW MODEL
-                    } else if (func == 'edit') {
+                    if (func == 'edit') {
                         //EDIT MODEL
                         $('#subTitle_edit').html(' - Edit');
-                        $('#app_typ_btn').css('display', 'inline');
-                        $('#app_typ_btn').html('Update');
-                        $("#modal-view").find('.edit_req').css("display", "inline");
-                        $("#edit_Area").css('display', 'block');
-                        $(".view_Area").css('display', 'none');
-                        //Remove readonly all fields
-                        $("#modal-view :input").attr("readonly", false);
+                        $('#app_po_btn').html('Update');
                         //EDIT MODEL
                     } else if (func == 'app') {
                         //APPROVE MODEL
                         $('#subTitle_edit').html(' - Approve');
-                        $('#app_typ_btn').css('display', 'inline');
-                        $('#app_typ_btn').html('Approve');
-                        $("#modal-view").find('.edit_req').css("display", "inline");
-                        $("#edit_Area").css('display', 'block');
-                        $(".view_Area").css('display', 'none');
-                        //Remove readonly all fields
-                        $("#modal-view :input").attr("readonly", false);
+                        $('#app_po_btn').html('Approve');
                         //APPROVE MODEL
                     }
-                    var len = data.length;
+                    var len = data['po'].length;
 
                     if (len > 0) {
-                        $('#name_edt').val(data[0]['tpnm']);
-                        $('#code_edt').val(data[0]['tpcd']);
-                        $('#remk_edt').val(data[0]['remk']);
-
-                        if (data[0]['stat'] == 0) {
-                            var stat = "<label class='label label-warning'>Pending</label>";
-                        } else if (data[0]['stat'] == 1) {
-                            var stat = "<label class='label label-success'>Active</label>";
-                        } else if (data[0]['stat'] == 2) {
-                            var stat = "<label class='label label-danger'>Reject</label>";
-                        } else if (data[0]['stat'] == 3) {
-                            var stat = "<label class='label label-info'>Inactive</label>";
-                        } else {
-                            var stat = "--";
-                        }
-                        $('#typ_stat').html(": " + stat);
-                        $('#crby').html(": " + data[0]['crnm']);
-                        $('#crdt').html(": " + data[0]['crdt']);
-                        $('#mdby').html(": " + ((data[0]['mdnm'] != null) ? data[0]['mdnm'] : "--"));
-                        $('#mddt').html(": " + ((data[0]['mddt'] != null && data[0]['mddt'] != "0000-00-00 00:00:00") ? data[0]['mddt'] : "--"));
+                        var po = data['po'];
+                        set_select('supp_edt',po[0]['spid']);
+                        set_select('whs_edt',po[0]['whid']);
+                        $('#refd_edt').val(po[0]['rfno']);
+                        $('#oddt_edt').val(po[0]['oddt']);
+                        $('#remk_edt').val(po[0]['remk']);
+                        $('#sbttl_edt').val(po[0]['sbtl']);
+                        $('#vtrt_edt').val(po[0]['vtrt']);
+                        $('#vtvl_edt').val(po[0]['vtvl']);
+                        $('#nbrt_edt').val(po[0]['nbrt']);
+                        $('#nbvl_edt').val(po[0]['nbvl']);
+                        $('#btrt_edt').val(po[0]['btrt']);
+                        $('#btvl_edt').val(po[0]['btvl']);
+                        $('#txrt_edt').val(po[0]['txrt']);
+                        $('#tax_edt').val(po[0]['txvl']);
+                        $('#otchg_edt').val(po[0]['ochg']);
+                        $('#ttlAmt_edt').val(po[0]['totl']);
                     }
                     swal.close();
                 },
