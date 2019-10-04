@@ -31,6 +31,22 @@
         <div class="row form-horizontal">
             <div class="col-md-4">
                 <div class="form-group">
+                    <label class="col-md-4 col-xs-12 control-label">Supplier</label>
+                    <div class="col-md-8 col-xs-12">
+                        <select class="bs-select" id="supps" name="supps"
+                                onchange="chckBtn(this.value,this.id)">
+                            <option value="all">All Suppliers</option>
+                            <?php
+                            foreach ($supplier as $sup) {
+                                echo "<option value='$sup->spid'>" . $sup->spcd . " - " . $sup->spnm . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">Status</label>
                     <div class="col-md-8 col-xs-12">
                         <select id="stat" name="stat" class="bs-select" onchange="srch_Typ()">
@@ -43,6 +59,25 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-md-4 col-xs-12 control-label">Date Range</label>
+                    <div class="col-md-8 col-xs-12">
+                        <div class='input-group'>
+                            <input type='text' class="form-control dateranger" id="dtrng" name="dtrng"
+                                   value="<?= date('Y-m-d') ?> / <?= date('Y-m-d') ?>"/>
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-sm btn-primary btn-icon-fixed pull-right" onclick="srch_Po()"><span
+                                class="fa fa-search"></span>Search
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="block">
@@ -52,9 +87,10 @@
                     <thead>
                     <tr>
                         <th class="text-left">#</th>
-                        <th class="text-left">CODE</th>
-                        <th class="text-left">TYPE</th>
-                        <th class="text-left">CREATED BY</th>
+                        <th class="text-left">PO NO</th>
+                        <th class="text-left">SUPPLIER</th>
+                        <th class="text-left">ORDER DATE</th>
+                        <th class="text-left">VALUE</th>
                         <th class="text-left">CREATED DATE</th>
                         <th class="text-left">STATUS</th>
                         <th class="text-left">ACTION</th>
@@ -193,6 +229,7 @@
                                 </div>
                             </div>
                             <div class="row form-horizontal">
+                                <button type="button" onclick="clearTbl()">Clear</button>
                                 <div class="table-responsive" style="padding: 10px 25px 10px 10px">
                                     <table class="table dataTable table-striped table-bordered" id="poTbl" width="100%">
                                         <thead>
@@ -426,8 +463,8 @@
                     {sWidth: '20%'},
                     {sWidth: '10%'},
                     {sWidth: '10%'},
-                    {sWidth: '8%'},
                     {sWidth: '10%'},
+                    {sWidth: '8%'},
                     {sWidth: '12%'}
                 ],
             });
@@ -489,14 +526,16 @@
                         required: true,
                         currency: true
                     },
-                    dsrt: {
+                    vtrt: {
                         currency: true
                     },
-                    dsvl: {
+                    nbrt: {
+                        currency: true
+                    },
+                    btrt: {
                         currency: true
                     },
                     txrt: {
-                        notEqual: 0,
                         currency: true
                     },
                     otchg: {
@@ -531,6 +570,9 @@
                     },
                     price: {
                         required: "Enter unit price",
+                    },
+                    ttlAmt: {
+                        notEqual: "Can't enter zero",
                     }
                 }
             });
@@ -577,55 +619,7 @@
                 }
             });
 
-            $('#app_typ_form').validate({
-                rules: {
-                    name_edt: {
-                        required: true,
-                        remote: {
-                            url: "<?= base_url(); ?>Stock/chk_typName",
-                            type: "post",
-                            data: {
-                                name: function () {
-                                    return $("#name_edt").val();
-                                },
-                                tpid: function () {
-                                    return $("#tpid").val();
-                                },
-                                stat: 1
-                            }
-                        }
-                    },
-                    code_edt: {
-                        required: true,
-                        minlength: 3,
-                        maxlength: 3,
-                        remote: {
-                            url: "<?= base_url(); ?>Stock/chk_typCode",
-                            type: "post",
-                            data: {
-                                code: function () {
-                                    return $("#code_edt").val();
-                                },
-                                tpid: function () {
-                                    return $("#tpid").val();
-                                },
-                                stat: 1
-                            }
-                        }
-                    }
-                },
-                messages: {
-                    name_edt: {
-                        required: "Enter type name",
-                        remote: "Already entered name"
-                    },
-                    code_edt: {
-                        required: "Enter type code",
-                        remote: "Already entered code"
-                    }
-                }
-            });
-            srch_Typ();
+            srch_Po();
         });
 
         //Get Scale
@@ -701,7 +695,7 @@
                     numeral(qty).format('0,0') + '<input type="hidden" name="qunty[]" value="' + qty + ' ">',         // QUNT
                     numeral(untp).format('0,0.00') + '<input type="hidden" name="unitpr[]" value="' + untp + ' ">',     // UNIT PRICE
                     numeral((+qty * +untp)).format('0,0.00') + '<input type="hidden" name="unttl[]" value="' + (+qty * +untp) + ' ">',
-                    '<button type="button" class="btn btn-sm btn-warning" id="dltrw" onclick=""><span><i class="fa fa-close" title="Remove"></i></span></button>'
+                    '<button type="button" class="btn btn-xs btn-warning" id="dltrw" onclick=""><span><i class="fa fa-close" title="Remove"></i></span></button>'
                 ]).draw(false);
 
                 var ttlQt = 0;
@@ -861,50 +855,54 @@
             e.preventDefault();
             subVal.resetForm();
             var valid = true;
-            $('#supp,#oddt,#refd,#whs').each(function (i, v) {
+            $('#supp,#oddt,#refd,#whs,#vtrt,#nbrt,#btrt,#txrt,#otchg,#ttlAmt').each(function (i, v) {
                 valid = mainVal.element(v) && valid;
             });
 
-            // if ($('#add_po_form').valid()) {
+            if (valid) {
+                $('#add_po_btn').prop('disabled', true);
+                swal({
+                    title: "Processing...",
+                    text: "Purchase Order data saving..",
+                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                    showConfirmButton: false
+                });
 
-            //$('#add_typ_btn').prop('disabled', true);
-            //swal({
-            //    title: "Processing...",
-            //    text: "Type data saving..",
-            //    imageUrl: "<?//= base_url() ?>//assets/img/loading.gif",
-            //    showConfirmButton: false
-            //});
-            //
-            //jQuery.ajax({
-            //    type: "POST",
-            //    url: "<?//= base_url(); ?>//Stock/typ_Add",
-            //    data: $("#add_typ_form").serialize(),
-            //    dataType: 'json',
-            //    success: function (data) {
-            //        swal({title: "", text: "Type Added!", type: "success"},
-            //            function () {
-            //                $('#add_typ_btn').prop('disabled', false);
-            //                clear_Form('add_typ_form');
-            //                $('#modal-add').modal('hide');
-            //                srch_Typ();
-            //            });
-            //    },
-            //    error: function (data, textStatus) {
-            //        swal({title: "Failed", text: textStatus, type: "error"},
-            //            function () {
-            //                location.reload();
-            //            });
-            //    }
-            //});
-            // }
+                jQuery.ajax({
+                    type: "POST",
+                    url: "<?= base_url(); ?>Stock/po_Add",
+                    data: $("#add_po_form").serialize(),
+                    dataType: 'json',
+                    success: function (data) {
+                        swal({title: "", text: "Purchase Order Added!", type: "success"},
+                            function () {
+                                $('#add_po_btn').prop('disabled', true);
+                                clear_Form('add_po_form');
+                                $('#modal-add').modal('hide');
+                                $('#poTbl').DataTable().clear().draw();
+                                $('#ttlQt').html('00');
+                                $('#ttlSub').html('00.00');
+                                srch_Po();
+                            });
+                    },
+                    error: function (data, textStatus) {
+                        swal({title: "Failed", text: textStatus, type: "error"},
+                            function () {
+                                location.reload();
+                            });
+                    }
+                });
+            }
         });
 
         //Search Brand
-        function srch_Typ() {
+        function srch_Po() {
             var stat = $('#stat').val();
+            var supp = $('#supps').val();
+            var dtrg = $('#dtrng').val();
 
-            $('#typ_table').DataTable().clear();
-            $('#typ_table').DataTable({
+            $('#pom_table').DataTable().clear();
+            $('#pom_table').DataTable({
                 "destroy": true,
                 "cache": false,
                 "processing": true,
@@ -918,27 +916,30 @@
                 ],
                 "serverSide": true,
                 "columnDefs": [
-                    {className: "text-left", "targets": [2, 3]},
-                    {className: "text-center", "targets": [0, 1, 4, 5, 6]},
-                    {className: "text-right", "targets": [0]},
-                    {className: "text-nowrap", "targets": [2, 3]},
+                    {className: "text-left", "targets": [2]},
+                    {className: "text-center", "targets": [0, 1, 3, 5, 6, 7]},
+                    {className: "text-right", "targets": [4]},
+                    {className: "text-nowrap", "targets": [2]},
                 ],
-                "order": [[4, "DESC"]], //ASC  desc
+                "order": [[6, "DESC"]], //ASC  desc
                 "aoColumns": [
-                    {sWidth: '3%'}, //#
-                    {sWidth: '5%'}, //Code
-                    {sWidth: '20%'}, //Type
-                    {sWidth: '10%'}, //Created By
-                    {sWidth: '10%'}, //Created date
-                    {sWidth: '8%'}, //Status
-                    {sWidth: '12%'} //Option
+                    {sWidth: '3%'}, //No
+                    {sWidth: '10%'},    //PONO
+                    {sWidth: '20%'},    //SUPP
+                    {sWidth: '10%'},    //Order Date
+                    {sWidth: '10%'},    //VALUE
+                    {sWidth: '10%'},    //Created Date
+                    {sWidth: '8%'},     //Status
+                    {sWidth: '12%'}     //OPT
                 ],
 
                 "ajax": {
-                    url: '<?= base_url(); ?>Stock/searchTyp',
+                    url: '<?= base_url(); ?>Stock/searchPo',
                     type: 'post',
                     data: {
-                        stat: stat
+                        stat: stat,
+                        supp: supp,
+                        dtrg: dtrg
                     }
                 }
             });

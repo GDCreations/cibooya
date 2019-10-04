@@ -453,6 +453,86 @@ class Stock_model extends CI_Model
         return $this->db->count_all_results();
     }
     //END SEARCH WAREHOUSE DETAILS </JANAKA 2019-10-03>
+
+    //SEARCH WAREHOUSE DETAILS </JANAKA 2019-10-04>
+    var $cl_srch7 = array('pono','spnm','oddt'); //set column field database for datatable searchable
+    var $cl_odr7 = array(null, 'pono','spnm','oddt','totl','po.crdt','po.stat',''); //set column field database for datatable orderable
+    var $order7 = array('po.crdt' => 'DESC'); // default order
+
+    function poDet_query()
+    {
+        $stat = $this->input->post('stat');
+        $supp = $this->input->post('supp');
+        $dtrg = explode('/',$this->input->post('dtrg'));
+        $frdt = trim($dtrg[0],' ');
+        $todt = trim($dtrg[1],' ');
+
+        $this->db->select("po.poid,po.pono,po.oddt,po.stat,po.crdt,po.totl,sp.spid,sp.spnm,sp.spcd");
+        $this->db->from('stock_po po');
+        $this->db->join('supp_mas sp','sp.spid=po.spid');
+        if($stat!='all'){
+            $this->db->where("po.stat=$stat");
+        }
+        if($supp!='all'){
+            $this->db->where("po.spid=$supp");
+        }
+        $this->db->where("DATE_FORMAT(po.crdt,'%Y-%m-%d') BETWEEN '$frdt' AND '$todt'");
+    }
+
+    private function poDet_queryData()
+    {
+        $this->poDet_query();
+        $i = 0;
+        foreach ($this->cl_srch7 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch7) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr7[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order7)) {
+            $order7 = $this->order7;
+            $this->db->order_by(key($order7), $order7[key($order7)]);
+        }
+    }
+
+    function get_poDtils()
+    {
+        $this->poDet_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_po()
+    {
+        $this->poDet_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_po()
+    {
+        // $this->db->from($this->table);
+        $this->poDet_query();
+        return $this->db->count_all_results();
+    }
+    //END SEARCH WAREHOUSE DETAILS </JANAKA 2019-10-04>
 }
 
 ?>

@@ -2133,13 +2133,14 @@ class Stock extends CI_Controller
 //END WAREHOUSE REGISTRATION </JANAKA 2019-10-03>
 
 //CHECK EXIST WAREHOUSE NAME
-    function chk_whName(){
+    function chk_whName()
+    {
         $name = $this->input->post('name');
         $stat = $this->input->post('stat'); //0-Add/1-Edit
 
         $this->db->select("whid");
         $this->db->from('stock_wh');
-        $this->db->where('whnm',$name);
+        $this->db->where('whnm', $name);
         if ($stat == 1) {
             $this->db->where("whid!=" . $this->input->post('whid'));
         }
@@ -2153,13 +2154,14 @@ class Stock extends CI_Controller
 //END CHECK EXIST WAREHOUSE NAME
 
 //CHECK EXIST WAREHOUSE CODE
-    function chk_whCode(){
+    function chk_whCode()
+    {
         $code = $this->input->post('code');
         $stat = $this->input->post('stat'); //0-Add/1-Edit
 
         $this->db->select("whid");
         $this->db->from('stock_wh');
-        $this->db->where('whcd',$code);
+        $this->db->where('whcd', $code);
         if ($stat == 1) {
             $this->db->where("whid!=" . $this->input->post('whid'));
         }
@@ -2249,7 +2251,7 @@ class Stock extends CI_Controller
             $sub_arr[] = ++$i;
             $sub_arr[] = $row->whcd;
             $sub_arr[] = $row->whnm;
-            $sub_arr[] = $row->mobi."<span style='color: dodgerblue; font-weight: bold'> / </span>".$row->tele;
+            $sub_arr[] = $row->mobi . "<span style='color: dodgerblue; font-weight: bold'> / </span>" . $row->tele;
             $sub_arr[] = $row->addr;
             $sub_arr[] = $row->crnm;
             $sub_arr[] = $row->crdt;
@@ -2276,7 +2278,7 @@ class Stock extends CI_Controller
         $this->db->select("sup.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm,CONCAT(md.fnme,' ',md.lnme) AS mdnm");
         $this->db->from('stock_wh sup');
         $this->db->join('user_mas cr', 'cr.auid=sup.crby');
-        $this->db->join('user_mas md', 'md.auid=sup.mdby','LEFT');
+        $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
         $this->db->where("sup.whid=$id");
         $data = $this->db->get()->result();
 
@@ -2429,13 +2431,13 @@ class Stock extends CI_Controller
         $this->load->view('admin/common/adminHeader', $per);
 
         $data2['funcPerm'] = $this->Generic_model->getFuncPermision('pchOdr');
-        $data2['supplier'] = $this->Generic_model->getData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat'=>1));
-        $data2['warehouse'] = $this->Generic_model->getData('stock_wh', array('whid', 'whcd', 'whnm'), array('stat'=>1));
+        $data2['supplier'] = $this->Generic_model->getData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat' => 1));
+        $data2['warehouse'] = $this->Generic_model->getData('stock_wh', array('whid', 'whcd', 'whnm'), array('stat' => 1));
         //Item With Storing Scale
         $this->db->select("itid,itcd,itnm,slid,scnm,scl");
         $this->db->from('item');
-        $this->db->join('scale','scale.slid=item.scli');
-        $this->db->where('item.stat',1);
+        $this->db->join('scale', 'scale.slid=item.scli');
+        $this->db->where('item.stat', 1);
         $data2['item'] = $this->db->get()->result();
         $this->load->view('admin/stock/purchase_Order', $data2);
 
@@ -2444,7 +2446,8 @@ class Stock extends CI_Controller
 //END OPEN PAGE </JANAKA 2019-10-03>
 
 //CHECK MAX ITEM LEVEL AND AVAILABLE COUNT
-    function chk_Mx_ItmLvl(){
+    function chk_Mx_ItmLvl()
+    {
         $item = $this->input->post('item');
         $qnty = $this->input->post('qnty');
 
@@ -2453,17 +2456,201 @@ class Stock extends CI_Controller
         $this->db->where("item.itid=$item");
         $res = $this->db->get()->result();
 
-        if(sizeof($res)>0){
-            if($qnty > $res[0]->mxlvn){
-                echo json_encode("Can't enter more than ".$res[0]->mxlvn);
-            }else{
+        if (sizeof($res) > 0) {
+            if ($qnty > $res[0]->mxlvn) {
+                echo json_encode("Can't enter more than " . $res[0]->mxlvn);
+            } else {
                 echo json_encode(true);
             }
-        }else{
+        } else {
             echo json_encode(true);
         }
     }
 //CHECK MAX ITEM LEVEL AND AVAILABLE COUNT
+
+//ADD PURCHASE ORDER </JANAKA 2019-10-04>
+    function po_Add()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        //Creating PO next number
+        $this->db->select("pono");
+        $this->db->from('stock_po');
+        $this->db->order_by('poid', 'DESC');
+        $this->db->limit(1);
+        $res = $this->db->get()->result();
+
+        $yr = date('y');
+
+        if (sizeof($res) > 0) {
+            $number = explode('-', $res[0]->spcd);
+            $aa = intval($number[1]) + 1;
+            $cc = strlen($aa);
+
+            if ($cc == 1) {
+                $xx = '0000' . $aa;
+            } else if ($cc == 2) {
+                $xx = '000' . $aa;
+            } else if ($cc == 3) {
+                $xx = '00' . $aa;
+            } else if ($cc == 4) {
+                $xx = '0' . $aa;
+            } else if ($cc == 5) {
+                $xx = '' . $aa;
+            }
+            $pono = "PO/" . $yr . "/" . $xx;
+        } else {
+            $pono = "PO/" . $yr . "/00001";
+        }
+
+        $this->Generic_model->insertData('stock_po', array(
+            'spid' => $this->input->post('supp'),
+            'whid' => $this->input->post('whs'),
+            'pono' => $pono,
+            'oddt' => $this->input->post('oddt'),
+            'rfno' => $this->input->post('refd'),
+            'sbtl' => $this->input->post('sbttl'),
+            'vtrt' => $this->input->post('vtrt'),
+            'vtvl' => $this->input->post('vtvl'),
+            'nbrt' => $this->input->post('nbrt'),
+            'nbvl' => $this->input->post('nbvl'),
+            'btrt' => $this->input->post('btrt'),
+            'btvl' => $this->input->post('btvl'),
+            'txrt' => $this->input->post('txrt'),
+            'txvl' => $this->input->post('tax'),
+            'ochg' => $this->input->post('otchg'),
+            'totl' => $this->input->post('ttlAmt'),
+            'remk' => $this->input->post('remk'),
+            'stat' => 0,
+            'crby' => $_SESSION['userId'],
+            'crdt' => date('Y-m-d H:i:s'),
+        ));
+        $id = $this->db->insert_id();
+
+        $itmcd = $this->input->post("itnmcd[]");
+        $qunty = $this->input->post('qunty[]');
+        $untpr = $this->input->post('unitpr[]');
+        $subvl = $this->input->post('unttl[]');
+        $siz = sizeof($itmcd);
+        for ($it = 0; $it < $siz; $it++) {
+            $this->Generic_model->insertData('stock_po_des', array(
+                'poid' => $id,
+                'spid' => $this->input->post('supp'),
+                'itid' => $itmcd[$it],
+                'qnty' => $qunty[$it],
+                'untp' => $untpr[$it],
+                'sbvl' => $subvl[$it],
+                'stat' => 1,
+            ));
+        }
+
+        $funcPerm = $this->Generic_model->getFuncPermision('pchOdr');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Purchase Order added ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ADD PURCHASE ORDER </JANAKA 2019-10-04>
+
+//SEARCH PO </2019-10-04>
+    function searchPo()
+    {
+        $funcPerm = $this->Generic_model->getFuncPermision('pchOdr');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edit = "";
+        } else {
+            $edit = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rejt = "";
+        } else {
+            $rejt = "disabled";
+        }
+        if ($funcPerm[0]->dact == 1) {
+            $dac = "";
+        } else {
+            $dac = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
+
+        $result = $this->Stock_model->get_poDtils();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            if ($row->stat == 0) {
+                $stat = "<label class='label label-warning'>Pending</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' $rejt onclick='rejectPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 1) {
+                $stat = "<label class='label label-success'>Active</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' $dac onclick='inactPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 2) {
+                $stat = "<label class='label label-danger'>Reject</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($row->stat == 3) {
+                $stat = "<label class='label label-indi'>Inactive</label>";
+                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $reac onclick='reactPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+            } else {
+                $stat = "--";
+                $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='editPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='approvePo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' disabled onclick='rejectPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->pono;
+            $sub_arr[] = $row->spcd." - ".$row->spnm;
+            $sub_arr[] = $row->oddt;
+            $sub_arr[] = number_format($row->totl,2);
+            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Stock_model->count_all_po(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_po(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+//END SEARCH PO </2019-10-04>
 //************************************************
 //***             END PURCHASE ORDER           ***
 //************************************************
