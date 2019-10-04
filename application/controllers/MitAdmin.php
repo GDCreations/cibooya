@@ -43,6 +43,7 @@ class MitAdmin extends CI_Controller
     //**********    MIT SPECIAL MANAGEMENT       *************
     //*******************************************************
 
+//*******************************************************
 // SYSTEM UPDATE
     public function sysUpdate()
     {
@@ -379,6 +380,70 @@ class MitAdmin extends CI_Controller
             echo json_encode(false);
         }
     }
+
+// END SYSTEM UPDATE RELEASE NOTE
+
+//******************************************************* //
+// SYSTEM CHANGE LOG
+    function mitVers()
+    {
+        $data['acm'] = ''; //Module
+        $data['acp'] = 'mitVers'; //Page
+
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+        //$dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('sysChanlg');
+
+        $this->load->view('mitadmin/versionPackage');
+        $this->load->view('common/tmpFooter', $data);
+    }
+
+    function getPageMdul()
+    {
+        $this->db->select(" * ");
+        $this->db->from("user_page_mdl");
+        //$this->db->where('test.uslv', $srlv);
+        $query = $this->db->get();
+        echo json_encode($query->result());
+    }
+
+    // EDIT
+    function editMitVirs()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+        $len = $this->input->post('len5');
+
+        for ($a = 0; $a < $len; $a++) {
+            $pgid = $this->input->post("mdid[" . $a . "]");
+            $pgac = $this->input->post("pgac[" . $a . "]");
+
+            $this->Generic_model->updateData('user_page_mdl', array('stat' => $pgac), array('aid' => $pgid));
+        }
+
+        //$funcPerm = $this->Generic_model->getFuncPermision('permis');
+        //$this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Page Access Update');
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+
+    function getReleseNoteXX()
+    {
+        $chid = $this->input->post('chid');
+        $this->db->select("*");
+        $this->db->from("syst_changelog");
+        $this->db->where('chid', $chid);
+        $query = $this->db->get();
+        echo json_encode($query->result());
+    }
+
+
 
 // END SYSTEM UPDATE RELEASE NOTE
 
