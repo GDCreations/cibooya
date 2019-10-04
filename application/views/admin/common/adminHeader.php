@@ -135,14 +135,16 @@
                         <?php $Stock_title = false;
                     } ?>
 
-                    <?php if (in_array('xyz', $permMdul, TRUE)) { ?>
-                        <li id="xyz">
-                            <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
+                    <?php if (in_array('stcAcs', $permMdul, TRUE)) { ?>
+                        <li id="stcAcs">
+                            <a href="#"><span class="nav-icon-hexa fa fa-database"></span> Stock Access</a>
                             <ul>
-
-                                <!--                                <li>-->
-                                <!--                                    <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>-->
-                                <!--                                </li>-->
+                                <?php if (in_array("pchOdr", $permission, TRUE)) { ?>
+                                    <li>
+                                        <a id="pchOdr" href="<?= base_url() ?>Stock/pchOdr"><span
+                                                    class="nav-icon-hexa fa fa-list-ul"></span> Purchase Order </a>
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </li>
                         <?php $Stock_title = false;
