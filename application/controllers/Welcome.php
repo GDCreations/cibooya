@@ -13,11 +13,6 @@ class Welcome extends CI_Controller
         $this->load->model('Generic_model', '', TRUE);
         date_default_timezone_set('Asia/Colombo');
 
-        if (!empty($_SESSION['userId'])) {
-        } else {
-            $this->session->sess_destroy();
-            $this->index();
-        }
     }
 
     public function index()
@@ -149,30 +144,35 @@ class Welcome extends CI_Controller
     // userProfile
     function userProfile()
     {
-        $data['acm'] = ''; //Module
-        $data['acp'] = 'systMsg'; //Page
+        if (!empty($_SESSION['userId'])) {
+            $data['acm'] = ''; //Module
+            $data['acp'] = 'systMsg'; //Page
 
-        $this->load->view('common/tmpHeader');
-        $per['permission'] = $this->Generic_model->getPermision();
-        $this->load->view('user/common/userHeader', $per);
+            $this->load->view('common/tmpHeader');
+            $per['permission'] = $this->Generic_model->getPermision();
+            $this->load->view('user/common/userHeader', $per);
 
-        //$dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('userProfile');
+            //$dataArr['funcPerm'] = $this->Generic_model->getFuncPermision('userProfile');
 
-        $usid = $_SESSION['userId'];
-        $usbr = $_SESSION['usrbrnc'];
+            $usid = $_SESSION['userId'];
+            $usbr = $_SESSION['usrbrnc'];
 
-        $this->db->select("user_mas.*, user_level.lvnm, brch_mas.brcd, brch_mas.brnm, ");
-        $this->db->from("user_mas");
-        $this->db->join("user_level", 'user_level.id = user_mas.usmd');
-        $this->db->join("brch_mas", 'brch_mas.brid = user_mas.brch');
-        $this->db->where(" user_mas.auid", $usid);
-        $query = $this->db->get();
-        $dataArr['userinfo'] = $query->result();
+            $this->db->select("user_mas.*, user_level.lvnm, brch_mas.brcd, brch_mas.brnm, ");
+            $this->db->from("user_mas");
+            $this->db->join("user_level", 'user_level.id = user_mas.usmd');
+            $this->db->join("brch_mas", 'brch_mas.brid = user_mas.brch');
+            $this->db->where(" user_mas.auid", $usid);
+            $query = $this->db->get();
+            $dataArr['userinfo'] = $query->result();
 
-        $dataArr['memberinfo'] = $this->Generic_model->getData('user_mas', '', "stat = 1 AND usmd != 1 AND  auid != $usid AND brch = $usbr"); //
+            $dataArr['memberinfo'] = $this->Generic_model->getData('user_mas', '', "stat = 1 AND usmd != 1 AND  auid != $usid AND brch = $usbr"); //
 
-        $this->load->view('common/userProfile', $dataArr);
-        $this->load->view('common/tmpFooter', $data);
+            $this->load->view('common/userProfile', $dataArr);
+            $this->load->view('common/tmpFooter', $data);
+        } else {
+            $this->session->sess_destroy();
+            $this->index();
+        }
     }
 
     // USER PROFILE DETAILS EDIT

@@ -82,8 +82,7 @@
                     <div class="row margin-bottom-20">
                         <div class="col-xs-12">
                             <div class="title">
-                                <h3>Team</h3>
-                                <p>Branch Members</p>
+                                <p><b> Profile Details </b> </p>
                             </div>
                         </div>
 

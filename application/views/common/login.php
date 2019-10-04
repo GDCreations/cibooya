@@ -134,7 +134,6 @@
             $('#logps').attr('type', 'password');
         }
     }
-
 </script>
 
 <?php
