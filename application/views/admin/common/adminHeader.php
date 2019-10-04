@@ -126,7 +126,8 @@
                                 <?php if (in_array("whsMng", $permission, TRUE)) { ?>
                                     <li>
                                         <a id="whsMng" href="<?= base_url() ?>Stock/whsMng"><span
-                                                    class="nav-icon-hexa fa fa-institution"></span> Warehouse Management </a>
+                                                    class="nav-icon-hexa fa fa-institution"></span> Warehouse Management
+                                        </a>
                                     </li>
                                 <?php } ?>
                             </ul>
@@ -139,9 +140,9 @@
                             <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
                             <ul>
 
-<!--                                <li>-->
-<!--                                    <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>-->
-<!--                                </li>-->
+                                <!--                                <li>-->
+                                <!--                                    <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>-->
+                                <!--                                </li>-->
                             </ul>
                         </li>
                         <?php $Stock_title = false;
@@ -158,12 +159,16 @@
 
                     <?php if ($_SESSION['role'] == 1) { ?>
                         <li class="title" id="Settings_title">MIT SETTINGS</li>
-                        <li><a id="sysUpdate" href="<?= base_url() ?>admin/sysUpdate">
+                        <li><a id="sysChanlg" href="<?= base_url() ?>MitAdmin/mit">
+                                <span class="nav-icon-hexa fa fa-code-fork"></span> MIT version Assign</a>
+                        </li>
+                        <li><a id="sysUpdate" href="<?= base_url() ?>MitAdmin/sysUpdate">
                                 <span class="nav-icon-hexa fa fa-wrench"></span> system update</a>
                         </li>
-                        <li><a id="sysChanlg" href="<?= base_url() ?>admin/sysChanlg">
+                        <li><a id="sysChanlg" href="<?= base_url() ?>MitAdmin/sysChanlg">
                                 <span class="nav-icon-hexa fa fa-upload"></span> change log</a>
                         </li>
+
                     <?php } ?>
 
                 </ul>
@@ -428,7 +433,8 @@
                                 <ul class="dropdown-menu dropdown-left">
                                     <li><a href="<?= base_url(); ?>User"><span class="icon-users"></span> User </a></li>
                                     <li class="divider"></li>
-                                    <li><a href="<?= base_url(); ?>welcome/userProfile"><span class="icon-user"></span>Your Profile</a></li>
+                                    <li><a href="<?= base_url(); ?>welcome/userProfile"><span class="icon-user"></span>Your
+                                            Profile</a></li>
                                     <li><a href="<?= base_url(); ?>welcome/lockScren"><span class="fa fa-lock"></span>
                                             Lock Screen</a></li>
                                     <li class="divider"></li>
