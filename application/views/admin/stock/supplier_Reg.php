@@ -125,38 +125,50 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Bank Name <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">Bank Details </label>
                                         <div class="col-md-8 col-xs-12">
-                                            <select id="bnknm" name="bnknm"
-                                                    onchange="getbankbrch(this.value,'bnkbr','bnkbr_cont')"
-                                                    class="bs-select">
-                                                <option value="0">-- Select A Bank --</option>
-                                                <?php
-                                                foreach ($bank as $bnk) {
-                                                    echo "<option value='$bnk->bnid'>" . $bnk->bkcd . " - " . $bnk->bknm . "</option>";
-                                                }
-                                                ?>
-                                            </select>
+                                            <label class="switch">
+                                                No <input type="checkbox" value="1" id="bnkDtl" name="bnkDtl"
+                                                          onchange="loadBnkDit()">
+                                            </label> Yes
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Bank Branch <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12" id="bnkbr_cont">
-                                            <select id="bnkbr" name="bnkbr" onchange="" class="bs-select">
-                                                <option value="0">-- Select A Branch --</option>
-                                            </select>
+                                    <div id="bankDtil" style="display: none">
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-xs-12 control-label">Bank Name <span
+                                                        class="fa fa-asterisk req-astrick"></span></label>
+                                            <div class="col-md-8 col-xs-12">
+                                                <select id="bnknm" name="bnknm"
+                                                        onchange="getbankbrch(this.value,'bnkbr','bnkbr_cont')"
+                                                        class="bs-select">
+                                                    <option value="0">-- Select A Bank --</option>
+                                                    <?php
+                                                    foreach ($bank as $bnk) {
+                                                        echo "<option value='$bnk->bnid'>" . $bnk->bkcd . " - " . $bnk->bknm . "</option>";
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-xs-12 control-label">Bank Branch <span
+                                                        class="fa fa-asterisk req-astrick"></span></label>
+                                            <div class="col-md-8 col-xs-12" id="bnkbr_cont">
+                                                <select id="bnkbr" name="bnkbr" onchange="" class="bs-select">
+                                                    <option value="0">-- Select A Branch --</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 15px !important;">
+                                            <label class="col-md-4 col-xs-12 control-label">Account Number <span
+                                                        class="fa fa-asterisk req-astrick"></span></label>
+                                            <div class="col-md-8 col-xs-12">
+                                                <input class="form-control" type="text" name="acno" id="acno"
+                                                       placeholder="Account Number"/>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Account Number <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="acno" id="acno"
-                                                   placeholder="Account Number"/>
-                                        </div>
-                                    </div>
+                                    <br>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Remark</label>
                                         <div class="col-md-8 col-xs-12">
@@ -186,8 +198,8 @@
     <!-- MODAL VIEW SUPPLIER -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
         <div class="modal-dialog modal-lg" role="document">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
-                                                                                              class="icon-cross"></span>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" class="icon-cross"></span>
             </button>
             <form id="app_sup_form">
                 <div class="modal-content">
@@ -242,30 +254,39 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <lable class="col-md-9 control-label">Bank Details</lable>
-                                        <div id="edit_Area" class="col-md-3">
-                                            <button type="button" class="btn btn-xs btn-info btn-rounded btn-icon-fixed"
-                                                    data-toggle="modal" data-target="#modal-Bank-New">
-                                                <span class="fa fa-plus"></span> Add
-                                            </button>
+                                        <lable class="col-md-4 col-xs-12 control-label">Bank Details</lable>
+                                        <div class="col-md-4 col-xs-12">
+                                            <label class="switch">
+                                                No <input type="checkbox" value="1" id="bnkDtlEdt" name="bnkDtlEdt"
+                                                          onchange="loadBnkDitEdt()">
+                                            </label> Yes
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="table-responsive">
-                                                <table id="supp_Bank"
-                                                       class="table dataTable table-striped table-bordered"
-                                                       width="100%">
-                                                    <thead>
-                                                    <tr>
-                                                        <!--                                                    <th class="text-left">#</th>-->
-                                                        <th class="text-left">BANK</th>
-                                                        <th class="text-left">BRANCH</th>
-                                                        <th class="text-left">ACCOUNT NO.</th>
-                                                        <th class="text-left">ACTION</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
+
+                                        <div id="bankDtilEdt" style="display: none">
+                                            <div id="edit_Area" class="col-md-4">
+                                                <button type="button"
+                                                        class="btn btn-xs btn-info btn-rounded btn-icon-fixed pull-right"
+                                                        data-toggle="modal" data-target="#modal-Bank-New">
+                                                    <span class="fa fa-plus"></span> Add
+                                                </button>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="table-responsive">
+                                                    <table id="supp_Bank"
+                                                           class="table dataTable table-striped table-bordered"
+                                                           width="100%">
+                                                        <thead>
+                                                        <tr>
+                                                            <th class="text-left">BANK</th>
+                                                            <th class="text-left">BRANCH</th>
+                                                            <th class="text-left">ACCOUNT NO.</th>
+                                                            <th class="text-left">ACTION</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -818,6 +839,7 @@
                         $("#modal-view").find('.bootstrap-select').addClass("disabled dropup");
                         $("#modal-view").find('.bootstrap-select').children().addClass("disabled dropup");
                         var des = "disabled";
+                        $("#bnkDtlEdt").attr("disabled", true);
                         //VIEW MODEL
                     } else if (func == 'edit') {
                         //EDIT MODEL
@@ -832,6 +854,7 @@
                         $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
                         $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
                         var des = "";
+                        $("#bnkDtlEdt").attr("disabled", false);
                         //EDIT MODEL
                     } else if (func == 'app') {
                         //APPROVE MODEL
@@ -846,6 +869,7 @@
                         $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
                         $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
                         var des = "";
+                        $("#bnkDtlEdt").attr("disabled", false);
                         //APPROVE MODEL
                     }
                     var len = data['spdet'].length;
@@ -881,9 +905,18 @@
                         $('#rjdt').html(": " + ((spdet[0]['rjdt'] != null && spdet[0]['rjdt'] != "0000-00-00 00:00:00") ? spdet[0]['rjdt'] : "--"));
                         $('#mdby').html(": " + ((spdet[0]['mdnm'] != null) ? spdet[0]['mdnm'] : "--"));
                         $('#mddt').html(": " + ((spdet[0]['mddt'] != null && spdet[0]['mddt'] != "0000-00-00 00:00:00") ? spdet[0]['mddt'] : "--"));
+
+                        if (spdet[0]['bkdt'] == 1) {
+                            $('#bankDtilEdt').css("display", "block");
+                            ($('#bnkDtlEdt').prop('checked', true));
+                        } else {
+                            $('#bankDtilEdt').css("display", "none");
+                            ($('#bnkDtlEdt').prop('checked', false));
+                        }
                     }
 
                     if (len2 > 0) {
+
                         $('#supp_Bank').DataTable().clear();
                         var t1 = $('#supp_Bank').DataTable({
                             "bInfo": false,
@@ -960,93 +993,107 @@
                 .row($(this).parents('tr'))
                 .remove()
                 .draw();
+
+            if (!table.data().count()) {
+                $("#app_sup_btn").hide();
+            } else {
+                $("#app_sup_btn").show();
+            }
         });
 
         //APPROVE || EDIT HERE
         $('#app_sup_btn').click(function (e) {
             e.preventDefault();
-            if ($('#app_sup_form').valid()) {
 
-                swal({
-                        title: "Are you sure to do this ?",
-                        text: "",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3bdd59",
-                        confirmButtonText: "Yes",
-                        cancelButtonText: "No",
-                        closeOnConfirm: false,
-                        closeOnCancel: false
-                    },
-                    function (isConfirm) {
-                        if (isConfirm) {
-                            var func = $('#func').val();
-                            $('#app_sup_btn').prop('disabled', true);
-                            if (func == 'edit') {
-                                swal({
-                                    title: "Processing...",
-                                    text: "Supplier's details updating..",
-                                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                                    showConfirmButton: false
-                                });
+            var table = $('#supp_Bank').DataTable();
+            //var row = table.rows().count();
 
-                                jQuery.ajax({
-                                    type: "POST",
-                                    url: "<?= base_url(); ?>Stock/supp_update",
-                                    data: $("#app_sup_form").serialize(),
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        swal({title: "", text: "Updating Success!", type: "success"},
-                                            function () {
-                                                $('#app_sup_btn').prop('disabled', false);
-                                                clear_Form('app_sup_form');
-                                                $('#modal-view').modal('hide');
-                                                srch_Supp();
-                                            });
-                                    },
-                                    error: function (data, textStatus) {
-                                        swal({title: "Updating Failed", text: textStatus, type: "error"},
-                                            function () {
-                                                location.reload();
-                                            });
-                                    }
-                                });
-                            } else if (func == 'app') {
-                                swal({
-                                    title: "Processing...",
-                                    text: "Supplier approving..",
-                                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                                    showConfirmButton: false
-                                });
+            if (table.rows().count() > 0) {
+                if ($('#app_sup_form').valid()) {
 
-                                jQuery.ajax({
-                                    type: "POST",
-                                    url: "<?= base_url(); ?>Stock/supp_update",
-                                    data: $("#app_sup_form").serialize(),
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        swal({title: "", text: "Approved!", type: "success"},
-                                            function () {
-                                                $('#app_sup_btn').prop('disabled', false);
-                                                clear_Form('app_sup_form');
-                                                $('#modal-view').modal('hide');
-                                                srch_Supp();
-                                            });
-                                    },
-                                    error: function (data, textStatus) {
-                                        swal({title: "Approving Failed", text: textStatus, type: "error"},
-                                            function () {
-                                                location.reload();
-                                            });
-                                    }
-                                });
+                    swal({
+                            title: "Are you sure to do this ?",
+                            text: "",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3bdd59",
+                            confirmButtonText: "Yes",
+                            cancelButtonText: "No",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                var func = $('#func').val();
+                                $('#app_sup_btn').prop('disabled', true);
+                                if (func == 'edit') {
+                                    swal({
+                                        title: "Processing...",
+                                        text: "Supplier's details updating..",
+                                        imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                                        showConfirmButton: false
+                                    });
+
+                                    jQuery.ajax({
+                                        type: "POST",
+                                        url: "<?= base_url(); ?>Stock/supp_update",
+                                        data: $("#app_sup_form").serialize(),
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            swal({title: "", text: "Updating Success!", type: "success"},
+                                                function () {
+                                                    $('#app_sup_btn').prop('disabled', false);
+                                                    clear_Form('app_sup_form');
+                                                    $('#modal-view').modal('hide');
+                                                    srch_Supp();
+                                                });
+                                        },
+                                        error: function (data, textStatus) {
+                                            swal({title: "Updating Failed", text: textStatus, type: "error"},
+                                                function () {
+                                                    location.reload();
+                                                });
+                                        }
+                                    });
+                                } else if (func == 'app') {
+                                    swal({
+                                        title: "Processing...",
+                                        text: "Supplier approving..",
+                                        imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                                        showConfirmButton: false
+                                    });
+
+                                    jQuery.ajax({
+                                        type: "POST",
+                                        url: "<?= base_url(); ?>Stock/supp_update",
+                                        data: $("#app_sup_form").serialize(),
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            swal({title: "", text: "Approved!", type: "success"},
+                                                function () {
+                                                    $('#app_sup_btn').prop('disabled', false);
+                                                    clear_Form('app_sup_form');
+                                                    $('#modal-view').modal('hide');
+                                                    srch_Supp();
+                                                });
+                                        },
+                                        error: function (data, textStatus) {
+                                            swal({title: "Approving Failed", text: textStatus, type: "error"},
+                                                function () {
+                                                    location.reload();
+                                                });
+                                        }
+                                    });
+                                } else {
+                                    alert('Contact System Admin');
+                                }
                             } else {
-                                alert('Contact System Admin');
+                                swal("Cancelled", " ", "warning");
                             }
-                        } else {
-                            swal("Cancelled", " ", "warning");
-                        }
-                    });
+                        });
+                }
+            } else {
+                swal("No Any bank Details..", "", "info");
             }
         });
 
@@ -1120,8 +1167,9 @@
                                         opt
                                     ]).draw(false);
                                 }
-
                             });
+                        //console.log(" awaaa");
+                        $("#app_sup_btn").show();
                     },
                     error: function (data, textStatus) {
                         swal({title: "Failed", text: textStatus, type: "error"},
@@ -1130,7 +1178,6 @@
                             });
                     }
                 });
-
             }
         });
 
@@ -1277,6 +1324,25 @@
                     }
                 });
         }
+
+        // supply bank details show hide
+        function loadBnkDit() {
+            if ($('#bnkDtl').prop('checked')) {
+                $('#bankDtil').css("display", "block");
+            } else {
+                $('#bankDtil').css("display", "none");
+            }
+        }
+
+        // supply bank details show hide edit
+        function loadBnkDitEdt() {
+            if ($('#bnkDtlEdt').prop('checked')) {
+                $('#bankDtilEdt').css("display", "block");
+            } else {
+                $('#bankDtilEdt').css("display", "none");
+            }
+        }
+
     </script>
 </div>
 <!-- END PAGE CONTAINER -->

@@ -1,4 +1,8 @@
 -----------------------------------------------------
+ 2019-10-07 Gemunu
+ ALTER TABLE `supp_mas` ADD `bkdt` INT(10) NOT NULL COMMENT 'if bank details(0-no/1-yes)' AFTER `dscr`;
+
+-----------------------------------------------------
 **DONE || 2019-10-04 JANAKA
 ALTER TABLE `item` ADD `mxlv` DOUBLE NOT NULL COMMENT 'Max store level' AFTER `scli`;
 ALTER TABLE `stock_po` ADD `rfno` VARCHAR(50) NOT NULL COMMENT 'Reference Number' AFTER `oddt`;
