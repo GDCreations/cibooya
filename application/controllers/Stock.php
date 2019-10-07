@@ -2472,17 +2472,15 @@ class Stock extends CI_Controller
 //CHECK MAX ITEM LEVEL AND AVAILABLE COUNT
     function chk_Mx_ItmLvl()
     {
-        $item = $this->input->post('item');
         $qnty = $this->input->post('qnty');
 
-        $this->db->select("(item.mxlv - IFNULL((SELECT SUM(IFNULL(avqn,0)) FROM stock WHERE stock.itid=item.itid),0)) AS mxlvn");
-        $this->db->from('item');
-        $this->db->where("item.itid=$item");
-        $res = $this->db->get()->result();
+        $this->Stock_model->qty_status();
+        $res = $this->Stock_model->qty_status();
+        $ttl = $res[0]->penpoqty + $res[0]->togrnqty + $res[0]->pengrnqty + $res[0]->tostqty + $res[0]->penstqty + $res[0]->avstqty;
 
         if (sizeof($res) > 0) {
-            if ($qnty > $res[0]->mxlvn) {
-                echo json_encode("Can't enter more than " . $res[0]->mxlvn);
+            if ($qnty > ($res[0]->mxlv - $ttl)) {
+                echo json_encode("Can't enter more than " . ($res[0]->mxlv - $ttl));
             } else {
                 echo json_encode(true);
             }
@@ -2532,7 +2530,7 @@ class Stock extends CI_Controller
             'whid' => $this->input->post('whs'),
             'pono' => $pono,
             'oddt' => $this->input->post('oddt'),
-            'rfno' => $this->input->post('refd'),
+            'rfno' => strtoupper($this->input->post('refd')),
             'sbtl' => $this->input->post('sbttl'),
             'vtrt' => $this->input->post('vtrt'),
             'vtvl' => $this->input->post('vtvl'),
@@ -2551,11 +2549,12 @@ class Stock extends CI_Controller
         ));
         $id = $this->db->insert_id();
 
-        $itmcd = $this->input->post("itnmcd[]");
+        $itmcd = $this->input->post("itid[]");
         $qunty = $this->input->post('qunty[]');
         $untpr = $this->input->post('unitpr[]');
         $subvl = $this->input->post('unttl[]');
         $siz = sizeof($itmcd);
+
         for ($it = 0; $it < $siz; $it++) {
             $this->Generic_model->insertData('stock_po_des', array(
                 'poid' => $id,
@@ -2606,15 +2605,10 @@ class Stock extends CI_Controller
         } else {
             $rejt = "disabled";
         }
-        if ($funcPerm[0]->dact == 1) {
-            $dac = "";
+        if ($funcPerm[0]->prnt == 1) {
+            $prnt = "";
         } else {
-            $dac = "disabled";
-        }
-        if ($funcPerm[0]->reac == 1) {
-            $reac = "";
-        } else {
-            $reac = "disabled";
+            $prnt = "disabled";
         }
 
         $result = $this->Stock_model->get_poDtils();
@@ -2625,27 +2619,21 @@ class Stock extends CI_Controller
             if ($row->stat == 0) {
                 $stat = "<label class='label label-warning'>Pending</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-edit' onclick='editPo($row->poid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' data-toggle='modal' data-target='#modal-edit' onclick='editPo($row->poid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' $rejt onclick='rejectPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             } else if ($row->stat == 1) {
                 $stat = "<label class='label label-success'>Active</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' $dac onclick='inactPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
+                    "<button type='button' disabled id='edit' data-toggle='modal' data-target='#modal-edit' onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' $app id='app' onclick='sendPo($row->poid)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Send Mail'><i class='fa fa-envelope' aria-hidden='true'></i></button> " .
+                    "<button type='button' $prnt onclick='printPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Print'><i class='fa fa-print' aria-hidden='true'></i></button>";
             } else if ($row->stat == 2) {
                 $stat = "<label class='label label-danger'>Reject</label>";
                 $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Approve'><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
-            } else if ($row->stat == 3) {
-                $stat = "<label class='label label-indi'>Inactive</label>";
-                $option = "<button type='button' $viw id='view' data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' $reac onclick='reactPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Activate'><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' disabled onclick='' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Deactivate'><i class='fa fa-close' aria-hidden='true'></i></button>";
             } else {
                 $stat = "--";
                 $option = "<button type='button' disabled data-toggle='modal' data-target='#modal-view' onclick='viewPo($row->poid,this.id)' class='btn btn-xs btn-default btn-condensed btn-rounded' title='View'><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -2675,6 +2663,128 @@ class Stock extends CI_Controller
         echo json_encode($output);
     }
 //END SEARCH PO </2019-10-04>
+
+//GET PO DETAILS TO VIEW
+    function get_PoDet()
+    {
+        $id = $this->input->post('id');
+
+        $data['po'] = $this->Generic_model->getData('stock_po', '', array('poid' => $id));
+
+        $this->db->select("item.itid,item.itcd,item.itnm,scl.scl,scl.scnm,pod.qnty,pod.untp,pod.sbvl,pod.pdid");
+        $this->db->from('stock_po_des pod');
+        $this->db->join('item', 'item.itid=pod.itid');
+        $this->db->join('scale scl', 'scl.slid=item.scli');
+        $this->db->where("pod.poid=$id AND pod.stat=1");
+        $data['pod'] = $this->db->get()->result();
+
+        echo json_encode($data);
+    }
+//END GET PO DETAILS TO VIEW
+
+//GET ITEM QUANTITY AND STATUS OF THEM
+    function getItm_QtySt()
+    {
+        $res = $this->Stock_model->qty_status();
+        echo json_encode($res);
+    }
+//GET ITEM QUANTITY AND STATUS OF THEM
+
+//APPROVE || EDIT PO </JANAKA 2019-10-07>
+    function po_update(){
+        $this->db->trans_begin(); // SQL TRANSACTION START
+        $id = $this->input->post('poid');
+        $func = $this->input->post('func');
+
+        if($func=='app'){
+            $msg = 'Purchase Order approved';
+
+            $this->Generic_model->updateData('stock_po', array(
+                'spid' => $this->input->post('supp_edt'),
+                'whid' => $this->input->post('whs_edt'),
+                'oddt' => $this->input->post('oddt_edt'),
+                'rfno' => strtoupper($this->input->post('refd_edt')),
+                'sbtl' => $this->input->post('sbttl_edt'),
+                'vtrt' => $this->input->post('vtrt_edt'),
+                'vtvl' => $this->input->post('vtvl_edt'),
+                'nbrt' => $this->input->post('nbrt_edt'),
+                'nbvl' => $this->input->post('nbvl_edt'),
+                'btrt' => $this->input->post('btrt_edt'),
+                'btvl' => $this->input->post('btvl_edt'),
+                'txrt' => $this->input->post('txrt_edt'),
+                'txvl' => $this->input->post('tax_edt'),
+                'ochg' => $this->input->post('otchg_edt'),
+                'totl' => $this->input->post('ttlAmt_edt'),
+                'remk' => $this->input->post('remk_edt'),
+                'stat' => 1,
+                'apby' => $_SESSION['userId'],
+                'apdt' => date('Y-m-d H:i:s'),
+            ),array('poid'=>$id));
+        }else if($func=='edit'){
+            $msg = 'Purchase Order updated';
+
+            $this->Generic_model->updateData('stock_po', array(
+                'spid' => $this->input->post('supp_edt'),
+                'whid' => $this->input->post('whs_edt'),
+                'oddt' => $this->input->post('oddt_edt'),
+                'rfno' => strtoupper($this->input->post('refd_edt')),
+                'sbtl' => $this->input->post('sbttl_edt'),
+                'vtrt' => $this->input->post('vtrt_edt'),
+                'vtvl' => $this->input->post('vtvl_edt'),
+                'nbrt' => $this->input->post('nbrt_edt'),
+                'nbvl' => $this->input->post('nbvl_edt'),
+                'btrt' => $this->input->post('btrt_edt'),
+                'btvl' => $this->input->post('btvl_edt'),
+                'txrt' => $this->input->post('txrt_edt'),
+                'txvl' => $this->input->post('tax_edt'),
+                'ochg' => $this->input->post('otchg_edt'),
+                'totl' => $this->input->post('ttlAmt_edt'),
+                'remk' => $this->input->post('remk_edt'),
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ),array('poid'=>$id));
+        }
+
+        //stock_po_des table update
+        $this->Generic_model->updateData('stock_po_des',array('stat'=>0),array('poid'=>$id));
+
+        $pdid = $this->input->post("pdid[]");
+        $itmcd = $this->input->post("itid_edt[]");
+        $qunty = $this->input->post('qunty_edt[]');
+        $untpr = $this->input->post('unitpr_edt[]');
+        $subvl = $this->input->post('unttl_edt[]');
+        $siz = sizeof($itmcd);
+
+        for ($it = 0; $it < $siz; $it++) {
+            if($pdid[$it]!=0){
+                $this->Generic_model->updateData('stock_po_des', array(
+                    'stat' => 1,
+                ),array('pdid'=>$pdid[$it]));
+            }else{
+                $this->Generic_model->insertData('stock_po_des', array(
+                    'poid' => $id,
+                    'spid' => $this->input->post('supp_edt'),
+                    'itid' => $itmcd[$it],
+                    'qnty' => $qunty[$it],
+                    'untp' => $untpr[$it],
+                    'sbvl' => $subvl[$it],
+                    'stat' => 1,
+                ));
+            }
+        }
+
+        $funcPerm = $this->Generic_model->getFuncPermision('pchOdr');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "$msg ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//APPROVE || EDIT PO </JANAKA 2019-10-07>
 //************************************************
 //***             END PURCHASE ORDER           ***
 //************************************************

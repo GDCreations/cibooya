@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-sm btn-primary btn-icon-fixed pull-right" onclick="srch_Po()"><span
+                    <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed pull-right" onclick="srch_Po()"><span
                                 class="fa fa-search"></span>Search
                     </button>
                 </div>
@@ -156,7 +156,7 @@
                                         <label class="col-md-4 col-xs-12 control-label">Reference Details <span
                                                     class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-6 col-xs-12">
-                                            <input type="text" name="refd" id="refd" class="form-control"
+                                            <input type="text" name="refd" id="refd" class="form-control text-uppercase"
                                                    placeholder="Reference Number"/>
                                         </div>
                                     </div>
@@ -186,7 +186,7 @@
                                         <label class="col-md-4 col-xs-12 control-label">Item Name</label>
                                         <div class="col-md-8 col-xs-12">
                                             <select class="bs-select" data-live-search="true" id="item" name="item"
-                                                    onchange="chckBtn(this.value,this.id); getScale(this.value)">
+                                                    onchange="chckBtn(this.value,this.id); getScale(this.value); setDataContent('cnty',this.value,'item_pulse');">
                                                 <option value="0">-- Select Item --</option>
                                                 <script>
                                                     var scale = new Array();
@@ -209,8 +209,12 @@
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label" id="stScale">Quantity</label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input type="text" id="cnty" name="cnty" class="form-control"
-                                                   placeholder="Quantity"/>
+                                            <div class="app-spinner pulse pulse-primary col-md-push-6 col-xs-push-6"
+                                                 id="item_pulse" style="display: none;"></div>
+                                            <input type="text" id="cnty" name="cnty" class="form-control" placeholder="Quantity"
+                                                   data-container="body" data-toggle="popover" data-placement="top" data-html="true"
+                                                   data-trigger="focus"
+                                                   data-content="No Data"/>
                                         </div>
                                     </div>
                                 </div>
@@ -229,7 +233,6 @@
                                 </div>
                             </div>
                             <div class="row form-horizontal">
-                                <button type="button" onclick="clearTbl()">Clear</button>
                                 <div class="table-responsive" style="padding: 10px 25px 10px 10px">
                                     <table class="table dataTable table-striped table-bordered" id="poTbl" width="100%">
                                         <thead>
@@ -372,7 +375,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -390,51 +392,302 @@
     </div>
     <!-- END ADD NEW BRAND -->
 
-    <!-- MODAL VIEW BRAND -->
-    <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog" role="document">
+    <!-- MODAL EDIT BRAND -->
+    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
+        <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
             <form id="app_po_form">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Type
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Purchase Order
                             Management <span class="text-muted" id="subTitle_edit"></span></h4>
                         <input type="hidden" id="func" name="func"/>
                         <input type="hidden" id="poid" name="poid"/>
                     </div>
                     <div class="modal-body">
                         <div class="container">
-                            <div class="form-horizontal">
-                                <div class="col-md-12">
+                            <div class="row form-horizontal">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Supplier Name <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <select class="bs-select" id="supp_edt" name="supp_edt"
+                                                    onchange="chckBtn(this.value,this.id)">
+                                                <option value="0">-- Select Supplier --</option>
+                                                <?php
+                                                foreach ($supplier as $sup) {
+                                                    echo "<option value='$sup->spid'>" . $sup->spcd . " - " . $sup->spnm . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Order Date <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control datetimepicker" id="oddt_edt"
+                                                       name="oddt_edt" value="<?= date('Y-m-d') ?>"
+                                                       style="cursor: pointer;">
+                                                <span class="input-group-addon">
+                                                    <span class="fa fa-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Reference Details <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <input type="text" name="refd_edt" id="refd_edt" class="form-control text-uppercase"
+                                                   placeholder="Reference Number"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Delivery To <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <select class="bs-select" id="whs_edt" name="whs_edt"
+                                                    onchange="chckBtn(this.value,this.id)">
+                                                <option value="0">-- Select Warehouse --</option>
+                                                <?php
+                                                foreach ($warehouse as $wh) {
+                                                    echo "<option value='$wh->whid'>" . $wh->whcd . " - " . $wh->whnm . "</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-horizontal">
+                                <h5 class="text-title"><span class="fa fa-tag"></span> Order Details</h5>
+                            </div>
+                            <div class="row form-horizontal">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Item Name</label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <select class="bs-select" data-live-search="true" id="item_edt" name="item_edt"
+                                                    onchange="chckBtn(this.value,this.id); getScale(this.value); setDataContent('cnty_edt',this.value,'item_pulse_edt');">
+                                                <option value="0">-- Select Item --</option>
+                                                <script>
+                                                    scale = new Array();
+                                                </script>
+                                                <?php
+                                                foreach ($item as $itm) {
+                                                    echo "<option value='$itm->itid'>" . $itm->itcd . " - " . $itm->itnm . "</option>";
+                                                    ?>
+                                                    <script>
+                                                        scale.push([<?= $itm->itid?>, '<?= $itm->scnm . " (" . $itm->scl . ")"?>', <?= $itm->slid?>, '<?= $itm->itcd?>', '<?= $itm->itnm?>']);
+                                                    </script>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label" id="stScale_edt">Quantity</label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <div class="app-spinner pulse pulse-primary col-md-push-6 col-xs-push-6"
+                                                 id="item_pulse_edt" style="display: none;"></div>
+                                            <input type="text" id="cnty_edt" name="cnty_edt" class="form-control" placeholder="Quantity"
+                                                   data-container="body" data-toggle="popover" data-placement="top" data-html="true"
+                                                   data-trigger="focus"
+                                                   data-content="No Data"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-md-4 col-xs-12 control-label" id="stScale">Unit Price</label>
+                                    <div class="col-md-6 col-xs-10">
+                                        <input type="text" id="price_edt" name="price_edt" class="form-control"
+                                               placeholder="Price 00.00"/>
+                                    </div>
+                                    <div class="col-md-2 col-xs-2">
+                                        <button type="button" class="btn btn-sm btn-info" style="margin: 0px"
+                                                onclick="addItem_edt()"><span
+                                                    class="fa fa-plus"></span></button>
+                                    </div>
+                                    <input type="hidden" id="leng_edt" name="leng_edt">
+                                </div>
+                            </div>
+                            <div class="row form-horizontal">
+                                <div class="table-responsive" style="padding: 10px 25px 10px 10px">
+                                    <table class="table dataTable table-striped table-bordered" id="poTbl_edt" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-left">CODE</th>
+                                            <th class="text-left">ITEM NAME</th>
+                                            <th class="text-left">SCALE</th>
+                                            <th class="text-left">QTY</th>
+                                            <th class="text-left">UNIT PRICE</th>
+                                            <th class="text-left">TOTAL</th>
+                                            <th class="text-left">OPTION</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+                                        <th colspan="3"></th>
+                                        <th id="ttlQt_edt">00</th>
+                                        <th></th>
+                                        <th id="ttlSub_edt">00.00</th>
+                                        <th></th>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row form-horizontal">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-5 col-xs-12 control-label">Remarks / Interdiction</label>
+                                        <div class="col-md-7 col-xs-12">
+                                            <div class="form-group">
+                                                         <textarea class="form-control" name="remk_edt" id="remk_edt"
+                                                                   rows="8" placeholder="Description"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-6 col-xs-12 control-label">Sub Total</label>
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="sbttl_edt" placeholder="Sub Total" id="sbttl_edt"
+                                                       readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="form-group">
+                                        <label class="col-md-3  control-label">VAT</label>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="vtrt_edt" placeholder="VAT Rate" id="vtrt_edt"
+                                                       onchange="calVtEdt(this.value)"
+                                                       onkeyup="calVtEdt(this.value)"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="vtvl_edt" placeholder="VAT Value" id="vtvl_edt" readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3  control-label">NBT</label>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="nbrt_edt" placeholder="NBT Rate" id="nbrt_edt"
+                                                       onchange="calNbEdt(this.value)"
+                                                       onkeyup="calNbEdt(this.value)"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="nbvl_edt" placeholder="NBT Value" id="nbvl_edt" readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3  control-label">BTT</label>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="btrt_edt" placeholder="BTT Rate" id="btrt_edt"
+                                                       onchange="calBtEdt(this.value)"
+                                                       onkeyup="calBtEdt(this.value)"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="btvl_edt" placeholder="BTT Value" id="btvl_edt" readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3  control-label">Other Tax</label>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="txrt_edt" placeholder="Tax Rate" id="txrt_edt"
+                                                       onchange="calTxEdt(this.value)"
+                                                       onkeyup="calTxEdt(this.value)"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="tax_edt" placeholder="Tax Value" id="tax_edt" readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-6  control-label">Other Charge</label>
+                                        <div class="col-md-4 ">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="otchg_edt" placeholder="Other Charge" id="otchg_edt"
+                                                       onchange="calTtlEdt()"
+                                                       onkeyup="calTtlEdt()"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-6  control-label">Total</label>
+                                        <div class="col-md-4 ">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control text-right"
+                                                       name="ttlAmt_edt" placeholder="Total" id="ttlAmt_edt" readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-horizontal view_Area">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Status</label>
-                                        <label class="col-md-8 control-label" id="typ_stat"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Created By</label>
-                                        <label class="col-md-8 control-label" id="crby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Created Date</label>
-                                        <label class="col-md-8 control-label" id="crdt"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Updated By</label>
-                                        <label class="col-md-8 control-label" id="mdby"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Updated Date</label>
-                                        <label class="col-md-8 control-label" id="mddt"></label>
-                                    </div>
-                                </div>
-                            </div>
+<!--                            <div class="form-horizontal view_Area">-->
+<!--                                <div class="col-md-12">-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label class="col-md-4 control-label">Status</label>-->
+<!--                                        <label class="col-md-8 control-label" id="typ_stat"></label>-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label class="col-md-4 control-label">Created By</label>-->
+<!--                                        <label class="col-md-8 control-label" id="crby"></label>-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label class="col-md-4 control-label">Created Date</label>-->
+<!--                                        <label class="col-md-8 control-label" id="crdt"></label>-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label class="col-md-4 control-label">Updated By</label>-->
+<!--                                        <label class="col-md-8 control-label" id="mdby"></label>-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label class="col-md-4 control-label">Updated Date</label>-->
+<!--                                        <label class="col-md-8 control-label" id="mddt"></label>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -449,7 +702,7 @@
     <!-- END VIEW BRAND -->
 
     <script type="text/javascript">
-        var mainVal, subVal;
+        var mainVal, subVal, mainValEdt, subValEdt;
         $().ready(function () {
             //Table Initializing
             $('#pom_table').DataTable({
@@ -619,6 +872,137 @@
                 }
             });
 
+            mainValEdt = $('#app_po_form').validate({
+                rules: {
+                    supp_edt: {
+                        notEqual: 0,
+                    },
+                    oddt_edt: {
+                        required: true,
+                    },
+                    refd_edt: {
+                        required: true,
+                    },
+                    whs_edt: {
+                        notEqual: 0
+                    },
+                    item_edt: {
+                        notEqual: 0
+                    },
+                    cnty_edt: {
+                        required: true,
+                        notEqual: 0,
+                        currency: true,
+                        remote: {
+                            url: "<?= base_url(); ?>Stock/chk_Mx_ItmLvl",
+                            type: "post",
+                            data: {
+                                item: function () {
+                                    return $("#item_edt").val();
+                                },
+                                qnty: function () {
+                                    return $("#cnty_edt").val();
+                                },
+                            }
+                        }
+                    },
+                    price_edt: {
+                        required: true,
+                        currency: true
+                    },
+                    vtrt_edt: {
+                        currency: true
+                    },
+                    nbrt_edt: {
+                        currency: true
+                    },
+                    btrt_edt: {
+                        currency: true
+                    },
+                    txrt_edt: {
+                        currency: true
+                    },
+                    otchg_edt: {
+                        currency: true
+                    },
+                    ttlAmt_edt: {
+                        required: true,
+                        notEqual: 0,
+                        currency: true
+                    },
+                },
+                messages: {
+                    supp_edt: {
+                        notEqual: "Select a supplier",
+                    },
+                    oddt_edt: {
+                        required: "Enter order date",
+                    },
+                    refd_edt: {
+                        required: "Enter reference code",
+                    },
+                    whs_edt: {
+                        notEqual: "Select a warehouse"
+                    },
+                    item_edt: {
+                        notEqual: "Select an item"
+                    },
+                    cnty_edt: {
+                        required: "Enter quantity",
+                        notEqual: "Can't enter zero",
+                        currency: "Enter valid quantity"
+                    },
+                    price_edt: {
+                        required: "Enter unit price",
+                    },
+                    ttlAmt_edt: {
+                        notEqual: "Can't enter zero",
+                    }
+                }
+            });
+
+            subValEdt = $('#app_po_form').validate({
+                rules: {
+                    item_edt: {
+                        notEqual: 0
+                    },
+                    cnty_edt: {
+                        required: true,
+                        notEqual: 0,
+                        currency: true,
+                        remote: {
+                            url: "<?= base_url(); ?>Stock/chk_Mx_ItmLvl",
+                            type: "post",
+                            data: {
+                                item: function () {
+                                    return $("#item_edt").val();
+                                },
+                                qnty: function () {
+                                    return $("#cnty_edt").val();
+                                },
+                            }
+                        }
+                    },
+                    price_edt: {
+                        required: true,
+                        currency: true
+                    }
+                },
+                messages: {
+                    item_edt: {
+                        notEqual: "Select an item"
+                    },
+                    cnty_edt: {
+                        required: "Enter quantity",
+                        notEqual: "Can't enter zero",
+                        currency: "Enter valid quantity"
+                    },
+                    price_edt: {
+                        required: "Enter unit price",
+                    }
+                }
+            });
+
             srch_Po();
         });
 
@@ -627,10 +1011,12 @@
             for (var it = 0; it < scale.length; it++) {
                 if (scale[it][0] == id) {
                     $('#stScale').html(scale[it][1]);
+                    $('#stScale_edt').html(scale[it][1]);
                     return scale[it][1];
                 }
             }
             $('#stScale').html('Quantity');
+            $('#stScale_edt').html('Quantity');
         }
 
         function addItem() {
@@ -711,7 +1097,10 @@
                 document.getElementById('ttlSub').innerHTML = numeral(ttlSub).format('0,0.00');
                 document.getElementById('sbttl').value = ttlSub;
 
-                calTtl();
+                calVt($('#vtrt').val());
+                calNb($('#nbrt').val());
+                calBt($('#btrt').val());
+                calTx($('#txrt').val());
 
                 default_Selector($('#item').prev());
                 $('#cnty').val('');
@@ -743,7 +1132,11 @@
             document.getElementById('ttlQt').innerHTML = ttlQt;
             document.getElementById('ttlSub').innerHTML = numeral(ttlSub).format('0,0.00');
             document.getElementById('sbttl').value = ttlSub;
-            calTtl();
+
+            calVt($('#vtrt').val());
+            calNb($('#nbrt').val());
+            calBt($('#btrt').val());
+            calTx($('#txrt').val());
         });
 
         // CAL VAT VALUE
@@ -799,58 +1192,58 @@
 
         // CAL VAT VALUE
         function calVtEdt(txrt) {
-            var sbttl = document.getElementById('sbttl').value;
+            var sbttl = document.getElementById('sbttl_edt').value;
             var txvl = (+sbttl * +txrt) / 100;
-            document.getElementById('vtvlEdt').value = txvl;
+            document.getElementById('vtvl_edt').value = txvl;
             calTtlEdt();
         }
 
         // CAL NBT VALUE
         function calNbEdt(txrt) {
-            var sbttl = document.getElementById('sbttl').value;
+            var sbttl = document.getElementById('sbttl_edt').value;
             var txvl = (+sbttl * +txrt) / 100;
-            document.getElementById('nbvlEdt').value = txvl;
+            document.getElementById('nbvl_edt').value = txvl;
             calTtlEdt();
         }
 
         // CAL BTT VALUE
         function calBtEdt(txrt) {
-            var sbttl = document.getElementById('sbttl').value;
+            var sbttl = document.getElementById('sbttl_edt').value;
             var txvl = (+sbttl * +txrt) / 100;
-            document.getElementById('btvlEdt').value = txvl;
+            document.getElementById('btvl_edt').value = txvl;
             calTtlEdt();
         }
 
         // CAL TAX VALUE
         function calTxEdt(txrt) {
-            var sbttl = document.getElementById('sbttlEdt').value;
+            var sbttl = document.getElementById('sbttl_edt').value;
             var txvl = (+sbttl * +txrt) / 100;
-            document.getElementById('taxEdt').value = txvl;
+            document.getElementById('tax_edt').value = txvl;
 
             calTtlEdt();
         }
 
         // CAL TOTAL
         function calTtlEdt() {
-            var sbttl = document.getElementById('sbttlEdt').value;
-            var otchg = document.getElementById('otchgEdt').value;
+            var sbttl = document.getElementById('sbttl_edt').value;
+            var otchg = document.getElementById('otchg_edt').value;
             //var dsvl = document.getElementById('dsvlEdt').value;
 
-            var tax = document.getElementById('taxEdt').value;
-            var vtvl = document.getElementById('vtvlEdt').value;
-            var nbvl = document.getElementById('nbvlEdt').value;
-            var btvl = document.getElementById('btvlEdt').value;
+            var tax = document.getElementById('tax_edt').value;
+            var vtvl = document.getElementById('vtvl_edt').value;
+            var nbvl = document.getElementById('nbvl_edt').value;
+            var btvl = document.getElementById('btvl_edt').value;
 
-            document.getElementById('ttlEdt').value = (+sbttl + +tax + +otchg + +vtvl + +nbvl + +btvl);
+            document.getElementById('ttlAmt_edt').value = (+sbttl + +tax + +otchg + +vtvl + +nbvl + +btvl);
 
-            if (document.getElementById('lengEdt').value > 0) {
+            if (document.getElementById('leng_edt').value > 0) {
                 $('#app_po_btn').attr('disabled', false);
             } else {
                 $('#app_po_btn').attr('disabled', true);
             }
         }
 
-        //Add New Brand
+        //Add New PO
         $('#add_po_btn').click(function (e) {
             e.preventDefault();
             subVal.resetForm();
@@ -946,82 +1339,120 @@
         }
 
         //View Type
-        function viewTyp(id, func) {
+        function editPo(id, func) {
             swal({
                 title: "Loading Data...",
-                text: "Type Details",
+                text: "PO Details",
                 imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                 showConfirmButton: false
             });
 
             $('#func').val(func);
-            $('#tpid').val(id);
+            $('#poid').val(id);
 
             jQuery.ajax({
                 type: "POST",
-                url: "<?= base_url(); ?>Stock/get_TypDet",
+                url: "<?= base_url(); ?>Stock/get_PoDet",
                 data: {
                     id: id
                 },
                 dataType: 'json',
                 success: function (data) {
-                    if (func == 'view') {
-                        //VIEW MODEL
-                        $('#subTitle_edit').html(' - View');
-                        $('#app_typ_btn').css('display', 'none');
-                        $("#modal-view").find('.edit_req').css("display", "none");
-                        $("#edit_Area").css('display', 'none');
-                        $(".view_Area").css('display', 'block');
-                        //Make readonly all fields
-                        $("#modal-view :input").attr("readonly", true);
-                        //VIEW MODEL
-                    } else if (func == 'edit') {
+                    if (func == 'edit') {
                         //EDIT MODEL
                         $('#subTitle_edit').html(' - Edit');
-                        $('#app_typ_btn').css('display', 'inline');
-                        $('#app_typ_btn').html('Update');
-                        $("#modal-view").find('.edit_req').css("display", "inline");
-                        $("#edit_Area").css('display', 'block');
-                        $(".view_Area").css('display', 'none');
-                        //Remove readonly all fields
-                        $("#modal-view :input").attr("readonly", false);
+                        $('#app_po_btn').html('Update');
                         //EDIT MODEL
                     } else if (func == 'app') {
                         //APPROVE MODEL
                         $('#subTitle_edit').html(' - Approve');
-                        $('#app_typ_btn').css('display', 'inline');
-                        $('#app_typ_btn').html('Approve');
-                        $("#modal-view").find('.edit_req').css("display", "inline");
-                        $("#edit_Area").css('display', 'block');
-                        $(".view_Area").css('display', 'none');
-                        //Remove readonly all fields
-                        $("#modal-view :input").attr("readonly", false);
+                        $('#app_po_btn').html('Approve');
                         //APPROVE MODEL
                     }
-                    var len = data.length;
+                    var len = data['po'].length;
 
                     if (len > 0) {
-                        $('#name_edt').val(data[0]['tpnm']);
-                        $('#code_edt').val(data[0]['tpcd']);
-                        $('#remk_edt').val(data[0]['remk']);
-
-                        if (data[0]['stat'] == 0) {
-                            var stat = "<label class='label label-warning'>Pending</label>";
-                        } else if (data[0]['stat'] == 1) {
-                            var stat = "<label class='label label-success'>Active</label>";
-                        } else if (data[0]['stat'] == 2) {
-                            var stat = "<label class='label label-danger'>Reject</label>";
-                        } else if (data[0]['stat'] == 3) {
-                            var stat = "<label class='label label-info'>Inactive</label>";
-                        } else {
-                            var stat = "--";
-                        }
-                        $('#typ_stat').html(": " + stat);
-                        $('#crby').html(": " + data[0]['crnm']);
-                        $('#crdt').html(": " + data[0]['crdt']);
-                        $('#mdby').html(": " + ((data[0]['mdnm'] != null) ? data[0]['mdnm'] : "--"));
-                        $('#mddt').html(": " + ((data[0]['mddt'] != null && data[0]['mddt'] != "0000-00-00 00:00:00") ? data[0]['mddt'] : "--"));
+                        var po = data['po'];
+                        set_select('supp_edt',po[0]['spid']);
+                        set_select('whs_edt',po[0]['whid']);
+                        $('#refd_edt').val(po[0]['rfno']);
+                        $('#oddt_edt').val(po[0]['oddt']);
+                        $('#remk_edt').val(po[0]['remk']);
+                        $('#sbttl_edt').val(po[0]['sbtl']);
+                        $('#vtrt_edt').val(po[0]['vtrt']);
+                        $('#vtvl_edt').val(po[0]['vtvl']);
+                        $('#nbrt_edt').val(po[0]['nbrt']);
+                        $('#nbvl_edt').val(po[0]['nbvl']);
+                        $('#btrt_edt').val(po[0]['btrt']);
+                        $('#btvl_edt').val(po[0]['btvl']);
+                        $('#txrt_edt').val(po[0]['txrt']);
+                        $('#tax_edt').val(po[0]['txvl']);
+                        $('#otchg_edt').val(po[0]['ochg']);
+                        $('#ttlAmt_edt').val(po[0]['totl']);
                     }
+
+                    var len2 = data['pod'].length;
+                    $('#leng_edt').val(len2);
+                    $('#poTbl_edt').DataTable().clear().draw();
+                    var t = $('#poTbl_edt').DataTable({
+                        destroy: true,
+                        searching: false,
+                        bPaginate: false,
+                        "ordering": false,
+                        "columnDefs": [
+                            {className: "text-left", "targets": [1, 2]},
+                            {className: "text-center", "targets": [0, 6]},
+                            {className: "text-right", "targets": [3, 4, 5]},
+                            {className: "text-nowrap", "targets": [1]}
+                        ],
+                        "aoColumns": [
+                            {sWidth: '5%'}, //Code
+                            {sWidth: '20%'}, //Name
+                            {sWidth: '10%'}, //Scale
+                            {sWidth: '5%'},  //qty
+                            {sWidth: '10%'}, //Unit Price
+                            {sWidth: '10%'}, //Total
+                            {sWidth: '5%'}  //Option
+                        ],
+                        "rowCallback": function (row, data, index) {
+
+                        },
+                    });
+
+                    var pod = data['pod'];
+                    for(var it=0; it<len2; it++){
+                        var itid = pod[it]['itid'];
+                        var itcd = pod[it]['itcd'];
+                        var itnm = pod[it]['itnm'];
+                        var scl = pod[it]['scnm']+" ("+pod[it]['scl']+")";
+                        var qty = pod[it]['qnty'];
+                        var untp = pod[it]['untp'];
+
+                        t.row.add([
+                            itcd + '<input type="hidden" name="itid_edt[]" value="' + itid + ' "><input type="hidden" name="pdid[]" value="' + pod[it]['pdid'] + ' ">',     // ITEM CODE
+                            itnm,
+                            scl, //Scale
+                            numeral(qty).format('0,0') + '<input type="hidden" name="qunty_edt[]" value="' + qty + ' ">',         // QUNT
+                            numeral(untp).format('0,0.00') + '<input type="hidden" name="unitpr_edt[]" value="' + untp + ' ">',     // UNIT PRICE
+                            numeral((+qty * +untp)).format('0,0.00') + '<input type="hidden" name="unttl_edt[]" value="' + (+qty * +untp) + ' ">',
+                            '<button type="button" class="btn btn-xs btn-warning" id="dltrw_edt" onclick=""><span><i class="fa fa-close" title="Remove"></i></span></button>'
+                        ]).draw(false);
+                    }
+
+                    var ttlQt = 0;
+                    var ttlSub = 0;
+                    $(" input[name='qunty_edt[]']").each(function () {
+                        ttlQt = ttlQt + +this.value;
+                    });
+                    $(" input[name='unttl_edt[]']").each(function () {
+                        ttlSub = ttlSub + +this.value;
+                    });
+
+                    document.getElementById('ttlQt_edt').innerHTML = ttlQt;
+                    document.getElementById('ttlSub_edt').innerHTML = numeral(ttlSub).format('0,0.00');
+                    document.getElementById('sbttl_edt').value = ttlSub;
+
+                    calTtlEdt();
                     swal.close();
                 },
                 error: function (data, textStatus) {
@@ -1033,10 +1464,181 @@
             });
         }
 
+        //Add Item In Edit
+        function addItem_edt() {
+            mainValEdt.resetForm();
+            var valid = true;
+            $('#item_edt,#cnty_edt,#price_edt').each(function (i, v) {
+                valid = subValEdt.element(v) && valid;
+            });
+
+            if (valid) {
+                var leng = $('#leng_edt').val();
+
+                var lengN = +leng + +1;
+                $('#leng_edt').val(lengN);
+
+                var t = $('#poTbl_edt').DataTable({
+                    destroy: true,
+                    searching: false,
+                    bPaginate: false,
+                    "ordering": false,
+                    "columnDefs": [
+                        {className: "text-left", "targets": [1, 2]},
+                        {className: "text-center", "targets": [0, 6]},
+                        {className: "text-right", "targets": [3, 4, 5]},
+                        {className: "text-nowrap", "targets": [1]}
+                    ],
+                    "aoColumns": [
+                        {sWidth: '5%'}, //Code
+                        {sWidth: '20%'}, //Name
+                        {sWidth: '10%'}, //Scale
+                        {sWidth: '5%'},  //qty
+                        {sWidth: '10%'}, //Unit Price
+                        {sWidth: '10%'}, //Total
+                        {sWidth: '5%'}  //Option
+                    ],
+                    "rowCallback": function (row, data, index) {
+
+                    },
+                });
+
+                var itid = $('#item_edt').val();
+                var qty = $('#cnty_edt').val();
+                var untp = $('#price_edt').val();
+                var itcd = "";
+                var itnm = "";
+                var scl = "";
+                var slid = 0;
+
+                for (var it = 0; it < scale.length; it++) {
+                    if (scale[it][0] == itid) {
+                        itcd = scale[it][3];
+                        itnm = scale[it][4];
+                        scl = scale[it][1];
+                        slid = scale[it][2];
+                        break;
+                    }
+                }
+                t.row.add([
+                    itcd + '<input type="hidden" name="itid_edt[]" value="' + itid + ' "><input type="hidden" name="pdid[]" value="0">',     // ITEM CODE
+                    itnm,
+                    scl, //Scale
+                    numeral(qty).format('0,0') + '<input type="hidden" name="qunty_edt[]" value="' + qty + ' ">',         // QUNT
+                    numeral(untp).format('0,0.00') + '<input type="hidden" name="unitpr_edt[]" value="' + untp + ' ">',     // UNIT PRICE
+                    numeral((+qty * +untp)).format('0,0.00') + '<input type="hidden" name="unttl_edt[]" value="' + (+qty * +untp) + ' ">',
+                    '<button type="button" class="btn btn-xs btn-warning" id="dltrw_edt" onclick=""><span><i class="fa fa-close" title="Remove"></i></span></button>'
+                ]).draw(false);
+
+                var ttlQt = 0;
+                var ttlSub = 0;
+                $(" input[name='qunty_edt[]']").each(function () {
+                    ttlQt = ttlQt + +this.value;
+                });
+                $(" input[name='unttl_edt[]']").each(function () {
+                    ttlSub = ttlSub + +this.value;
+                });
+
+                document.getElementById('ttlQt_edt').innerHTML = ttlQt;
+                document.getElementById('ttlSub_edt').innerHTML = numeral(ttlSub).format('0,0.00');
+                document.getElementById('sbttl_edt').value = ttlSub;
+
+                //calTtlEdt();
+                calVtEdt($('#vtrt_edt').val());
+                calNbEdt($('#nbrt_edt').val());
+                calBtEdt($('#btrt_edt').val());
+                calTxEdt($('#txrt_edt').val());
+
+                default_Selector($('#item_edt').prev());
+                $('#cnty_edt').val('');
+                $('#price_edt').val('');
+            }
+        }
+
+        // TABLE DATA REMOVE
+        $('#poTbl_edt tbody').on('click', '#dltrw_edt', function () {
+            var table = $('#poTbl_edt').DataTable();
+
+            table
+                .row($(this).parents('tr'))
+                .remove()
+                .draw();
+
+            var leng = document.getElementById('leng_edt').value;
+            document.getElementById('leng_edt').value = +leng - +1;
+
+            var ttlQt = 0;
+            var ttlSub = 0;
+            $(" input[name='qunty_edt[]']").each(function () {
+                ttlQt = ttlQt + +this.value;
+            });
+            $(" input[name='unttl_edt[]']").each(function () {
+                ttlSub = ttlSub + +this.value;
+            });
+
+            document.getElementById('ttlQt_edt').innerHTML = ttlQt;
+            document.getElementById('ttlSub_edt').innerHTML = numeral(ttlSub).format('0,0.00');
+            document.getElementById('sbttl_edt').value = ttlSub;
+            //calTtlEdt();
+            calVtEdt($('#vtrt_edt').val());
+            calNbEdt($('#nbrt_edt').val());
+            calBtEdt($('#btrt_edt').val());
+            calTxEdt($('#txrt_edt').val());
+        });
+
+        //Set Data-Content with item exist QTY status
+        //html - data-content element
+        //pulse - Pulse element
+        //id - item id
+        function setDataContent(html,id,pulse){
+            $('#'+pulse).css('display','block');
+
+            if(id!=0){
+                jQuery.ajax({
+                    type: "POST",
+                    url: "<?= base_url(); ?>Stock/getItm_QtySt",
+                    data: {
+                        item: id
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#'+html).attr('data-content',"" +
+                            "<h1 style='color: green; font-weight: bold'><span class='fa fa-astrick'></span> Item Quantity Details</h1><br><table>" +
+                            "<tr><td><label class='control-label'>Pending PO : </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['penpoqty'] + "</span></td></tr>" +
+                            "<tr><td><label class='control-label'>PO To GRN : </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['togrnqty'] + "</span></td></tr>" +
+                            "<tr><td><label class='control-label'>Pending GRN : </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['pengrnqty'] + "</span></td></tr>" +
+                            "<tr><td><label class='control-label'>GRN To Stock: </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['tostqty'] + "</span></td></tr>" +
+                            "<tr><td><label class='control-label'>Pending Stock: </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['penstqty'] + "</span></td></tr>" +
+                            "<tr style='border-bottom: 2px solid green'><td><label class='control-label'>Available QTY : </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['avstqty'] + "</span></td></tr>" +
+                            "<tr><td class='text-center'><label class='control-label'>Total</label></td>" +
+                            "<td class='text-right' style='color: red'>"+(+data[0]['penpoqty']+ +data[0]['togrnqty']+ +data[0]['pengrnqty']+ +data[0]['tostqty']+ +data[0]['penstqty']+ +data[0]['avstqty'])+"</td></tr>" +
+                            "</table>"
+                            );
+                        $('#'+pulse).css('display','none');
+                        $('#'+html).popover('show');
+                    },
+                    error: function (data, textStatus) {
+                        $('#'+html).attr('data-content','Faild');
+                        $('#'+pulse).css('display','none');
+                        $('#'+html).popover('show');
+                    }
+                });
+            }else{
+                $('#'+html).attr('data-content','No Data');
+                $('#'+pulse).css('display','none');
+                $('#'+html).popover('show');
+            }
+        }
+
         //APPROVE || EDIT HERE
-        $('#app_typ_btn').click(function (e) {
+        $('#app_po_btn').click(function (e) {
             e.preventDefault();
-            if ($('#app_typ_form').valid()) {
+            subValEdt.resetForm();
+            var valid = true;
+            $('#supp_edt,#oddt_edt,#refd_edt,#whs_edt,#vtrt_edt,#nbrt_edt,#btrt_edt,#txrt_edt,#otchg_edt,#ttlAmt_edt').each(function (i, v) {
+                valid = mainValEdt.element(v) && valid;
+            });
+            if (valid) {
                 swal({
                         title: "Are you sure to do this ?",
                         text: "",
@@ -1051,27 +1653,30 @@
                     function (isConfirm) {
                         if (isConfirm) {
                             var func = $('#func').val();
-                            $('#app_typ_btn').prop('disabled', true);
+                            $('#app_po_btn').prop('disabled', true);
                             if (func == 'edit') {
                                 swal({
                                     title: "Processing...",
-                                    text: "Type details updating..",
+                                    text: "Purchase order details updating..",
                                     imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                                     showConfirmButton: false
                                 });
 
                                 jQuery.ajax({
                                     type: "POST",
-                                    url: "<?= base_url(); ?>Stock/typ_update",
-                                    data: $("#app_typ_form").serialize(),
+                                    url: "<?= base_url(); ?>Stock/po_update",
+                                    data: $("#app_po_form").serialize(),
                                     dataType: 'json',
                                     success: function (data) {
                                         swal({title: "", text: "Updating Success!", type: "success"},
                                             function () {
-                                                $('#app_typ_btn').prop('disabled', false);
-                                                clear_Form('app_typ_form');
-                                                $('#modal-view').modal('hide');
-                                                srch_Typ();
+                                                $('#app_po_btn').prop('disabled', true);
+                                                clear_Form('app_po_form');
+                                                $('#modal-edit').modal('hide');
+                                                $('#poTbl_edt').DataTable().clear().draw();
+                                                $('#ttlQt_edt').html('00');
+                                                $('#ttlSub_edt').html('00.00');
+                                                srch_Po();
                                             });
                                     },
                                     error: function (data, textStatus) {
@@ -1084,23 +1689,26 @@
                             } else if (func == 'app') {
                                 swal({
                                     title: "Processing...",
-                                    text: "Type approving..",
+                                    text: "Purchase order approving..",
                                     imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                                     showConfirmButton: false
                                 });
 
                                 jQuery.ajax({
                                     type: "POST",
-                                    url: "<?= base_url(); ?>Stock/typ_update",
-                                    data: $("#app_typ_form").serialize(),
+                                    url: "<?= base_url(); ?>Stock/po_update",
+                                    data: $("#app_po_form").serialize(),
                                     dataType: 'json',
                                     success: function (data) {
                                         swal({title: "", text: "Approved!", type: "success"},
                                             function () {
-                                                $('#app_typ_btn').prop('disabled', false);
-                                                clear_Form('app_typ_form');
-                                                $('#modal-view').modal('hide');
-                                                srch_Typ();
+                                                $('#app_po_btn').prop('disabled', true);
+                                                clear_Form('app_po_form');
+                                                $('#modal-edit').modal('hide');
+                                                $('#poTbl_edt').DataTable().clear().draw();
+                                                $('#ttlQt_edt').html('00');
+                                                $('#ttlSub_edt').html('00.00');
+                                                srch_Po();
                                             });
                                     },
                                     error: function (data, textStatus) {
