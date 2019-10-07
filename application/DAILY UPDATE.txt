@@ -1,12 +1,12 @@
 -----------------------------------------------------
-2019-10-04 JANAKA
+**DONE || 2019-10-04 JANAKA
 ALTER TABLE `item` ADD `mxlv` DOUBLE NOT NULL COMMENT 'Max store level' AFTER `scli`;
 ALTER TABLE `stock_po` ADD `rfno` VARCHAR(50) NOT NULL COMMENT 'Reference Number' AFTER `oddt`;
 ALTER TABLE `stock_po_des` CHANGE `qnty` `qnty` DOUBLE NULL DEFAULT NULL;
 ALTER TABLE `stock_po` ADD `crby` INT NOT NULL COMMENT 'Created by' AFTER `stat`;
 ALTER TABLE `stock_po` ADD `crdt` DATETIME NOT NULL COMMENT 'Created date' AFTER `crby`;
 -----------------------------------------------------
-2019-10-03 JANAKA
+**DONE || 2019-10-03 JANAKA
 UPDATE `user_page_mdl` SET `mdcd` = 'stcAcs' WHERE `user_page_mdl`.`aid` = 4;
 UPDATE `user_page_mdl` SET `mdnm` = 'Stock Access' WHERE `user_page_mdl`.`aid` = 4;
 UPDATE `user_page` SET `modu` = '6' WHERE `user_page`.`aid` = 8;
