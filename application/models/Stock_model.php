@@ -533,6 +533,31 @@ class Stock_model extends CI_Model
         return $this->db->count_all_results();
     }
     //END SEARCH WAREHOUSE DETAILS </JANAKA 2019-10-04>
+
+    //QUANTITY STATUS OF ITEMS
+    function qty_status(){
+        $id = $this->input->post('item');
+        $this->db->select("item.mxlv,
+        IFNULL((SELECT SUM(stock_po_des.qnty) FROM stock_po 
+            JOIN stock_po_des ON stock_po_des.poid=stock_po.poid 
+            WHERE stock_po_des.itid=item.itid AND stock_po.stat=0),0) AS penpoqty,
+        IFNULL((SELECT SUM(stock_po_des.qnty) FROM stock_po 
+            JOIN stock_po_des ON stock_po_des.poid=stock_po.poid 
+            WHERE stock_po_des.itid=item.itid AND stock_po.stat=1 AND grnst=0),0) AS togrnqty,
+        IFNULL((SELECT SUM(stock_grn_des.qnty+stock_grn_des.frqt) FROM stock_grn 
+            JOIN stock_grn_des ON stock_grn_des.grid=stock_grn.grid
+            WHERE stock_grn_des.itid=item.itid AND stock_grn.stat=0),0) AS pengrnqty,
+        IFNULL((SELECT SUM(stock_grn_des.qnty+stock_grn_des.frqt) FROM stock_grn 
+            JOIN stock_grn_des ON stock_grn_des.grid=stock_grn.grid
+            WHERE stock_grn_des.itid=item.itid AND stock_grn.stat=1 AND stock_grn.stst=0),0) AS tostqty,
+        IFNULL((SELECT SUM(qunt+frqt) FROM stock WHERE stock.stat=0),0) AS penstqty,
+        IFNULL((SELECT SUM(avqn) FROM stock WHERE stock.itid=item.itid AND stock.stat=1),0) AS avstqty
+        ");
+        $this->db->from('item');
+        $this->db->where('item.itid',$id);
+        $res = $this->db->get()->result();
+        return $res;
+    }
 }
 
 ?>

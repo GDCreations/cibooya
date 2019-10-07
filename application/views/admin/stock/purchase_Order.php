@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-sm btn-primary btn-icon-fixed pull-right" onclick="srch_Po()"><span
+                    <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed pull-right" onclick="srch_Po()"><span
                                 class="fa fa-search"></span>Search
                     </button>
                 </div>
@@ -186,7 +186,7 @@
                                         <label class="col-md-4 col-xs-12 control-label">Item Name</label>
                                         <div class="col-md-8 col-xs-12">
                                             <select class="bs-select" data-live-search="true" id="item" name="item"
-                                                    onchange="chckBtn(this.value,this.id); getScale(this.value)">
+                                                    onchange="chckBtn(this.value,this.id); getScale(this.value); setDataContent('cnty',this.value,'item_pulse');">
                                                 <option value="0">-- Select Item --</option>
                                                 <script>
                                                     var scale = new Array();
@@ -209,8 +209,12 @@
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label" id="stScale">Quantity</label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input type="text" id="cnty" name="cnty" class="form-control"
-                                                   placeholder="Quantity"/>
+                                            <div class="app-spinner pulse pulse-primary col-md-push-6 col-xs-push-6"
+                                                 id="item_pulse" style="display: none;"></div>
+                                            <input type="text" id="cnty" name="cnty" class="form-control" placeholder="Quantity"
+                                                   data-container="body" data-toggle="popover" data-placement="top" data-html="true"
+                                                   data-trigger="focus"
+                                                   data-content="No Data"/>
                                         </div>
                                     </div>
                                 </div>
@@ -388,7 +392,7 @@
     </div>
     <!-- END ADD NEW BRAND -->
 
-    <!-- MODAL VIEW BRAND -->
+    <!-- MODAL EDIT BRAND -->
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
         <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
@@ -471,7 +475,7 @@
                                         <label class="col-md-4 col-xs-12 control-label">Item Name</label>
                                         <div class="col-md-8 col-xs-12">
                                             <select class="bs-select" data-live-search="true" id="item_edt" name="item_edt"
-                                                    onchange="chckBtn(this.value,this.id); getScale(this.value)">
+                                                    onchange="chckBtn(this.value,this.id); getScale(this.value); setDataContent('cnty_edt',this.value,'item_pulse_edt');">
                                                 <option value="0">-- Select Item --</option>
                                                 <script>
                                                     scale = new Array();
@@ -492,10 +496,14 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label" id="stScale">Quantity</label>
+                                        <label class="col-md-4 col-xs-12 control-label" id="stScale_edt">Quantity</label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input type="text" id="cnty_edt" name="cnty_edt" class="form-control"
-                                                   placeholder="Quantity"/>
+                                            <div class="app-spinner pulse pulse-primary col-md-push-6 col-xs-push-6"
+                                                 id="item_pulse_edt" style="display: none;"></div>
+                                            <input type="text" id="cnty_edt" name="cnty_edt" class="form-control" placeholder="Quantity"
+                                                   data-container="body" data-toggle="popover" data-placement="top" data-html="true"
+                                                   data-trigger="focus"
+                                                   data-content="No Data"/>
                                         </div>
                                     </div>
                                 </div>
@@ -507,7 +515,7 @@
                                     </div>
                                     <div class="col-md-2 col-xs-2">
                                         <button type="button" class="btn btn-sm btn-info" style="margin: 0px"
-                                                onclick="addItem()"><span
+                                                onclick="addItem_edt()"><span
                                                     class="fa fa-plus"></span></button>
                                     </div>
                                     <input type="hidden" id="leng_edt" name="leng_edt">
@@ -694,7 +702,7 @@
     <!-- END VIEW BRAND -->
 
     <script type="text/javascript">
-        var mainVal, subVal;
+        var mainVal, subVal, mainValEdt, subValEdt;
         $().ready(function () {
             //Table Initializing
             $('#pom_table').DataTable({
@@ -864,6 +872,137 @@
                 }
             });
 
+            mainValEdt = $('#app_po_form').validate({
+                rules: {
+                    supp_edt: {
+                        notEqual: 0,
+                    },
+                    oddt_edt: {
+                        required: true,
+                    },
+                    refd_edt: {
+                        required: true,
+                    },
+                    whs_edt: {
+                        notEqual: 0
+                    },
+                    item_edt: {
+                        notEqual: 0
+                    },
+                    cnty_edt: {
+                        required: true,
+                        notEqual: 0,
+                        currency: true,
+                        remote: {
+                            url: "<?= base_url(); ?>Stock/chk_Mx_ItmLvl",
+                            type: "post",
+                            data: {
+                                item: function () {
+                                    return $("#item_edt").val();
+                                },
+                                qnty: function () {
+                                    return $("#cnty_edt").val();
+                                },
+                            }
+                        }
+                    },
+                    price_edt: {
+                        required: true,
+                        currency: true
+                    },
+                    vtrt_edt: {
+                        currency: true
+                    },
+                    nbrt_edt: {
+                        currency: true
+                    },
+                    btrt_edt: {
+                        currency: true
+                    },
+                    txrt_edt: {
+                        currency: true
+                    },
+                    otchg_edt: {
+                        currency: true
+                    },
+                    ttlAmt_edt: {
+                        required: true,
+                        notEqual: 0,
+                        currency: true
+                    },
+                },
+                messages: {
+                    supp_edt: {
+                        notEqual: "Select a supplier",
+                    },
+                    oddt_edt: {
+                        required: "Enter order date",
+                    },
+                    refd_edt: {
+                        required: "Enter reference code",
+                    },
+                    whs_edt: {
+                        notEqual: "Select a warehouse"
+                    },
+                    item_edt: {
+                        notEqual: "Select an item"
+                    },
+                    cnty_edt: {
+                        required: "Enter quantity",
+                        notEqual: "Can't enter zero",
+                        currency: "Enter valid quantity"
+                    },
+                    price_edt: {
+                        required: "Enter unit price",
+                    },
+                    ttlAmt_edt: {
+                        notEqual: "Can't enter zero",
+                    }
+                }
+            });
+
+            subValEdt = $('#app_po_form').validate({
+                rules: {
+                    item_edt: {
+                        notEqual: 0
+                    },
+                    cnty_edt: {
+                        required: true,
+                        notEqual: 0,
+                        currency: true,
+                        remote: {
+                            url: "<?= base_url(); ?>Stock/chk_Mx_ItmLvl",
+                            type: "post",
+                            data: {
+                                item: function () {
+                                    return $("#item_edt").val();
+                                },
+                                qnty: function () {
+                                    return $("#cnty_edt").val();
+                                },
+                            }
+                        }
+                    },
+                    price_edt: {
+                        required: true,
+                        currency: true
+                    }
+                },
+                messages: {
+                    item_edt: {
+                        notEqual: "Select an item"
+                    },
+                    cnty_edt: {
+                        required: "Enter quantity",
+                        notEqual: "Can't enter zero",
+                        currency: "Enter valid quantity"
+                    },
+                    price_edt: {
+                        required: "Enter unit price",
+                    }
+                }
+            });
+
             srch_Po();
         });
 
@@ -872,10 +1011,12 @@
             for (var it = 0; it < scale.length; it++) {
                 if (scale[it][0] == id) {
                     $('#stScale').html(scale[it][1]);
+                    $('#stScale_edt').html(scale[it][1]);
                     return scale[it][1];
                 }
             }
             $('#stScale').html('Quantity');
+            $('#stScale_edt').html('Quantity');
         }
 
         function addItem() {
@@ -956,7 +1097,10 @@
                 document.getElementById('ttlSub').innerHTML = numeral(ttlSub).format('0,0.00');
                 document.getElementById('sbttl').value = ttlSub;
 
-                calTtl();
+                calVt($('#vtrt').val());
+                calNb($('#nbrt').val());
+                calBt($('#btrt').val());
+                calTx($('#txrt').val());
 
                 default_Selector($('#item').prev());
                 $('#cnty').val('');
@@ -988,7 +1132,11 @@
             document.getElementById('ttlQt').innerHTML = ttlQt;
             document.getElementById('ttlSub').innerHTML = numeral(ttlSub).format('0,0.00');
             document.getElementById('sbttl').value = ttlSub;
-            calTtl();
+
+            calVt($('#vtrt').val());
+            calNb($('#nbrt').val());
+            calBt($('#btrt').val());
+            calTx($('#txrt').val());
         });
 
         // CAL VAT VALUE
@@ -1095,7 +1243,7 @@
             }
         }
 
-        //Add New Brand
+        //Add New PO
         $('#add_po_btn').click(function (e) {
             e.preventDefault();
             subVal.resetForm();
@@ -1242,6 +1390,69 @@
                         $('#otchg_edt').val(po[0]['ochg']);
                         $('#ttlAmt_edt').val(po[0]['totl']);
                     }
+
+                    var len2 = data['pod'].length;
+                    $('#leng_edt').val(len2);
+                    $('#poTbl_edt').DataTable().clear().draw();
+                    var t = $('#poTbl_edt').DataTable({
+                        destroy: true,
+                        searching: false,
+                        bPaginate: false,
+                        "ordering": false,
+                        "columnDefs": [
+                            {className: "text-left", "targets": [1, 2]},
+                            {className: "text-center", "targets": [0, 6]},
+                            {className: "text-right", "targets": [3, 4, 5]},
+                            {className: "text-nowrap", "targets": [1]}
+                        ],
+                        "aoColumns": [
+                            {sWidth: '5%'}, //Code
+                            {sWidth: '20%'}, //Name
+                            {sWidth: '10%'}, //Scale
+                            {sWidth: '5%'},  //qty
+                            {sWidth: '10%'}, //Unit Price
+                            {sWidth: '10%'}, //Total
+                            {sWidth: '5%'}  //Option
+                        ],
+                        "rowCallback": function (row, data, index) {
+
+                        },
+                    });
+
+                    var pod = data['pod'];
+                    for(var it=0; it<len2; it++){
+                        var itid = pod[it]['itid'];
+                        var itcd = pod[it]['itcd'];
+                        var itnm = pod[it]['itnm'];
+                        var scl = pod[it]['scnm']+" ("+pod[it]['scl']+")";
+                        var qty = pod[it]['qnty'];
+                        var untp = pod[it]['untp'];
+
+                        t.row.add([
+                            itcd + '<input type="hidden" name="itid_edt[]" value="' + itid + ' "><input type="hidden" name="pdid[]" value="' + pod[it]['pdid'] + ' ">',     // ITEM CODE
+                            itnm,
+                            scl, //Scale
+                            numeral(qty).format('0,0') + '<input type="hidden" name="qunty_edt[]" value="' + qty + ' ">',         // QUNT
+                            numeral(untp).format('0,0.00') + '<input type="hidden" name="unitpr_edt[]" value="' + untp + ' ">',     // UNIT PRICE
+                            numeral((+qty * +untp)).format('0,0.00') + '<input type="hidden" name="unttl_edt[]" value="' + (+qty * +untp) + ' ">',
+                            '<button type="button" class="btn btn-xs btn-warning" id="dltrw_edt" onclick=""><span><i class="fa fa-close" title="Remove"></i></span></button>'
+                        ]).draw(false);
+                    }
+
+                    var ttlQt = 0;
+                    var ttlSub = 0;
+                    $(" input[name='qunty_edt[]']").each(function () {
+                        ttlQt = ttlQt + +this.value;
+                    });
+                    $(" input[name='unttl_edt[]']").each(function () {
+                        ttlSub = ttlSub + +this.value;
+                    });
+
+                    document.getElementById('ttlQt_edt').innerHTML = ttlQt;
+                    document.getElementById('ttlSub_edt').innerHTML = numeral(ttlSub).format('0,0.00');
+                    document.getElementById('sbttl_edt').value = ttlSub;
+
+                    calTtlEdt();
                     swal.close();
                 },
                 error: function (data, textStatus) {
@@ -1253,10 +1464,181 @@
             });
         }
 
+        //Add Item In Edit
+        function addItem_edt() {
+            mainValEdt.resetForm();
+            var valid = true;
+            $('#item_edt,#cnty_edt,#price_edt').each(function (i, v) {
+                valid = subValEdt.element(v) && valid;
+            });
+
+            if (valid) {
+                var leng = $('#leng_edt').val();
+
+                var lengN = +leng + +1;
+                $('#leng_edt').val(lengN);
+
+                var t = $('#poTbl_edt').DataTable({
+                    destroy: true,
+                    searching: false,
+                    bPaginate: false,
+                    "ordering": false,
+                    "columnDefs": [
+                        {className: "text-left", "targets": [1, 2]},
+                        {className: "text-center", "targets": [0, 6]},
+                        {className: "text-right", "targets": [3, 4, 5]},
+                        {className: "text-nowrap", "targets": [1]}
+                    ],
+                    "aoColumns": [
+                        {sWidth: '5%'}, //Code
+                        {sWidth: '20%'}, //Name
+                        {sWidth: '10%'}, //Scale
+                        {sWidth: '5%'},  //qty
+                        {sWidth: '10%'}, //Unit Price
+                        {sWidth: '10%'}, //Total
+                        {sWidth: '5%'}  //Option
+                    ],
+                    "rowCallback": function (row, data, index) {
+
+                    },
+                });
+
+                var itid = $('#item_edt').val();
+                var qty = $('#cnty_edt').val();
+                var untp = $('#price_edt').val();
+                var itcd = "";
+                var itnm = "";
+                var scl = "";
+                var slid = 0;
+
+                for (var it = 0; it < scale.length; it++) {
+                    if (scale[it][0] == itid) {
+                        itcd = scale[it][3];
+                        itnm = scale[it][4];
+                        scl = scale[it][1];
+                        slid = scale[it][2];
+                        break;
+                    }
+                }
+                t.row.add([
+                    itcd + '<input type="hidden" name="itid_edt[]" value="' + itid + ' "><input type="hidden" name="pdid[]" value="0">',     // ITEM CODE
+                    itnm,
+                    scl, //Scale
+                    numeral(qty).format('0,0') + '<input type="hidden" name="qunty_edt[]" value="' + qty + ' ">',         // QUNT
+                    numeral(untp).format('0,0.00') + '<input type="hidden" name="unitpr_edt[]" value="' + untp + ' ">',     // UNIT PRICE
+                    numeral((+qty * +untp)).format('0,0.00') + '<input type="hidden" name="unttl_edt[]" value="' + (+qty * +untp) + ' ">',
+                    '<button type="button" class="btn btn-xs btn-warning" id="dltrw_edt" onclick=""><span><i class="fa fa-close" title="Remove"></i></span></button>'
+                ]).draw(false);
+
+                var ttlQt = 0;
+                var ttlSub = 0;
+                $(" input[name='qunty_edt[]']").each(function () {
+                    ttlQt = ttlQt + +this.value;
+                });
+                $(" input[name='unttl_edt[]']").each(function () {
+                    ttlSub = ttlSub + +this.value;
+                });
+
+                document.getElementById('ttlQt_edt').innerHTML = ttlQt;
+                document.getElementById('ttlSub_edt').innerHTML = numeral(ttlSub).format('0,0.00');
+                document.getElementById('sbttl_edt').value = ttlSub;
+
+                //calTtlEdt();
+                calVtEdt($('#vtrt_edt').val());
+                calNbEdt($('#nbrt_edt').val());
+                calBtEdt($('#btrt_edt').val());
+                calTxEdt($('#txrt_edt').val());
+
+                default_Selector($('#item_edt').prev());
+                $('#cnty_edt').val('');
+                $('#price_edt').val('');
+            }
+        }
+
+        // TABLE DATA REMOVE
+        $('#poTbl_edt tbody').on('click', '#dltrw_edt', function () {
+            var table = $('#poTbl_edt').DataTable();
+
+            table
+                .row($(this).parents('tr'))
+                .remove()
+                .draw();
+
+            var leng = document.getElementById('leng_edt').value;
+            document.getElementById('leng_edt').value = +leng - +1;
+
+            var ttlQt = 0;
+            var ttlSub = 0;
+            $(" input[name='qunty_edt[]']").each(function () {
+                ttlQt = ttlQt + +this.value;
+            });
+            $(" input[name='unttl_edt[]']").each(function () {
+                ttlSub = ttlSub + +this.value;
+            });
+
+            document.getElementById('ttlQt_edt').innerHTML = ttlQt;
+            document.getElementById('ttlSub_edt').innerHTML = numeral(ttlSub).format('0,0.00');
+            document.getElementById('sbttl_edt').value = ttlSub;
+            //calTtlEdt();
+            calVtEdt($('#vtrt_edt').val());
+            calNbEdt($('#nbrt_edt').val());
+            calBtEdt($('#btrt_edt').val());
+            calTxEdt($('#txrt_edt').val());
+        });
+
+        //Set Data-Content with item exist QTY status
+        //html - data-content element
+        //pulse - Pulse element
+        //id - item id
+        function setDataContent(html,id,pulse){
+            $('#'+pulse).css('display','block');
+
+            if(id!=0){
+                jQuery.ajax({
+                    type: "POST",
+                    url: "<?= base_url(); ?>Stock/getItm_QtySt",
+                    data: {
+                        item: id
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#'+html).attr('data-content',"" +
+                            "<h1 style='color: green; font-weight: bold'><span class='fa fa-astrick'></span> Item Quantity Details</h1><br><table>" +
+                            "<tr><td><label class='control-label'>Pending PO : </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['penpoqty'] + "</span></td></tr>" +
+                            "<tr><td><label class='control-label'>PO To GRN : </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['togrnqty'] + "</span></td></tr>" +
+                            "<tr><td><label class='control-label'>Pending GRN : </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['pengrnqty'] + "</span></td></tr>" +
+                            "<tr><td><label class='control-label'>GRN To Stock: </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['tostqty'] + "</span></td></tr>" +
+                            "<tr><td><label class='control-label'>Pending Stock: </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['penstqty'] + "</span></td></tr>" +
+                            "<tr style='border-bottom: 2px solid green'><td><label class='control-label'>Available QTY : </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['avstqty'] + "</span></td></tr>" +
+                            "<tr><td class='text-center'><label class='control-label'>Total</label></td>" +
+                            "<td class='text-right' style='color: red'>"+(+data[0]['penpoqty']+ +data[0]['togrnqty']+ +data[0]['pengrnqty']+ +data[0]['tostqty']+ +data[0]['penstqty']+ +data[0]['avstqty'])+"</td></tr>" +
+                            "</table>"
+                            );
+                        $('#'+pulse).css('display','none');
+                        $('#'+html).popover('show');
+                    },
+                    error: function (data, textStatus) {
+                        $('#'+html).attr('data-content','Faild');
+                        $('#'+pulse).css('display','none');
+                        $('#'+html).popover('show');
+                    }
+                });
+            }else{
+                $('#'+html).attr('data-content','No Data');
+                $('#'+pulse).css('display','none');
+                $('#'+html).popover('show');
+            }
+        }
+
         //APPROVE || EDIT HERE
-        $('#app_typ_btn').click(function (e) {
+        $('#app_po_btn').click(function (e) {
             e.preventDefault();
-            if ($('#app_typ_form').valid()) {
+            subValEdt.resetForm();
+            var valid = true;
+            $('#supp_edt,#oddt_edt,#refd_edt,#whs_edt,#vtrt_edt,#nbrt_edt,#btrt_edt,#txrt_edt,#otchg_edt,#ttlAmt_edt').each(function (i, v) {
+                valid = mainValEdt.element(v) && valid;
+            });
+            if (valid) {
                 swal({
                         title: "Are you sure to do this ?",
                         text: "",
@@ -1271,27 +1653,30 @@
                     function (isConfirm) {
                         if (isConfirm) {
                             var func = $('#func').val();
-                            $('#app_typ_btn').prop('disabled', true);
+                            $('#app_po_btn').prop('disabled', true);
                             if (func == 'edit') {
                                 swal({
                                     title: "Processing...",
-                                    text: "Type details updating..",
+                                    text: "Purchase order details updating..",
                                     imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                                     showConfirmButton: false
                                 });
 
                                 jQuery.ajax({
                                     type: "POST",
-                                    url: "<?= base_url(); ?>Stock/typ_update",
-                                    data: $("#app_typ_form").serialize(),
+                                    url: "<?= base_url(); ?>Stock/po_update",
+                                    data: $("#app_po_form").serialize(),
                                     dataType: 'json',
                                     success: function (data) {
                                         swal({title: "", text: "Updating Success!", type: "success"},
                                             function () {
-                                                $('#app_typ_btn').prop('disabled', false);
-                                                clear_Form('app_typ_form');
-                                                $('#modal-view').modal('hide');
-                                                srch_Typ();
+                                                $('#app_po_btn').prop('disabled', true);
+                                                clear_Form('app_po_form');
+                                                $('#modal-edit').modal('hide');
+                                                $('#poTbl_edt').DataTable().clear().draw();
+                                                $('#ttlQt_edt').html('00');
+                                                $('#ttlSub_edt').html('00.00');
+                                                srch_Po();
                                             });
                                     },
                                     error: function (data, textStatus) {
@@ -1304,23 +1689,26 @@
                             } else if (func == 'app') {
                                 swal({
                                     title: "Processing...",
-                                    text: "Type approving..",
+                                    text: "Purchase order approving..",
                                     imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                                     showConfirmButton: false
                                 });
 
                                 jQuery.ajax({
                                     type: "POST",
-                                    url: "<?= base_url(); ?>Stock/typ_update",
-                                    data: $("#app_typ_form").serialize(),
+                                    url: "<?= base_url(); ?>Stock/po_update",
+                                    data: $("#app_po_form").serialize(),
                                     dataType: 'json',
                                     success: function (data) {
                                         swal({title: "", text: "Approved!", type: "success"},
                                             function () {
-                                                $('#app_typ_btn').prop('disabled', false);
-                                                clear_Form('app_typ_form');
-                                                $('#modal-view').modal('hide');
-                                                srch_Typ();
+                                                $('#app_po_btn').prop('disabled', true);
+                                                clear_Form('app_po_form');
+                                                $('#modal-edit').modal('hide');
+                                                $('#poTbl_edt').DataTable().clear().draw();
+                                                $('#ttlQt_edt').html('00');
+                                                $('#ttlSub_edt').html('00.00');
+                                                srch_Po();
                                             });
                                     },
                                     error: function (data, textStatus) {

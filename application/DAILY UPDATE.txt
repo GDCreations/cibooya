@@ -1,4 +1,13 @@
 -----------------------------------------------------
+2019-10-07 JANAKA
+UPDATE `user_page` SET `adpr` = '1' WHERE `user_page`.`aid` = 18;
+ALTER TABLE `stock_po` ADD `grnst` INT NOT NULL COMMENT 'Add grn (0-No/1-Yes)' AFTER `stat`;
+ALTER TABLE `stock_grn` ADD `stst` INT NOT NULL COMMENT 'Add stock (0-No/1-Yes)' AFTER `stat`;
+ALTER TABLE `stock_po` ADD `apby` INT NOT NULL COMMENT 'approved by' AFTER `crdt`;
+ALTER TABLE `stock_po` ADD `apdt` DATETIME NULL COMMENT 'Approved date' AFTER `apby`;
+ALTER TABLE `stock_po` ADD `mdby` INT NOT NULL COMMENT 'Modified by' AFTER `apdt`;
+ALTER TABLE `stock_po` ADD `mddt` DATETIME NULL COMMENT 'Modified date' AFTER `mdby`;
+-----------------------------------------------------
 2019-10-04 JANAKA
 ALTER TABLE `item` ADD `mxlv` DOUBLE NOT NULL COMMENT 'Max store level' AFTER `scli`;
 ALTER TABLE `stock_po` ADD `rfno` VARCHAR(50) NOT NULL COMMENT 'Reference Number' AFTER `oddt`;
