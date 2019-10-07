@@ -140,11 +140,16 @@
                             <a href="#"><span class="nav-icon-hexa fa fa-database"></span> Stock Access</a>
                             <ul>
                                 <?php if (in_array("pchOdr", $permission, TRUE)) { ?>
-                                    <li>
-                                        <a id="pchOdr" href="<?= base_url() ?>Stock/pchOdr"><span
-                                                    class="nav-icon-hexa fa fa-list-ul"></span> Purchase Order </a>
+                                    <li><a id="pchOdr" href="<?= base_url() ?>Stock/pchOdr">
+                                            <span class="nav-icon-hexa fa fa-list-ul"></span> Purchase Order </a>
                                     </li>
                                 <?php } ?>
+                                <?php if (in_array("grnMng", $permission, TRUE)) { ?>
+                                    <li><a id="pchOdr" href="<?= base_url() ?>Stock/grnMng">
+                                            <span class="nav-icon-hexa fa fa-list-ul"></span> Good Received Note(GRN) </a>
+                                    </li>
+                                <?php } ?>
+
                             </ul>
                         </li>
                         <?php $Stock_title = false;
