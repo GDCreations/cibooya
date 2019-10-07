@@ -145,6 +145,11 @@ class Stock extends CI_Controller
     {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
+        if ($this->input->post('bnkDtl') == '')
+            $bkdt = 0;
+        else
+            $bkdt = 1;
+
         //Inserting supplier details
         $this->Generic_model->insertData('supp_mas', array(
             'spcd' => "TMP",
@@ -154,20 +159,24 @@ class Stock extends CI_Controller
             'tele' => $this->input->post('tele'),
             'email' => $this->input->post('email'),
             'dscr' => $this->input->post('remk'),
+            'bkdt' => $bkdt,
             'stat' => 0,
             'crby' => $_SESSION['userId'],
             'crdt' => date('Y-m-d H:i:s'),
         ));
         $lstId = $this->db->insert_id();
-        //Inserting bank details
-        $this->Generic_model->insertData('sup_bnk_acc', array(
-            'spid' => $lstId,
-            'bnid' => $this->input->post('bnknm'),
-            'brid' => $this->input->post('bnkbr'),
-            'acno' => $this->input->post('acno'),
-            'dfst' => 1,
-            'stat' => 1,
-        ));
+        if ($bkdt == 1) {
+            //Inserting bank details
+            $this->Generic_model->insertData('sup_bnk_acc',
+                array(
+                    'spid' => $lstId,
+                    'bnid' => $this->input->post('bnknm'),
+                    'brid' => $this->input->post('bnkbr'),
+                    'acno' => $this->input->post('acno'),
+                    'dfst' => 1,
+                    'stat' => 1,
+                ));
+        }
 
         $funcPerm = $this->Generic_model->getFuncPermision('supReg');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Added ($lstId)");
@@ -313,14 +322,18 @@ class Stock extends CI_Controller
         $bkbr = $this->input->post('bkbr');
         $acc = $this->input->post('acc');
 
-        $this->Generic_model->insertData('sup_bnk_acc', array(
-            'spid' => $spid,
-            'bnid' => $bknm,
-            'brid' => $bkbr,
-            'acno' => $acc,
-            'dfst' => 0,
-            'stat' => 1
-        ));
+        // supplier previous bank account remove the default
+        $this->Generic_model->updateData('sup_bnk_acc', array('dfst' => 0,), array('spid' => $spid));
+
+        $this->Generic_model->insertData('sup_bnk_acc',
+            array(
+                'spid' => $spid,
+                'bnid' => $bknm,
+                'brid' => $bkbr,
+                'acno' => $acc,
+                'dfst' => 1,
+                'stat' => 1
+            ));
         $lstid = $this->db->insert_id();
 
         $funcPerm = $this->Generic_model->getFuncPermision('supReg');
@@ -348,6 +361,11 @@ class Stock extends CI_Controller
     {
         $func = $this->input->post('func');
         $spid = $this->input->post('spid');
+
+        if ($this->input->post('bnkDtlEdt') == '')
+            $bkdt = 0;
+        else
+            $bkdt = 1;
 
         $this->db->trans_begin(); // SQL TRANSACTION START
 
@@ -404,6 +422,7 @@ class Stock extends CI_Controller
                 'dscr' => $this->input->post('remk_edt'),
                 'mdby' => $_SESSION['userId'],
                 'mddt' => date('Y-m-d H:i:s'),
+                'bkdt' => $bkdt,
             ), array('spid' => $spid));
 
             $funcPerm = $this->Generic_model->getFuncPermision('supReg');
@@ -419,6 +438,8 @@ class Stock extends CI_Controller
                 'tele' => $this->input->post('tele_edt'),
                 'email' => $this->input->post('email_edt'),
                 'dscr' => $this->input->post('remk_edt'),
+                'bkdt' => $bkdt,
+
                 'stat' => 1,
                 'apby' => $_SESSION['userId'],
                 'apdt' => date('Y-m-d H:i:s'),
@@ -1695,6 +1716,7 @@ class Stock extends CI_Controller
             'clcd' => $this->input->post('clr'),
             'dscr' => $this->input->post('dscr'),
             'scli' => $this->input->post('strscl'),
+            'mxlv' => $this->input->post('mxlv'),
             'stat' => 0,
             'remk' => $this->input->post('remk'),
             'crby' => $_SESSION['userId'],
@@ -1905,6 +1927,7 @@ class Stock extends CI_Controller
                 'clcd' => $this->input->post('clr_edt'),
                 'dscr' => $this->input->post('dscr_edt'),
                 'scli' => $this->input->post('strscl_edt'),
+                'mxlv' => $this->input->post('mxlvEdt'),
                 'remk' => $this->input->post('remk_edt'),
                 'mdby' => $_SESSION['userId'],
                 'mddt' => date('Y-m-d H:i:s'),
@@ -1927,6 +1950,7 @@ class Stock extends CI_Controller
                 'clcd' => $this->input->post('clr_edt'),
                 'dscr' => $this->input->post('dscr_edt'),
                 'scli' => $this->input->post('strscl_edt'),
+                'mxlv' => $this->input->post('mxlvEdt'),
                 'stat' => 1,
                 'remk' => $this->input->post('remk_edt'),
                 'apby' => $_SESSION['userId'],
