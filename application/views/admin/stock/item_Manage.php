@@ -263,6 +263,16 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Max Store Level
+                                                        <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="mxlv" name="mxlv" class="form-control"
+                                                               placeholder="Max Store Level"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
                                                     <label class="col-md-4 col-xs-12 control-label">Remark</label>
                                                     <div class="col-md-8 col-xs-12">
                                                         <textarea class="form-control" id="remk" name="remk"
@@ -504,6 +514,16 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Max Store Level
+                                                        <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="mxlvEdt" name="mxlvEdt"
+                                                               class="form-control"
+                                                               placeholder="Max Store Level"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label class="col-md-4 col-xs-12 control-label">Remark</label>
                                                     <div class="col-md-8 col-xs-12">
                                                         <textarea class="form-control" id="remk_edt" name="remk_edt"
@@ -714,6 +734,12 @@
                     strscl: {
                         notEqual: 0
                     },
+                    mxlv: {
+                        notEqual: 0,
+                        required: true,
+                        digits: true
+                    },
+
                     name: {
                         required: true,
                         remote: {
@@ -792,6 +818,10 @@
                     strscl: {
                         notEqual: "Select a store scale"
                     },
+                    mxlv: {
+                        notEqual: "Enter Max Store Level",
+                        required: "Enter Max Store Level",
+                    },
                     name: {
                         required: "Enter item name",
                         remote: "Already entered item name"
@@ -836,6 +866,11 @@
                     },
                     strscl_edt: {
                         notEqual: 0
+                    },
+                    mxlvEdt: {
+                        notEqual: 0,
+                        required: true,
+                        digits: true
                     },
                     name_edt: {
                         required: true,
@@ -927,6 +962,10 @@
                     strscl_edt: {
                         notEqual: "Select a store scale"
                     },
+                    mxlvEdt: {
+                        notEqual: "Enter Max Store Level",
+                        required: "Enter Max Store Level",
+                    },
                     name_edt: {
                         required: "Enter item name",
                         remote: "Already entered item name"
@@ -961,23 +1000,23 @@
 
         //Next Button
         function nextBtnActn() {
-            if($('#modal-view').hasClass('in')){
-                if($('#func').val()=='view'){
+            if ($('#modal-view').hasClass('in')) {
+                if ($('#func').val() == 'view') {
                     $('#app_item_btn').css('display', 'none');
                     return true;
-                }else{
+                } else {
                     if ($('#app_item_form').valid()) {
                         $('#app_item_btn').css('display', 'inline');
                         return true;
-                    }else {
+                    } else {
                         return false;
                     }
                 }
-            }else{
+            } else {
                 if ($('#add_item_form').valid()) {
                     $('#add_item_btn').css('display', 'inline');
                     return true;
-                }else {
+                } else {
                     return false;
                 }
             }
@@ -1180,6 +1219,7 @@
                         $('#clrnm_edt').val(data['item'][0]['clr']);
                         $('#remk_edt').val(data['item'][0]['remk']);
                         $('#dscr_edt').val(data['item'][0]['dscr']);
+                        $('#mxlvEdt').val(data['item'][0]['mxlv']);
 
                         set_select('cat_edt', data['item'][0]['ctid']);
                         set_select('brd_edt', data['item'][0]['bdid']);
@@ -1195,9 +1235,9 @@
                             for (var itt = 0; itt < len2; itt++) {
                                 var date = new Date(data['pics'][itt]['crdt']);
                                 var year = date.getFullYear();
-                                picsVw.push("<?= base_url()?>uploads/img/item/" + year + "/"+data['pics'][itt]['pcnm']);
+                                picsVw.push("<?= base_url()?>uploads/img/item/" + year + "/" + data['pics'][itt]['pcnm']);
                             }
-                        }else{
+                        } else {
                             $('#hsImg').val(0);
                         }
 
