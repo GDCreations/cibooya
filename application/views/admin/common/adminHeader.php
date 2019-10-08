@@ -145,8 +145,8 @@
                                     </li>
                                 <?php } ?>
                                 <?php if (in_array("grnMng", $permission, TRUE)) { ?>
-                                    <li><a id="pchOdr" href="<?= base_url() ?>Stock/grnMng">
-                                            <span class="nav-icon-hexa fa fa-list-ul"></span> Good Received Note(GRN) </a>
+                                    <li><a id="grnMng" href="<?= base_url() ?>Stock/grnMng">
+                                            <span class="nav-icon-hexa fa fa-list-ul"></span> Good Received Note (GRN) </a>
                                     </li>
                                 <?php } ?>
 
