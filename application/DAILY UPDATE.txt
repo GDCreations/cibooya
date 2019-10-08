@@ -1,9 +1,18 @@
 -----------------------------------------------------
+2019-10-09 Gemunu
+ALTER TABLE `stock_grn` ADD `apby` INT(10) NOT NULL COMMENT 'approval by' AFTER `crdt`, ADD `apdt` DATETIME NOT NULL COMMENT 'approval date' AFTER `apby`;
+ALTER TABLE `stock_grn` ADD `rjby` INT(10) NOT NULL COMMENT 'reject by' AFTER `apdt`, ADD `rjdt` DATETIME NOT NULL COMMENT 'reject date' AFTER `rjby`;
+ALTER TABLE `stock_grn` ADD `pntc` INT(10) NOT NULL COMMENT 'print count' AFTER `rjdt`;
+ALTER TABLE `stock_grn` ADD `prby` INT(10) NOT NULL COMMENT 'print by' AFTER `pntc`;
+ALTER TABLE `stock_grn` ADD `prdt` DATETIME NOT NULL COMMENT 'print date' AFTER `prby`;
+ALTER TABLE `stock_grn` ADD `rpby` INT(10) NOT NULL COMMENT 'reprint by' AFTER `prdt`, ADD `rpdt` DATETIME NOT NULL COMMENT 'reprint date' AFTER `rpby`;
+
+
+-----------------------------------------------------
 2019-10-08 Gemunu
 INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'grnMng', 'Good Received Note(GRN)', '', '0', '1', '1', '4');
 ALTER TABLE `stock_grn` ADD `chby` VARCHAR(250) NOT NULL COMMENT 'check by user' AFTER `remk`;
 ALTER TABLE `stock_grn_des` CHANGE `grid` `grid` INT(11) NOT NULL COMMENT 'GRN tb id', CHANGE `spid` `spid` INT(11) NOT NULL COMMENT 'supply id', CHANGE `itid` `itid` INT(11) NOT NULL COMMENT 'item id';
-
 -----------------------------------------------------
 **DONE || 2019-10-07 JANAKA
 UPDATE `user_page` SET `adpr` = '1' WHERE `user_page`.`aid` = 18;

@@ -582,9 +582,9 @@ class Stock_model extends CI_Model
         if ($supl != 'all') {
             $this->db->where('stock_grn.spid', $supl);
         }
-//        if ($type != 'all') {
-//            $this->db->where('stock_grn.grtp', $type);
-//        }
+        if ($stat != 'all') {
+            $this->db->where('stock_grn.stat', $stat);
+        }
         $this->db->where(" stock_grn.grdt BETWEEN '$frdt' AND '$todt'");
     }
 

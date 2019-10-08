@@ -136,7 +136,7 @@
                                                     class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-6 col-xs-12" id="">
                                             <select id="suplSrc" name="suplSrc" class="bs-select"
-                                                    onchange="chckBtn(this.value,this.id);loadPo(this.value,'podt','poDiv')">
+                                                    onchange="chckBtn(this.value,this.id);loadPo(this.value,'podt','poDiv','',0,true)">
                                                 <option value="0">-- Select Supply --</option>
                                                 <?php
                                                 foreach ($supplyInfo as $supp) {
@@ -289,109 +289,171 @@
 
     <!-- MODAL VIEW SUPPLIER -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg" role="document" style="width: 90%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
-            <form id="app_sup_form">
+            <form id="appForm">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Supplier
-                            Registering <span class="text-muted" id="subTitle_edit"></span></h4>
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> GRN & GRRN
+                            <span class="text-muted" id="subTitle_edit"></span></h4>
                         <input type="hidden" id="func" name="func"/>
-                        <input type="hidden" id="spid" name="spid"/>
+                        <input type="hidden" id="grnid" name="grnid"/>
                     </div>
                     <div class="modal-body">
                         <div class="container">
-                            <div class="form-horizontal">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Supplier Name <span
-                                                    class="fa fa-asterisk req-astrick edit_req"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="name_edt" id="name_edt"
-                                                   placeholder="Supplier Name"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group view_Area">
-                                        <label class="col-md-4 col-xs-12 control-label">Supplier Code</label>
-                                        <label class="col-md-8 col-xs-12 control-label" id="code"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Address <span
-                                                    class="fa fa-asterisk req-astrick edit_req"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                        <textarea class="form-control" name="addr_edt" id="addr_edt"
-                                                  placeholder="Supplier Address"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Contact <span
-                                                    class="fa fa-asterisk req-astrick edit_req"></span></label>
-                                        <div class="col-md-4 col-xs-12">
-                                            <input class="form-control" type="text" name="mobi_edt" id="mobi_edt"
-                                                   placeholder="Mobile"/>
-                                        </div>
-                                        <div class="col-md-4 col-xs-12">
-                                            <input class="form-control" type="text" name="tele_edt" id="tele_edt"
-                                                   placeholder="Land Tele."/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Email <span
-                                                    class="fa fa-asterisk req-astrick edit_req"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="email" name="email_edt" id="email_edt"
-                                                   placeholder="Email"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <lable class="col-md-4 col-xs-12 control-label">Bank Details</lable>
-                                        <div class="col-md-4 col-xs-12">
-                                            <label class="switch">
-                                                No <input type="checkbox" value="1" id="bnkDtlEdt" name="bnkDtlEdt"
-                                                          onchange="loadBnkDitEdt()">
-                                            </label> Yes
-                                        </div>
 
-                                        <div id="bankDtilEdt" style="display: none">
-                                            <div id="edit_Area" class="col-md-4">
-                                                <button type="button"
-                                                        class="btn btn-xs btn-info btn-rounded btn-icon-fixed pull-right"
-                                                        data-toggle="modal" data-target="#modal-Bank-New">
-                                                    <span class="fa fa-plus"></span> Add
-                                                </button>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="table-responsive">
-                                                    <table id="supp_Bank"
-                                                           class="table dataTable table-striped table-bordered"
-                                                           width="100%">
-                                                        <thead>
-                                                        <tr>
-                                                            <th class="text-left">BANK</th>
-                                                            <th class="text-left">BRANCH</th>
-                                                            <th class="text-left">ACCOUNT NO.</th>
-                                                            <th class="text-left">ACTION</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
+                            <div class="row form-horizontal">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-6 col-xs-12 control-label">Supplier Name <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-6 col-xs-12" id="">
+                                            <select id="suplSrcEdt" name="suplSrcEdt" class="bs-select"
+                                                    onchange="chckBtn(this.value,this.id);loadPo(this.value,'podtEdt','poDivEdt','',0,true)">
+                                                <option value="0">-- Select Supply --</option>
+                                                <?php
+                                                foreach ($supplyInfo as $supp) {
+                                                    echo "<option value='$supp->spid'>" . $supp->spcd . " | " . $supp->spnm . "</option>";
+                                                }
+                                                ?>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Remark</label>
-                                        <div class="col-md-8 col-xs-12">
-                                        <textarea class="form-control" rows="5" name="remk_edt" id="remk_edt"
-                                                  placeholder="Remark"></textarea>
+                                        <label class="col-md-6 col-xs-12 control-label">GRN Date <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <input class="form-control datetimepicker" type="text" name="grdtEdt"
+                                                   id="grdtEdt"
+                                                   readonly value="<?= date('Y-m-d'); ?>"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-6 col-xs-12 control-label">Reference Details (PO) <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-6 col-xs-12" id="poDivEdt">
+                                            <select id="podtEdt" name="podtEdt" class="bs-select"
+                                                    onchange="chckBtn(this.value,this.id);getPodet(this.value) ">
+                                                <option value="0">-- Select Po --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-6 col-xs-12 control-label">Delivery Warehouse <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-6 col-xs-12" id="">
+                                            <select id="whsidEdt" name="whsidEdt" class="bs-select"
+                                                    onchange="chckBtn(this.value,this.id)">
+                                                <option value="0">-- Select Warehouse --</option>
+                                                <?php
+                                                foreach ($whouseInfo as $whouse) {
+                                                    echo "<option value='$whouse->whid'>" . $whouse->whcd . " | " . $whouse->whnm . "</option>";
+                                                }
+                                                ?>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row form-horizontal">
+                                <h5 class="text-title"><span class="fa fa-tag"></span> PO Details</h5>
+                            </div>
+                            <div class="row form-horizontal">
+                                <div class="col-md-12">
+                                    <div class="table-responsive" style="padding: 10px 25px 10px 10px ">
+                                        <table class="table dataTable table-striped table-bordered" id="grnTblEdt"
+                                               style="width: 100%">
+                                            <thead>
+                                            <tr>
+                                                <th width="" class="text-center">NO</th>
+                                                <th width="" class="text-center">CODE</th>
+                                                <th width="" class="text-center">ITEM NAME</th>
+                                                <th width="" class="text-center">UNIT PRICE</th>
+                                                <th width="" class="text-center">ORDER QTY</th>
+                                                <th width="" class="text-center">FREE QTY</th>
+                                                <th width="" class="text-center">RECEIVE QTY</th>
+                                                <th width="" class="text-center">TOTAL PRICE</th>
+                                                <th width="" class="text-center">RETURN QTY</th>
+                                                <th width="" class="text-center">RETURN RMK</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                            <tfoot>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th id="ttlQtEdt"></th>
+                                            <th id="ttlFrEdt"></th>
+                                            <th id="ttlGdEdt"></th>
+                                            <th id="ttlPrcEdt"></th>
+                                            <th id="ttlBdEdt"></th>
+                                            <th></th>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <input type="hidden" id="lengEdt" name="lengEdt">
+                                    <input type="hidden" id="ttlQt2Edt" name="ttlQt2Edt">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-5  control-label">Remarks </label>
+                                        <div class="col-md-7">
+                                            <textarea class="form-control" name="remkEdt" id="remkEdt"
+                                                      rows="6" placeholder="Remarks"> </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-5  control-label">Check By</label>
+                                        <div class="col-md-7 col-xs-12">
+                                            <input type="text" class="form-control"
+                                                   name="chkbyEdt" id="chkbyEdt"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">ORDER QTY</label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <input class="form-control" type="text" name="odrqtEdt" id="odrqtEdt"
+                                                   readonly/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">FREE QTY</label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <input class="form-control" type="text" name="tfrqtEdt" id="tfrqtEdt"
+                                                   readonly/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">RECEIVE QTY</label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <input class="form-control" type="text" name="rcvqtEdt" id="rcvqtEdt"
+                                                   readonly/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">RETURN QTY </label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <input class="form-control" type="text" name="rtnqtEdt" id="rtnqtEdt"
+                                                   readonly/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-horizontal view_Area">
+                                <div class="row form-horizontal">
+                                    <h5 class="text-title"><span class="fa fa-tag"></span> Process Details </h5>
+                                </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Status</label>
@@ -421,21 +483,25 @@
                                         <label class="col-md-4 control-label">Rejected Date</label>
                                         <label class="col-md-8 control-label" id="rjdt"></label>
                                     </div>
-                                    <div class="form-group">
+                                    <!--<div class="form-group">
                                         <label class="col-md-4 control-label">Updated By</label>
                                         <label class="col-md-8 control-label" id="mdby"></label>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Updated Date</label>
                                         <label class="col-md-8 control-label" id="mddt"></label>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <div class="pull-left">
+                            <span class="fa fa-hand-o-right"></span> <label style="color: red"> <span
+                                        class="fa fa-asterisk req-astrick"></span> Required Fields </label>
+                        </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="app_sup_btn" class="btn btn-warning btn-sm btn-rounded">
+                        <button type="button" id="edtBtn" class="btn btn-warning btn-sm btn-rounded">Submit
                         </button>
                     </div>
                 </div>
@@ -484,22 +550,22 @@
                     odrqt: {
                         required: true,
                         notEqual: 0,
-                        digits:true
+                        digits: true
                     },
                     tfrqt: {
                         required: true,
                         notEqual: 0,
-                        digits:true
+                        digits: true
                     },
                     rcvqt: {
                         required: true,
                         notEqual: 0,
-                        digits:true
+                        digits: true
                     },
                     rtnqt: {
-                        required: true,
+                        //required: true,
                         notEqual: 0,
-                        digits:true
+                        digits: true
                     },
                     chkby: {
                         required: true,
@@ -508,146 +574,96 @@
 
                 },
                 messages: {
-                    name: {
-                        required: "Enter supplier name",
-                        remote: "Already entered name"
+                    suplSrc: {
+                        required: "Select supplier name",
+                        notEqual: "Select supplier name",
                     },
-                    addr: {
-                        required: "Enter supplier address"
+                    podt: {
+                        required: "Select po",
+                        notEqual: "Select po"
                     },
-                    mobi: {
-                        required: "Enter mobile number",
-                        digits: "Only numbers are allowed",
-                        minlength: "Please enter 10 digits number",
-                        maxlength: "Please enter 10 digits number",
-                        remote: "This number is already added"
+                    whsid: {
+                        required: "Select Delivery Warehouse",
+                        notEqual: "Select Delivery Warehouse",
                     },
-                    tele: {
-                        digits: "Only numbers are allowed",
-                        minlength: "Please enter 10 digits number",
-                        maxlength: "Please enter 10 digits number",
-                        remote: "This number is already added"
+                    chkby: {
+                        required: "Enter Check user",
+                        notEqual: "Enter Check user",
                     },
-                    email: {
-                        required: "Enter email address",
-                        email: "Please enter valid email address"
-                    },
-                    bnknm: {
-                        notEqual: "Select a bank"
-                    },
-                    bnkbr: {
-                        notEqual: "Select a bank branch"
-                    },
-                    acno: {
-                        required: "Enter bank account number",
-                        digits: "Only numbers are allowed",
-                        minlength: "Minumum length is 8 digits",
-                        remote: "This account number is already added"
-                    }
+
                 }
             });
 
-            $('#app_sup_form').validate({
+            $('#appForm').validate({
                 rules: {
-                    name_edt: {
+                    suplSrcEdt: {
                         required: true,
-                        remote: {
-                            url: "<?= base_url(); ?>Stock/chk_spName",
-                            type: "post",
-                            data: {
-                                name: function () {
-                                    return $("#name_edt").val();
-                                },
-                                spid: function () {
-                                    return $("#spid").val();
-                                },
-                                stat: 1
-                            }
-                        }
+                        notEqual: 0
                     },
-                    addr_edt: {
-                        required: true
-                    },
-                    mobi_edt: {
+                    podtEdt: {
                         required: true,
-                        digits: true,
-                        minlength: 10,
-                        maxlength: 10,
-                        remote: {
-                            url: "<?= base_url(); ?>Stock/chk_mobile",
-                            type: "post",
-                            data: {
-                                mobi: function () {
-                                    return $("#mobi_edt").val();
-                                },
-                                spid: function () {
-                                    return $("#spid").val();
-                                },
-                                stat: 1
-                            }
-                        }
+                        notEqual: 0
                     },
-                    tele_edt: {
-                        digits: true,
-                        minlength: 10,
-                        maxlength: 10,
-                        remote: {
-                            url: "<?= base_url(); ?>Stock/chk_mobile",
-                            type: "post",
-                            data: {
-                                mobi: function () {
-                                    return $("#tele_edt").val();
-                                },
-                                spid: function () {
-                                    return $("#spid").val();
-                                },
-                                stat: 1
-                            }
-                        }
-                    },
-                    email_edt: {
+                    whsidEdt: {
                         required: true,
-                        email: true
+                        notEqual: 0
+                    },
+                    odrqtEdt: {
+                        //required: true,
+                        notEqual: 0,
+                        digits: true
+                    },
+                    tfrqtEdt: {
+                        //required: true,
+                        notEqual: 0,
+                        digits: true
+                    },
+                    rcvqtEdt: {
+                        //required: true,
+                        notEqual: 0,
+                        digits: true
+                    },
+                    rtnqtEdt: {
+                        //required: true,
+                        notEqual: 0,
+                        digits: true
+                    },
+                    chkbyEdt: {
+                        required: true,
+                        notEqual: 0
                     },
                 },
                 messages: {
-                    name_edt: {
-                        required: "Enter supplier name",
-                        remote: "Already entered name"
+                    suplSrcEdt: {
+                        required: "Select supplier name",
+                        notEqual: "Select supplier name",
                     },
-                    addr_edt: {
-                        required: "Enter supplier address"
+                    podtEdt: {
+                        required: "Select po",
+                        notEqual: "Select po"
                     },
-                    mobi_edt: {
-                        required: "Enter mobile number",
-                        digits: "Only numbers are allowed",
-                        minlength: "Please enter 10 digits number",
-                        maxlength: "Please enter 10 digits number",
-                        remote: "This number is already added"
+                    whsidEdt: {
+                        required: "Select Delivery Warehouse",
+                        notEqual: "Select Delivery Warehouse",
                     },
-                    tele_edt: {
-                        digits: "Only numbers are allowed",
-                        minlength: "Please enter 10 digits number",
-                        maxlength: "Please enter 10 digits number",
-                        remote: "This number is already added"
+                    chkbyEdt: {
+                        required: "Enter Check user",
+                        notEqual: "Enter Check user",
                     },
-                    email_edt: {
-                        required: "Enter email address",
-                        email: "Please enter valid email address"
-                    },
+
                 }
             });
-
             srchGrn();
         });
 
         // Get supply PO Details
-        function loadPo(supid, html, mhtml) {
+        function loadPo(supid, html, mhtml, seltdid, st, init) {
             $.ajax({
                 url: '<?= base_url(); ?>Stock/getPodet',
                 type: 'post',
                 data: {
                     supid: supid,
+                    st: st,
                 },
                 dataType: 'json',
                 success: function (response) {
@@ -671,13 +687,17 @@
                             child2.append("<li data-original-index=\"" + (a + 1) + "\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">" + name + "\n" +
                                 "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
                         }
-                        //document.getElementById('brnmEdt').value = 15;
+                        if (seltdid == id) {
+                            set_select(html, seltdid);
+                        }
                     } else {
                         $('#' + html).empty();
                         $('#' + html).append("<option value='0'>-- No Po Details --</option>");
                         child2.append("<li data-original-index=\"0\" class=\"\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\"><span class=\"text\">-- No Po Details --</span><span class=\" fa fa-check check-mark\"></span></a></li>");
                     }
-                    default_Selector(child1.find('div'));
+                    //default_Selector(child1.find('div'));
+                    // Default selector enable disable
+                    if (init) default_Selector(child1.find('div'));
                 }
             });
         }
@@ -737,13 +757,13 @@
                         for (var a = 0; a < len; a++) {
                             t.row.add([
                                 a + 1,
-                                response['podet'][a]['itcd'] + '<input type="text" name="itid[]" value="' + response['podet'][a]['itid'] + '">',       // ITEM CODE
+                                response['podet'][a]['itcd'] + '<input type="hidden" name="itid[]" value="' + response['podet'][a]['itid'] + '">',       // ITEM CODE
                                 response['podet'][a]['itnm'],                                                    // ITEM NAME
-                                numeral(response['podet'][a]['untp']).format('0,0.00') + '<input type="text" name="untp[]" value="' + response['podet'][a]['untp'] + '" >',                          // PRICE
-                                numeral(response['podet'][a]['qnty']).format('0,0') + '<input type="text" name="odrQty[]" value="' + response['podet'][a]['qnty'] + '">',                            // ODR QUNT
+                                numeral(response['podet'][a]['untp']).format('0,0.00') + '<input type="hidden" name="untp[]" value="' + response['podet'][a]['untp'] + '" >',                          // PRICE
+                                numeral(response['podet'][a]['qnty']).format('0,0') + '<input type="hidden" name="odrQty[]" value="' + response['podet'][a]['qnty'] + '">',                            // ODR QUNT
                                 '<input type="text" size="4" class="form-control" id="grfr_' + a + '" name="grfr[]" onkeyup="calFrQty(this.value)" style="text-align:right;">',                                                           // RCV QTY
                                 '<input type="text" size="4" class="form-control dfg" id="grgd_' + a + '" name="grgd[]" onkeyup="calQty( ' + response['podet'][a]['qnty'] + ',this.value,' + a + ',' + response['podet'][a]['untp'] + ')" style="text-align:right;">',       // RCV QTY
-                                '<label id="grTprc_' + a + '">' + numeral(0).format('0,0.00') + '</label><input type="text" value="0" name="grhTprc[]" id="grhTprc_' + a + '">', //total price of items
+                                '<label id="grTprc_' + a + '">' + numeral(0).format('0,0.00') + '</label><input type="hidden" value="0" name="grhTprc[]" id="grhTprc_' + a + '">', //total price of items
                                 '<input type="text" class="form-control" id="grbd_' + a + '" name="grbd[]" readonly size="4" style="text-align:right;">',      // RTN QTY
                                 '<input type="text" class="form-control" name="rtnRmk[]">',             // RTN REMK
 
@@ -830,16 +850,16 @@
                     success: function (data) {
                         swal({title: "", text: "GRN Added Success!", type: "success"},
                             function () {
-                               $('#addBtn').prop('disabled', false);
-                               clear_Form('addForm');
-                               $('#modal-add').modal('hide');
+                                $('#addBtn').prop('disabled', false);
+                                clear_Form('addForm');
+                                $('#modal-add').modal('hide');
                                 srchGrn();
                             });
                     },
                     error: function (data, textStatus) {
                         swal({title: "GRN Added Failed", text: textStatus, type: "error"},
                             function () {
-                               location.reload();
+                                location.reload();
                             });
                     }
                 });
@@ -852,9 +872,9 @@
             var supl = $('#supl').val();
             var dtrng = $('#dtrng').val();
 
-            chckBtn(supl,'supl');
+            chckBtn(supl, 'supl');
 
-            if(supl != 0 ){
+            if (supl != 0) {
                 $('#grnTable').DataTable().clear();
                 $('#grnTable').DataTable({
                     "destroy": true,
@@ -870,9 +890,9 @@
                     ],
                     "serverSide": true,
                     "columnDefs": [
-                        {className: "text-left", "targets": [2, 3, 5]},
-                        {className: "text-center", "targets": [0, 1, 4, 6, 7, 8]},
-                        {className: "text-right", "targets": [0]},
+                        {className: "text-left", "targets": [2, 3]},
+                        {className: "text-center", "targets": [0, 1, 4, 9, 10]},
+                        {className: "text-right", "targets": [0, 5, 6, 7, 8, 11]},
                         {className: "text-nowrap", "targets": [2, 3]},
                     ],
                     "order": [[6, "DESC"]], //ASC  desc
@@ -887,8 +907,8 @@
                         {sWidth: '5%'}, //Created date
                         {sWidth: '5%'}, //Created date
                         {sWidth: '5%'}, //Created date
-                        {sWidth: '5%'},  //Status
-                        {sWidth: '12%'}  //Option
+                        {sWidth: '10%'},  //Status
+                        {sWidth: '10%'}  //Option
                     ],
 
                     "ajax": {
@@ -904,31 +924,31 @@
             }
         }
 
-        //View Supplier
-        function viewSupp(id, func) {
+        // View
+        function viewGrn(id, func) {
             swal({
                 title: "Loading Data...",
-                text: "Supplier's Details",
+                text: "GRN's Details",
                 imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                 showConfirmButton: false
             });
 
             $('#func').val(func);
-            $('#spid').val(id);
+            $('#grnid').val(id);
 
             jQuery.ajax({
                 type: "POST",
-                url: "<?= base_url(); ?>Stock/get_SuppDet",
+                url: "<?= base_url(); ?>Stock/vewGrnDetails",
                 data: {
-                    id: id
+                    auid: id
                 },
                 dataType: 'json',
                 success: function (data) {
                     if (func == 'view') {
                         //VIEW MODEL
                         $('#subTitle_edit').html(' - View');
-                        $('#app_sup_btn').css('display', 'none');
-                        $("#modal-view").find('.edit_req').css("display", "none");
+                        $('#edtBtn').css('display', 'none');
+                        //$("#modal-view").find('.edit_req').css("display", "none");
                         $("#edit_Area").css('display', 'none');
                         $(".view_Area").css('display', 'block');
                         //Make readonly all fields
@@ -936,134 +956,162 @@
                         $("#modal-view").find('.bootstrap-select').addClass("disabled dropup");
                         $("#modal-view").find('.bootstrap-select').children().addClass("disabled dropup");
                         var des = "disabled";
-                        $("#bnkDtlEdt").attr("disabled", true);
                         //VIEW MODEL
-                    } else if (func == 'edit') {
-                        //EDIT MODEL
-                        $('#subTitle_edit').html(' - Edit');
-                        $('#app_sup_btn').css('display', 'inline');
-                        $('#app_sup_btn').html('Update');
-                        $("#modal-view").find('.edit_req').css("display", "inline");
-                        $("#edit_Area").css('display', 'block');
-                        $(".view_Area").css('display', 'none');
-                        //Remove readonly all fields
-                        $("#modal-view :input").attr("readonly", false);
-                        $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
-                        $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
-                        var des = "";
-                        $("#bnkDtlEdt").attr("disabled", false);
-                        //EDIT MODEL
                     } else if (func == 'app') {
                         //APPROVE MODEL
                         $('#subTitle_edit').html(' - Approve');
-                        $('#app_sup_btn').css('display', 'inline');
-                        $('#app_sup_btn').html('Approve');
-                        $("#modal-view").find('.edit_req').css("display", "inline");
+                        $('#edtBtn').css('display', 'inline');
+                        $('#edtBtn').html('Approve');
+                        //$("#modal-view").find('.edit_req').css("display", "inline");
                         $("#edit_Area").css('display', 'block');
                         $(".view_Area").css('display', 'none');
                         //Remove readonly all fields
-                        $("#modal-view :input").attr("readonly", false);
-                        $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
-                        $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
+                        $("#modal-view :input").attr("readonly", true);
+                        $("#modal-view").find('.bootstrap-select').addClass("disabled dropup");
+                        $("#modal-view").find('.bootstrap-select').children().addClass("disabled dropup");
                         var des = "";
-                        $("#bnkDtlEdt").attr("disabled", false);
                         //APPROVE MODEL
                     }
-                    var len = data['spdet'].length;
-                    var len2 = data['bkdet'].length;
-                    var spdet = data['spdet'];
-                    var bkdet = data['bkdet'];
-                    if (len > 0) {
-                        $('#name_edt').val(spdet[0]['spnm']);
-                        $('#addr_edt').val(spdet[0]['addr']);
-                        $('#mobi_edt').val(spdet[0]['mbno']);
-                        $('#tele_edt').val(spdet[0]['tele']);
-                        $('#email_edt').val(spdet[0]['email']);
-                        $('#remk_edt').val(spdet[0]['dscr']);
 
-                        if (spdet[0]['stat'] == 0) {
+                    var len = data['grndtl'].length;
+                    var len2 = data['poitem'].length;
+                    var grndtl = data['grndtl'];
+                    var poitem = data['poitem'];
+
+                    if (len > 0) {
+                        set_select('suplSrcEdt', grndtl[0]['spid']);
+                        set_select('whsidEdt', grndtl[0]['whid']);
+                        loadPo(grndtl[0]['spid'], 'podtEdt', 'poDivEdt', grndtl[0]['poid'], 1, false);
+
+                        $('#odrqtEdt').val(grndtl[0]['odqt']);
+                        $('#tfrqtEdt').val(grndtl[0]['frqt']);
+                        $('#rcvqtEdt').val(grndtl[0]['rcqt']);
+                        $('#rtnqtEdt').val(grndtl[0]['rtqt']);
+                        $('#remkEdt').val(grndtl[0]['remk']);
+                        $('#chkbyEdt').val(grndtl[0]['chby']);
+
+                        if (grndtl[0]['stat'] == 0) {
                             var stat = "<label class='label label-warning'>Pending</label>";
-                        } else if (spdet[0]['stat'] == 1) {
+                        } else if (grndtl[0]['stat'] == 1) {
                             var stat = "<label class='label label-success'>Active</label>";
-                        } else if (spdet[0]['stat'] == 2) {
+                        } else if (grndtl[0]['stat'] == 2) {
                             var stat = "<label class='label label-danger'>Reject</label>";
-                        } else if (spdet[0]['stat'] == 3) {
+                        } else if (grndtl[0]['stat'] == 3) {
                             var stat = "<label class='label label-info'>Inactive</label>";
                         } else {
                             var stat = "--";
                         }
                         $('#sup_stat').html(": " + stat);
-                        $('#code').html(": " + spdet[0]['spcd']);
-                        $('#crby').html(": " + spdet[0]['crnm']);
-                        $('#crdt').html(": " + spdet[0]['crdt']);
-                        $('#apby').html(": " + ((spdet[0]['apnm'] != null) ? spdet[0]['apnm'] : "--"));
-                        $('#apdt').html(": " + ((spdet[0]['apdt'] != null && spdet[0]['apdt'] != "0000-00-00 00:00:00") ? spdet[0]['apdt'] : "--"));
-                        $('#rjby').html(": " + ((spdet[0]['rjnm'] != null) ? spdet[0]['rjnm'] : "--"));
-                        $('#rjdt').html(": " + ((spdet[0]['rjdt'] != null && spdet[0]['rjdt'] != "0000-00-00 00:00:00") ? spdet[0]['rjdt'] : "--"));
-                        $('#mdby').html(": " + ((spdet[0]['mdnm'] != null) ? spdet[0]['mdnm'] : "--"));
-                        $('#mddt').html(": " + ((spdet[0]['mddt'] != null && spdet[0]['mddt'] != "0000-00-00 00:00:00") ? spdet[0]['mddt'] : "--"));
+                        $('#code').html(": " + grndtl[0]['spcd']);
+                        $('#crby').html(": " + grndtl[0]['crnm']);
+                        $('#crdt').html(": " + grndtl[0]['crdt']);
+                        $('#apby').html(": " + ((grndtl[0]['apnm'] != null) ? grndtl[0]['apnm'] : "--"));
+                        $('#apdt').html(": " + ((grndtl[0]['apdt'] != null && grndtl[0]['apdt'] != "0000-00-00 00:00:00") ? grndtl[0]['apdt'] : "--"));
+                        $('#rjby').html(": " + ((grndtl[0]['rjnm'] != null) ? grndtl[0]['rjnm'] : "--"));
+                        $('#rjdt').html(": " + ((grndtl[0]['rjdt'] != null && grndtl[0]['rjdt'] != "0000-00-00 00:00:00") ? grndtl[0]['rjdt'] : "--"));
+                        //$('#mdby').html(": " + ((grndtl[0]['mdnm'] != null) ? grndtl[0]['mdnm'] : "--"));
+                        //$('#mddt').html(": " + ((grndtl[0]['mddt'] != null && grndtl[0]['mddt'] != "0000-00-00 00:00:00") ? grndtl[0]['mddt'] : "--"));
 
-                        if (spdet[0]['bkdt'] == 1) {
-                            $('#bankDtilEdt').css("display", "block");
-                            ($('#bnkDtlEdt').prop('checked', true));
-                        } else {
-                            $('#bankDtilEdt').css("display", "none");
-                            ($('#bnkDtlEdt').prop('checked', false));
-                        }
                     }
 
                     if (len2 > 0) {
 
-                        $('#supp_Bank').DataTable().clear();
-                        var t1 = $('#supp_Bank').DataTable({
+                        $('#grnTblEdt').DataTable().clear();
+                        var m = $('#grnTblEdt').DataTable({
                             "bInfo": false,
                             destroy: true,
                             searching: false,
                             bPaginate: false,
                             "ordering": false,
                             "columnDefs": [
-                                {className: "text-right", "targets": []},
-                                {className: "text-left", "targets": [0, 1, 2]},
-                                {className: "text-center", "targets": [3]},
-                                {className: "text-nowrap", "targets": [0, 1, 2]}
+                                {className: "text-left", "targets": [1, 2, 9]},
+                                {className: "text-center", "targets": [0]},
+                                {className: "text-right", "targets": [3, 4, 5, 6, 7, 8]},
+                                {className: "text-nowrap", "targets": [1]}
                             ],
                             "aoColumns": [
-                                // {sWidth: '3%'},
-                                {sWidth: '30%'},
-                                {sWidth: '30%'},
-                                {sWidth: '30%'},
-                                {sWidth: '10%'}
-                            ]
+                                {sWidth: '5%'},
+                                {sWidth: '10%'},    //
+                                {sWidth: '10%'},    //
+                                {sWidth: '5%'},    //
+                                {sWidth: '5%'},     //
+                                {sWidth: '5%'},     //
+                                {sWidth: '5%'},     //
+                                {sWidth: '5%'},     //
+                                {sWidth: '5%'},     //
+                                {sWidth: '5%'}
+                            ],
+                            "footerCallback": function (row, data, start, end, display) {
+                                var api = this.api(), data;
+
+                                // Remove the formatting to get integer data for summation
+                                var intVal = function (i) {
+                                    return typeof i === 'string' ?
+                                        i.replace(/[\$,]/g, '') * 1 :
+                                        typeof i === 'number' ?
+                                            i : 0;
+                                };
+                                //COLUMN 3 TTL
+                                var t3 = api.column(3).data().reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+                                $(api.column(3).footer()).html(numeral(t3).format('0,0.00'));
+                                //COLUMN 4 TTL
+                                var t4 = api.column(4).data().reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+                                $(api.column(4).footer()).html(numeral(t4).format('0,0'));
+                                //document.getElementById("vw_odqt").innerHTML = t4;
+                                //COLUMN 5 TTL
+                                var t5 = api.column(5).data().reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+                                $(api.column(5).footer()).html(numeral(t5).format('0,0'));
+                                //COLUMN 6 TTL
+                                var t6 = api.column(6).data().reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+                                $(api.column(6).footer()).html(numeral(t6).format('0,0'));
+                                //COLUMN 7 TTL
+                                var t7 = api.column(7).data().reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+                                $(api.column(7).footer()).html(numeral(t7).format('0,0.00'));
+                                //COLUMN 8 TTL
+                                var t8 = api.column(8).data().reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+                                $(api.column(8).footer()).html(numeral(t8).format('0,0'));
+                            },
                         });
 
-                        for (var ii = 0; ii < len2; ii++) {
-                            if (bkdet[ii]['dfst'] == 1) {
-                                var dfst = "<label class='label label-info' title='Default Account Number'>D</label> ";
-                                var radio = "<div title='Default Account' class='app-radio round'><input type='radio'" +
-                                    "onclick='desDefClose($(this))'" + des +
-                                    " name='dfstRd[]' value='" + bkdet[ii]['acid'] + "' checked/></div>"
-                                var defDes = 'disabled';
-                            } else {
-                                var dfst = "";
-                                var radio = "<div class='app-radio round'><input type='radio'" +
-                                    "onclick='desDefClose($(this))'" + des +
-                                    " name='dfstRd[]' value='" + bkdet[ii]['acid'] + "'/></div>"
-                                var defDes = '';
+                        var grtp = grndtl[0]['grtp'];
+                        m.clear().draw();
+                        for (var a = 0; a < len2; a++) {
+                            if (grtp == 1) {    // GRN
+                                var rcqt = poitem[a]['qnty'];
+                                var rtqt = 0;
+                                var frqt = poitem[a]['frqt'];
+                            } else {            // GRRN
+                                var rcqt = 0;
+                                var rtqt = poitem[a]['qnty'];
+                                var frqt = 0;
                             }
 
-                            var bnknm = bkdet[ii]['bkcd'] + " - " + bkdet[ii]['bknm'];
-                            var brnm = bkdet[ii]['brcd'] + " - " + bkdet[ii]['bcnm'];
-                            var acc = dfst + bkdet[ii]['acno'];
-                            var opt = "<button " + defDes + " " + des + " id='dltrw' class='btn btn-xs btn-warning btn-rounded btn_dlt_acc' title='Remove'><span class='fa fa-close'></span></button> " +
-                                radio +
-                                "<input type='hidden' id='acnoList' name='acnoList[]' value='" + bkdet[ii]['acid'] + "'/>";
-                            t1.row.add([
-                                // (ii+1),
-                                bnknm,
-                                brnm,
-                                acc,
-                                opt
+                            m.row.add([
+                                a + 1,
+                                poitem[a]['itcd'],
+                                poitem[a]['itnm'],
+                                numeral(poitem[a]['untp']).format('0,0.00'),
+                                poitem[a]['odqt'],
+                                frqt,
+                                rcqt,
+                                numeral(rcqt * poitem[a]['untp']).format('0,0.00'),
+                                rtqt,
+                                poitem[a]['remk'],
+
                             ]).draw(false);
+
                         }
                     }
                     swal.close();
@@ -1077,209 +1125,83 @@
             });
         }
 
-        //Disbled default account close button
-        function desDefClose(node) {
-            $('.btn_dlt_acc').prop('disabled', false);
-            node.parent().prev().prop('disabled', true);
-        }
-
-        // table data remove
-        $('#supp_Bank tbody').on('click', '#dltrw', function () {
-            var table = $('#supp_Bank').DataTable();
-            table
-                .row($(this).parents('tr'))
-                .remove()
-                .draw();
-
-            if (!table.data().count()) {
-                $("#app_sup_btn").hide();
-            } else {
-                $("#app_sup_btn").show();
-            }
-        });
-
         //APPROVE || EDIT HERE
-        $('#app_sup_btn').click(function (e) {
+        $('#edtBtn').click(function (e) {
             e.preventDefault();
 
-            var table = $('#supp_Bank').DataTable();
-            //var row = table.rows().count();
+            if ($('#appForm').valid()) {
 
-            if (table.rows().count() > 0) {
-                if ($('#app_sup_form').valid()) {
-
-                    swal({
-                            title: "Are you sure to do this ?",
-                            text: "",
-                            type: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3bdd59",
-                            confirmButtonText: "Yes",
-                            cancelButtonText: "No",
-                            closeOnConfirm: false,
-                            closeOnCancel: false
-                        },
-                        function (isConfirm) {
-                            if (isConfirm) {
-                                var func = $('#func').val();
-                                $('#app_sup_btn').prop('disabled', true);
-                                if (func == 'edit') {
-                                    swal({
-                                        title: "Processing...",
-                                        text: "Supplier's details updating..",
-                                        imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                                        showConfirmButton: false
-                                    });
-
-                                    jQuery.ajax({
-                                        type: "POST",
-                                        url: "<?= base_url(); ?>Stock/supp_update",
-                                        data: $("#app_sup_form").serialize(),
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            swal({title: "", text: "Updating Success!", type: "success"},
-                                                function () {
-                                                    $('#app_sup_btn').prop('disabled', false);
-                                                    clear_Form('app_sup_form');
-                                                    $('#modal-view').modal('hide');
-                                                    srchGrn();
-                                                });
-                                        },
-                                        error: function (data, textStatus) {
-                                            swal({title: "Updating Failed", text: textStatus, type: "error"},
-                                                function () {
-                                                    location.reload();
-                                                });
-                                        }
-                                    });
-                                } else if (func == 'app') {
-                                    swal({
-                                        title: "Processing...",
-                                        text: "Supplier approving..",
-                                        imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                                        showConfirmButton: false
-                                    });
-
-                                    jQuery.ajax({
-                                        type: "POST",
-                                        url: "<?= base_url(); ?>Stock/supp_update",
-                                        data: $("#app_sup_form").serialize(),
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            swal({title: "", text: "Approved!", type: "success"},
-                                                function () {
-                                                    $('#app_sup_btn').prop('disabled', false);
-                                                    clear_Form('app_sup_form');
-                                                    $('#modal-view').modal('hide');
-                                                    srchGrn();
-                                                });
-                                        },
-                                        error: function (data, textStatus) {
-                                            swal({title: "Approving Failed", text: textStatus, type: "error"},
-                                                function () {
-                                                    location.reload();
-                                                });
-                                        }
-                                    });
-                                } else {
-                                    alert('Contact System Admin');
-                                }
-                            } else {
-                                swal("Cancelled", " ", "warning");
-                            }
-                        });
-                }
-            } else {
-                swal("No Any bank Details..", "", "info");
-            }
-        });
-
-        //Add New bank Account Number
-        $('#add_new_acc').click(function (e) {
-            if ($('#edit_bank_form').valid()) {
                 swal({
-                    title: "Processing...",
-                    text: "Supplier's account number saving..",
-                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                    showConfirmButton: false
-                });
-
-                var spid = $('#spid').val();
-                $('#add_new_acc').prop('disabled', true);
-
-                jQuery.ajax({
-                    type: "POST",
-                    url: "<?= base_url(); ?>Stock/supp_add_bnkAcc",
-                    data: {
-                        spid: spid,
-                        bknm: function () {
-                            return $('#bnknm_edt').val();
-                        },
-                        bkbr: function () {
-                            return $('#bnkbr_edt').val();
-                        },
-                        acc: function () {
-                            return $('#acno_edt').val();
-                        },
+                        title: "Are you sure to do this ?",
+                        text: "",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3bdd59",
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
                     },
-                    dataType: 'json',
-                    success: function (data) {
-                        swal({title: "", text: "Saved!", type: "success"},
-                            function () {
-                                $('#add_new_acc').prop('disabled', false);
-                                clear_Form('edit_bank_form');
-                                $('#modal-Bank-New').modal('hide');
-                                var len2 = data['accDet'].length;
-                                var bkdet = data['accDet'];
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            var func = $('#func').val();
+                            $('#edtBtn').prop('disabled', true);
 
-                                $('#supp_Bank').DataTable().clear();
-                                var t1 = $('#supp_Bank').DataTable();
+                            if (func == 'app') {
+                                swal({
+                                    title: "Processing...",
+                                    text: "GRN approving..",
+                                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                                    showConfirmButton: false
+                                });
 
-                                for (var ii = 0; ii < len2; ii++) {
-                                    if (bkdet[ii]['dfst'] == 1) {
-                                        var dfst = "<label class='label label-info' title='Default Account Number'>D</label> ";
-                                        var radio = "<div title='Default Account' class='app-radio round'><input type='radio'" +
-                                            "onclick='desDefClose($(this))'" +
-                                            " name='dfstRd[]' value='" + bkdet[ii]['acid'] + "' checked/></div>"
-                                        var defDes = 'disabled';
-                                    } else {
-                                        var dfst = "";
-                                        var radio = "<div class='app-radio round'><input type='radio'" +
-                                            "onclick='desDefClose($(this))'" +
-                                            " name='dfstRd[]' value='" + bkdet[ii]['acid'] + "'/></div>"
-                                        var defDes = '';
+                                jQuery.ajax({
+                                    type: "POST",
+                                    url: "<?= base_url(); ?>Stock/updateGrn",
+                                    data: $("#appForm").serialize(),
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        swal({title: "", text: "Approved!", type: "success"},
+                                            function () {
+                                                $('#edtBtn').prop('disabled', false);
+                                                clear_Form('appForm');
+                                                $('#modal-view').modal('hide');
+                                                srchGrn();
+                                            });
+                                    },
+                                    error: function (data, textStatus) {
+                                        swal({title: "Approving Failed", text: textStatus, type: "error"},
+                                            function () {
+                                                location.reload();
+                                            });
                                     }
-
-                                    var bnknm = bkdet[ii]['bkcd'] + " - " + bkdet[ii]['bknm'];
-                                    var brnm = bkdet[ii]['brcd'] + " - " + bkdet[ii]['bcnm'];
-                                    var acc = dfst + bkdet[ii]['acno'];
-                                    var opt = "<button " + defDes + " id='dltrw' class='btn btn-xs btn-warning btn-rounded btn_dlt_acc' title='Remove'><span class='fa fa-close'></span></button> " +
-                                        radio +
-                                        "<input type='hidden' id='acnoList' name='acnoList[]' value='" + bkdet[ii]['acid'] + "'/>";
-                                    t1.row.add([
-                                        // (ii+1),
-                                        bnknm,
-                                        brnm,
-                                        acc,
-                                        opt
-                                    ]).draw(false);
-                                }
-                            });
-                        //console.log(" awaaa");
-                        $("#app_sup_btn").show();
-                    },
-                    error: function (data, textStatus) {
-                        swal({title: "Failed", text: textStatus, type: "error"},
-                            function () {
-                                location.reload();
-                            });
-                    }
-                });
+                                });
+                            } else {
+                                alert('Contact System Admin');
+                            }
+                        } else {
+                            swal("Cancelled", " ", "warning");
+                        }
+                    });
             }
         });
+
+        // GRN PRINT
+        function prntGrn(auid) {
+            swal({
+                title: "Please wait...",
+                text: "GRN generating..",
+                imageUrl: "<?= base_url() ?>assets/dist/img/loading.gif",
+                showConfirmButton: false
+            });
+            setTimeout(function () {
+                window.open('<?= base_url() ?>Stock/grnPrint/' + auid, 'popup', 'width=1100,height=600,scrollbars=no,resizable=no');
+                swal.close(); // Hide the loading message
+            }, 1000);
+        }
 
         //Reject Supplier
-        function rejectSupp(id) {
+        function grnReject(id) {
             swal({
                     title: "Are you sure reject ?",
                     text: "",
@@ -1327,7 +1249,7 @@
         }
 
         //Deactivate Supplier
-        function inactSupp(id) {
+        function inactgrn(id) {
             swal({
                     title: "Are you sure to deactivate ?",
                     text: "",
@@ -1375,7 +1297,7 @@
         }
 
         //activate Supplier
-        function reactSupp(id) {
+        function reactgrn(id) {
             swal({
                     title: "Are you sure to activate ?",
                     text: "",
@@ -1420,24 +1342,6 @@
                         swal("Cancelled", " ", "warning");
                     }
                 });
-        }
-
-        // supply bank details show hide
-        function loadBnkDit() {
-            if ($('#bnkDtl').prop('checked')) {
-                $('#bankDtil').css("display", "block");
-            } else {
-                $('#bankDtil').css("display", "none");
-            }
-        }
-
-        // supply bank details show hide edit
-        function loadBnkDitEdt() {
-            if ($('#bnkDtlEdt').prop('checked')) {
-                $('#bankDtilEdt').css("display", "block");
-            } else {
-                $('#bankDtilEdt').css("display", "none");
-            }
         }
 
     </script>
