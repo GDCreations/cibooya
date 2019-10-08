@@ -116,7 +116,7 @@
 
     <!-- MODAL ADD NEW SUPPLIER -->
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg" role="document" style="width: 80%">
+        <div class="modal-dialog modal-lg" role="document" style="width: 90%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
@@ -128,6 +128,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="container">
+
                             <div class="row form-horizontal">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -149,8 +150,8 @@
                                         <label class="col-md-6 col-xs-12 control-label">GRN Date <span
                                                     class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-6 col-xs-12">
-                                            <input class="form-control datetimepicker" type="text" name="name" id="name"
-                                                   placeholder="Supplier Name" readonly value="<?= date('Y-m-d'); ?>"/>
+                                            <input class="form-control datetimepicker" type="text" name="grdt" id="grdt"
+                                                   placeholder="" readonly value="<?= date('Y-m-d'); ?>"/>
                                         </div>
                                     </div>
                                 </div>
@@ -183,13 +184,15 @@
 
                                 </div>
                             </div>
+
                             <div class="row form-horizontal">
                                 <h5 class="text-title"><span class="fa fa-tag"></span> PO Details</h5>
                             </div>
                             <div class="row form-horizontal">
                                 <div class="col-md-12">
                                     <div class="table-responsive" style="padding: 10px 25px 10px 10px ">
-                                        <table class="table dataTable table-striped table-bordered" id="grnTbl" style="">
+                                        <table class="table dataTable table-striped table-bordered" id="grnTbl"
+                                               style="width: 100%">
                                             <thead>
                                             <tr>
                                                 <th width="" class="text-center">NO</th>
@@ -217,9 +220,55 @@
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <input type="text" id="leng" name="leng">
-                                    <input type="text" id="ttlQt2" name="ttlQt2">
+                                    <input type="hidden" id="leng" name="leng">
+                                    <input type="hidden" id="ttlQt2" name="ttlQt2">
                                 </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-5  control-label">Remarks </label>
+                                        <div class="col-md-7">
+                                            <textarea class="form-control" name="remk" id="remk"
+                                                      rows="6" placeholder="Remarks"> </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-5  control-label">Check By</label>
+                                        <div class="col-md-7 col-xs-12">
+                                            <input type="text" class="form-control"
+                                                   name="chkby" id="chkby"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">ORDER QTY</label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <input class="form-control" type="text" name="odrqt" id="odrqt" readonly/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">FREE QTY</label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <input class="form-control" type="text" name="tfrqt" id="tfrqt" readonly/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">RECEIVE QTY</label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <input class="form-control" type="text" name="rcvqt" id="rcvqt" readonly/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">RETURN QTY </label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <input class="form-control" type="text" name="rtnqt" id="rtnqt" readonly/>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -229,7 +278,7 @@
                                         class="fa fa-asterisk req-astrick"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="add_sup_btn" class="btn btn-warning btn-sm btn-rounded">Submit
+                        <button type="button" id="addBtn" class="btn btn-warning btn-sm btn-rounded">Submit
                         </button>
                     </div>
                 </div>
@@ -419,78 +468,44 @@
 
             $('#addForm').validate({
                 rules: {
-                    name: {
+                    suplSrc: {
                         required: true,
-                        remote: {
-                            url: "<?= base_url(); ?>Stock/chk_spName",
-                            type: "post",
-                            data: {
-                                name: function () {
-                                    return $("#name").val();
-                                },
-                                stat: 0
-                            }
-                        }
-                    },
-                    addr: {
-                        required: true
-                    },
-                    mobi: {
-                        required: true,
-                        digits: true,
-                        minlength: 10,
-                        maxlength: 10,
-                        remote: {
-                            url: "<?= base_url(); ?>Stock/chk_mobile",
-                            type: "post",
-                            data: {
-                                mobi: function () {
-                                    return $("#mobi").val();
-                                },
-                                stat: 0
-                            }
-                        }
-                    },
-                    tele: {
-                        digits: true,
-                        minlength: 10,
-                        maxlength: 10,
-                        remote: {
-                            url: "<?= base_url(); ?>Stock/chk_mobile",
-                            type: "post",
-                            data: {
-                                mobi: function () {
-                                    return $("#tele").val();
-                                },
-                                stat: 0
-                            }
-                        }
-                    },
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    bnknm: {
                         notEqual: 0
                     },
-                    bnkbr: {
+                    podt: {
+                        required: true,
                         notEqual: 0
                     },
-                    acno: {
+                    whsid: {
                         required: true,
-                        digits: true,
-                        minlength: 8,
-                        remote: {
-                            url: "<?= base_url(); ?>Stock/chk_bnkAcno",
-                            type: "post",
-                            data: {
-                                acno: function () {
-                                    return $("#acno").val();
-                                },
-                                stat: 0
-                            }
-                        }
-                    }
+                        notEqual: 0
+                    },
+
+                    odrqt: {
+                        required: true,
+                        notEqual: 0,
+                        digits:true
+                    },
+                    tfrqt: {
+                        required: true,
+                        notEqual: 0,
+                        digits:true
+                    },
+                    rcvqt: {
+                        required: true,
+                        notEqual: 0,
+                        digits:true
+                    },
+                    rtnqt: {
+                        required: true,
+                        notEqual: 0,
+                        digits:true
+                    },
+                    chkby: {
+                        required: true,
+                        notEqual: 0
+                    },
+
                 },
                 messages: {
                     name: {
@@ -623,48 +638,6 @@
                 }
             });
 
-            $('#edit_bank_form').validate({
-                rules: {
-                    bnknm_edt: {
-                        notEqual: 0
-                    },
-                    bnkbr_edt: {
-                        notEqual: 0
-                    },
-                    acno_edt: {
-                        required: true,
-                        digits: true,
-                        minlength: 8,
-                        remote: {
-                            url: "<?= base_url(); ?>Stock/chk_bnkAcno",
-                            type: "post",
-                            data: {
-                                acno: function () {
-                                    return $("#acno_edt").val();
-                                },
-                                spid: function () {
-                                    return $("#spid").val();
-                                },
-                                stat: 1
-                            }
-                        }
-                    }
-                },
-                messages: {
-                    bnknm_edt: {
-                        notEqual: "Select a bank"
-                    },
-                    bnkbr_edt: {
-                        notEqual: "Select a bank branch"
-                    },
-                    acno_edt: {
-                        required: "Enter bank account number",
-                        digits: "Only numbers are allowed",
-                        minlength: "Minumum length is 8 digits",
-                        remote: "This account number is already added"
-                    }
-                }
-            });
             srchGrn();
         });
 
@@ -678,19 +651,19 @@
                 },
                 dataType: 'json',
                 success: function (response) {
-                    var len = response['bkbrch'].length;
+                    var len = response.length;
                     var child1 = $('#' + mhtml).children();
                     var child2 = child1.find('div').children();
                     child2.empty();
                     // TABLE SEARCH FILTER
                     if (len != 0) {
                         $('#' + html).empty();
-                        $('#' + html).append("<option value='0'>-- Select A Branch --</option>");
-                        child2.append("<li data-original-index=\"0\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">-- Select A Branch --\n" +
+                        $('#' + html).append("<option value='0'>-- Select A Po Details --</option>");
+                        child2.append("<li data-original-index=\"0\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">-- Select A Po Details --\n" +
                             "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
                         for (var a = 0; a < len; a++) {
-                            var id = response['bkbrch'][a]['brid'];
-                            var name = response['bkbrch'][a]['brcd'] + " - " + response['bkbrch'][a]['bcnm'];
+                            var id = response[a]['poid'];
+                            var name = response[a]['oddt'] + " - " + response[a]['pono'];
                             var $el = $('#' + html);
                             $el.append($("<option></option>")
                                 .attr("value", id).text(name));
@@ -701,8 +674,8 @@
                         //document.getElementById('brnmEdt').value = 15;
                     } else {
                         $('#' + html).empty();
-                        $('#' + html).append("<option value='0'>-- No Branch --</option>");
-                        child2.append("<li data-original-index=\"0\" class=\"\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\"><span class=\"text\">-- No Branch --</span><span class=\" fa fa-check check-mark\"></span></a></li>");
+                        $('#' + html).append("<option value='0'>-- No Po Details --</option>");
+                        child2.append("<li data-original-index=\"0\" class=\"\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\"><span class=\"text\">-- No Po Details --</span><span class=\" fa fa-check check-mark\"></span></a></li>");
                     }
                     default_Selector(child1.find('div'));
                 }
@@ -737,85 +710,136 @@
                     {sWidth: '10%'}
                 ],
                 "rowCallback": function (row, data, index) {
-
                 },
                 // "order": [[5, "ASC"]], //ASC  desc
             });
 
             $.ajax({
                 type: "POST",
-                url: "<?= base_url(); ?>Hire_purchase/getPodetils",
+                url: "<?= base_url(); ?>Stock/getPodetils",
                 data: {
                     poid: poid
                 },
                 dataType: 'json',
                 success: function (response) {
-
                     // IF CHECK ALREDY ADD GRN OR NOT
                     if (response['grndt'].length > 0) {
-                        document.getElementById('whid').value = 0;
+                        $('#whid').val(0);
                         document.getElementById('ttlQt').innerHTML = '';
-                        swal({title: "", text: "This Po Alredy Added GRN", type: "warning"},);
+                        swal({title: "", text: "This Po Already Added GRN", type: "warning"},);
 
                     } else {
                         var len = response['podet'].length;
-                        document.getElementById('leng').value = len;
-                        document.getElementById('whid').value = response['podet'][0]['whid'];
+                        $('#leng').val(len);
+                        set_select('whsid', response['podet'][0]['whid'])
 
                         var ttlqt = 0;
                         for (var a = 0; a < len; a++) {
                             t.row.add([
                                 a + 1,
-                                response['podet'][a]['itcd'] + '<input type="hidden" name="itid[]" value="' + response['podet'][a]['itid'] + '">',       // ITEM CODE
+                                response['podet'][a]['itcd'] + '<input type="text" name="itid[]" value="' + response['podet'][a]['itid'] + '">',       // ITEM CODE
                                 response['podet'][a]['itnm'],                                                    // ITEM NAME
-                                numeral(response['podet'][a]['untp']).format('0,0.00') + '<input type="hidden" name="untp[]" value="' + response['podet'][a]['untp'] + '" >',                          // PRICE
-                                numeral(response['podet'][a]['qnty']).format('0,0') + '<input type="hidden" name="odrQty[]" value="' + response['podet'][a]['qnty'] + '">',                            // ODR QUNT
-                                '<input type="text" class="form-control" id="grfr_' + a + '" name="grfr[]" onkeyup="calFrQty(this.value)">',                                                           // RCV QTY
-                                '<input type="text" class="form-control dfg" id="grgd_' + a + '" name="grgd[]" onkeyup="calQty( ' + response['podet'][a]['qnty'] + ',this.value,' + a + ','+response['podet'][a]['untp']+')">',       // RCV QTY
-                                '<label id="grTprc_'+a+'">'+numeral(0).format('0,0.00')+'</label><input type="hidden" value="0" name="grhTprc[]" id="grhTprc_'+a+'">', //total price of items
-                                '<input type="text" class="form-control" id="grbd_' + a + '" name="grbd[]" readonly >',      // RTN QTY
+                                numeral(response['podet'][a]['untp']).format('0,0.00') + '<input type="text" name="untp[]" value="' + response['podet'][a]['untp'] + '" >',                          // PRICE
+                                numeral(response['podet'][a]['qnty']).format('0,0') + '<input type="text" name="odrQty[]" value="' + response['podet'][a]['qnty'] + '">',                            // ODR QUNT
+                                '<input type="text" size="4" class="form-control" id="grfr_' + a + '" name="grfr[]" onkeyup="calFrQty(this.value)" style="text-align:right;">',                                                           // RCV QTY
+                                '<input type="text" size="4" class="form-control dfg" id="grgd_' + a + '" name="grgd[]" onkeyup="calQty( ' + response['podet'][a]['qnty'] + ',this.value,' + a + ',' + response['podet'][a]['untp'] + ')" style="text-align:right;">',       // RCV QTY
+                                '<label id="grTprc_' + a + '">' + numeral(0).format('0,0.00') + '</label><input type="text" value="0" name="grhTprc[]" id="grhTprc_' + a + '">', //total price of items
+                                '<input type="text" class="form-control" id="grbd_' + a + '" name="grbd[]" readonly size="4" style="text-align:right;">',      // RTN QTY
                                 '<input type="text" class="form-control" name="rtnRmk[]">',             // RTN REMK
 
                             ]).draw(false);
                             ttlqt = +ttlqt + +response['podet'][a]['qnty'];
                         }
-                        document.getElementById('ttlQt').innerHTML = ttlqt;
-                        document.getElementById('ttlQt2').value = ttlqt;
+                        $('#ttlQt').html(ttlqt);
+                        $('#ttlQt2').val(ttlqt);
                     }
                 }
             });
         }
 
+        // CAL FREE QUENTY
+        function calFrQty(qnty, gd, lpid) {
+            var ttlFr = 0;
+            $("input[name='grfr[]']").each(function () {
+                ttlFr = ttlFr + +this.value;
+            });
+            $('#ttlFr').html(ttlFr);
+            $('#tfrqt').val(ttlFr);
+        }
+
+        // GRN & GRRN QTY
+        function calQty(qnty, gd, lpid, untp) {
+            //console.log(qnty + ' * ' + gd + ' lpid ' + lpid);
+            if (gd > qnty) {
+                document.getElementById('grgd_' + lpid).style.borderColor = "red";
+            } else {
+                document.getElementById('grgd_' + lpid).style.borderColor = '';
+                document.getElementById('grbd_' + lpid).value = +qnty - +gd;
+                document.getElementById('grTprc_' + lpid).innerHTML = numeral((+gd) * untp).format('0,0.00');
+                document.getElementById('grhTprc_' + lpid).value = (+gd) * untp;
+            }
+
+            var ttlGd = 0;
+            var ttlBd = 0;
+            var ttlPRC = 0.00;
+            $("input[name='grgd[]']").each(function () {
+                ttlGd = ttlGd + +this.value;
+            });
+            $("input[name='grbd[]']").each(function () {
+                ttlBd = ttlBd + +this.value;
+            });
+            $("input[name='grhTprc[]']").each(function () {
+                ttlPRC = ttlPRC + +this.value;
+            });
+
+            var ttlQt = document.getElementById('ttlQt2').value;
+            if (ttlGd > ttlQt) {
+                document.getElementById("addBtn").setAttribute("class", "hidden");
+            } else {
+                document.getElementById("addBtn").removeAttribute("class");
+                document.getElementById("addBtn").setAttribute("class", "btn btn-warning btn-sm btn-rounded");
+            }
+            //document.getElementById('ttlPrc').innerHTML = numeral(ttlPRC).format('0,0.00');
+            $('#ttlGd').html(ttlGd);
+            $('#ttlBd').html(ttlBd);
+            $('#ttlPrc').html(numeral(ttlPRC).format('0,0.00'));
+
+            $('#odrqt').val(ttlQt);
+            $('#rcvqt').val(ttlGd);
+            $('#rtnqt').val(ttlBd);
+        }
+
+
         //Add New Supplier
-        $('#add_sup_btn').click(function (e) {
+        $('#addBtn').click(function (e) {
             e.preventDefault();
             if ($('#addForm').valid()) {
-                $('#add_sup_btn').prop('disabled', true);
+                $('#addBtn').prop('disabled', true);
                 swal({
                     title: "Processing...",
-                    text: "Supplier's data saving..",
+                    text: "GRN's data saving..",
                     imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                     showConfirmButton: false
                 });
 
                 jQuery.ajax({
                     type: "POST",
-                    url: "<?= base_url(); ?>Stock/supp_Regist",
+                    url: "<?= base_url(); ?>Stock/addGrndet",
                     data: $("#addForm").serialize(),
                     dataType: 'json',
                     success: function (data) {
-                        swal({title: "", text: "Registration Success!", type: "success"},
+                        swal({title: "", text: "GRN Added Success!", type: "success"},
                             function () {
-                                $('#add_sup_btn').prop('disabled', false);
-                                clear_Form('addForm');
-                                $('#modal-add').modal('hide');
+                               $('#addBtn').prop('disabled', false);
+                               clear_Form('addForm');
+                               $('#modal-add').modal('hide');
                                 srchGrn();
                             });
                     },
                     error: function (data, textStatus) {
-                        swal({title: "Registration Failed", text: textStatus, type: "error"},
+                        swal({title: "GRN Added Failed", text: textStatus, type: "error"},
                             function () {
-                                location.reload();
+                               location.reload();
                             });
                     }
                 });
@@ -825,47 +849,59 @@
         //Search Suppliers
         function srchGrn() {
             var stat = $('#stat').val();
-            $('#grnTable').DataTable().clear();
-            $('#grnTable').DataTable({
-                "destroy": true,
-                "cache": false,
-                "processing": true,
-                "orderable": true,
-                "language": {
-                    processing: '<i class="fa fa-spinner fa-spin fa-fw" style="font-size:20px;color:red;"></i><span class=""> Loading...</span> '
-                },
-                "lengthMenu": [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
-                ],
-                "serverSide": true,
-                "columnDefs": [
-                    {className: "text-left", "targets": [2, 3, 5]},
-                    {className: "text-center", "targets": [0, 1, 4, 6, 7, 8]},
-                    {className: "text-right", "targets": [0]},
-                    {className: "text-nowrap", "targets": [2, 3]},
-                ],
-                "order": [[6, "DESC"]], //ASC  desc
-                "aoColumns": [
-                    {sWidth: '3%'}, //#
-                    {sWidth: '5%'}, //Code
-                    {sWidth: '15%'}, //Name
-                    {sWidth: '15%'}, //Address
-                    {sWidth: '10%'}, //Mobile
-                    {sWidth: '10%'}, //Created By
-                    {sWidth: '10%'}, //Created date
-                    {sWidth: '8%'}, //Status
-                    {sWidth: '12%'} //Option
-                ],
+            var supl = $('#supl').val();
+            var dtrng = $('#dtrng').val();
 
-                "ajax": {
-                    url: '<?= base_url(); ?>Stock/searchSupp',
-                    type: 'post',
-                    data: {
-                        stat: stat
+            chckBtn(supl,'supl');
+
+            if(supl != 0 ){
+                $('#grnTable').DataTable().clear();
+                $('#grnTable').DataTable({
+                    "destroy": true,
+                    "cache": false,
+                    "processing": true,
+                    "orderable": true,
+                    "language": {
+                        processing: '<i class="fa fa-spinner fa-spin fa-fw" style="font-size:20px;color:red;"></i><span class=""> Loading...</span> '
+                    },
+                    "lengthMenu": [
+                        [10, 25, 50, 100, -1],
+                        [10, 25, 50, 100, "All"]
+                    ],
+                    "serverSide": true,
+                    "columnDefs": [
+                        {className: "text-left", "targets": [2, 3, 5]},
+                        {className: "text-center", "targets": [0, 1, 4, 6, 7, 8]},
+                        {className: "text-right", "targets": [0]},
+                        {className: "text-nowrap", "targets": [2, 3]},
+                    ],
+                    "order": [[6, "DESC"]], //ASC  desc
+                    "aoColumns": [
+                        {sWidth: '3%'}, //#
+                        {sWidth: '5%'}, //Code
+                        {sWidth: '15%'}, //Name
+                        {sWidth: '10%'}, //Address
+                        {sWidth: '10%'}, //Mobile
+                        {sWidth: '5%'}, //Created By
+                        {sWidth: '5%'}, //Created date
+                        {sWidth: '5%'}, //Created date
+                        {sWidth: '5%'}, //Created date
+                        {sWidth: '5%'}, //Created date
+                        {sWidth: '5%'},  //Status
+                        {sWidth: '12%'}  //Option
+                    ],
+
+                    "ajax": {
+                        url: '<?= base_url(); ?>Stock/srchGrnDeti',
+                        type: 'post',
+                        data: {
+                            stat: stat,
+                            supl: supl,
+                            dtrng: dtrng,
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         //View Supplier
