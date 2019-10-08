@@ -1,3 +1,11 @@
+<style>
+    .form-group .tx-align-tl {
+        text-align: left;
+    }
+    .form-group .tx-align {
+        text-align: right;
+    }
+</style>
 <!-- START PAGE HEADING -->
 <div class="app-heading-container app-heading-bordered bottom">
     <ul class="breadcrumb">
@@ -73,7 +81,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed pull-right" onclick="srch_Po()"><span
+                    <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed pull-right"
+                            onclick="srch_Po()"><span
                                 class="fa fa-search"></span>Search
                     </button>
                 </div>
@@ -104,7 +113,7 @@
         </div>
     </div>
 
-    <!-- MODAL ADD NEW BRAND -->
+    <!-- MODAL ADD NEW PO -->
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
         <div class="modal-dialog model-lg" role="document" style="width: 80%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
@@ -211,8 +220,10 @@
                                         <div class="col-md-8 col-xs-12">
                                             <div class="app-spinner pulse pulse-primary col-md-push-6 col-xs-push-6"
                                                  id="item_pulse" style="display: none;"></div>
-                                            <input type="text" id="cnty" name="cnty" class="form-control" placeholder="Quantity"
-                                                   data-container="body" data-toggle="popover" data-placement="top" data-html="true"
+                                            <input type="text" id="cnty" name="cnty" class="form-control"
+                                                   placeholder="Quantity"
+                                                   data-container="body" data-toggle="popover" data-placement="top"
+                                                   data-html="true"
                                                    data-trigger="focus"
                                                    data-content="No Data"/>
                                         </div>
@@ -390,9 +401,9 @@
             </form>
         </div>
     </div>
-    <!-- END ADD NEW BRAND -->
+    <!-- END ADD NEW PO -->
 
-    <!-- MODAL EDIT BRAND -->
+    <!-- MODAL EDIT PO -->
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
         <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
@@ -401,7 +412,8 @@
             <form id="app_po_form">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Purchase Order
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Purchase
+                            Order
                             Management <span class="text-muted" id="subTitle_edit"></span></h4>
                         <input type="hidden" id="func" name="func"/>
                         <input type="hidden" id="poid" name="poid"/>
@@ -445,7 +457,8 @@
                                         <label class="col-md-4 col-xs-12 control-label">Reference Details <span
                                                     class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-6 col-xs-12">
-                                            <input type="text" name="refd_edt" id="refd_edt" class="form-control text-uppercase"
+                                            <input type="text" name="refd_edt" id="refd_edt"
+                                                   class="form-control text-uppercase"
                                                    placeholder="Reference Number"/>
                                         </div>
                                     </div>
@@ -474,7 +487,8 @@
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Item Name</label>
                                         <div class="col-md-8 col-xs-12">
-                                            <select class="bs-select" data-live-search="true" id="item_edt" name="item_edt"
+                                            <select class="bs-select" data-live-search="true" id="item_edt"
+                                                    name="item_edt"
                                                     onchange="chckBtn(this.value,this.id); getScale(this.value); setDataContent('cnty_edt',this.value,'item_pulse_edt');">
                                                 <option value="0">-- Select Item --</option>
                                                 <script>
@@ -496,12 +510,15 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label" id="stScale_edt">Quantity</label>
+                                        <label class="col-md-4 col-xs-12 control-label"
+                                               id="stScale_edt">Quantity</label>
                                         <div class="col-md-8 col-xs-12">
                                             <div class="app-spinner pulse pulse-primary col-md-push-6 col-xs-push-6"
                                                  id="item_pulse_edt" style="display: none;"></div>
-                                            <input type="text" id="cnty_edt" name="cnty_edt" class="form-control" placeholder="Quantity"
-                                                   data-container="body" data-toggle="popover" data-placement="top" data-html="true"
+                                            <input type="text" id="cnty_edt" name="cnty_edt" class="form-control"
+                                                   placeholder="Quantity"
+                                                   data-container="body" data-toggle="popover" data-placement="top"
+                                                   data-html="true"
                                                    data-trigger="focus"
                                                    data-content="No Data"/>
                                         </div>
@@ -523,7 +540,8 @@
                             </div>
                             <div class="row form-horizontal">
                                 <div class="table-responsive" style="padding: 10px 25px 10px 10px">
-                                    <table class="table dataTable table-striped table-bordered" id="poTbl_edt" width="100%">
+                                    <table class="table dataTable table-striped table-bordered" id="poTbl_edt"
+                                           width="100%">
                                         <thead>
                                         <tr>
                                             <th class="text-left">CODE</th>
@@ -664,30 +682,6 @@
                                     </div>
                                 </div>
                             </div>
-<!--                            <div class="form-horizontal view_Area">-->
-<!--                                <div class="col-md-12">-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label class="col-md-4 control-label">Status</label>-->
-<!--                                        <label class="col-md-8 control-label" id="typ_stat"></label>-->
-<!--                                    </div>-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label class="col-md-4 control-label">Created By</label>-->
-<!--                                        <label class="col-md-8 control-label" id="crby"></label>-->
-<!--                                    </div>-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label class="col-md-4 control-label">Created Date</label>-->
-<!--                                        <label class="col-md-8 control-label" id="crdt"></label>-->
-<!--                                    </div>-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label class="col-md-4 control-label">Updated By</label>-->
-<!--                                        <label class="col-md-8 control-label" id="mdby"></label>-->
-<!--                                    </div>-->
-<!--                                    <div class="form-group">-->
-<!--                                        <label class="col-md-4 control-label">Updated Date</label>-->
-<!--                                        <label class="col-md-8 control-label" id="mddt"></label>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -697,6 +691,176 @@
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+    <!-- END EDIT PO -->
+
+    <!-- MODAL VIEW PO -->
+    <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
+        <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
+                                                                                              class="icon-cross"></span>
+            </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Purchase Order
+                        Management <span class="text-muted"> - View</span></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row form-horizontal">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-md-4 col-xs-12 control-label">Supplier Name : </label>
+                                    <label class="col-md-6 col-xs-12 control-label" id="supp_vw"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-xs-12 control-label">Order Date : </label>
+                                    <label class="col-md-6 col-xs-12 control-label" id="oddt_vw"></label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-md-4 col-xs-12 control-label">Reference Details : </label>
+                                    <label class="col-md-6 col-xs-12 control-label" id="refd_vw"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 col-xs-12 control-label">Delivery To : </label>
+                                    <div class="col-md-6 col-xs-12 control-label" id="whs_vw"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-horizontal">
+                            <h5 class="text-title"><span class="fa fa-tag"></span> Order Details</h5>
+                        </div>
+                        <div class="row form-horizontal">
+                            <div class="table-responsive" style="padding: 10px 25px 10px 10px">
+                                <table class="table dataTable table-striped table-bordered" id="poTbl_vw" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-left">CODE</th>
+                                        <th class="text-left">ITEM NAME</th>
+                                        <th class="text-left">SCALE</th>
+                                        <th class="text-left">QTY</th>
+                                        <th class="text-left">UNIT PRICE</th>
+                                        <th class="text-left">TOTAL</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                    <tfoot>
+                                    <th colspan="3"></th>
+                                    <th id="ttlQt_vw">00</th>
+                                    <th></th>
+                                    <th id="ttlSub_vw">00.00</th>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row form-horizontal">
+                            <div class="col-md-7">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-md-5 col-xs-12 control-label">Remarks / Interdiction : </label>
+                                        <div class="col-md-7 col-xs-12">
+                                            <p id="remk_vw"></p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Status</label>
+                                        <label class="col-md-8 col-xs-12 control-label" id="po_stat"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Created By</label>
+                                        <label class="col-md-8 control-label" id="crby"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Created Date</label>
+                                        <label class="col-md-8 col-xs-12 control-label" id="crdt"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Approved By</label>
+                                        <label class="col-md-8 col-xs-12 control-label" id="apby"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Approved Date</label>
+                                        <label class="col-md-8 col-xs-12 control-label" id="apdt"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Updated By</label>
+                                        <label class="col-md-8 col-xs-12 control-label" id="mdby"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Updated Date</label>
+                                        <label class="col-md-8 col-xs-12 control-label" id="mddt"></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Printed Count</label>
+                                        <label class="col-md-8 col-xs-12 control-label" id="prcnt"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Printed By</label>
+                                        <label class="col-md-8 col-xs-12 control-label" id="prby"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Printed Date</label>
+                                        <label class="col-md-8 col-xs-12 control-label" id="prdt"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Re-Printed By</label>
+                                        <label class="col-md-8 col-xs-12 control-label" id="rpby"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Re-Printed Date</label>
+                                        <label class="col-md-8 col-xs-12 control-label" id="rpdt"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="col-md-6 col-xs-6 control-label tx-align">Sub Total : </label>
+                                    <label class="col-md-6 col-xs-6 control-label tx-align" id="sbttl_vw"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-6 col-xs-6 control-label tx-align">VAT (<span style="color: #e79500;" id="vtrt_vw"></span>) : </label>
+                                    <label class="col-md-6 col-xs-6 control-label tx-align" id="vtvl_vw"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-6 col-xs-6 control-label tx-align">NBT (<span style="color: #e79500;" id="nbrt_vw"></span>) : </label>
+                                    <label class="col-md-6 col-xs-6 control-label tx-align" id="nbvl_vw"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-6 col-xs-6 control-label tx-align">BTT (<span style="color: #e79500;" id="btrt_vw"></span>) : </label>
+                                    <label class="col-md-6 col-xs-6 control-label tx-align" id="btvl_vw"></label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-6 col-xs-6 control-label tx-align">Other Tax (<span style="color: #e79500;" id="txrt_vw"></span>) : </label>
+                                    <label class="col-md-6 col-xs-6 control-label tx-align" id="tax_vw"></label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-6 col-xs-6 control-label tx-align">Other Charge : </label>
+                                    <label class="col-md-6 col-xs-6 control-label tx-align" id="otchg_vw"></label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-6 col-xs-6 control-label tx-align">Total : </label>
+                                    <label class="col-md-6 col-xs-6 control-label tx-align" id="ttlAmt_vw"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
     <!-- END VIEW BRAND -->
@@ -1373,8 +1537,8 @@
 
                     if (len > 0) {
                         var po = data['po'];
-                        set_select('supp_edt',po[0]['spid']);
-                        set_select('whs_edt',po[0]['whid']);
+                        set_select('supp_edt', po[0]['spid']);
+                        set_select('whs_edt', po[0]['whid']);
                         $('#refd_edt').val(po[0]['rfno']);
                         $('#oddt_edt').val(po[0]['oddt']);
                         $('#remk_edt').val(po[0]['remk']);
@@ -1420,11 +1584,11 @@
                     });
 
                     var pod = data['pod'];
-                    for(var it=0; it<len2; it++){
+                    for (var it = 0; it < len2; it++) {
                         var itid = pod[it]['itid'];
                         var itcd = pod[it]['itcd'];
                         var itnm = pod[it]['itnm'];
-                        var scl = pod[it]['scnm']+" ("+pod[it]['scl']+")";
+                        var scl = pod[it]['scnm'] + " (" + pod[it]['scl'] + ")";
                         var qty = pod[it]['qnty'];
                         var untp = pod[it]['untp'];
 
@@ -1590,10 +1754,10 @@
         //html - data-content element
         //pulse - Pulse element
         //id - item id
-        function setDataContent(html,id,pulse){
-            $('#'+pulse).css('display','block');
+        function setDataContent(html, id, pulse) {
+            $('#' + pulse).css('display', 'block');
 
-            if(id!=0){
+            if (id != 0) {
                 jQuery.ajax({
                     type: "POST",
                     url: "<?= base_url(); ?>Stock/getItm_QtySt",
@@ -1602,7 +1766,7 @@
                     },
                     dataType: 'json',
                     success: function (data) {
-                        $('#'+html).attr('data-content',"" +
+                        $('#' + html).attr('data-content', "" +
                             "<h1 style='color: green; font-weight: bold'><span class='fa fa-astrick'></span> Item Quantity Details</h1><br><table>" +
                             "<tr><td><label class='control-label'>Pending PO : </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['penpoqty'] + "</span></td></tr>" +
                             "<tr><td><label class='control-label'>PO To GRN : </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['togrnqty'] + "</span></td></tr>" +
@@ -1611,22 +1775,22 @@
                             "<tr><td><label class='control-label'>Pending Stock: </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['penstqty'] + "</span></td></tr>" +
                             "<tr style='border-bottom: 2px solid green'><td><label class='control-label'>Available QTY : </label></td><td class='text-right'> <span style='color: dodgerblue'>" + data[0]['avstqty'] + "</span></td></tr>" +
                             "<tr><td class='text-center'><label class='control-label'>Total</label></td>" +
-                            "<td class='text-right' style='color: red'>"+(+data[0]['penpoqty']+ +data[0]['togrnqty']+ +data[0]['pengrnqty']+ +data[0]['tostqty']+ +data[0]['penstqty']+ +data[0]['avstqty'])+"</td></tr>" +
+                            "<td class='text-right' style='color: red'>" + (+data[0]['penpoqty'] + +data[0]['togrnqty'] + +data[0]['pengrnqty'] + +data[0]['tostqty'] + +data[0]['penstqty'] + +data[0]['avstqty']) + "</td></tr>" +
                             "</table>"
-                            );
-                        $('#'+pulse).css('display','none');
-                        $('#'+html).popover('show');
+                        );
+                        $('#' + pulse).css('display', 'none');
+                        $('#' + html).popover('show');
                     },
                     error: function (data, textStatus) {
-                        $('#'+html).attr('data-content','Faild');
-                        $('#'+pulse).css('display','none');
-                        $('#'+html).popover('show');
+                        $('#' + html).attr('data-content', 'Faild');
+                        $('#' + pulse).css('display', 'none');
+                        $('#' + html).popover('show');
                     }
                 });
-            }else{
-                $('#'+html).attr('data-content','No Data');
-                $('#'+pulse).css('display','none');
-                $('#'+html).popover('show');
+            } else {
+                $('#' + html).attr('data-content', 'No Data');
+                $('#' + pulse).css('display', 'none');
+                $('#' + html).popover('show');
             }
         }
 
@@ -1729,7 +1893,7 @@
         });
 
         //Reject Type
-        function rejectTyp(id) {
+        function rejectPo(id) {
             swal({
                     title: "Are you sure reject ?",
                     text: "",
@@ -1752,15 +1916,15 @@
 
                         $.ajax({
                             type: "POST",
-                            url: "<?= base_url(); ?>Stock/typ_Reject",
+                            url: "<?= base_url(); ?>Stock/po_Reject",
                             data: {
                                 id: id
                             },
                             dataType: 'json',
                             success: function (data) {
-                                swal({title: "", text: "Type was rejected!", type: "success"},
+                                swal({title: "", text: "Purchase order was rejected!", type: "success"},
                                     function () {
-                                        srch_Typ();
+                                        srch_Po();
                                     });
                             },
                             error: function (data, textStatus) {
@@ -1776,100 +1940,165 @@
                 });
         }
 
-        //Deactivate Type
-        function inactTyp(id) {
+        //VIEW PO
+        function viewPo(id) {
             swal({
-                    title: "Are you sure to deactivate ?",
-                    text: "",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3bdd59",
-                    confirmButtonText: "Yes",
-                    cancelButtonText: "No",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        swal({
-                            title: "Processing...",
-                            text: "",
-                            imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                            showConfirmButton: false
-                        });
+                title: "Loading Data...",
+                text: "PO Details",
+                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                showConfirmButton: false
+            });
 
-                        $.ajax({
-                            type: "POST",
-                            url: "<?= base_url(); ?>Stock/typ_Deactive",
-                            data: {
-                                id: id
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                swal({title: "", text: "Type was deactivated!", type: "success"},
-                                    function () {
-                                        srch_Typ();
-                                    });
-                            },
-                            error: function (data, textStatus) {
-                                swal({title: "Faild", text: textStatus, type: "error"},
-                                    function () {
-                                        location.reload();
-                                    });
-                            }
-                        });
-                    } else {
-                        swal("Cancelled", " ", "warning");
+            jQuery.ajax({
+                type: "POST",
+                url: "<?= base_url(); ?>Stock/get_PoDet",
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var len = data['po'].length;
+
+                    if (len > 0) {
+                        var po = data['po'];
+                        $('#supp_vw').html(po[0]['spnm']);
+                        $('#whs_vw').html(po[0]['whnm']);
+                        $('#refd_vw').html(po[0]['rfno']);
+                        $('#oddt_vw').html(po[0]['oddt']);
+                        $('#remk_vw').html((po[0]['remk']=='')?'--':po[0]['remk']);
+                        $('#sbttl_vw').html(numeral(po[0]['sbtl']).format('0,0.00'));
+                        $('#vtrt_vw').html(po[0]['vtrt']+"%");
+                        $('#vtvl_vw').html(numeral(po[0]['vtvl']).format('0,0.00'));
+                        $('#nbrt_vw').html(po[0]['nbrt']+"%");
+                        $('#nbvl_vw').html(numeral(po[0]['nbvl']).format('0,0.00'));
+                        $('#btrt_vw').html(po[0]['btrt']+"%");
+                        $('#btvl_vw').html(numeral(po[0]['btvl']).format('0,0.00'));
+                        $('#txrt_vw').html(po[0]['txrt']+"%");
+                        $('#tax_vw').html(numeral(po[0]['txvl']).format('0,0.00'));
+                        $('#otchg_vw').html(numeral(po[0]['ochg']).format('0,0.00'));
+                        $('#ttlAmt_vw').html(numeral(po[0]['totl']).format('0,0.00'));
                     }
-                });
+
+                    var len2 = data['pod'].length;
+                    $('#poTbl_vw').DataTable().clear().draw();
+                    var t = $('#poTbl_vw').DataTable({
+                        destroy: true,
+                        searching: false,
+                        bPaginate: false,
+                        "ordering": false,
+                        "columnDefs": [
+                            {className: "text-left", "targets": [1, 2]},
+                            {className: "text-center", "targets": [0]},
+                            {className: "text-right", "targets": [3, 4, 5]},
+                            {className: "text-nowrap", "targets": [1]}
+                        ],
+                        "aoColumns": [
+                            {sWidth: '5%'}, //Code
+                            {sWidth: '20%'}, //Name
+                            {sWidth: '10%'}, //Scale
+                            {sWidth: '5%'},  //qty
+                            {sWidth: '10%'}, //Unit Price
+                            {sWidth: '10%'}, //Total
+                        ],
+                        "rowCallback": function (row, data, index) {
+
+                        },
+                    });
+
+                    var pod = data['pod'];
+
+                    var ttlQt = 0;
+                    var ttlSub = 0;
+                    for (var it = 0; it < len2; it++) {
+                        var itcd = pod[it]['itcd'];
+                        var itnm = pod[it]['itnm'];
+                        var scl = pod[it]['scnm'] + " (" + pod[it]['scl'] + ")";
+                        var qty = pod[it]['qnty'];
+                        var untp = pod[it]['untp'];
+
+                        t.row.add([
+                            itcd,     // ITEM CODE
+                            itnm,
+                            scl, //Scale
+                            numeral(qty).format('0,0'),         // QUNT
+                            numeral(untp).format('0,0.00'),     // UNIT PRICE
+                            numeral((+qty * +untp)).format('0,0.00')
+                        ]).draw(false);
+
+                        ttlQt = ttlQt + +qty;
+                        ttlSub = ttlSub + (+qty*+untp);
+                    }
+
+                    document.getElementById('ttlQt_vw').innerHTML = ttlQt;
+                    document.getElementById('ttlSub_vw').innerHTML = numeral(ttlSub).format('0,0.00');
+                    document.getElementById('sbttl_vw').value = ttlSub;
+
+                    if(po[0]['grnst']==1){ //IS GRN ADDED
+                        var grn = "<label class='label label-info label-bordered label-ghost' title='GRN / RGRN Process done'>GRN</label>";
+                    }else{
+                        var grn = "";
+                    }
+
+                    if (po[0]['stat'] == 0) {
+                        var stat = "<label class='label label-warning'>Pending</label>";
+                    } else if (po[0]['stat'] == 1) {
+                        var stat = "<label class='label label-success'>Active</label>";
+                    } else if (po[0]['stat'] == 2) {
+                        var stat = "<label class='label label-danger'>Reject</label>";
+                    } else {
+                        var stat = "--";
+                    }
+                    $('#po_stat').html(": " + stat+" "+grn);
+                    $('#prcnt').html(": " + po[0]['prct']);
+                    $('#code').html(": " + po[0]['spcd']);
+                    $('#crby').html(": " + po[0]['crnm']);
+                    $('#crdt').html(": " + po[0]['crdt']);
+                    $('#apby').html(": " + ((po[0]['apnm'] != null) ? po[0]['apnm'] : "--"));
+                    $('#apdt').html(": " + ((po[0]['apdt'] != null && po[0]['apdt'] != "0000-00-00 00:00:00") ? po[0]['apdt'] : "--"));
+                    $('#rjby').html(": " + ((po[0]['rjnm'] != null) ? po[0]['rjnm'] : "--"));
+                    $('#rjdt').html(": " + ((po[0]['rjdt'] != null && po[0]['rjdt'] != "0000-00-00 00:00:00") ? po[0]['rjdt'] : "--"));
+                    $('#mdby').html(": " + ((po[0]['mdnm'] != null) ? po[0]['mdnm'] : "--"));
+                    $('#mddt').html(": " + ((po[0]['mddt'] != null && po[0]['mddt'] != "0000-00-00 00:00:00") ? po[0]['mddt'] : "--"));
+                    $('#prby').html(": " + ((po[0]['prnm'] != null) ? po[0]['prnm'] : "--"));
+                    $('#prdt').html(": " + ((po[0]['prdt'] != null && po[0]['prdt'] != "0000-00-00 00:00:00") ? po[0]['prdt'] : "--"));
+                    $('#rpby').html(": " + ((po[0]['rpnm'] != null) ? po[0]['rpnm'] : "--"));
+                    $('#rpdt').html(": " + ((po[0]['rpdt'] != null && po[0]['rpdt'] != "0000-00-00 00:00:00") ? po[0]['rpdt'] : "--"));
+                    swal.close();
+                },
+                error: function (data, textStatus) {
+                    swal({title: "Loading Failed", text: textStatus, type: "error"},
+                        function () {
+                            location.reload();
+                        });
+                }
+            });
         }
 
-        //activate Type
-        function reactTyp(id) {
+        //PO PRINT
+        function printPo(id) {
             swal({
-                    title: "Are you sure to activate ?",
-                    text: "",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3bdd59",
-                    confirmButtonText: "Yes",
-                    cancelButtonText: "No",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        swal({
-                            title: "Processing...",
-                            text: "Activating...",
-                            imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                            showConfirmButton: false
-                        });
+                title: "Please wait...",
+                text: "Purchase Order generating..",
+                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                showConfirmButton: false
+            });
+            setTimeout(function () {
+                window.open('<?= base_url() ?>Stock/prchOrderPrint/' + id, 'popup', 'width=1100,height=600,scrollbars=no,resizable=no');
+                swal.close(); // Hide the loading message
+            }, 1000);
+        }
 
-                        $.ajax({
-                            type: "POST",
-                            url: "<?= base_url(); ?>Stock/typ_Activate",
-                            data: {
-                                id: id
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                swal({title: "", text: "Type was activated!", type: "success"},
-                                    function () {
-                                        srch_Typ();
-                                    });
-                            },
-                            error: function (data, textStatus) {
-                                swal({title: "Faild", text: textStatus, type: "error"},
-                                    function () {
-                                        location.reload();
-                                    });
-                            }
-                        });
-                    } else {
-                        swal("Cancelled", " ", "warning");
-                    }
-                });
+        //PO SEND MAIL
+        function sendPo(id) {
+            swal({
+                title: "Developing...",
+                text: "Mail Send Processing..",
+                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                showConfirmButton: false
+            });
+            setTimeout(function () {
+                swal.close(); // Hide the loading message
+            }, 1000);
         }
     </script>
 </div>

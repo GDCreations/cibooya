@@ -467,7 +467,7 @@ class Stock_model extends CI_Model
         $frdt = trim($dtrg[0],' ');
         $todt = trim($dtrg[1],' ');
 
-        $this->db->select("po.poid,po.pono,po.oddt,po.stat,po.crdt,po.totl,sp.spid,sp.spnm,sp.spcd");
+        $this->db->select("po.grnst,po.poid,po.pono,po.oddt,po.stat,po.crdt,po.totl,sp.spid,sp.spnm,sp.spcd");
         $this->db->from('stock_po po');
         $this->db->join('supp_mas sp','sp.spid=po.spid');
         if($stat!='all'){

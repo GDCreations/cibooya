@@ -8,7 +8,15 @@ ALTER TABLE `stock_po` ADD `apdt` DATETIME NULL COMMENT 'Approved date' AFTER `a
 ALTER TABLE `stock_po` ADD `mdby` INT NOT NULL COMMENT 'Modified by' AFTER `apdt`;
 ALTER TABLE `stock_po` ADD `mddt` DATETIME NULL COMMENT 'Modified date' AFTER `mdby`;
 -----------------------------------------------------
- 2019-10-07 Gemunu
+ALTER TABLE `stock_po` ADD `rjby` INT NOT NULL COMMENT 'Rejected by' AFTER `mddt`;
+ALTER TABLE `stock_po` ADD `rjdt` DATETIME NULL COMMENT 'Rejected date' AFTER `rjby`;
+ALTER TABLE `stock_po` ADD `prby` INT NOT NULL COMMENT 'Printed by' AFTER `rjdt`;
+ALTER TABLE `stock_po` ADD `prdt` DATETIME NULL COMMENT 'Printed date' AFTER `prby`;
+ALTER TABLE `stock_po` ADD `prct` INT NOT NULL COMMENT 'Printed count' AFTER `prdt`;
+ALTER TABLE `stock_po` ADD `rpby` INT NOT NULL COMMENT 'RePrinted by' AFTER `prct`;
+ALTER TABLE `stock_po` ADD `rpdt` DATETIME NULL COMMENT 'RePrinted date' AFTER `rpby`;
+-----------------------------------------------------
+**DONE 2019-10-07 Gemunu
  ALTER TABLE `supp_mas` ADD `bkdt` INT(10) NOT NULL COMMENT 'if bank details(0-no/1-yes)' AFTER `dscr`;
 
 -----------------------------------------------------
