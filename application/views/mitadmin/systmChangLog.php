@@ -4,7 +4,7 @@
 <div class="app-heading-container app-heading-bordered bottom">
     <ul class="breadcrumb">
         <li><a href="#">MIT Setting</a></li>
-        <li class="active">System Update</li>
+        <li class="active">System Changelog</li>
     </ul>
 </div>
 <div class="app-heading app-heading-bordered app-heading-page">
@@ -12,13 +12,13 @@
         <span class="fa fa-user" style="color: #e69c0f;"></span>
     </div>
     <div class="title">
-        <h1>System Update</h1>
+        <h1>System Changelog</h1>
         <p>Create / Edit / Inactive </p>
     </div>
 
     <div class="pull-right">
         <button class="btn btn-sm btn-info btn-icon-fixed btn-rounded" data-toggle="modal" data-target="#modal-add">
-            <span class="fa fa-plus"></span> Add Schedule
+            <span class="fa fa-plus"></span> Add Note
         </button>
     </div>
 
@@ -64,7 +64,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <button class="btn btn-sm btn-primary btn-rounded  btn-icon-fixed pull-right"
-                            onclick="srcSchedule()">
+                            onclick="srcLgnote()">
                         <span class="fa fa-search"></span>Search
                     </button>
                 </div>
@@ -80,11 +80,7 @@
                     <tr>
                         <th class="text-left">#</th>
                         <th class="text-left">DATE</th>
-                        <th class="text-left">MESSAGE</th>
-                        <th class="text-left">FROM</th>
-                        <th class="text-left">TO</th>
-                        <th class="text-left">CR BY</th>
-                        <th class="text-left">CR DATE</th>
+                        <th class="text-left">Sending email</th>
                         <th class="text-left">STATUS</th>
                         <th class="text-left">ACTION</th>
                     </tr>
@@ -98,65 +94,66 @@
 
     <!-- MODAL ADD NEW -->
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-md" role="document">
+        <div class="modal-dialog modal-lg" role="document" style="width: 80%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
             <form id="addForm">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Add New
-                            System Down
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span>
+                            New Release Note
                         </h4>
                     </div>
 
                     <div class="modal-body">
                         <div class="container">
                             <div class="row form-horizontal">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Date</label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <div class='input-group date'>
-                                                <input type='text' class="form-control datetimepicker" id="scdt"
-                                                       name="scdt" value="<?= date('Y-m-d') ?>"/>
-                                                <span class="input-group-addon"><span class="fa fa-calendar"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Message <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <textarea class="form-control" name="mssg" id="mssg"
-                                                      placeholder="Message"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Start Time <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <div class='input-group date'>
-                                                <input type='text' class="form-control dtimPck" name="sttm" id="sttm"/>
-                                                <span class="input-group-addon">
-                                                        <span class="glyphicon glyphicon-time"></span>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-xs-12 control-label">Release Date</label>
+                                            <div class="col-md-8 col-xs-12">
+                                                <div class='input-group date'>
+                                                    <input type='text' class="form-control datetimepicker" id="rcdt"
+                                                           name="rcdt" value="<?= date('Y-m-d') ?>"/>
                                                     </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">End Time <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <div class='input-group date' id=''>
-                                                <input type='text' class="form-control dtimPck" name="entm" id="entm"/>
-                                                <span class="input-group-addon">
-                                                        <span class="glyphicon glyphicon-time"></span>
-                                                    </span>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-xs-12 control-label">Note By </label>
+                                            <div class="col-md-8 col-xs-12">
+                                                <input type='text' class="form-control" id="poby" name="poby"/>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="col-md-2 col-xs-12 control-label">Send To Email </label>
+                                            <div class="col-md-10 col-xs-12">
+                                                <input type='text' class="text" data-role="tagsinput" name="tag"
+                                                       id="tag"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <!-- SUMMERNOTE EXAMPLE -->
+                                    <div class="block">
+                                        <div class="form-group">
+                                             <textarea class="form-control editor-summernote" name="remk"
+                                                       id="remk"> </textarea>
+                                        </div>
+                                    </div>
+                                    <!-- END SUMMERNOTE EXAMPLE -->
                                 </div>
 
                             </div>
@@ -181,7 +178,7 @@
 
     <!-- MODAL VIEW / EDIT /  -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-md" role="document">
+        <div class="modal-dialog modal-lg" role="document" style="width: 80%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
@@ -189,63 +186,20 @@
             <form id="edtform">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Edit System
-                            Down
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span>
+                            View System Release Note
                             <span class="text-muted" id="subTitle_edit"></span></h4>
-                        <input type="hidden" id="func" name="func"/>
-                        <input type="hidden" id="auid" name="auid"/>
                     </div>
 
                     <div class="modal-body">
                         <div class="container">
                             <div class="row form-horizontal">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Date</label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <div class='input-group date'>
-                                                <input type='text' class="form-control datetimepicker" id="scdtEdt"
-                                                       name="scdtEdt" value="<?= date('Y-m-d') ?>"/>
-                                                <span class="input-group-addon"><span class="fa fa-calendar"></span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Message <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <textarea class="form-control" name="mssgEdt" id="mssgEdt"
-                                                      placeholder="Message"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Start Time <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <div class='input-group date'>
-                                                <input type='text' class="form-control dtimPck" name="sttmEdt"
-                                                       id="sttmEdt"/>
-                                                <span class="input-group-addon">
-                                                        <span class="glyphicon glyphicon-time"></span>
-                                                    </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">End Time <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <div class='input-group date' id=''>
-                                                <input type='text' class="form-control dtimPck" name="entmEdt"
-                                                       id="entmEdt"/>
-                                                <span class="input-group-addon">
-                                                        <span class="glyphicon glyphicon-time"></span>
-                                                    </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
+                                <label><b> Notes Date : </b><span id="rcdtv"></span></label> &nbsp;&nbsp;&nbsp;
+                                <label><b> Notes By :</b> <span id="rcbyv"> </span></label><br>
+                                <label><b> Notes Send To : </b><span id="sendv"> </span></label> <br>
+                                <hr>
+                                <span id="relceNty"></span>
 
                             </div>
                         </div>
@@ -253,14 +207,15 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="edtBtn" class="btn btn-warning btn-sm btn-rounded">Edit
-                        </button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
     <!-- END VIEW  -->
+
+    <script src="<?= base_url(); ?>assets/js/vendor/tinymce/tinymce.min.js"></script>
+    <script src="<?= base_url(); ?>assets/js/vendor/summernote/summernote.min.js"></script>
 
     <script type="text/javascript">
 
@@ -271,11 +226,6 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-            });
-
-            $('.dtimPck').datetimepicker({
-                //format: 'LT'
-                format: 'HH:mm'
             });
 
             $('#addForm').validate({
@@ -378,11 +328,51 @@
                     },
                 }
             });
-            srcSchedule();
+            srcLgnote();
+
+            $('.editor-summernote').summernote({
+                height: 400,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['picture', 'link', 'video']]
+                ]
+            });
+            $(window).resize();
+
+        });
+
+        tinymce.init({
+            selector: '.editor-base',
+            height: 400,
+            menubar: false,
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            skin_url: 'css/vendor/tinymce',
+            content_css: 'css/vendor/tinymce/content-style.css'
+        });
+
+        tinymce.init({
+            selector: '.editor-full',
+            height: 400,
+            plugins: [
+                'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'insertdatetime media nonbreaking save table contextmenu directionality',
+                'emoticons template paste textcolor colorpicker textpattern imagetools'
+            ],
+            toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            toolbar2: 'print preview media | forecolor backcolor emoticons',
+            image_advtab: true,
+            skin_url: 'css/vendor/tinymce',
+            content_css: 'css/vendor/tinymce/content-style.css'
         });
 
         //Search
-        function srcSchedule() {
+        function srcLgnote() {
             var frdt = $('#frdt').val();
             var todt = $('#todt').val();
 
@@ -401,25 +391,21 @@
                 ],
                 "serverSide": true,
                 "columnDefs": [
-                    {className: "text-left", "targets": [2, 3, 5, 6]},
-                    {className: "text-center", "targets": [0, 1, 4, 7, 8]},
+                    {className: "text-left", "targets": [2]},
+                    {className: "text-center", "targets": [0, 1, 3, 4]},
                     {className: "text-right", "targets": [0]},
-                    {className: "text-nowrap", "targets": [2, 3]},
+                    {className: "text-nowrap", "targets": [2]},
                 ],
-                "order": [[6, "DESC"]], //ASC  desc
+                "order": [[1, "DESC"]], //ASC  desc
                 "aoColumns": [
                     {sWidth: '3%'}, //#
                     {sWidth: '10%'}, //
+                    {sWidth: '50%'}, //
                     {sWidth: '10%'}, //
-                    {sWidth: '10%'}, //
-                    {sWidth: '10%'}, //
-                    {sWidth: '10%'}, //
-                    {sWidth: '10%'}, //
-                    {sWidth: '10%'}, //Status
                     {sWidth: '10%'} //Option
                 ],
                 "ajax": {
-                    url: '<?= base_url(); ?>admin/srchSystmUpdte',
+                    url: '<?= base_url(); ?>mitadmin/srchRelenseNt',
                     type: 'post',
                     data: {
                         frdt: frdt,
@@ -444,16 +430,16 @@
 
                 jQuery.ajax({
                     type: "POST",
-                    url: "<?= base_url(); ?>admin/addSysDown",
+                    url: "<?= base_url(); ?>mitadmin/addRelesNote",
                     data: $("#addForm").serialize(),
                     dataType: 'json',
                     success: function (data) {
-                        swal({title: "", text: "Registration Success!", type: "success"},
+                        swal({title: "", text: "Release Note Creation Success!", type: "success"},
                             function () {
                                 $('#addBtn').prop('disabled', false);
                                 clear_Form('addForm');
                                 $('#modal-add').modal('hide');
-                                srcSchedule();
+                                srcLgnote();
                             });
                     },
                     error: function (data, textStatus) {
@@ -467,82 +453,99 @@
         });
 
         //View
-        function edtSchedule(id) {
+        function edtReleseNote(id) {
             $.ajax({
-                url: '<?= base_url(); ?>Admin/getDetSysDown',
+                url: '<?= base_url(); ?>Admin/getReleseNote',
                 type: 'POST',
                 data: {
-                    id: id
+                    chid: id
                 },
                 dataType: 'json',
                 success: function (response) {
-                    document.getElementById("scdtEdt").value = response[0]['date'];
-                    document.getElementById("sttmEdt").value = response[0]['frtm'];
-                    document.getElementById("entmEdt").value = response[0]['totm'];
-                    document.getElementById("mssgEdt").value = response[0]['mesg'];
-                    document.getElementById("auid").value = id;
+                    var len = response.length;
+
+                    if (len > 0) {
+                        document.getElementById("rcdtv").innerHTML = response[0]['rcdt'];
+                        document.getElementById("rcbyv").innerHTML = response[0]['poby'];
+                        document.getElementById("sendv").innerHTML = response[0]['rfno'];
+                        document.getElementById("relceNty").innerHTML = response[0]['rmks'];
+
+                    } else {
+                        document.getElementById("rcdtv").innerHTML = '-';
+                        document.getElementById("rcbyv").innerHTML = '-';
+                        document.getElementById("sendv").innerHTML = '-';
+                        document.getElementById("relceNty").innerHTML = "no Note";
+                    }
                 }
             });
         }
 
-        // EDIT HERE
-        $('#edtBtn').click(function (e) {
-            e.preventDefault();
-            if ($('#edtform').valid()) {
+        function sendMail(chid) {
+            swal({
+                title: "Processing...",
+                text: "User data saving..",
+                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                showConfirmButton: false
+            });
 
-                swal({
-                        title: "Are you sure to do this ?",
-                        text: "",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3bdd59",
-                        confirmButtonText: "Yes",
-                        cancelButtonText: "No",
-                        closeOnConfirm: false,
-                        closeOnCancel: false
-                    },
-                    function (isConfirm) {
-                        if (isConfirm) {
-                            var func = $('#func').val();
-                            $('#edtBtn').prop('disabled', false);
+            $.ajax({
+                type: "POST",
+                url: "<?= base_url(); ?>admin/sendMail",
+                data: {
+                    chid: chid,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    srcLgnote();
+                    swal({title: "Release Notes Send Success!", text: "", type: "success"},
+                        function () {
+                            location.reload();
+                        });
+                },
+                error: function () {
+                    swal({title: "Notes Sending Failed !", text: "", type: "error"},
+                        function () {
+                            location.reload();
+                        });
+                }
+            })
+        }
 
-                            swal({
-                                title: "Processing...",
-                                text: "User's details updating..",
-                                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                                showConfirmButton: false
-                            });
-
-                            jQuery.ajax({
-                                type: "POST",
-                                url: "<?= base_url(); ?>admin/edtSysDown",
-                                data: $("#edtform").serialize(),
-                                dataType: 'json',
-                                success: function (data) {
-                                    swal({title: "", text: "Updating Success!", type: "success"},
-                                        function () {
-                                            $('#edtBtn').prop('disabled', false);
-                                            clear_Form('edtform');
-                                            $('#modal-view').modal('hide');
-                                            srcSchedule();
-                                        });
-                                },
-                                error: function (data, textStatus) {
-                                    swal({title: "Updating Failed", text: textStatus, type: "error"},
-                                        function () {
-                                            location.reload();
-                                        });
+        function rejecSppy(id) {
+            swal({
+                    title: "Are you sure?",
+                    text: "Your will not be able to recover this check",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3bdd59",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $.ajax({
+                            url: '<?= base_url(); ?>admin/rejecSppy',
+                            type: 'post',
+                            data: {
+                                id: id
+                            },
+                            dataType: 'json',
+                            success: function (response) {
+                                if (response) {
+                                    swal({title: "Inactive Success !", text: "", type: "success"});
+                                    srcLgnote();
                                 }
-                            });
+                            }
+                        });
+                    } else {
+                        swal("Cancelled!", "Not Rejected", "error");
+                    }
+                });
+        }
 
-                        } else {
-                            swal("Cancelled", " ", "warning");
-                        }
-                    });
-            }
-        });
-
-        function doneSchedule(id) {
+        function sendMaildd(id) {
             swal({
                     title: "Are you sure?",
                     text: "Your will not be able to recover this check",
@@ -565,7 +568,7 @@
                             dataType: 'json',
                             success: function (response) {
                                 if (response) {
-                                    srcSchedule();
+                                    srcLgnote();
                                     swal({title: "Schedule Done Success !", text: "", type: "success"},
                                         function () {
                                             //  location.reload();
@@ -580,5 +583,7 @@
         }
 
     </script>
+
+
 </div>
 <!-- END PAGE CONTAINER -->

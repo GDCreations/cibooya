@@ -351,7 +351,7 @@ hr {
   margin-top: 18px;
   margin-bottom: 18px;
   border: 0;
-  border-top: 1px solid #ffffff;
+  border-top: 1px solid #292f43; /*#ffffff*/
 }
 .sr-only {
   position: absolute;
@@ -24385,6 +24385,7 @@ label {
 }
 .form-control[readonly] {
   color: #7F8FA4;
+  border-color: #F69E00;
 }
 .form-control[disabled] {
   opacity: 0.5;

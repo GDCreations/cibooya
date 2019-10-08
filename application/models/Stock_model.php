@@ -290,7 +290,7 @@ class Stock_model extends CI_Model
     }
     //END SEARCH TYPE DETAILS </JANAKA 2019-09-27>
 
-    //SEARCH TYPE DETAILS </JANAKA 2019-10-01>
+    //SEARCH ITEM DETAILS </JANAKA 2019-10-01>
     var $cl_srch5 = array('itcd','itnm','ctcd','bdcd','tpcd','mdl','mlcd'); //set column field database for datatable searchable
     var $cl_odr5 = array(null, 'itcd','itnm','ctcd','bdcd','tpcd','mdl','mlcd','item.stat',''); //set column field database for datatable orderable
     var $order5 = array('item.crdt' => 'DESC'); // default order
@@ -380,7 +380,267 @@ class Stock_model extends CI_Model
         $this->itmDet_query();
         return $this->db->count_all_results();
     }
-    //END SEARCH TYPE DETAILS </JANAKA 2019-10-01>
+    //END SEARCH ITEM DETAILS </JANAKA 2019-10-01>
+
+    //SEARCH WAREHOUSE DETAILS </JANAKA 2019-10-013>
+    var $cl_srch6 = array('whcd','whnm','mobi','addr'); //set column field database for datatable searchable
+    var $cl_odr6 = array(null, 'whcd','whnm','mobi','addr','cr.fnme','wh.crdt','wh.stat',''); //set column field database for datatable orderable
+    var $order6 = array('wh.crdt' => 'DESC'); // default order
+
+    function whDet_query()
+    {
+        $stat = $this->input->post('stat');
+
+        $this->db->select("wh.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm");
+        $this->db->from('stock_wh wh');
+        $this->db->join('user_mas cr','cr.auid=wh.crby');
+        if($stat!='all'){
+            $this->db->where("wh.stat=$stat");
+        }
+    }
+
+    private function whDet_queryData()
+    {
+        $this->whDet_query();
+        $i = 0;
+        foreach ($this->cl_srch6 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch6) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr6[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order6)) {
+            $order6 = $this->order6;
+            $this->db->order_by(key($order6), $order6[key($order6)]);
+        }
+    }
+
+    function get_whDtils()
+    {
+        $this->whDet_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_wh()
+    {
+        $this->whDet_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_wh()
+    {
+        // $this->db->from($this->table);
+        $this->whDet_query();
+        return $this->db->count_all_results();
+    }
+    //END SEARCH WAREHOUSE DETAILS </JANAKA 2019-10-03>
+
+    //SEARCH WAREHOUSE DETAILS </JANAKA 2019-10-04>
+    var $cl_srch7 = array('pono','spnm','oddt'); //set column field database for datatable searchable
+    var $cl_odr7 = array(null, 'pono','spnm','oddt','totl','po.crdt','po.stat',''); //set column field database for datatable orderable
+    var $order7 = array('po.crdt' => 'DESC'); // default order
+
+    function poDet_query()
+    {
+        $stat = $this->input->post('stat');
+        $supp = $this->input->post('supp');
+        $dtrg = explode('/',$this->input->post('dtrg'));
+        $frdt = trim($dtrg[0],' ');
+        $todt = trim($dtrg[1],' ');
+
+        $this->db->select("po.grnst,po.poid,po.pono,po.oddt,po.stat,po.crdt,po.totl,sp.spid,sp.spnm,sp.spcd");
+        $this->db->from('stock_po po');
+        $this->db->join('supp_mas sp','sp.spid=po.spid');
+        if($stat!='all'){
+            $this->db->where("po.stat=$stat");
+        }
+        if($supp!='all'){
+            $this->db->where("po.spid=$supp");
+        }
+        $this->db->where("DATE_FORMAT(po.crdt,'%Y-%m-%d') BETWEEN '$frdt' AND '$todt'");
+    }
+
+    private function poDet_queryData()
+    {
+        $this->poDet_query();
+        $i = 0;
+        foreach ($this->cl_srch7 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch7) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr7[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order7)) {
+            $order7 = $this->order7;
+            $this->db->order_by(key($order7), $order7[key($order7)]);
+        }
+    }
+
+    function get_poDtils()
+    {
+        $this->poDet_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_po()
+    {
+        $this->poDet_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_po()
+    {
+        // $this->db->from($this->table);
+        $this->poDet_query();
+        return $this->db->count_all_results();
+    }
+    //END SEARCH WAREHOUSE DETAILS </JANAKA 2019-10-04>
+
+    //QUANTITY STATUS OF ITEMS
+    function qty_status(){
+        $id = $this->input->post('item');
+        $this->db->select("item.mxlv,
+        IFNULL((SELECT SUM(stock_po_des.qnty) FROM stock_po 
+            JOIN stock_po_des ON stock_po_des.poid=stock_po.poid 
+            WHERE stock_po_des.itid=item.itid AND stock_po.stat=0),0) AS penpoqty,
+        IFNULL((SELECT SUM(stock_po_des.qnty) FROM stock_po 
+            JOIN stock_po_des ON stock_po_des.poid=stock_po.poid 
+            WHERE stock_po_des.itid=item.itid AND stock_po.stat=1 AND grnst=0),0) AS togrnqty,
+        IFNULL((SELECT SUM(stock_grn_des.qnty+stock_grn_des.frqt) FROM stock_grn 
+            JOIN stock_grn_des ON stock_grn_des.grid=stock_grn.grid
+            WHERE stock_grn_des.itid=item.itid AND stock_grn.stat=0),0) AS pengrnqty,
+        IFNULL((SELECT SUM(stock_grn_des.qnty+stock_grn_des.frqt) FROM stock_grn 
+            JOIN stock_grn_des ON stock_grn_des.grid=stock_grn.grid
+            WHERE stock_grn_des.itid=item.itid AND stock_grn.stat=1 AND stock_grn.stst=0),0) AS tostqty,
+        IFNULL((SELECT SUM(qunt+frqt) FROM stock WHERE stock.stat=0),0) AS penstqty,
+        IFNULL((SELECT SUM(avqn) FROM stock WHERE stock.itid=item.itid AND stock.stat=1),0) AS avstqty
+        ");
+        $this->db->from('item');
+        $this->db->where('item.itid',$id);
+        $res = $this->db->get()->result();
+        return $res;
+    }
+
+    //SEARCH GRN DETAILS
+    var $cl_srch8 = array('spcd','spnm','addr','mbno','tele','email'); //set column field database for datatable searchable
+    var $cl_odr8 = array(null, 'spcd', 'spnm', 'addr', 'mbno', 'user_mas.fnme', 'crdt', 'stat',''); //set column field database for datatable orderable
+    var $order8 = array('crdt' => 'DESC'); // default order
+
+    function grnDet_query()
+    {
+        $stat = $this->input->post('stat');
+        $supl = $this->input->post('supl');
+        $dtrg = explode('/',$this->input->post('dtrng'));
+        $frdt = trim($dtrg[0],' ');
+        $todt = trim($dtrg[1],' ');
+
+        $this->db->select("stock_grn.*, supp_mas.spnm, stock_po.pono,  CONCAT(user_mas.usnm) AS exc, DATE_FORMAT(stock_grn.crdt, '%Y-%m-%d') AS crdt,
+        IFNULL(stock_grn.rcqt,0) AS rcqt, IFNULL(stock_grn.frqt,0) AS frqt, IFNULL(stock_grn.rtqt,0) AS rtqt");
+        $this->db->from("stock_grn");
+        $this->db->join('stock_po', 'stock_po.poid = stock_grn.poid ');
+        $this->db->join('supp_mas', 'supp_mas.spid = stock_grn.spid ');
+        $this->db->join('user_mas', 'user_mas.auid = stock_po.crby ');
+
+        if ($supl != 'all') {
+            $this->db->where('stock_grn.spid', $supl);
+        }
+        if ($stat != 'all') {
+            $this->db->where('stock_grn.stat', $stat);
+        }
+        $this->db->where(" stock_grn.grdt BETWEEN '$frdt' AND '$todt'");
+    }
+
+    private function grnDet_queryData()
+    {
+        $this->grnDet_query();
+        $i = 0;
+        foreach ($this->cl_srch8 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch8) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr8[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order8)) {
+            $order8 = $this->order8;
+            $this->db->order_by(key($order8), $order8[key($order8)]);
+        }
+    }
+
+    function get_grnDtils()
+    {
+        $this->grnDet_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_grn()
+    {
+        $this-grnDet_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_grn()
+    {
+        $this->grnDet_query();
+        return $this->db->count_all_results();
+    }
+    //END SEARCH
 }
 
 ?>

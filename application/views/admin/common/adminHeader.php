@@ -93,6 +93,12 @@
                         <li id="stcCmp">
                             <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> Stock Components</a>
                             <ul>
+                                <?php if (in_array("supReg", $permission, TRUE)) { ?>
+                                    <li>
+                                        <a id="supReg" href="<?= base_url() ?>Stock/supReg"><span
+                                                    class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
+                                    </li>
+                                <?php } ?>
                                 <?php if (in_array("catMng", $permission, TRUE)) { ?>
                                     <li>
                                         <a id="catMng" href="<?= base_url() ?>Stock/catMng"><span
@@ -117,24 +123,33 @@
                                                     class="nav-icon-hexa fa fa-cubes"></span> Item Management </a>
                                     </li>
                                 <?php } ?>
+                                <?php if (in_array("whsMng", $permission, TRUE)) { ?>
+                                    <li>
+                                        <a id="whsMng" href="<?= base_url() ?>Stock/whsMng"><span
+                                                    class="nav-icon-hexa fa fa-institution"></span> Warehouse Management
+                                        </a>
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </li>
                         <?php $Stock_title = false;
                     } ?>
 
-                    <?php if (in_array('supMng', $permMdul, TRUE)) { ?>
-                        <li id="supMng">
-                            <a href="#"><span class="nav-icon-hexa fa fa-truck"></span> Supplier Management</a>
+                    <?php if (in_array('stcAcs', $permMdul, TRUE)) { ?>
+                        <li id="stcAcs">
+                            <a href="#"><span class="nav-icon-hexa fa fa-database"></span> Stock Access</a>
                             <ul>
-                                <?php if (in_array("supReg", $permission, TRUE)) { ?>
-                                    <li>
-                                        <a id="supReg" href="<?= base_url() ?>Stock/supReg"><span
-                                                    class="nav-icon-hexa fa fa-user"></span> Supplier Registration</a>
+                                <?php if (in_array("pchOdr", $permission, TRUE)) { ?>
+                                    <li><a id="pchOdr" href="<?= base_url() ?>Stock/pchOdr">
+                                            <span class="nav-icon-hexa fa fa-list-ul"></span> Purchase Order </a>
                                     </li>
                                 <?php } ?>
-<!--                                <li>-->
-<!--                                    <a href="#"><span class="nav-icon-hexa fa fa-btc"></span> Supplier's Banks </a>-->
-<!--                                </li>-->
+                                <?php if (in_array("grnMng", $permission, TRUE)) { ?>
+                                    <li><a id="grnMng" href="<?= base_url() ?>Stock/grnMng">
+                                            <span class="nav-icon-hexa fa fa-list-ul"></span> Good Received Note (GRN) </a>
+                                    </li>
+                                <?php } ?>
+
                             </ul>
                         </li>
                         <?php $Stock_title = false;
@@ -151,12 +166,16 @@
 
                     <?php if ($_SESSION['role'] == 1) { ?>
                         <li class="title" id="Settings_title">MIT SETTINGS</li>
-                        <li><a id="sysUpdate" href="<?= base_url() ?>admin/sysUpdate">
+                        <li><a id="mitVers" href="<?= base_url() ?>Mitadmin/mitVers">
+                                <span class="nav-icon-hexa fa fa-code-fork"></span> MIT version Management</a>
+                        </li>
+                        <li><a id="sysUpdate" href="<?= base_url() ?>Mitadmin/sysUpdate">
                                 <span class="nav-icon-hexa fa fa-wrench"></span> system update</a>
                         </li>
-                        <li><a id="sysChanlg" href="<?= base_url() ?>admin/sysChanlg">
+                        <li><a id="sysChanlg" href="<?= base_url() ?>Mitadmin/sysChanlg">
                                 <span class="nav-icon-hexa fa fa-upload"></span> change log</a>
                         </li>
+
                     <?php } ?>
 
                 </ul>
@@ -421,7 +440,8 @@
                                 <ul class="dropdown-menu dropdown-left">
                                     <li><a href="<?= base_url(); ?>User"><span class="icon-users"></span> User </a></li>
                                     <li class="divider"></li>
-                                    <li><a href="<?= base_url(); ?>welcome/userProfile"><span class="icon-user"></span>Your Profile</a></li>
+                                    <li><a href="<?= base_url(); ?>welcome/userProfile"><span class="icon-user"></span>Your
+                                            Profile</a></li>
                                     <li><a href="<?= base_url(); ?>welcome/lockScren"><span class="fa fa-lock"></span>
                                             Lock Screen</a></li>
                                     <li class="divider"></li>

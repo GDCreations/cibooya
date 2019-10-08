@@ -810,8 +810,7 @@ class Generic_model extends CI_Model
                     $i = $i + 1;
                 }
                 return $result;
-            }
-            elseif ($user_data[0]->usmd == $spbr) {
+            } elseif ($user_data[0]->usmd == $spbr) {
                 // SPECIAL BRANCH
                 $usdt = $this->getData('user_mas', array('prmd'), array('stat' => 1, 'auid' => $user));
 
@@ -856,8 +855,7 @@ class Generic_model extends CI_Model
                 }
                 return $result;
                 // END FILTER
-            }
-            else {
+            } else {
                 $this->db->select(array('brid', 'brnm', 'brcd'));
                 $this->db->from('brch_mas');
                 $this->db->where(array('brid' => $user_data[0]->brch, 'stat' => '1'));
@@ -894,7 +892,7 @@ class Generic_model extends CI_Model
             $data = $this->getSpecStting('alof');   // ALL OFFICDER
             $spcBrn = $this->getSpecBrnc();     // SPECIAL BRANCH
 
-            if ($user_data[0]->usmd == 1 || $user_data[0]->usmd == 2 ) {     // SUPER ADMIN || ADMIN
+            if ($user_data[0]->usmd == 1 || $user_data[0]->usmd == 2) {     // SUPER ADMIN || ADMIN
 
                 $result[0] = array('exe_id' => '0', 'exe_name' => '--Select Officer--');
 
@@ -915,8 +913,7 @@ class Generic_model extends CI_Model
                 }
                 return $result;
 
-            }
-            else if ($user_data[0]->usmd == $data) {                // SPECIAL ALL OFFICER
+            } else if ($user_data[0]->usmd == $data) {                // SPECIAL ALL OFFICER
                 $this->db->select(array('auid', 'fnme', 'lnme'));
                 $this->db->from('user_mas');
                 $this->db->where(array('stat' => '1'));
@@ -936,8 +933,7 @@ class Generic_model extends CI_Model
                 return $result;
                 // $spcBrn = $this->Generic_model->getSpecBrnc();
                 // AND brid IN($spcBrn)
-            }
-            else if ($user_data[0]->usmd == 4 || $user_data[0]->usmd == 9) {   // BM || ASS: MANAGER
+            } else if ($user_data[0]->usmd == 4 || $user_data[0]->usmd == 9) {   // BM || ASS: MANAGER
                 $this->db->select(array('auid', 'fnme', 'lnme'));
                 $this->db->from('user_mas');
                 $this->db->where(array('stat' => '1'));
@@ -955,8 +951,7 @@ class Generic_model extends CI_Model
                 }
                 return $result;
 
-            }
-            else if ($user_data[0]->usmd == 3 || $user_data[0]->usmd == 6) {                // CRO || CASHIER
+            } else if ($user_data[0]->usmd == 3 || $user_data[0]->usmd == 6) {                // CRO || CASHIER
                 $this->db->select(array('auid', 'fnme', 'lnme'));
                 $this->db->from('user_mas');
                 $this->db->where(array('stat' => '1'));
@@ -974,12 +969,10 @@ class Generic_model extends CI_Model
                 }
                 return $result;
 
-            }
-            else if ($user_data[0]->usmd == 5 || $user_data[0]->usmd == 7 || $user_data[0]->usmd == 13) {       // OFFICER | J OFFICER | S OFFICER
+            } else if ($user_data[0]->usmd == 5 || $user_data[0]->usmd == 7 || $user_data[0]->usmd == 13) {       // OFFICER | J OFFICER | S OFFICER
                 $result[0] = array('exe_id' => $user_data[0]->auid, 'exe_name' => $user_data[0]->fnme . ' ' . $user_data[0]->lnme);
                 return $result;
-            }
-            else {        // OFFICER >
+            } else {        // OFFICER >
                 /*$this->db->select(array('auid', 'fnme', 'lnme'));
                 $this->db->from('user_mas');
                 $this->db->where(array('stat' => '1'));
@@ -1193,6 +1186,7 @@ class Generic_model extends CI_Model
                 $this->db->from('user_page');
                 $this->db->join('user_page_mdl', 'user_page_mdl.aid = user_page.modu', 'left');
                 $this->db->where(array('user_page.stst' => '1'));
+                //$this->db->where('user_page_mdl.stat',1); // ACTIVE MODULE ONLY
                 $this->db->group_by('user_page.modu');
                 $query2 = $this->db->get();
 
@@ -1218,6 +1212,7 @@ class Generic_model extends CI_Model
                     $this->db->where(array('prtp' => '0'));  // default permission
                     $this->db->where(array('pgac' => '1'));
                     $this->db->where(array('ulid' => $user_data[0]->usmd));
+                    $this->db->where('user_page_mdl.stat', 1); // ACTIVE MODULE ONLY
                     $this->db->group_by('user_page.modu');
                     $query2 = $this->db->get();
 
@@ -1246,6 +1241,7 @@ class Generic_model extends CI_Model
                     $this->db->where(array('prtp' => '1')); // manuel permission
                     $this->db->where(array('pgac' => '1'));
                     $this->db->where(array('usid' => $user));
+                    $this->db->where('user_page_mdl.stat',1); // ACTIVE MODULE ONLY
                     $query2 = $this->db->get();
 
                     $i = 0;
@@ -1389,7 +1385,7 @@ class Generic_model extends CI_Model
     //IS RECONSILATED CHECK
     function isRecDate()
     {
-		$usrbrn = $_SESSION['usrbrnc'];
+        $usrbrn = $_SESSION['usrbrnc'];
 
         $this->db->select("date,prdt,stat");
         $this->db->from('dayend_process');

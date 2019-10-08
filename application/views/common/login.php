@@ -134,14 +134,17 @@
             $('#logps').attr('type', 'password');
         }
     }
-
 </script>
 
 <?php
 
 if (isset($_GET['message'])) {
     $message = $_GET['message'];
-
+    ?>
+    <script type="text/javascript">
+        toastr.clear();
+    </script>
+    <?php
     if ($message === "fail") { ?>
         <script type="text/javascript">
             toastr.error('Please check login data !');

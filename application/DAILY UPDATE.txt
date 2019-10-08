@@ -1,5 +1,59 @@
 -----------------------------------------------------
-2019-10-01 JANAKA
+2019-10-09 Gemunu
+ALTER TABLE `stock_grn` ADD `apby` INT(10) NOT NULL COMMENT 'approval by' AFTER `crdt`, ADD `apdt` DATETIME NOT NULL COMMENT 'approval date' AFTER `apby`;
+ALTER TABLE `stock_grn` ADD `rjby` INT(10) NOT NULL COMMENT 'reject by' AFTER `apdt`, ADD `rjdt` DATETIME NOT NULL COMMENT 'reject date' AFTER `rjby`;
+ALTER TABLE `stock_grn` ADD `pntc` INT(10) NOT NULL COMMENT 'print count' AFTER `rjdt`;
+ALTER TABLE `stock_grn` ADD `prby` INT(10) NOT NULL COMMENT 'print by' AFTER `pntc`;
+ALTER TABLE `stock_grn` ADD `prdt` DATETIME NOT NULL COMMENT 'print date' AFTER `prby`;
+ALTER TABLE `stock_grn` ADD `rpby` INT(10) NOT NULL COMMENT 'reprint by' AFTER `prdt`, ADD `rpdt` DATETIME NOT NULL COMMENT 'reprint date' AFTER `rpby`;
+
+
+-----------------------------------------------------
+**DONE 2019-10-08 Gemunu
+INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'grnMng', 'Good Received Note(GRN)', '', '0', '1', '1', '4');
+ALTER TABLE `stock_grn` ADD `chby` VARCHAR(250) NOT NULL COMMENT 'check by user' AFTER `remk`;
+ALTER TABLE `stock_grn_des` CHANGE `grid` `grid` INT(11) NOT NULL COMMENT 'GRN tb id', CHANGE `spid` `spid` INT(11) NOT NULL COMMENT 'supply id', CHANGE `itid` `itid` INT(11) NOT NULL COMMENT 'item id';
+
+-----------------------------------------------------
+**DONE || 2019-10-07 JANAKA
+UPDATE `user_page` SET `adpr` = '1' WHERE `user_page`.`aid` = 18;
+ALTER TABLE `stock_po` ADD `grnst` INT NOT NULL COMMENT 'Add grn (0-No/1-Yes)' AFTER `stat`;
+ALTER TABLE `stock_grn` ADD `stst` INT NOT NULL COMMENT 'Add stock (0-No/1-Yes)' AFTER `stat`;
+ALTER TABLE `stock_po` ADD `apby` INT NOT NULL COMMENT 'approved by' AFTER `crdt`;
+ALTER TABLE `stock_po` ADD `apdt` DATETIME NULL COMMENT 'Approved date' AFTER `apby`;
+ALTER TABLE `stock_po` ADD `mdby` INT NOT NULL COMMENT 'Modified by' AFTER `apdt`;
+ALTER TABLE `stock_po` ADD `mddt` DATETIME NULL COMMENT 'Modified date' AFTER `mdby`;
+-----------------------------------------------------
+ALTER TABLE `supp_mas` ADD `bkdt` INT(10) NOT NULL COMMENT 'if bank details(0-no/1-yes)' AFTER `dscr`;
+ALTER TABLE `stock_po` ADD `rjby` INT NOT NULL COMMENT 'Rejected by' AFTER `mddt`;
+ALTER TABLE `stock_po` ADD `rjdt` DATETIME NULL COMMENT 'Rejected date' AFTER `rjby`;
+ALTER TABLE `stock_po` ADD `prby` INT NOT NULL COMMENT 'Printed by' AFTER `rjdt`;
+ALTER TABLE `stock_po` ADD `prdt` DATETIME NULL COMMENT 'Printed date' AFTER `prby`;
+ALTER TABLE `stock_po` ADD `prct` INT NOT NULL COMMENT 'Printed count' AFTER `prdt`;
+ALTER TABLE `stock_po` ADD `rpby` INT NOT NULL COMMENT 'RePrinted by' AFTER `prct`;
+ALTER TABLE `stock_po` ADD `rpdt` DATETIME NULL COMMENT 'RePrinted date' AFTER `rpby`;
+-----------------------------------------------------
+**DONE 2019-10-07 Gemunu
+ ALTER TABLE `supp_mas` ADD `bkdt` INT(10) NOT NULL COMMENT 'if bank details(0-no/1-yes)' AFTER `dscr`;
+
+-----------------------------------------------------
+**DONE || 2019-10-04 JANAKA
+ALTER TABLE `item` ADD `mxlv` DOUBLE NOT NULL COMMENT 'Max store level' AFTER `scli`;
+ALTER TABLE `stock_po` ADD `rfno` VARCHAR(50) NOT NULL COMMENT 'Reference Number' AFTER `oddt`;
+ALTER TABLE `stock_po_des` CHANGE `qnty` `qnty` DOUBLE NULL DEFAULT NULL;
+ALTER TABLE `stock_po` ADD `crby` INT NOT NULL COMMENT 'Created by' AFTER `stat`;
+ALTER TABLE `stock_po` ADD `crdt` DATETIME NOT NULL COMMENT 'Created date' AFTER `crby`;
+-----------------------------------------------------
+**DONE || 2019-10-03 JANAKA
+UPDATE `user_page_mdl` SET `mdcd` = 'stcAcs' WHERE `user_page_mdl`.`aid` = 4;
+UPDATE `user_page_mdl` SET `mdnm` = 'Stock Access' WHERE `user_page_mdl`.`aid` = 4;
+UPDATE `user_page` SET `modu` = '6' WHERE `user_page`.`aid` = 8;
+INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'pchOdr', 'Purchase Order', '', '0', '1', '1', '4');
+-----------------------------------------------------
+**DONE || 2019-10-01 JANAKA
+INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'whsMng', 'Warehouse Management', '', '0', '1', '1', '6');
+-----------------------------------------------------
+**DONE || 2019-10-01 JANAKA
 ALTER TABLE `item` ADD `apby` INT NULL COMMENT 'approved by' AFTER `crdt`;
 ALTER TABLE `item` ADD `apdt` DATETIME NULL COMMENT 'approved date' AFTER `apby`;
 ALTER TABLE `item` ADD `rjby` INT NULL COMMENT 'Reject by' AFTER `mddt`;
