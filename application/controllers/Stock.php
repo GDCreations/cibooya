@@ -2642,7 +2642,7 @@ class Stock extends CI_Controller
             }
 
             if($row->grnst==1){
-                $grn = "<label class='label label-info label-bordered label-ghost' title='GRN / RGRN process done'>GRN</label>";
+                $grn = "<label class='label label-info label-bordered label-ghost' title='GRN / GRRN process done'>GRN</label>";
             }else{
                 $grn = "";
             }
@@ -3355,6 +3355,7 @@ class Stock extends CI_Controller
             $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Add New GRRN (' . $grno . ')');
         }
 
+        $this->Generic_model->updateData('stock_po',array('grnst'=>1),array('poid'=>$this->input->post('podt')));
 
         $funcPerm = $this->Generic_model->getFuncPermision('grnMng');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "GRN Added ($grno)");

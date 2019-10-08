@@ -2034,7 +2034,7 @@
                     document.getElementById('sbttl_vw').value = ttlSub;
 
                     if(po[0]['grnst']==1){ //IS GRN ADDED
-                        var grn = "<label class='label label-info label-bordered label-ghost' title='GRN / RGRN Process done'>GRN</label>";
+                        var grn = "<label class='label label-info label-bordered label-ghost' title='GRN / GRRN process done'>GRN</label>";
                     }else{
                         var grn = "";
                     }
