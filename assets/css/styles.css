@@ -24385,6 +24385,7 @@ label {
 }
 .form-control[readonly] {
   color: #7F8FA4;
+  border-color: #F69E00;
 }
 .form-control[disabled] {
   opacity: 0.5;

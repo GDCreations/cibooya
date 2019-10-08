@@ -11,14 +11,13 @@ class Stock extends CI_Controller
         // Deletes cache for the currently requested URI
         $this->output->delete_cache();
 //
-//        $this->load->library('Pdf'); // Load library
-//        $this->pdf->fontpath = 'font/'; // Specify font folder
+        $this->load->library('Pdf'); // Load library
+        $this->pdf->fontpath = 'font/'; // Specify font folder
 //
         $this->load->database();                // load database
         $this->load->model('Generic_model');    // load model
         $this->load->model('Stock_model');       // load model
         $this->load->model('Log_model');        // load model
-//        $this->load->model('Hire_model');       // load model
 //
         date_default_timezone_set('Asia/Colombo');
 //
@@ -2505,8 +2504,8 @@ class Stock extends CI_Controller
         $yr = date('y');
 
         if (sizeof($res) > 0) {
-            $number = explode('-', $res[0]->spcd);
-            $aa = intval($number[1]) + 1;
+            $number = explode('/', $res[0]->pono);
+            $aa = intval($number[2]) + 1;
             $cc = strlen($aa);
 
             if ($cc == 1) {
@@ -2642,6 +2641,12 @@ class Stock extends CI_Controller
                     "<button type='button' disabled onclick='rejectPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             }
 
+            if($row->grnst==1){
+                $grn = "<label class='label label-info label-bordered label-ghost' title='GRN / RGRN process done'>GRN</label>";
+            }else{
+                $grn = "";
+            }
+
             $sub_arr = array();
             $sub_arr[] = ++$i;
             $sub_arr[] = $row->pono;
@@ -2649,7 +2654,7 @@ class Stock extends CI_Controller
             $sub_arr[] = $row->oddt;
             $sub_arr[] = number_format($row->totl, 2);
             $sub_arr[] = $row->crdt;
-            $sub_arr[] = $stat;
+            $sub_arr[] = $stat." ".$grn;
             $sub_arr[] = $option;
             $data[] = $sub_arr;
         }
@@ -2669,7 +2674,20 @@ class Stock extends CI_Controller
     {
         $id = $this->input->post('id');
 
-        $data['po'] = $this->Generic_model->getData('stock_po', '', array('poid' => $id));
+        $this->db->select("stock_po.*,supp_mas.spnm,stock_wh.whnm,
+        CONCAT(cr.fnme,' ',cr.lnme) AS crnm,CONCAT(ap.fnme,' ',ap.lnme) AS apnm,CONCAT(md.fnme,' ',md.lnme) AS mdnm,
+        CONCAT(rj.fnme,' ',rj.lnme) AS rjnm,CONCAT(pr.fnme,' ',pr.lnme) AS prnm,CONCAT(rp.fnme,' ',rp.lnme) AS rpnm");
+        $this->db->from('stock_po');
+        $this->db->join('supp_mas', 'supp_mas.spid=stock_po.spid');
+        $this->db->join('stock_wh', 'stock_wh.whid=stock_po.whid');
+        $this->db->join('user_mas cr', 'cr.auid=stock_po.crby');
+        $this->db->join('user_mas ap', 'ap.auid=stock_po.apby', 'LEFT');
+        $this->db->join('user_mas md', 'md.auid=stock_po.mdby', 'LEFT');
+        $this->db->join('user_mas rj', 'rj.auid=stock_po.rjby', 'LEFT');
+        $this->db->join('user_mas pr', 'pr.auid=stock_po.prby', 'LEFT');
+        $this->db->join('user_mas rp', 'rp.auid=stock_po.rpby', 'LEFT');
+        $this->db->where('stock_po.poid', $id);
+        $data['po'] = $this->db->get()->result();
 
         $this->db->select("item.itid,item.itcd,item.itnm,scl.scl,scl.scnm,pod.qnty,pod.untp,pod.sbvl,pod.pdid");
         $this->db->from('stock_po_des pod');
@@ -2691,12 +2709,13 @@ class Stock extends CI_Controller
 //GET ITEM QUANTITY AND STATUS OF THEM
 
 //APPROVE || EDIT PO </JANAKA 2019-10-07>
-    function po_update(){
+    function po_update()
+    {
         $this->db->trans_begin(); // SQL TRANSACTION START
         $id = $this->input->post('poid');
         $func = $this->input->post('func');
 
-        if($func=='app'){
+        if ($func == 'app') {
             $msg = 'Purchase Order approved';
 
             $this->Generic_model->updateData('stock_po', array(
@@ -2719,8 +2738,8 @@ class Stock extends CI_Controller
                 'stat' => 1,
                 'apby' => $_SESSION['userId'],
                 'apdt' => date('Y-m-d H:i:s'),
-            ),array('poid'=>$id));
-        }else if($func=='edit'){
+            ), array('poid' => $id));
+        } else if ($func == 'edit') {
             $msg = 'Purchase Order updated';
 
             $this->Generic_model->updateData('stock_po', array(
@@ -2742,11 +2761,11 @@ class Stock extends CI_Controller
                 'remk' => $this->input->post('remk_edt'),
                 'mdby' => $_SESSION['userId'],
                 'mddt' => date('Y-m-d H:i:s'),
-            ),array('poid'=>$id));
+            ), array('poid' => $id));
         }
 
         //stock_po_des table update
-        $this->Generic_model->updateData('stock_po_des',array('stat'=>0),array('poid'=>$id));
+        $this->Generic_model->updateData('stock_po_des', array('stat' => 0), array('poid' => $id));
 
         $pdid = $this->input->post("pdid[]");
         $itmcd = $this->input->post("itid_edt[]");
@@ -2756,11 +2775,11 @@ class Stock extends CI_Controller
         $siz = sizeof($itmcd);
 
         for ($it = 0; $it < $siz; $it++) {
-            if($pdid[$it]!=0){
+            if ($pdid[$it] != 0) {
                 $this->Generic_model->updateData('stock_po_des', array(
                     'stat' => 1,
-                ),array('pdid'=>$pdid[$it]));
-            }else{
+                ), array('pdid' => $pdid[$it]));
+            } else {
                 $this->Generic_model->insertData('stock_po_des', array(
                     'poid' => $id,
                     'spid' => $this->input->post('supp_edt'),
@@ -2784,7 +2803,319 @@ class Stock extends CI_Controller
             echo json_encode(true);
         }
     }
-//APPROVE || EDIT PO </JANAKA 2019-10-07>
+//END APPROVE || EDIT PO </JANAKA 2019-10-07>
+
+//REJECT PO </JANAKA 2019-10-07>
+    function po_Reject()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+        $id = $this->input->post('id');
+
+        $this->Generic_model->updateData('stock_po', array(
+            'stat' => 2,
+            'rjby' => $_SESSION['userId'],
+            'rjdt' => date('Y-m-d H:i:s')
+        ), array('poid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('pchOdr');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Purchase Order Rejected ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+
+    }
+//END REJECT PO </JANAKA 2019-10-07>
+
+// PRINT PO </2019-10-08>
+    function prchOrderPrint($auid)
+    {
+        $rcdt = $this->Generic_model->getData('stock_po', array('prct'), array('poid' => $auid));
+        $pntc = $rcdt[0]->prct + 1;
+
+        // PRINT COUNT UPDATE PO TB
+        if (($pntc - 1) > 0) {
+            $data_ar1 = array(
+                'rpby' => $_SESSION['userId'],
+                'rpdt' => date('Y-m-d H:i:s'),
+                'prct' => $pntc,
+            );
+        } else {
+            $data_ar1 = array(
+                'prby' => $_SESSION['userId'],
+                'prdt' => date('Y-m-d H:i:s'),
+                'prct' => $pntc,
+            );
+        }
+        $result1 = $this->Generic_model->updateData('stock_po', $data_ar1, array('poid' => $auid));
+
+
+        if (count($result1) > 0) {
+            $this->load->library('ciqrcode');
+
+            $this->db->select("po.*,spp.spcd, spp.spnm, spp.addr, spp.mbno, spp.tele, spp.email, wh.whnm, wh.whcd,
+             wh.addr AS whadr , wh.tele AS whtele, wh.email AS whemil, CONCAT(cr.fnme,' ',cr.lnme) AS crnm");
+            $this->db->from("stock_po po");
+            $this->db->join('supp_mas spp', 'spp.spid = po.spid ');
+            $this->db->join('user_mas cr', 'cr.auid = po.crby ');
+            $this->db->join('stock_wh wh', 'wh.whid = po.whid ');
+            $this->db->where('po.poid', $auid);
+            $query = $this->db->get();
+            $data = $query->result();
+
+            // PO DETAILS
+            $this->db->select("pod.*, item.itcd, item.itnm, item.mdl, item.mlcd, item.mdl");
+            $this->db->from("stock_po_des pod");
+            $this->db->join('item', 'item.itid = pod.itid ');
+            $this->db->where('pod.poid', $auid);
+            $this->db->where('pod.stat', 1);
+            $query = $this->db->get();
+            $rest = $query->result();
+
+            // LOGIN USER
+            $usedetails = $this->Generic_model->getData('user_mas', '', array('auid' => $_SESSION['userId']));
+            $usr = $usedetails[0]->fnme;
+            $comdt = $this->Generic_model->getData('com_det', array('cmne', 'cadd', 'ctel', 'ceml', 'chot'), array('stat' => 1));
+            //$branc = $this->Generic_model->getData('brch_mas', '', array('brid' => $data[0]->brco));
+
+            $_SESSION['hid'] = mt_rand(10000000, 999999999);
+            $cy = date('Y');
+            $date = date('Y-m-d H:i:s');
+            ob_start();
+            $this->pdf->AddPage('P', 'A4');
+            $this->pdf->SetFont('Helvetica', 'B', 15);
+            $this->pdf->SetTextColor(50, 50, 50);
+            $this->pdf->SetXY(10, 32);
+            $this->pdf->Cell(0, 0, 'PURCHASE ORDER', 0, 1, 'C');
+            $this->pdf->SetFont('Helvetica', '', 9);
+            $this->pdf->SetXY(188, 37);
+
+            // Top left company details
+            $this->pdf->SetFont('Helvetica', 'B', 9);
+            $this->pdf->SetXY(5, 9);
+            $this->pdf->Cell(0, 0, $comdt[0]->cmne);
+            $this->pdf->SetFont('Helvetica', '', 9);
+            $this->pdf->SetXY(5.5, 14);
+            $this->pdf->Cell(0, 0, $comdt[0]->cadd);
+            $this->pdf->SetXY(5.5, 18);
+            $this->pdf->Cell(0, 0, $comdt[0]->ctel);
+            $this->pdf->SetXY(5.5, 22);
+            $this->pdf->Cell(0, 0, $comdt[0]->chot);
+            $this->pdf->SetXY(5.5, 26);
+            $this->pdf->Cell(0, 0, $comdt[0]->ceml);
+
+            // TOP RIGHT
+            $this->pdf->SetFont('Helvetica', '', 9);
+            $this->pdf->SetXY(145, 9);
+            $this->pdf->Cell(1, 0, 'PURCHASE ORDER', 0, 1, 'L');
+            $this->pdf->SetXY(145, 14);
+            $this->pdf->Cell(1, 0, 'ORDER NO', 0, 1, 'L');
+            $this->pdf->SetXY(145, 18);
+            $this->pdf->Cell(1, 0, 'ORDER DATE : ', 0, 1, 'L');
+            $this->pdf->SetXY(145, 22);
+            $this->pdf->Cell(1, 0, 'SUPPLY', 0, 1, 'L');
+            $this->pdf->SetXY(170, 14);
+            $this->pdf->Cell(1, 0, ': ' . $data[0]->pono, 0, 1, 'L');
+            $this->pdf->SetXY(170, 18);
+            $this->pdf->Cell(1, 0, ': ' . $data[0]->oddt, 0, 1, 'L');
+            $this->pdf->SetXY(170, 22);
+            $this->pdf->Cell(1, 0, ': ' . $data[0]->spcd, 0, 1, 'L');
+
+            // TABLE MAIN LEFT ( VENDOR )
+            $this->pdf->SetTextColor(0, 0, 0); // BOX COLOR CHANGE
+            $this->pdf->SetFont('Helvetica', 'B', 9);
+            $this->pdf->SetXY(10, 41);
+            $this->pdf->Cell(1, 0, 'VENDOR ', 0, 1, 'L');
+            $this->pdf->SetFont('Helvetica', '', 8);
+            $this->pdf->SetXY(10, 45);
+            $this->pdf->Cell(1, 0, $data[0]->spnm, 0, 1, 'L');
+            $this->pdf->SetXY(10, 49);
+            $this->pdf->Cell(1, 0, $data[0]->addr, 0, 1, 'L');
+            $this->pdf->SetXY(10, 53);
+            $this->pdf->Cell(1, 0, $data[0]->tele . ' | ' . $data[0]->mbno, 0, 1, 'L');
+            $this->pdf->SetXY(10, 57);
+            $this->pdf->Cell(1, 0, $data[0]->email);
+
+            // TABLE MAIN RIGHT ( DELIVERY  )
+            $this->pdf->SetFont('Helvetica', 'B', 9);
+            $this->pdf->SetXY(135, 41);
+            $this->pdf->Cell(1, 0, 'DELIVERY TO', 0, 1, 'L');
+            $this->pdf->SetFont('Helvetica', '', 8);
+            $this->pdf->SetXY(135, 45);
+            $this->pdf->Cell(1, 0, $data[0]->whnm, 0, 1, 'L');
+
+            $this->pdf->SetXY(135, 49);
+            $this->pdf->Cell(1, 0, $data[0]->whadr, 0, 1, 'L');
+            $this->pdf->SetXY(135, 53);
+            $this->pdf->Cell(1, 0, $data[0]->whtele, 0, 1, 'L');
+            $this->pdf->SetXY(135, 57);
+            $this->pdf->Cell(1, 0, $data[0]->whemil, 0, 1, 'L');
+
+            //----- TABLE -------//
+            $this->pdf->SetFont('Helvetica', 'B', 8);   // Table Header set bold font
+            $this->pdf->SetTextColor(0, 0, 0);
+            $this->pdf->SetXY(5, 37);
+            $this->pdf->Cell(200, 30, '', '1');
+
+            // Payment details table border
+            $this->pdf->SetXY(5, 60);
+            $this->pdf->Cell(10, 150, '', '1');
+            $this->pdf->SetXY(15, 60);
+            $this->pdf->Cell(40, 150, '', '1');
+            $this->pdf->SetXY(55, 60);
+            $this->pdf->Cell(80, 150, '', '1');
+            $this->pdf->SetXY(135, 60);
+            $this->pdf->Cell(20, 150, '', '1');
+            $this->pdf->SetXY(155, 60);
+            $this->pdf->Cell(20, 150, '', '1');
+            $this->pdf->SetXY(175, 60);
+            $this->pdf->Cell(30, 150, '', '1');
+
+            // #0
+            $this->pdf->SetXY(5, 60);
+            $this->pdf->Cell(10, 7, 'NO', 1, 1, 'C');
+            $this->pdf->SetXY(15, 60);
+            $this->pdf->Cell(40, 7, 'ITEM CODE', 1, 1, 'C');
+            $this->pdf->SetXY(55, 60);
+            $this->pdf->Cell(80, 7, 'ITEM NAME', 1, 1, 'C');
+            $this->pdf->SetXY(135, 60);
+            $this->pdf->Cell(20, 7, 'QTY', 1, 1, 'C');
+            $this->pdf->SetXY(155, 60);
+            $this->pdf->Cell(20, 7, 'UNIT PRICE', 1, 1, 'C');
+            $this->pdf->SetXY(175, 60);
+            $this->pdf->Cell(30, 7, 'TOTAL', 1, 1, 'C');
+
+            $this->pdf->SetFont('Helvetica', '', 8);  // Table body unset bold font
+            $this->pdf->SetTextColor(0, 0, 0);
+
+            // #1 - n recode
+            $len = sizeof($rest);
+            $y = 70;
+            $ttlsub = $qnty = 0;
+            for ($i = 0; $i < $len; $i++) {
+                $this->pdf->SetXY(5, $y);
+                $this->pdf->Cell(10, 3, $i + 1, 0, 0, 'C');
+                $this->pdf->SetXY(15, $y);
+                $this->pdf->Cell(40, 3, $rest[$i]->itcd, 'L');
+                $this->pdf->SetXY(55, $y);
+                $this->pdf->MultiCell(80, 3, $rest[$i]->itnm." \n MODEL - ".$rest[$i]->mdl." (".$rest[$i]->mlcd.")", 0);
+                $y2 = $this->pdf->getY();
+                $this->pdf->SetXY(135, $y);
+                $this->pdf->Cell(20, 3, $rest[$i]->qnty, 0, '', 'C');
+                $this->pdf->SetXY(155, $y);
+                $this->pdf->Cell(20, 3, number_format($rest[$i]->untp, 2, '.', ','), 0, 0, 'R');
+                $this->pdf->SetXY(175, $y);
+                $this->pdf->Cell(30, 3, number_format($rest[$i]->sbvl, 2, '.', ','), 0, 0, 'R');
+
+                $y = $y2 + 3;
+                $qnty = $qnty + $rest[$i]->qnty;
+                $ttlsub = $ttlsub + $rest[$i]->sbvl;
+            }
+            //-----TOTAL AMOUNT--------//
+
+            $this->pdf->SetFont('Helvetica', 'B', 8);
+            $this->pdf->SetXY(130, 210);
+            $this->pdf->Cell(6, 10, 'TOTAL ', 0, 1, 'R');
+
+            $this->pdf->SetXY(135, 210);
+            $this->pdf->Cell(20, 8, $qnty, 1, 0, 'C');
+            $this->pdf->SetXY(155, 210);
+            $this->pdf->Cell(20, 8, '', 1, 0, 'R');
+
+            $this->pdf->SetXY(175, 210);
+            $this->pdf->Cell(30, 8, number_format($ttlsub, 2, '.', ','), 1, 0, 'R');
+
+            // REMARKS
+            $this->pdf->SetXY(10, 220);
+            $this->pdf->Cell(20, 8, 'REMARKS / INTERDICTION ', 0, 0, 'L');
+            $this->pdf->SetFont('Helvetica', '', 8);
+            $this->pdf->SetXY(10, 225);
+            $this->pdf->MultiCell(80, 5, $data[0]->remk, '0.5', 'L', FALSE);
+
+            $this->pdf->SetFont('Helvetica', 'B', 8);
+            $this->pdf->SetXY(155, 220);
+            $this->pdf->Cell(20, 8, 'SUB TOTAL', 0, 0, 'R');
+            $this->pdf->SetXY(175, 220);
+            $this->pdf->Cell(30, 8, number_format($ttlsub, 2, '.', ','), 0, 0, 'R');
+
+            $this->pdf->SetXY(155, 225);
+            $this->pdf->Cell(20, 8, 'VAT (' . $data[0]->vtrt . '%)', 0, 0, 'R');
+            $this->pdf->SetXY(175, 225);
+            $this->pdf->Cell(30, 8, number_format($data[0]->vtvl, 2, '.', ','), 0, 0, 'R');
+
+            $this->pdf->SetXY(155, 230);
+            $this->pdf->Cell(20, 8, 'NBT (' . $data[0]->nbrt . '%)', 0, 0, 'R');
+            $this->pdf->SetXY(175, 230);
+            $this->pdf->Cell(30, 8, number_format($data[0]->nbvl, 2, '.', ','), 0, 0, 'R');
+
+            $this->pdf->SetXY(155, 235);
+            $this->pdf->Cell(20, 8, 'BTT (' . $data[0]->btrt . '%)', 0, 0, 'R');
+            $this->pdf->SetXY(175, 235);
+            $this->pdf->Cell(30, 8, number_format($data[0]->btvl, 2, '.', ','), 0, 0, 'R');
+
+            $this->pdf->SetXY(155, 240);
+            $this->pdf->Cell(20, 8, 'OTHER TAX (' . $data[0]->txrt . '%)', 0, 0, 'R');
+            $this->pdf->SetXY(175, 240);
+            $this->pdf->Cell(30, 8, number_format($data[0]->txvl, 2, '.', ','), 0, 0, 'R');
+
+            $this->pdf->SetXY(155, 245);
+            $this->pdf->Cell(20, 8, 'OTHER CHARGE', 0, 0, 'R');
+            $this->pdf->SetXY(175, 245);
+            $this->pdf->Cell(30, 8, number_format($data[0]->ochg, 2, '.', ','), 0, 0, 'R');
+
+            /* $this->pdf->SetXY(155, 250);
+             $this->pdf->Cell(20, 8, 'DISCOUNT (' . $data[0]->dsrt . '%)', 0, 0, 'R');
+             $this->pdf->SetXY(175, 250);
+             $this->pdf->Cell(30, 8, number_format($data[0]->dsvl, 2, '.', ','), 0, 0, 'R');*/
+
+            $this->pdf->SetXY(155, 255);
+            $this->pdf->SetFillColor(50, 50, 50);
+            $this->pdf->Cell(20, 8, 'TOTAL', 0, 0, 'R');
+            $this->pdf->SetXY(175, 255);
+            $this->pdf->Cell(30, 8, number_format(($ttlsub + $data[0]->vtvl + $data[0]->nbvl + $data[0]->btvl + $data[0]->txvl + $data[0]->ochg) - $data[0]->dsvl, 2, '.', ','), 0, 0, 'R');
+
+            $this->pdf->SetAutoPageBreak(false);
+
+            //FOOTER
+            $this->pdf->SetFont('Helvetica', '', 7);
+            $this->pdf->SetXY(-15, 275);
+            $this->pdf->Cell(10, 6, $_SESSION['hid'], 0, 1, 'R');
+            $this->pdf->SetFont('Helvetica', 'I', 7);
+            $this->pdf->SetXY(-15, 280);
+            $this->pdf->Cell(10, 6, 'Copyright @ ' . $cy . ' - www.gdcreations.com', 0, 1, 'R');
+            $this->pdf->SetXY(4, 280);
+            $this->pdf->Cell(0, 6, 'Printed : ' . $usedetails[0]->fnme . ' | ' . $date, 0, 1, 'L');
+
+            // REPRINT TAG
+//            $policy = $this->Generic_model->getData('sys_policy', array('post'), array('popg' => 'vouc', 'stat' => 1));
+//            if ($policy[0]->post == 1) {
+                if ($rcdt[0]->prct > 1) {
+                    $this->pdf->SetFont('Helvetica', 'B', 7);
+                    $this->pdf->SetXY(4, 280);
+                    $this->pdf->Cell(0, 0, 'REPRINTED (' . $pntc . ')');
+                }
+//            }
+
+            //QR CODE
+            // $cd = 'Vou No : ' . $data[0]->vuno . ' | Date : ' . $data[0]->crdt . ' | Payee Name : ' . $data[0]->spnm . ' | Branch : ' . $data[0]->brnm . ' | Pay Type : ' . $data[0]->dsnm . ' | Total : Rs.' . $pyamt . ' | Printed By : ' . $usr . ' | ' . $_SESSION["hid"];
+            // $this->pdf->Image(str_replace(" ", "%20", 'http://chart.apis.google.com/chart?cht=qr&chs=190x190&chl=' . $cd), 176, 7, 26, 0, 'PNG');
+
+            $this->pdf->SetTitle('po - ' . $data[0]->pono);
+            $this->pdf->Output('po_' . $data[0]->pono . '.pdf', 'I');
+            ob_end_flush();
+
+        } else {
+            echo json_encode(false);
+        }
+        $funcPerm = $this->Generic_model->getFuncPermision('vouc');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'po print (' . $data[0]->vuno . ')');
+
+    }
+    //END PRINT PO </2019-10-08>
 //************************************************
 //***             END PURCHASE ORDER           ***
 //************************************************
