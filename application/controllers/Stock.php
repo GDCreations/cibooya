@@ -1716,6 +1716,7 @@ class Stock extends CI_Controller
             'dscr' => $this->input->post('dscr'),
             'scli' => $this->input->post('strscl'),
             'mxlv' => $this->input->post('mxlv'),
+            'rolv' => $this->input->post('rolv'),
             'stat' => 0,
             'remk' => $this->input->post('remk'),
             'crby' => $_SESSION['userId'],
@@ -1927,6 +1928,7 @@ class Stock extends CI_Controller
                 'dscr' => $this->input->post('dscr_edt'),
                 'scli' => $this->input->post('strscl_edt'),
                 'mxlv' => $this->input->post('mxlvEdt'),
+                'rolv' => $this->input->post('rolv_edt'),
                 'remk' => $this->input->post('remk_edt'),
                 'mdby' => $_SESSION['userId'],
                 'mddt' => date('Y-m-d H:i:s'),
@@ -1950,6 +1952,7 @@ class Stock extends CI_Controller
                 'dscr' => $this->input->post('dscr_edt'),
                 'scli' => $this->input->post('strscl_edt'),
                 'mxlv' => $this->input->post('mxlvEdt'),
+                'rolv' => $this->input->post('rolv_edt'),
                 'stat' => 1,
                 'remk' => $this->input->post('remk_edt'),
                 'apby' => $_SESSION['userId'],
@@ -2641,9 +2644,9 @@ class Stock extends CI_Controller
                     "<button type='button' disabled onclick='rejectPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             }
 
-            if($row->grnst==1){
+            if ($row->grnst == 1) {
                 $grn = "<label class='label label-info label-bordered label-ghost' title='GRN / GRRN process done'>GRN</label>";
-            }else{
+            } else {
                 $grn = "";
             }
 
@@ -2654,7 +2657,7 @@ class Stock extends CI_Controller
             $sub_arr[] = $row->oddt;
             $sub_arr[] = number_format($row->totl, 2);
             $sub_arr[] = $row->crdt;
-            $sub_arr[] = $stat." ".$grn;
+            $sub_arr[] = $stat . " " . $grn;
             $sub_arr[] = $option;
             $data[] = $sub_arr;
         }
@@ -3002,7 +3005,7 @@ class Stock extends CI_Controller
                 $this->pdf->SetXY(15, $y);
                 $this->pdf->Cell(40, 3, $rest[$i]->itcd, 'L');
                 $this->pdf->SetXY(55, $y);
-                $this->pdf->MultiCell(80, 3, $rest[$i]->itnm." \n MODEL - ".$rest[$i]->mdl." (".$rest[$i]->mlcd.")", 0);
+                $this->pdf->MultiCell(80, 3, $rest[$i]->itnm . " \n MODEL - " . $rest[$i]->mdl . " (" . $rest[$i]->mlcd . ")", 0);
                 $y2 = $this->pdf->getY();
                 $this->pdf->SetXY(135, $y);
                 $this->pdf->Cell(20, 3, $rest[$i]->qnty, 0, '', 'C');
@@ -3093,11 +3096,11 @@ class Stock extends CI_Controller
             // REPRINT TAG
 //            $policy = $this->Generic_model->getData('sys_policy', array('post'), array('popg' => 'vouc', 'stat' => 1));
 //            if ($policy[0]->post == 1) {
-                if ($rcdt[0]->prct > 1) {
-                    $this->pdf->SetFont('Helvetica', 'B', 7);
-                    $this->pdf->SetXY(4, 280);
-                    $this->pdf->Cell(0, 0, 'REPRINTED (' . $pntc . ')');
-                }
+            if ($rcdt[0]->prct > 1) {
+                $this->pdf->SetFont('Helvetica', 'B', 7);
+                $this->pdf->SetXY(4, 280);
+                $this->pdf->Cell(0, 0, 'REPRINTED (' . $pntc . ')');
+            }
 //            }
 
             //QR CODE
@@ -3233,7 +3236,7 @@ class Stock extends CI_Controller
                 'crby' => $_SESSION['userId'],
                 'crdt' => date('Y-m-d H:i:s'),
             );
-             $this->Generic_model->insertData('stock_grn', $data_arr);
+            $this->Generic_model->insertData('stock_grn', $data_arr);
 
             // GRN DETAILS SAVE SUB DETAILS TABLE
             // get voucher last recode id
@@ -3321,7 +3324,7 @@ class Stock extends CI_Controller
                 'crby' => $_SESSION['userId'],
                 'crdt' => date('Y-m-d H:i:s'),
             );
-             $this->Generic_model->insertData('stock_grn', $data_arr);
+            $this->Generic_model->insertData('stock_grn', $data_arr);
 
             // GRN DETAILS SAVE SUB DETAILS TABLE
             // get voucher last recode id
@@ -3348,14 +3351,14 @@ class Stock extends CI_Controller
                         'stat' => 1,
                         'remk' => $gdrm[$a],
                     );
-                     $this->Generic_model->insertData('stock_grn_des', $data_arr2);
+                    $this->Generic_model->insertData('stock_grn_des', $data_arr2);
                 }
             }
             $funcPerm = $this->Generic_model->getFuncPermision('grnMng');
             $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Add New GRRN (' . $grno . ')');
         }
 
-        $this->Generic_model->updateData('stock_po',array('grnst'=>1),array('poid'=>$this->input->post('podt')));
+        $this->Generic_model->updateData('stock_po', array('grnst' => 1), array('poid' => $this->input->post('podt')));
 
         $funcPerm = $this->Generic_model->getFuncPermision('grnMng');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "GRN Added ($grno)");
@@ -3435,7 +3438,7 @@ class Stock extends CI_Controller
                     "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed btn-rounded' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed btn-rounded' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' id='rej'  disabled  onclick='rejecPo($grid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
-            }else{
+            } else {
                 $stat = " <span class='label label-danger'> --</span> ";
                 $option =
                     "<button type='button' $viw  data-toggle='modal' data-target='#modalView'  onclick='viewGrn($grid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -3720,5 +3723,269 @@ class Stock extends CI_Controller
 //END ACTIVATE SUPPLIER </JANAKA 2019-09-23>
 //************************************************
 
+
+//************************************************
+//***             STOCK MANAGEMENT             ***
+//************************************************
+//LOAD PAGE </ 2019-10-08>
+    function stckMng()
+    {
+        $data['acm'] = ''; //Module
+        $data['acp'] = 'stckMng'; //Page
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('stckMng');
+        $data2['category'] = $this->Generic_model->getData('category', array('ctid', 'ctcd', 'ctnm', 'stat'), "stat IN(1,3)");
+        $data2['brand'] = $this->Generic_model->getData('brand', array('bdid', 'bdcd', 'bdnm', 'logo', 'stat'), "stat IN(1,3)");
+        $data2['type'] = $this->Generic_model->getData('type', array('tpid', 'tpcd', 'tpnm', 'stat'), "stat IN(1,3)");
+        $data2['supplier'] = $this->Generic_model->getData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat' => 1));
+
+        $this->load->view('admin/stock/stckManagement', $data2);
+
+        $this->load->view('common/tmpFooter', $data);
+    }
+    //END LOAD PAGE </ 2019-10-08>
+
+    //GET GRN
+    function getGrn(){
+        $spid = $this->input->post('spid');
+
+        $this->db->select("grn.grid,grn.grno,grn.grdt");
+        $this->db->from("stock_grn grn");
+        $this->db->where('grn.spid', $spid);
+        $this->db->where('grn.stat', 1);
+        $this->db->where('grn.grtp', 1);
+        $this->db->where('grn.stst', 0);
+        $query = $this->db->get();
+        $data = $query->result();
+
+        echo json_encode($data);
+    }
+    //GET GRN
+
+    //GET GRN DETAILS
+    function getGrnDet(){
+        $grid = $this->input->post('grid');
+
+        $this->db->select("grn.*,wh.whcd,wh.whnm,(po.vtrt + po.nbrt + po.btrt + po.txrt) AS rate");
+        $this->db->from('stock_grn grn');
+        $this->db->join('stock_wh wh','wh.whid=grn.whid');
+        $this->db->join('stock_po po','po.poid=grn.poid');
+        $this->db->where('grn.grid',$grid);
+        $res['grn'] = $this->db->get()->result();
+
+        $this->db->select("grnd.*,it.itcd,it.itnm");
+        $this->db->from('stock_grn_des grnd');
+        $this->db->join('item it','it.itid=grnd.itid');
+        $this->db->where("grnd.grid=$grid AND grnd.stat=1");
+        $res['grnd'] = $this->db->get()->result();
+
+        echo json_encode($res);
+    }
+    //END GET GRN DETAILS
+
+    // STOCK ADD ADD </2019-10-09>
+    function addStock()
+    {
+        $spid = $this->input->post('spid');
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        //STOCK CODE GENERATE
+        $supply = $this->Generic_model->getData('supp_mas', array('spcd'), array('stat' => 1, 'spid' => $spid));
+        $spcd = $supply[0]->spcd;
+
+        $this->db->select("stcd");
+        $this->db->from("stock");
+        //$this->db->where('spid', $spid);
+        $this->db->order_by('stid', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        $data = $query->result();
+
+        $yr = date('y');
+
+        if(sizeof($data)>0){
+            $icde = $data[0]->stcd;
+            $re = (explode("-", $icde));
+
+            $aa = intval($re[1]) + 1;
+            $cc = strlen($aa);
+            if ($cc == 1) {
+                $xx = '000' . $aa;
+            } else if ($cc == 2) {
+                $xx = '00' . $aa;
+            } else if ($cc == 3) {
+                $xx = '0' . $aa;
+            } else if ($cc == 4) {
+                $xx = '' . $aa;
+            }
+            $stno = 'ST' . $yr . '-' . $xx;
+        }else{
+            $stno = 'ST' . $yr . '-0001';  // Ex (STOCK)(YEAR)-NO - ST18-0001
+        }
+
+        $len = $this->input->post('leng');
+
+        $itid = $this->input->post('itid[]');   // ITEM CODE
+        $untp = $this->input->post('untp[]');   // UNIT PRICE
+        $txpr = $this->input->post('txpr[]');   // TAX + COST
+        $csvl = $this->input->post('csvl[]');   // COST
+        $fcvl = $this->input->post('dsvl[]');   // DISPLY
+        $slvl = $this->input->post('slvl[]');   // SALES
+        $mkvl = $this->input->post('mkvl[]');   // MARKET
+        $frqt = $this->input->post('frqt[]');
+        $qunt = $this->input->post('qunt[]');   // QUENTY
+        $dscr = $this->input->post('rmks[]');   // REMARKS
+
+        $gdid = $this->input->post('gdid[]');   // GRN DES TB ID
+
+        $stidNw = 0;
+        $stidNw2 = 0;
+        for ($a = 0; $a < $len; $a++) {
+            // IF SALES VALUE & FACE VALUE NOT EMPTY & NOT ZERO
+            if ($fcvl[$a] != 0 || $fcvl[$a] != 0 && $slvl[$a] != 0 || $slvl[$a] != 0) {
+                $this->Generic_model->insertData('stock', array(
+                    'stcd' => $stno,
+                    'spid' => $spid,
+                    'grid' => $this->input->post('grid'),
+                    'gdid' => $gdid[$a],
+                    'whid' => $this->input->post('whid'),
+                    'itid' => $itid[$a],
+
+                    'untp' => $untp[$a],
+                    'txvl' => $txpr[$a],
+                    'csvl' => $csvl[$a],
+                    'fcvl' => $fcvl[$a],
+                    'slvl' => $slvl[$a],
+                    'mkvl' => $mkvl[$a],
+                    'frqt' => $frqt[$a],
+                    'qunt' => $qunt[$a],
+                    'avqn' => ($frqt[$a] + $qunt[$a]),
+                    'dscr' => $dscr[$a],
+                    'stat' => 0,
+                    'blsk' => 0,
+                    'crby' => $_SESSION['userId'],
+                    'crdt' => date('Y-m-d H:i:s'),
+                ));
+                if($a==0){
+                    $stidNw = $this->db->insert_id();
+                }
+                $stidNw2 = $this->db->insert_id();
+            }
+        }
+
+        if($stidNw==$stidNw2){
+            $msg = $stidNw;
+        }else{
+            $msg = $stidNw." - ".$stidNw2;
+        }
+
+        $this->Generic_model->updateData('stock_grn',array('stst'=>1),array('grid'=>$this->input->post('grid')));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Add New Stocks ($msg)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+    // END STOCK ADD ADD </2019-10-09>
+
+    //SEARCH STOCK </2019-10-09>
+    function srchStck()
+    {
+        $funcPerm = $this->Generic_model->getFuncPermision('stckMng');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edt = "";
+        } else {
+            $edt = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rej = "";
+        } else {
+            $rej = "disabled";
+        }
+
+        $result = $this->Stock_model->get_mnStock();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            $st = $row->stat;
+            $stid = $row->stid;
+            if ($st == '0') {                   // Pending
+                $stat = " <span class='label label-warning'> Pending </span> ";
+                $option =
+                    "<button type='button' $viw  data-toggle='modal' data-target='#modalView'  onclick='viewStck($stid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  $edt  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck($stid,this.id);' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  $app  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck($stid,this.id);' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  $rej  onclick='rejecStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+
+            } else if ($st == '1') {           // Approved
+                $stat = " <span class='label label-success'> Active </span> ";
+                $option =
+                    "<button type='button' $viw  data-toggle='modal' data-target='#modalView'  onclick='viewStck($stid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+
+            } else if ($st == '2') {            // Rejected
+                $stat = " <span class='label label-danger'> Inactive</span> ";
+                $option =
+                    "<button type='button' $viw  data-toggle='modal' data-target='#modalView'  onclick='viewStck($stid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+
+                /*"<button type='button' onclick='reactvStck($itid);' class='btn btn-default btn-condensed $reac2' title='ReActive'><i class='glyphicon glyphicon-wrench' aria-hidden='true'></i></button> "*/
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->stcd;
+            $sub_arr[] = $row->spnm;
+            $sub_arr[] = $row->itcd . ' | ' . $row->itnm;
+            $sub_arr[] = number_format($row->csvl, 2, '.', ',');
+            $sub_arr[] = number_format($row->fcvl, 2, '.', ',');
+            $sub_arr[] = number_format($row->slvl, 2, '.', ',');
+            $sub_arr[] = $row->qunt;
+            $sub_arr[] = $row->frqt;
+            $sub_arr[] = $row->avqn;
+            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        //$output = array("data" => $data);
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Stock_model->count_all_mnStock(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_mnStock(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+    //SEARCH STOCK </2019-10-09>
+//************************************************
+//***           END STOCK MANAGEMENT           ***
+//************************************************
 
 }
