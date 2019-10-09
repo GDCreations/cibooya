@@ -80,9 +80,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-sm btn-primary btn-rounded  btn-icon-fixed pull-right" onclick="srchUser()">
-                        <span class="fa fa-search"></span>Search
-                    </button>
+                    <label class="col-md-4 col-xs-12 control-label"><br></label>
+                    <div class="col-md-8 col-xs-12">
+                        <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed pull-right" onclick="srchUser()"><span
+                                    class="fa fa-search"></span>Search
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

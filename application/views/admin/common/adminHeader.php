@@ -150,7 +150,11 @@
                                         </a>
                                     </li>
                                 <?php } ?>
-
+                                <?php if (in_array("stckMng", $permission, TRUE)) { ?>
+                                    <li><a id="stckMng" href="<?= base_url() ?>Stock/stckMng">
+                                            <span class="nav-icon-hexa fa fa-cubes"></span> Stock Management </a>
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </li>
                         <?php $Stock_title = false;
