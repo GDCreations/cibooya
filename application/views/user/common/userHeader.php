@@ -51,7 +51,7 @@
 
                             </ul>
                         </li>
-                    <?php  $msgModule_titl = false;
+                        <?php $msgModule_titl = false;
                     } ?>
                     <?php
                     //MAIN TITLE
@@ -65,9 +65,9 @@
                     <li id="sysCmp">
                         <a href="#"><span class="nav-icon-hexa fa fa-cog"></span> SYSTEM SUPPORT</a>
                         <ul>
-                           <!-- <li><a href="http://northpony.com/software/AA_v3.6.zip" target='_blank'>
-                                    <span class='nav-icon-hexa fa fa-cloud-download'></span> Ammyy Admin Software</a>
-                            </li>-->
+                            <!-- <li><a href="http://northpony.com/software/AA_v3.6.zip" target='_blank'>
+                                     <span class='nav-icon-hexa fa fa-cloud-download'></span> Ammyy Admin Software</a>
+                             </li>-->
                             <li><a href="http://northpony.com/software/AnyDesk.zip" target='_blank'>
                                     <span class='nav-icon-hexa fa fa-cloud-download'></span> AnyDesk Software</a></li>
                             <li><a href="http://northpony.com/System_support/How_To_Enable_Popup_Chrome_Browser.pdf"
@@ -166,7 +166,9 @@
                                             data-toggle="dropdown"
                                             title="Notification">
                                         <span class="icon-envelope"></span>
-                                        <span class="informer informer-warning informer-sm informer-square"><?= sizeof($syschng); ?></span>
+                                        <?php if (sizeof($syschng) > 0) { ?>
+                                            <span class="informer informer-warning informer-sm informer-square"><?= sizeof($syschng); ?></span>
+                                        <?php } ?>
                                     </button>
                                     <ul class="dropdown-menu dropdown-form dropdown-left dropdown-form-wide">
                                         <li class="padding-0">
@@ -351,7 +353,8 @@
                                         <?php
                                     }
                                     ?>
-                                    <li><a href="<?= base_url(); ?>welcome/userProfile"><span class="icon-user"></span>Your Profile</a></li>
+                                    <li><a href="<?= base_url(); ?>welcome/userProfile"><span class="icon-user"></span>Your
+                                            Profile</a></li>
                                     <li><a href="<?= base_url(); ?>welcome/lockScren"><span class="icon-lock"></span>
                                             Lock Screen</a></li>
                                     <li class="divider"></li>
