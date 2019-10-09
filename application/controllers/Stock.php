@@ -2641,9 +2641,9 @@ class Stock extends CI_Controller
                     "<button type='button' disabled onclick='rejectPo($row->poid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button>";
             }
 
-            if($row->grnst==1){
+            if ($row->grnst == 1) {
                 $grn = "<label class='label label-info label-bordered label-ghost' title='GRN / GRRN process done'>GRN</label>";
-            }else{
+            } else {
                 $grn = "";
             }
 
@@ -3356,7 +3356,7 @@ class Stock extends CI_Controller
             $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Add New GRRN (' . $grno . ')');
         }
 
-        $this->Generic_model->updateData('stock_po',array('grnst'=>1),array('poid'=>$this->input->post('podt')));
+        $this->Generic_model->updateData('stock_po', array('grnst' => 1), array('poid' => $this->input->post('podt')));
 
         $funcPerm = $this->Generic_model->getFuncPermision('grnMng');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "GRN Added ($grno)");
@@ -3413,6 +3413,11 @@ class Stock extends CI_Controller
         foreach ($result as $row) {
             $grid = $row->grid;
 
+            if ($row->stst == '0') {
+                $stst = " <span class='label label-warning' title='Stock Not Added'>S:N </span> ";
+            } else {
+                $stst = " <span class='label label-success' title='Stock Added'> S:A </span> ";
+            }
             //"<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
 
             if ($row->stat == '0') {                   // Pending
@@ -3455,7 +3460,7 @@ class Stock extends CI_Controller
             $sub_arr[] = $row->frqt;
             $sub_arr[] = $row->rcqt;
             $sub_arr[] = $row->rtqt;
-            $sub_arr[] = $stat;
+            $sub_arr[] = $stat; // . '  ' . $stst
             $sub_arr[] = $row->crdt;
             $sub_arr[] = $option;
             $data[] = $sub_arr;
@@ -3720,13 +3725,13 @@ class Stock extends CI_Controller
                 $this->pdf->SetXY(160, $y);
                 $this->pdf->Cell(20, 3, $rest[$i]->qnty, 0, 0, 'R');
                 $this->pdf->SetXY(180, $y);
-                $this->pdf->Cell(25, 3, number_format($rest[$i]->untp*$rest[$i]->qnty, 2, '.', ','), 0, '', 'R');
+                $this->pdf->Cell(25, 3, number_format($rest[$i]->untp * $rest[$i]->qnty, 2, '.', ','), 0, '', 'R');
 
                 $y = $y + 5;
                 $qnty = $qnty + $rest[$i]->qnty;
                 $frqty = $frqty + $rest[$i]->frqt;
                 $todqt = $todqt + $rest[$i]->odqt;
-                $ttlPrc = $ttlPrc+ ($rest[$i]->untp*$rest[$i]->qnty);
+                $ttlPrc = $ttlPrc + ($rest[$i]->untp * $rest[$i]->qnty);
             }
             //-----TOTAL AMOUNT--------//
 
@@ -3742,7 +3747,7 @@ class Stock extends CI_Controller
             $this->pdf->SetXY(160, 210);
             $this->pdf->Cell(20, 8, $qnty, 1, 0, 'R');
             $this->pdf->SetXY(180, 210);
-            $this->pdf->Cell(25, 8, number_format($ttlPrc,2,'.',','), 1, 0, 'R');
+            $this->pdf->Cell(25, 8, number_format($ttlPrc, 2, '.', ','), 1, 0, 'R');
 
             // REMARKS
             $this->pdf->SetXY(5, 210);
@@ -3781,11 +3786,11 @@ class Stock extends CI_Controller
             // REPRINT TAG
             //$policy = $this->Generic_model->getData('sys_policy', array('post'), array('popg' => 'vouc', 'stat' => 1));
             //if ($policy[0]->post == 1) {
-                if ($rcdt[0]->pntc > 1) {
-                    $this->pdf->SetFont('Helvetica', 'B', 7);
-                    $this->pdf->SetXY(4, 288);
-                    $this->pdf->Cell(0, 0, 'REPRINTED (' . $pntc . ')');
-                }
+            if ($rcdt[0]->pntc > 1) {
+                $this->pdf->SetFont('Helvetica', 'B', 7);
+                $this->pdf->SetXY(4, 288);
+                $this->pdf->Cell(0, 0, 'REPRINTED (' . $pntc . ')');
+            }
             //}
 
             //QR CODE
