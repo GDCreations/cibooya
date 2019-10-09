@@ -553,7 +553,7 @@
                         digits: true
                     },
                     tfrqt: {
-                        required: true,
+                        //required: true,
                         notEqual: 0,
                         digits: true
                     },
@@ -564,7 +564,7 @@
                     },
                     rtnqt: {
                         //required: true,
-                        notEqual: 0,
+                        //notEqual: 0,
                         digits: true
                     },
                     chkby: {
@@ -615,7 +615,7 @@
                     },
                     tfrqtEdt: {
                         //required: true,
-                        notEqual: 0,
+                        //notEqual: 0,
                         digits: true
                     },
                     rcvqtEdt: {
@@ -625,7 +625,7 @@
                     },
                     rtnqtEdt: {
                         //required: true,
-                        notEqual: 0,
+                        //notEqual: 0,
                         digits: true
                     },
                     chkbyEdt: {

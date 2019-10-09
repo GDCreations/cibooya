@@ -630,7 +630,7 @@ class Stock_model extends CI_Model
 
     function count_filtered_grn()
     {
-        $this-grnDet_queryData();
+        $this->grnDet_queryData();
         $query = $this->db->get();
         return $query->num_rows();
     }

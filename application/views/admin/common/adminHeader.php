@@ -146,7 +146,8 @@
                                 <?php } ?>
                                 <?php if (in_array("grnMng", $permission, TRUE)) { ?>
                                     <li><a id="grnMng" href="<?= base_url() ?>Stock/grnMng">
-                                            <span class="nav-icon-hexa fa fa-list-ul"></span> Good Received Note (GRN) </a>
+                                            <span class="nav-icon-hexa fa fa-list-ul"></span> Good Received Note (GRN)
+                                        </a>
                                     </li>
                                 <?php } ?>
 
@@ -258,7 +259,9 @@
                                             data-toggle="dropdown"
                                             title="Notification">
                                         <span class="icon-envelope"></span>
-                                        <span class="informer informer-warning informer-sm informer-square"><?= sizeof($syschng); ?></span>
+                                        <?php if (sizeof($syschng) > 0) { ?>
+                                            <span class="informer informer-warning informer-sm informer-square"><?= sizeof($syschng); ?></span>
+                                        <?php } ?>
                                     </button>
                                     <ul class="dropdown-menu dropdown-form dropdown-left dropdown-form-wide">
                                         <li class="padding-0">

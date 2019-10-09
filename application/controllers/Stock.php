@@ -3418,28 +3418,28 @@ class Stock extends CI_Controller
             if ($row->stat == '0') {                   // Pending
                 $stat = " <span class='label label-warning'> Pending </span> ";
                 $option =
-                    "<button type='button' id='viw' $viw  data-toggle='modal' data-target='#modalView'  onclick='viewGrn($grid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='app' $app  data-toggle='modal' data-target='#modalView'  onclick='viewGrn($grid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='view' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewGrn($grid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app' $app  data-toggle='modal' data-target='#modal-view'  onclick='viewGrn($grid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' id='rej' $rejt disabled onclick='rejecPo($grid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
 
             } else if ($row->stat == '1') {           // Approved
                 $stat = " <span class='label label-success'> Approved </span> ";
                 $option =
-                    "<button type='button' id='viw' $viw  data-toggle='modal' data-target='#modalView'  onclick='viewGrn($grid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='view' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewGrn($grid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' id='pnt' $app onclick='prntGrn($grid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Print'><i class='fa fa-print' aria-hidden='true'></i></button> " .
                     "<button type='button' id='rej'  disabled  onclick='rejecPo($grid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
 
             } else if ($row->stat == '2') {            // Rejected
                 $stat = " <span class='label label-danger'> Inactive</span> ";
                 $option =
-                    "<button type='button' $viw  data-toggle='modal' data-target='#modalView'  onclick='viewGrn($grid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewGrn($grid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed btn-rounded' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed btn-rounded' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' id='rej'  disabled  onclick='rejecPo($grid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
-            }else{
+            } else {
                 $stat = " <span class='label label-danger'> --</span> ";
                 $option =
-                    "<button type='button' $viw  data-toggle='modal' data-target='#modalView'  onclick='viewGrn($grid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewGrn($grid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed btn-rounded' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed btn-rounded' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' id='rej'  disabled  onclick='rejecPo($grid);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
@@ -3464,175 +3464,65 @@ class Stock extends CI_Controller
 
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" => $this->Stock_model->count_all_supp(),
-            "recordsFiltered" => $this->Stock_model->count_filtered_supp(),
+            "recordsTotal" => $this->Stock_model->count_all_grn(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_grn(),
             "data" => $data,
         );
         echo json_encode($output);
     }
 
-//GET SUPPLIER DETAILS </JANAKA 2019-09-20>
-    function get_SuppDetXX()
+    // GET GRN VIEW DETAILS
+    function vewGrnDetails()
     {
-        $id = $this->input->post('id');
-        //Supplier Details
-        $this->db->select("sup.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(ap.fnme,' ',ap.lnme) AS apnm, CONCAT(md.fnme,' ',md.lnme) AS mdnm, CONCAT(rj.fnme,' ',rj.lnme) AS rjnm");
-        $this->db->from('supp_mas sup');
-        $this->db->join('user_mas cr', 'cr.auid=sup.crby');
-        $this->db->join('user_mas ap', 'ap.auid=sup.apby', 'LEFT');
-        $this->db->join('user_mas md', 'md.auid=sup.mdby', 'LEFT');
-        $this->db->join('user_mas rj', 'rj.auid=sup.rjby', 'LEFT');
-        $this->db->where("sup.spid=$id");
-        $data['spdet'] = $this->db->get()->result();
-        //Bank Details
-        $this->db->select("bnk.acid,bnk.acno,bnk.dfst,bank.bkcd,bank.bknm,bank_brch.brcd,bank_brch.bcnm");
-        $this->db->from('sup_bnk_acc bnk');
-        $this->db->join('bank', 'bank.bnid=bnk.bnid');
-        $this->db->join('bank_brch', 'bank_brch.brid=bnk.brid');
-        $this->db->where("bnk.stat=1 AND spid=$id");
-        $data['bkdet'] = $this->db->get()->result();
+        $auid = $this->input->post('auid');
+
+        $this->db->select("stock_grn.*, supp_mas.spnm,  stock_po.pono, stock_wh.whnm, stock_wh.whcd, DATE_FORMAT(stock_grn.crdt, '%Y-%m-%d') AS crdt, 
+        CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(ap.fnme,' ',ap.lnme) AS apnm, CONCAT(rj.fnme,' ',rj.lnme) AS rjnm");
+        $this->db->from("stock_grn");
+        $this->db->join('supp_mas', 'supp_mas.spid = stock_grn.spid ');
+        $this->db->join('stock_po', 'stock_po.poid = stock_grn.poid ');
+        $this->db->join('stock_wh', 'stock_wh.whid = stock_grn.whid ');
+
+        $this->db->join('user_mas cr', 'cr.auid=stock_grn.crby');
+        $this->db->join('user_mas ap', 'ap.auid=stock_grn.apby', 'LEFT');
+        //$this->db->join('user_mas md', 'md.auid=stock_grn.mdby', 'LEFT');
+        $this->db->join('user_mas rj', 'rj.auid=stock_grn.rjby', 'LEFT');
+
+        $this->db->where('stock_grn.grid', $auid);
+        $query = $this->db->get();
+        $data['grndtl'] = $query->result();
+
+        $this->db->select("stock_grn_des.*, item.itnm, item.itcd");
+        $this->db->from("stock_grn_des");
+        $this->db->join('item', 'item.itid = stock_grn_des.itid ');
+        $this->db->where('stock_grn_des.grid', $auid);
+        $this->db->where('stock_grn_des.stat', 1);
+        $this->db->order_by('stock_grn_des.gdid', 'asc'); // desc
+        $query = $this->db->get();
+        $data['poitem'] = $query->result();
 
         echo json_encode($data);
     }
-//END GET SUPPLIER DETAILS </JANAKA 2019-09-20>
 
-//ADD NEW SUPPLIER BANK ACCOUNT </JANAKA 2019-09-20>
-    function supp_add_bnkAccXX()
-    {
-        $this->db->trans_begin(); // SQL TRANSACTION START
-
-        $spid = $this->input->post('spid');
-        $bknm = $this->input->post('bknm');
-        $bkbr = $this->input->post('bkbr');
-        $acc = $this->input->post('acc');
-
-        // supplier previous bank account remove the default
-        $this->Generic_model->updateData('sup_bnk_acc', array('dfst' => 0,), array('spid' => $spid));
-
-        $this->Generic_model->insertData('sup_bnk_acc',
-            array(
-                'spid' => $spid,
-                'bnid' => $bknm,
-                'brid' => $bkbr,
-                'acno' => $acc,
-                'dfst' => 1,
-                'stat' => 1
-            ));
-        $lstid = $this->db->insert_id();
-
-        $funcPerm = $this->Generic_model->getFuncPermision('supReg');
-        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier's Bank Account Added ($lstid)");
-
-        if ($this->db->trans_status() === FALSE) {
-            $this->db->trans_rollback();
-            echo json_encode(false);
-        } else {
-            $this->db->trans_commit(); // SQL TRANSACTION END
-            //Get entered data
-            $this->db->select("bnk.acid,bnk.acno,bnk.dfst,bank.bkcd,bank.bknm,bank_brch.brcd,bank_brch.bcnm");
-            $this->db->from('sup_bnk_acc bnk');
-            $this->db->join('bank', 'bank.bnid=bnk.bnid');
-            $this->db->join('bank_brch', 'bank_brch.brid=bnk.brid');
-            $this->db->where("bnk.stat=1 AND spid=$spid");
-            $data['accDet'] = $this->db->get()->result();
-            echo json_encode($data);
-        }
-    }
-//END NEW SUPPLIER BANK ACCOUNT </JANAKA 2019-09-20>
-
-//SUPPLIER UPDATE || APPROVE </JANAKA 2019-09-23>
-    function supp_updateXX()
+    // GRN UPDATE || APPROVE
+    function updateGrn()
     {
         $func = $this->input->post('func');
-        $spid = $this->input->post('spid');
-
-        if ($this->input->post('bnkDtlEdt') == '')
-            $bkdt = 0;
-        else
-            $bkdt = 1;
+        $grid = $this->input->post('grnid');
 
         $this->db->trans_begin(); // SQL TRANSACTION START
 
-        $df = $this->input->post('dfstRd[]');
-        $acc = $this->input->post('acnoList[]');
-
-        //accounts updates
-        $this->Generic_model->updateData('sup_bnk_acc', array('stat' => 0, 'dfst' => 0), array('spid' => $spid));
-        for ($it = 0; $it < sizeof($acc); $it++) {
-            if ($acc[$it] == $df[0]) {
-                $def = 1;
-            } else {
-                $def = 0;
-            }
-            $this->Generic_model->updateData('sup_bnk_acc', array(
-                'stat' => 1,
-                'dfst' => $def), array('acid' => $acc[$it]));
-        }
-
-        //Creating customer next number
-        $this->db->select("spcd");
-        $this->db->from('supp_mas');
-        $this->db->order_by('spcd', 'DESC');
-        $this->db->where("stat NOT IN(0,2)");
-        $this->db->limit(1);
-        $res = $this->db->get()->result();
-        if (sizeof($res) > 0) {
-            $number = explode('-', $res[0]->spcd);
-            $aa = intval($number[1]) + 1;
-            $cc = strlen($aa);
-
-            if ($cc == 1) {
-                $xx = '000' . $aa;
-            } else if ($cc == 2) {
-                $xx = '00' . $aa;
-            } else if ($cc == 3) {
-                $xx = '0' . $aa;
-            } else if ($cc == 4) {
-                $xx = $aa;
-            }
-            $supcd = "S-" . $xx;
-        } else {
-            $supcd = "S-0001";
-        }
-
-        if ($func == 'edit') {
+        if ($func == 'app') {
             //Updating supplier details
-            $this->Generic_model->updateData('supp_mas', array(
-                'spnm' => $this->input->post('name_edt'),
-                'addr' => $this->input->post('addr_edt'),
-                'mbno' => $this->input->post('mobi_edt'),
-                'tele' => $this->input->post('tele_edt'),
-                'email' => $this->input->post('email_edt'),
-                'dscr' => $this->input->post('remk_edt'),
-                'mdby' => $_SESSION['userId'],
-                'mddt' => date('Y-m-d H:i:s'),
-                'bkdt' => $bkdt,
-            ), array('spid' => $spid));
+            $this->Generic_model->updateData('stock_grn',
+                array(
+                    'stat' => 1,
+                    'apby' => $_SESSION['userId'],
+                    'apdt' => date('Y-m-d H:i:s'),
+                ), array('grid' => $grid));
 
-            $funcPerm = $this->Generic_model->getFuncPermision('supReg');
-            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier's Details Updated ($spid)");
-
-        } else if ($func == 'app') {
-            //Updating supplier details
-            $this->Generic_model->updateData('supp_mas', array(
-                'spcd' => $supcd,
-                'spnm' => $this->input->post('name_edt'),
-                'addr' => $this->input->post('addr_edt'),
-                'mbno' => $this->input->post('mobi_edt'),
-                'tele' => $this->input->post('tele_edt'),
-                'email' => $this->input->post('email_edt'),
-                'dscr' => $this->input->post('remk_edt'),
-                'bkdt' => $bkdt,
-
-                'stat' => 1,
-                'apby' => $_SESSION['userId'],
-                'apdt' => date('Y-m-d H:i:s'),
-                'mdby' => $_SESSION['userId'],
-                'mddt' => date('Y-m-d H:i:s'),
-            ), array('spid' => $spid));
-
-            $funcPerm = $this->Generic_model->getFuncPermision('supReg');
-            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Approved ($spid)");
+            $funcPerm = $this->Generic_model->getFuncPermision('grnMng');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, "GRN Approved ($grid)");
         }
 
         if ($this->db->trans_status() === FALSE) {
@@ -3643,10 +3533,278 @@ class Stock extends CI_Controller
             echo json_encode(true);
         }
     }
-//END SUPPLIER UPDATE || APPROVE </JANAKA 2019-09-23>
 
-//REJECT SUPPLIER </JANAKA 2019-09-23>
-    function supp_RejectXX()
+    // PRINT GRN
+    function grnPrint($auid)
+    {
+        $dt1 = date('Y-m-d');
+        $dt2 = date('Y / M');
+
+        $rcdt = $this->Generic_model->getData('stock_grn', array('pntc', 'grtp'), array('grid' => $auid));
+        $pntc = $rcdt[0]->pntc + 1;
+
+        if ($rcdt[0]->grtp == 1) {
+            $nttp = "GOOD RECEIVED NOTE ";
+            $abc = "RECIVE QTY ";
+        } else {
+            $nttp = "GOOD RECEIVED RETURN NOTE ";
+            $abc = "RETURN QTY ";
+        }
+
+        // PRINT COUNT UPDATE PO TB
+        if (($pntc - 1) > 0) {
+            $data_ar1 = array(
+                'rpby' => $_SESSION['userId'],
+                'rpdt' => date('Y-m-d H:i:s'),
+                'pntc' => $pntc,
+            );
+        } else {
+            $data_ar1 = array(
+                'prby' => $_SESSION['userId'],
+                'prdt' => date('Y-m-d H:i:s'),
+                'pntc' => $pntc,
+            );
+        }
+        $result1 = $this->Generic_model->updateData('stock_grn', $data_ar1, array('grid' => $auid));
+
+        if (count($result1) > 0) {
+            $this->load->library('ciqrcode');
+
+            $this->db->select("stock_grn.*,supp_mas.spcd, supp_mas.spnm, supp_mas.addr, supp_mas.mbno, supp_mas.tele, supp_mas.email, stock_wh.whnm, stock_wh.whcd,
+             stock_wh.addr AS whadr , stock_wh.tele, stock_wh.email AS whemil,  user_mas.fnme AS crby, u.fnme AS apby ");
+            $this->db->from("stock_grn");
+            $this->db->join('supp_mas', 'supp_mas.spid = stock_grn.spid ');
+            $this->db->join('user_mas', 'user_mas.auid = stock_grn.crby ');
+            $this->db->join("(SELECT u.auid, u.fnme FROM `user_mas` AS u )AS u ", 'u.auid = stock_grn.apby', 'left');  // GRN approval by
+            $this->db->join('stock_wh', 'stock_wh.whid = stock_grn.whid ');
+            $this->db->where('stock_grn.grid', $auid);
+            $query = $this->db->get();
+            $data = $query->result();
+
+            // GRN DETAILS
+            $this->db->select("stock_grn_des.*, item.itcd, item.itnm, item.itcd AS pbcd ");
+            $this->db->from("stock_grn_des");
+            $this->db->join('item', 'item.itid = stock_grn_des.itid ');
+            $this->db->where('stock_grn_des.grid', $auid);
+            $this->db->where('stock_grn_des.stat', 1);
+            $query = $this->db->get();
+            $rest = $query->result();
+
+            // LOGIN USER
+            $usedetails = $this->Generic_model->getData('user_mas', '', array('auid' => $_SESSION['userId']));
+            $usr = $usedetails[0]->fnme;
+            $comdt = $this->Generic_model->getData('com_det', array('cmne', 'cadd', 'ctel', 'ceml', 'chot'), array('stat' => 1));
+            //$branc = $this->Generic_model->getData('brch_mas', '', array('brid' => $data[0]->brco));
+
+            $_SESSION['hid'] = mt_rand(10000000, 999999999);
+            $cy = date('Y');
+            $date = date('Y-m-d H:i:s');
+            ob_start();
+            $this->pdf->AddPage('P', 'A4');
+            $this->pdf->SetFont('Helvetica', 'B', 15);
+            $this->pdf->SetTextColor(50, 50, 50);
+            $this->pdf->SetXY(10, 32);
+            $this->pdf->Cell(0, 0, $nttp, 0, 1, 'C');
+            $this->pdf->SetFont('Helvetica', '', 9);
+            $this->pdf->SetXY(188, 37);
+
+            // Top left company details
+            $this->pdf->SetFont('Helvetica', 'B', 9);
+            $this->pdf->SetXY(5, 9);
+            $this->pdf->Cell(0, 0, $comdt[0]->cmne);
+            $this->pdf->SetFont('Helvetica', '', 9);
+            $this->pdf->SetXY(5.5, 14);
+            $this->pdf->Cell(0, 0, $comdt[0]->cadd);
+            $this->pdf->SetXY(5.5, 18);
+            $this->pdf->Cell(0, 0, $comdt[0]->ctel);
+            $this->pdf->SetXY(5.5, 22);
+            $this->pdf->Cell(0, 0, $comdt[0]->chot);
+            $this->pdf->SetXY(5.5, 26);
+            $this->pdf->Cell(0, 0, $comdt[0]->ceml);
+
+            // TOP RIGHT
+            $this->pdf->SetFont('Helvetica', '', 9);
+            $this->pdf->SetXY(145, 9);
+            $this->pdf->Cell(1, 0, 'NOTE DETAILS', 0, 1, 'L');
+            $this->pdf->SetXY(145, 14);
+            $this->pdf->Cell(1, 0, 'NO', 0, 1, 'L');
+            $this->pdf->SetXY(145, 18);
+            $this->pdf->Cell(1, 0, 'DATE : ', 0, 1, 'L');
+            $this->pdf->SetXY(145, 22);
+            $this->pdf->Cell(1, 0, 'SUPPLY', 0, 1, 'L');
+            $this->pdf->SetXY(170, 14);
+            $this->pdf->Cell(1, 0, ': ' . $data[0]->grno, 0, 1, 'L');
+            $this->pdf->SetXY(170, 18);
+            $this->pdf->Cell(1, 0, ': ' . $data[0]->grdt, 0, 1, 'L');
+            $this->pdf->SetXY(170, 22);
+            $this->pdf->Cell(1, 0, ': ' . $data[0]->spcd, 0, 1, 'L');
+
+            // TABLE MAIN LEFT ( VENDOR )
+            $this->pdf->SetTextColor(0, 0, 0); // BOX COLOR CHANGE
+            $this->pdf->SetFont('Helvetica', 'B', 9);
+            $this->pdf->SetXY(10, 41);
+            $this->pdf->Cell(1, 0, 'SUPPLY ', 0, 1, 'L');
+            $this->pdf->SetFont('Helvetica', '', 8);
+            $this->pdf->SetXY(10, 45);
+            $this->pdf->Cell(1, 0, $data[0]->spnm, 0, 1, 'L');
+            $this->pdf->SetXY(10, 49);
+            $this->pdf->Cell(1, 0, $data[0]->addr, 0, 1, 'L');
+            $this->pdf->SetXY(10, 53);
+            $this->pdf->Cell(1, 0, $data[0]->tele . ' | ' . $data[0]->mbno, 0, 1, 'L');
+            $this->pdf->SetXY(10, 57);
+            $this->pdf->Cell(1, 0, $data[0]->email);
+
+            //----- TABLE -------//
+            $this->pdf->SetFont('Helvetica', 'B', 8);   // Table Header set bold font
+            $this->pdf->SetTextColor(0, 0, 0);
+            $this->pdf->SetXY(5, 37);
+            $this->pdf->Cell(200, 30, '', '1');
+
+            // Payment details table border
+            $this->pdf->SetXY(5, 60);
+            $this->pdf->Cell(10, 150, '', '1');
+            $this->pdf->SetXY(15, 60);
+            $this->pdf->Cell(25, 150, '', '1');
+            $this->pdf->SetXY(40, 60);
+            $this->pdf->Cell(55, 150, '', '1');
+            $this->pdf->SetXY(95, 60);
+            $this->pdf->Cell(25, 150, '', '1');
+            $this->pdf->SetXY(120, 60);
+            $this->pdf->Cell(20, 150, '', '1');
+            $this->pdf->SetXY(140, 60);
+            $this->pdf->Cell(20, 150, '', '1');
+            $this->pdf->SetXY(160, 60);
+            $this->pdf->Cell(20, 150, '', '1');
+            $this->pdf->SetXY(180, 60);
+            $this->pdf->Cell(25, 150, '', '1');
+
+            // #0
+            $this->pdf->SetXY(5, 60);
+            $this->pdf->Cell(10, 7, 'NO', 1, 1, 'C');
+            $this->pdf->SetXY(15, 60);
+            $this->pdf->Cell(25, 7, 'ITEM CODE', 1, 1, 'C');
+            $this->pdf->SetXY(40, 60);
+            $this->pdf->Cell(55, 7, 'ITEM NAME', 1, 1, 'C');
+            $this->pdf->SetXY(95, 60);
+            $this->pdf->Cell(25, 7, 'UNIT PRICE', 1, 1, 'C');
+            $this->pdf->SetXY(120, 60);
+            $this->pdf->Cell(20, 7, 'ORDER QTY', 1, 1, 'C');
+            $this->pdf->SetXY(140, 60);
+            $this->pdf->Cell(20, 7, 'FREE QTY', 1, 1, 'C');
+            $this->pdf->SetXY(160, 60);
+            $this->pdf->Cell(20, 7, $abc, 1, 1, 'C');
+            $this->pdf->SetXY(180, 60);
+            $this->pdf->Cell(25, 7, 'TOTAL PRICE', 1, 1, 'C');
+
+            $this->pdf->SetFont('Helvetica', '', 8);  // Table body unset bold font
+            $this->pdf->SetTextColor(0, 0, 0);
+
+            // #1 - n recode
+            $len = sizeof($rest);
+            $y = 70;
+            $todqt = $qnty = $frqty = 0;
+            $ttlPrc = 0.00;
+            for ($i = 0; $i < $len; $i++) {
+                $this->pdf->SetXY(5, $y);
+                $this->pdf->Cell(10, 3, $i + 1, 0, 0, 'C');
+                $this->pdf->SetXY(15, $y);
+                $this->pdf->Cell(25, 3, $rest[$i]->pbcd, 'L');
+                $this->pdf->SetXY(40, $y);
+                $this->pdf->Cell(55, 3, $rest[$i]->itnm, 0, 0, 'L');
+                $this->pdf->SetXY(95, $y);
+                $this->pdf->Cell(25, 3, number_format($rest[$i]->untp, 2, '.', ','), 0, '', 'R');
+                $this->pdf->SetXY(120, $y);
+                $this->pdf->Cell(20, 3, $rest[$i]->odqt, 0, 0, 'R');
+                $this->pdf->SetXY(140, $y);
+                $this->pdf->Cell(20, 3, $rest[$i]->frqt, 0, 0, 'R');
+                $this->pdf->SetXY(160, $y);
+                $this->pdf->Cell(20, 3, $rest[$i]->qnty, 0, 0, 'R');
+                $this->pdf->SetXY(180, $y);
+                $this->pdf->Cell(25, 3, number_format($rest[$i]->untp*$rest[$i]->qnty, 2, '.', ','), 0, '', 'R');
+
+                $y = $y + 5;
+                $qnty = $qnty + $rest[$i]->qnty;
+                $frqty = $frqty + $rest[$i]->frqt;
+                $todqt = $todqt + $rest[$i]->odqt;
+                $ttlPrc = $ttlPrc+ ($rest[$i]->untp*$rest[$i]->qnty);
+            }
+            //-----TOTAL AMOUNT--------//
+
+            $this->pdf->SetFont('Helvetica', 'B', 8);
+            $this->pdf->SetXY(60, 210);
+            $this->pdf->Cell(60, 10, 'TOTAL ', 0, 1, 'C');
+            //$this->pdf->SetXY(95, 210);
+            // $this->pdf->Cell(25, 8, '', 1, 0, 'C');
+            $this->pdf->SetXY(120, 210);
+            $this->pdf->Cell(20, 8, $todqt, 1, 0, 'R');
+            $this->pdf->SetXY(140, 210);
+            $this->pdf->Cell(20, 8, $frqty, 1, 0, 'R');
+            $this->pdf->SetXY(160, 210);
+            $this->pdf->Cell(20, 8, $qnty, 1, 0, 'R');
+            $this->pdf->SetXY(180, 210);
+            $this->pdf->Cell(25, 8, number_format($ttlPrc,2,'.',','), 1, 0, 'R');
+
+            // REMARKS
+            $this->pdf->SetXY(5, 210);
+            $this->pdf->Cell(20, 8, 'REMARKS  ', 0, 0, 'L');
+            $this->pdf->SetFont('Helvetica', '', 8);
+            $this->pdf->SetXY(10, 225);
+            $this->pdf->MultiCell(80, 5, $data[0]->remk, '0.5', 'L', FALSE);
+
+            // FOOTER
+            $this->pdf->Line(5, 260, 210 - 5, 260);
+            $this->pdf->SetFont('Helvetica', '', 8);
+            $this->pdf->SetXY(5, 265);
+            $this->pdf->Cell(0, 0, 'Check By : ' . $data[0]->chby);
+            $this->pdf->SetXY(5, 275);
+            $this->pdf->Cell(0, 0, 'Check By : .....................................');
+            $this->pdf->SetXY(65, 265);
+            $this->pdf->Cell(0, 0, 'Prepared By : ' . $data[0]->crby . ' | ' . $data[0]->crdt);
+            $this->pdf->SetXY(65, 275);
+            $this->pdf->Cell(0, 0, 'Prepared By : .......................................');
+            $this->pdf->SetXY(140, 265);
+            $this->pdf->Cell(0, 0, 'Approval By : ' . $data[0]->apby . ' | ' . $data[0]->apdt);
+            $this->pdf->SetXY(140, 275);
+            $this->pdf->Cell(0, 0, 'Approval By : .......................................');
+
+            $this->pdf->SetAutoPageBreak(false);
+            //FOOTER
+            $this->pdf->SetFont('Helvetica', '', 7);
+            $this->pdf->SetXY(-15, 285);
+            $this->pdf->Cell(10, 6, $_SESSION['hid'], 0, 1, 'R');
+            $this->pdf->SetFont('Helvetica', 'I', 7);
+            $this->pdf->SetXY(-15, 290);
+            $this->pdf->Cell(10, 6, 'Copyright @ ' . $cy . ' - www.gdcreations.com', 0, 1, 'R');
+            $this->pdf->SetXY(4, 290);
+            $this->pdf->Cell(0, 6, 'Printed : ' . $usedetails[0]->fnme . ' | ' . $date, 0, 1, 'L');
+
+            // REPRINT TAG
+            //$policy = $this->Generic_model->getData('sys_policy', array('post'), array('popg' => 'vouc', 'stat' => 1));
+            //if ($policy[0]->post == 1) {
+                if ($rcdt[0]->pntc > 1) {
+                    $this->pdf->SetFont('Helvetica', 'B', 7);
+                    $this->pdf->SetXY(4, 288);
+                    $this->pdf->Cell(0, 0, 'REPRINTED (' . $pntc . ')');
+                }
+            //}
+
+            //QR CODE
+            // $cd = 'Vou No : ' . $data[0]->vuno . ' | Date : ' . $data[0]->crdt . ' | Payee Name : ' . $data[0]->spnm . ' | Branch : ' . $data[0]->brnm . ' | Pay Type : ' . $data[0]->dsnm . ' | Total : Rs.' . $pyamt . ' | Printed By : ' . $usr . ' | ' . $_SESSION["hid"];
+            // $this->pdf->Image(str_replace(" ", "%20", 'http://chart.apis.google.com/chart?cht=qr&chs=190x190&chl=' . $cd), 176, 7, 26, 0, 'PNG');
+
+            $this->pdf->SetTitle('GRN - ' . $data[0]->grno);
+            $this->pdf->Output('GRN_' . $data[0]->grno . '.pdf', 'I');
+            ob_end_flush();
+
+        } else {
+            echo json_encode(false);
+        }
+        $funcPerm = $this->Generic_model->getFuncPermision('grn_mng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'GRN print (' . $data[0]->grno . ')');
+    }
+
+    // REJECT GRN
+    function grnRejectXX()
     {
         $this->db->trans_begin(); // SQL TRANSACTION START
 
@@ -3668,57 +3826,8 @@ class Stock extends CI_Controller
             echo json_encode(true);
         }
     }
-//END REJECT SUPPLIER </JANAKA 2019-09-23>
 
-//DEACTIVATE SUPPLIER </JANAKA 2019-09-23>
-    function supp_DeactiveXX()
-    {
-        $this->db->trans_begin(); // SQL TRANSACTION START
 
-        $spid = $this->input->post('id');
-        $this->Generic_model->updateData('supp_mas', array(
-            'stat' => 3,
-            'mdby' => $_SESSION['userId'],
-            'mddt' => date('Y-m-d H:i:s')
-        ), array('spid' => $spid));
-
-        $funcPerm = $this->Generic_model->getFuncPermision('supReg');
-        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Deactivated ($spid)");
-
-        if ($this->db->trans_status() === FALSE) {
-            $this->db->trans_rollback();
-            echo json_encode(false);
-        } else {
-            $this->db->trans_commit(); // SQL TRANSACTION END
-            echo json_encode(true);
-        }
-    }
-//END DEACTIVATE SUPPLIER </JANAKA 2019-09-23>
-
-//ACTIVATE SUPPLIER </JANAKA 2019-09-23>
-    function supp_ActivateXX()
-    {
-        $this->db->trans_begin(); // SQL TRANSACTION START
-
-        $spid = $this->input->post('id');
-        $this->Generic_model->updateData('supp_mas', array(
-            'stat' => 1,
-            'mdby' => $_SESSION['userId'],
-            'mddt' => date('Y-m-d H:i:s')
-        ), array('spid' => $spid));
-
-        $funcPerm = $this->Generic_model->getFuncPermision('supReg');
-        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Supplier Reactivated ($spid)");
-
-        if ($this->db->trans_status() === FALSE) {
-            $this->db->trans_rollback();
-            echo json_encode(false);
-        } else {
-            $this->db->trans_commit(); // SQL TRANSACTION END
-            echo json_encode(true);
-        }
-    }
-//END ACTIVATE SUPPLIER </JANAKA 2019-09-23>
 //************************************************
 
 
