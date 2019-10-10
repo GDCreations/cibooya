@@ -1,4 +1,17 @@
 -----------------------------------------------------
+2019-10-10 JANAKA
+ALTER TABLE `stock_sub` CHANGE `trst` `trst` INT(11) NOT NULL COMMENT 'Transfer(0-No/1-Yes)';
+ALTER TABLE `stock_sub` ADD `sldt` DATETIME NULL COMMENT 'sold date' AFTER `crdt`;
+
+-----------------------------------------------------
+2019-10-09 JANAKA
+ALTER TABLE `stock` ADD `apby` INT NOT NULL COMMENT 'approved by' AFTER `crdt`;
+ALTER TABLE `stock` ADD `apdt` DATETIME NULL COMMENT 'Approved date' AFTER `apby`;
+ALTER TABLE `stock` ADD `mdby` INT NOT NULL COMMENT 'Modified by' AFTER `apdt`;
+ALTER TABLE `stock` ADD `mddt` DATETIME NULL COMMENT 'Modified date' AFTER `mdby`;
+ALTER TABLE `stock` ADD `rjby` INT NOT NULL COMMENT 'Rejected by' AFTER `mddt`;
+ALTER TABLE `stock` ADD `rjdt` DATETIME NULL COMMENT 'Rejected date' AFTER `rjby`;
+-----------------------------------------------------
 2019-10-08 JANAKA
 UPDATE `user_page` SET `pgnm` = 'Good Received Note (GRN)' WHERE `user_page`.`aid` = 19;
 INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'stckMng', 'Stock Management', '', '0', '1', '1', '4');
@@ -8,7 +21,7 @@ ALTER TABLE `stock` CHANGE `frqt` `frqt` DOUBLE NULL DEFAULT NULL COMMENT 'Free 
 ALTER TABLE `stock` CHANGE `avqn` `avqn` DOUBLE NULL DEFAULT NULL COMMENT 'Available quantity';
 ALTER TABLE `stock` CHANGE `stat` `stat` INT(11) NULL DEFAULT NULL COMMENT '(0-Pending/1-Active/2-Finished/3-Reject)';
 -----------------------------------------------------
-2019-10-09 Gemunu
+**DONE || 2019-10-09 Gemunu
 ALTER TABLE `stock_grn` ADD `apby` INT(10) NOT NULL COMMENT 'approval by' AFTER `crdt`, ADD `apdt` DATETIME NOT NULL COMMENT 'approval date' AFTER `apby`;
 ALTER TABLE `stock_grn` ADD `rjby` INT(10) NOT NULL COMMENT 'reject by' AFTER `apdt`, ADD `rjdt` DATETIME NOT NULL COMMENT 'reject date' AFTER `rjby`;
 ALTER TABLE `stock_grn` ADD `pntc` INT(10) NOT NULL COMMENT 'print count' AFTER `rjdt`;

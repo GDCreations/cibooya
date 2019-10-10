@@ -1481,15 +1481,15 @@
                     {className: "text-right", "targets": [4]},
                     {className: "text-nowrap", "targets": [2]},
                 ],
-                "order": [[6, "DESC"]], //ASC  desc
+                "order": [[5, "DESC"]], //ASC  desc
                 "aoColumns": [
                     {sWidth: '3%'}, //No
                     {sWidth: '10%'},    //PONO
                     {sWidth: '20%'},    //SUPP
-                    {sWidth: '10%'},    //Order Date
-                    {sWidth: '10%'},    //VALUE
+                    {sWidth: '8%'},    //Order Date
+                    {sWidth: '8%'},    //VALUE
                     {sWidth: '10%'},    //Created Date
-                    {sWidth: '8%'},     //Status
+                    {sWidth: '10%'},     //Status
                     {sWidth: '12%'}     //OPT
                 ],
 

@@ -3723,13 +3723,13 @@ class Stock extends CI_Controller
                 $this->pdf->SetXY(160, $y);
                 $this->pdf->Cell(20, 3, $rest[$i]->qnty, 0, 0, 'R');
                 $this->pdf->SetXY(180, $y);
-                $this->pdf->Cell(25, 3, number_format($rest[$i]->untp*$rest[$i]->qnty, 2, '.', ','), 0, '', 'R');
+                $this->pdf->Cell(25, 3, number_format($rest[$i]->untp * $rest[$i]->qnty, 2, '.', ','), 0, '', 'R');
 
                 $y = $y + 5;
                 $qnty = $qnty + $rest[$i]->qnty;
                 $frqty = $frqty + $rest[$i]->frqt;
                 $todqt = $todqt + $rest[$i]->odqt;
-                $ttlPrc = $ttlPrc+ ($rest[$i]->untp*$rest[$i]->qnty);
+                $ttlPrc = $ttlPrc + ($rest[$i]->untp * $rest[$i]->qnty);
             }
             //-----TOTAL AMOUNT--------//
 
@@ -3745,7 +3745,7 @@ class Stock extends CI_Controller
             $this->pdf->SetXY(160, 210);
             $this->pdf->Cell(20, 8, $qnty, 1, 0, 'R');
             $this->pdf->SetXY(180, 210);
-            $this->pdf->Cell(25, 8, number_format($ttlPrc,2,'.',','), 1, 0, 'R');
+            $this->pdf->Cell(25, 8, number_format($ttlPrc, 2, '.', ','), 1, 0, 'R');
 
             // REMARKS
             $this->pdf->SetXY(5, 210);
@@ -3784,11 +3784,11 @@ class Stock extends CI_Controller
             // REPRINT TAG
             //$policy = $this->Generic_model->getData('sys_policy', array('post'), array('popg' => 'vouc', 'stat' => 1));
             //if ($policy[0]->post == 1) {
-                if ($rcdt[0]->pntc > 1) {
-                    $this->pdf->SetFont('Helvetica', 'B', 7);
-                    $this->pdf->SetXY(4, 288);
-                    $this->pdf->Cell(0, 0, 'REPRINTED (' . $pntc . ')');
-                }
+            if ($rcdt[0]->pntc > 1) {
+                $this->pdf->SetFont('Helvetica', 'B', 7);
+                $this->pdf->SetXY(4, 288);
+                $this->pdf->Cell(0, 0, 'REPRINTED (' . $pntc . ')');
+            }
             //}
 
             //QR CODE
@@ -3859,7 +3859,8 @@ class Stock extends CI_Controller
     //END LOAD PAGE </ 2019-10-08>
 
     //GET GRN
-    function getGrn(){
+    function getGrn()
+    {
         $spid = $this->input->post('spid');
 
         $this->db->select("grn.grid,grn.grno,grn.grdt");
@@ -3876,25 +3877,43 @@ class Stock extends CI_Controller
     //GET GRN
 
     //GET GRN DETAILS
-    function getGrnDet(){
+    function getGrnDet()
+    {
         $grid = $this->input->post('grid');
 
         $this->db->select("grn.*,wh.whcd,wh.whnm,(po.vtrt + po.nbrt + po.btrt + po.txrt) AS rate");
         $this->db->from('stock_grn grn');
-        $this->db->join('stock_wh wh','wh.whid=grn.whid');
-        $this->db->join('stock_po po','po.poid=grn.poid');
-        $this->db->where('grn.grid',$grid);
+        $this->db->join('stock_wh wh', 'wh.whid=grn.whid');
+        $this->db->join('stock_po po', 'po.poid=grn.poid');
+        $this->db->where('grn.grid', $grid);
         $res['grn'] = $this->db->get()->result();
 
         $this->db->select("grnd.*,it.itcd,it.itnm");
         $this->db->from('stock_grn_des grnd');
-        $this->db->join('item it','it.itid=grnd.itid');
+        $this->db->join('item it', 'it.itid=grnd.itid');
         $this->db->where("grnd.grid=$grid AND grnd.stat=1");
+        $this->db->where("grnd.gdid NOT IN((SELECT gdid FROM stock WHERE stock.stat IN(0,1,2,4) AND grid=$grid))");
         $res['grnd'] = $this->db->get()->result();
 
         echo json_encode($res);
     }
     //END GET GRN DETAILS
+
+    //GET SERIAL NUMBER ITEM </2019-10-10>
+    function srch_SrlNum(){
+        $val = $this->input->post('val');
+        $stid = $this->input->post('stid');
+
+        $this->db->select("stb.*");
+        $this->db->from('stock_sub stb');
+        $this->db->where('stb.stid',$stid);
+        if($val!=''){
+            $this->db->where("stb.srno=$val");
+        }
+        $res = $this->db->get()->result();
+        echo json_encode($res);
+    }
+    //GET SERIAL NUMBER ITEM </2019-10-10>
 
     // STOCK ADD ADD </2019-10-09>
     function addStock()
@@ -3916,7 +3935,7 @@ class Stock extends CI_Controller
 
         $yr = date('y');
 
-        if(sizeof($data)>0){
+        if (sizeof($data) > 0) {
             $icde = $data[0]->stcd;
             $re = (explode("-", $icde));
 
@@ -3932,7 +3951,7 @@ class Stock extends CI_Controller
                 $xx = '' . $aa;
             }
             $stno = 'ST' . $yr . '-' . $xx;
-        }else{
+        } else {
             $stno = 'ST' . $yr . '-0001';  // Ex (STOCK)(YEAR)-NO - ST18-0001
         }
 
@@ -3979,20 +3998,20 @@ class Stock extends CI_Controller
                     'crby' => $_SESSION['userId'],
                     'crdt' => date('Y-m-d H:i:s'),
                 ));
-                if($a==0){
+                if ($a == 0) {
                     $stidNw = $this->db->insert_id();
                 }
                 $stidNw2 = $this->db->insert_id();
             }
         }
 
-        if($stidNw==$stidNw2){
+        if ($stidNw == $stidNw2) {
             $msg = $stidNw;
-        }else{
-            $msg = $stidNw." - ".$stidNw2;
+        } else {
+            $msg = $stidNw . " - " . $stidNw2;
         }
 
-        $this->Generic_model->updateData('stock_grn',array('stst'=>1),array('grid'=>$this->input->post('grid')));
+        $this->Generic_model->updateData('stock_grn', array('stst' => 1), array('grid' => $this->input->post('grid')));
 
         $funcPerm = $this->Generic_model->getFuncPermision('stckMng');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Add New Stocks ($msg)");
@@ -4032,6 +4051,16 @@ class Stock extends CI_Controller
         } else {
             $rej = "disabled";
         }
+        if ($funcPerm[0]->dact == 1) {
+            $dac = "";
+        } else {
+            $dac = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
 
         $result = $this->Stock_model->get_mnStock();
         $data = array();
@@ -4043,28 +4072,41 @@ class Stock extends CI_Controller
             if ($st == '0') {                   // Pending
                 $stat = " <span class='label label-warning'> Pending </span> ";
                 $option =
-                    "<button type='button' $viw  data-toggle='modal' data-target='#modalView'  onclick='viewStck($stid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='edt'  $edt  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck($stid,this.id);' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='app'  $app  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck($stid,this.id);' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='rej'  $rej  onclick='rejecStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+                    "<button type='button' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($stid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  $edt  data-toggle='modal' data-target='#modal-edit'  onclick='edtStck($stid,this.id);' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  $app  data-toggle='modal' data-target='#modal-edit'  onclick='edtStck($stid,this.id);' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  $rej  onclick='rejecStck($stid,$row->grid,$row->gdid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
 
             } else if ($st == '1') {           // Approved
                 $stat = " <span class='label label-success'> Active </span> ";
                 $option =
-                    "<button type='button' $viw  data-toggle='modal' data-target='#modalView'  onclick='viewStck($stid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($stid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='dec' $dac onclick='deacStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Deactivate' ><i class='fa fa-close' aria-hidden='true'></i></button> " .
                     "<button type='button' id='rej'  disabled  onclick='rejecStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
 
-            } else if ($st == '2') {            // Rejected
-                $stat = " <span class='label label-danger'> Inactive</span> ";
+            } else if ($st == '2') {            // Finished
+                $stat = " <span class='label label-primary'> Finish </span> ";
                 $option =
-                    "<button type='button' $viw  data-toggle='modal' data-target='#modalView'  onclick='viewStck($stid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($stid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' id='rej'  disabled  onclick='rejecStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+            } else if ($st == '3') {
+                $stat = " <span class='label label-danger'> Reject </span> ";
+                $option =
+                    "<button type='button' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($stid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+            } else if ($st == '4') {
+                $stat = " <span class='label label-indi'> Deactive </span> ";
+                $option =
+                    "<button type='button' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($stid);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rec' $reac onclick='reacStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reactivate' ><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
 
-                /*"<button type='button' onclick='reactvStck($itid);' class='btn btn-default btn-condensed $reac2' title='ReActive'><i class='glyphicon glyphicon-wrench' aria-hidden='true'></i></button> "*/
             }
 
             $sub_arr = array();
@@ -4078,7 +4120,7 @@ class Stock extends CI_Controller
             $sub_arr[] = $row->qunt;
             $sub_arr[] = $row->frqt;
             $sub_arr[] = $row->avqn;
-            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $row->crdtf;
             $sub_arr[] = $stat;
             $sub_arr[] = $option;
             $data[] = $sub_arr;
@@ -4094,6 +4136,277 @@ class Stock extends CI_Controller
         echo json_encode($output);
     }
     //SEARCH STOCK </2019-10-09>
+
+    //VIEW STOCK </2019-10-09>
+    function vewStock()
+    {
+        $auid = $this->input->post('auid');
+
+        $this->db->select("stk.*, sp.spcd, sp.spnm, item.itnm, item.itcd, item.mdl,item.mlcd,
+        cat.ctcd, cat.ctnm, bd.bdcd, bd.bdnm, tp.tpcd, tp.tpnm, CONCAT(cr.fnme,' ',cr.lnme) AS crnm,
+        CONCAT(ap.fnme,' ',ap.lnme) AS apnm,CONCAT(md.fnme,' ',md.lnme) AS mdnm, CONCAT(rj.fnme,' ',rj.lnme) AS rjnm,
+        grn.grno,wh.whcd, wh.whnm, ");
+        $this->db->from("stock stk");
+        $this->db->join('item', 'item.itid = stk.itid ');
+        $this->db->join('supp_mas sp', 'sp.spid = stk.spid ');
+        $this->db->join('stock_grn grn', 'grn.grid = stk.grid ');
+        $this->db->join('stock_wh wh', 'wh.whid = stk.whid ');
+        $this->db->join('category cat', 'cat.ctid = item.ctid ');
+        $this->db->join('brand bd', 'bd.bdid = item.bdid ');
+        $this->db->join('type tp', 'tp.tpid = item.tpid ');
+        $this->db->join('user_mas cr', 'cr.auid = stk.crby ');
+        $this->db->join('user_mas ap', 'ap.auid=stk.apby', 'LEFT');
+        $this->db->join('user_mas md', 'md.auid=stk.mdby', 'LEFT');
+        $this->db->join('user_mas rj', 'rj.auid=stk.rjby', 'LEFT');
+        $this->db->where('stk.stid', $auid);
+        $query = $this->db->get();
+        $result['stdt'] = $query->result();
+
+        $result['sbdt'] = $this->Generic_model->getData('stock_sub', '', array('stid' => $auid));
+
+        echo json_encode($result);
+    }
+    //END VIEW STOCK </2019-10-09>
+
+    // REJECT STOCK </2019-10-09>
+    function rejStock()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+        $id = $this->input->post('id');
+        $grid = $this->input->post('grid');
+        $this->Generic_model->updateData('stock', array('stat' => 3), array('stid' => $id));
+        $this->Generic_model->updateData('stock_sub',array('stat'=>0),array('stid'=>$id));
+
+        $this->Generic_model->updateData('stock_grn', array('stst' => 0), array('grid' => $grid));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Stock Reject id(' . $id . ')');
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+    //END REJECT STOCK </2019-10-09>
+
+    // UPDATE || APPROVE STOCK </2019-10-10>
+    function edtStock()
+    {
+        $func = $this->input->post('func'); // 1 - edit / 2 - approval
+        $auid = $this->input->post('stkid');
+        // GET STOCK SUB TABLE DETAILS
+        $subdt = $this->Generic_model->getData('stock_sub', '', array('stid' => $auid));
+
+        if ($func == 'edt') {
+            $this->db->trans_begin();           // SQL TRANSACTION START
+            $data_ar1 = array(
+                'csvl' => $this->input->post('csvlEdt'),   // COST
+                'fcvl' => $this->input->post('dsvlEdt'),   // DISPLY
+                'slvl' => $this->input->post('slvlEdt'),   // SALES
+                'mkvl' => $this->input->post('mkvlEdt'),   // MARKET
+                'dscr' => $this->input->post('rmksEdt'),   // REMARKS
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s')
+            );
+            $where_arr = array(
+                'stid' => $auid
+            );
+            $this->Generic_model->updateData('stock', $data_ar1, $where_arr);
+
+            // STOCK SUB TABLE UPDATE
+            $serno = $this->input->post('serno[]');   // ITEM CODE
+            $batno = $this->input->post('batno[]');   // UNIT PRICE
+            $prtno = $this->input->post('prtno[]');   // TAX + COST
+            $brcod = $this->input->post('brcod[]');   // COST
+            $abcno = $this->input->post('abcno[]');   // DISPLY
+            $xyzno = $this->input->post('xyzno[]');   // SALES
+            $subrm = $this->input->post('subrm[]');   // REMARKS
+
+            if (sizeof($subdt) > 0) {
+                $sbid = $this->input->post('sbid[]');   // SUB TABLE AUID
+                for ($a = 0; $a < sizeof($serno); $a++) {
+                    $data_arr = array(
+                        'srno' => $serno[$a],
+                        'btno' => $batno[$a],
+                        'prno' => $prtno[$a],
+                        'brcd' => $brcod[$a],
+                        'abc' => $abcno[$a],
+                        'xyz' => $xyzno[$a],
+                        'remk' => $subrm[$a],
+                        'stat' => 1,
+                        'crby' => $_SESSION['userId'],
+                        'crdt' => date('Y-m-d H:i:s'),
+                    );
+                    $where_arr = array(
+                        'ssid' => $sbid[$a]
+                    );
+                    $this->Generic_model->updateData('stock_sub', $data_arr, $where_arr);
+                }
+
+            } else {
+                for ($a = 0; $a < sizeof($serno); $a++) {
+                    $data_arr = array(
+                        'stid' => $auid,
+                        'srno' => $serno[$a],
+                        'btno' => $batno[$a],
+                        'prno' => $prtno[$a],
+                        'brcd' => $brcod[$a],
+                        'abc' => $abcno[$a],
+                        'xyz' => $xyzno[$a],
+                        'remk' => $subrm[$a],
+                        'stat' => 1,
+                        'crby' => $_SESSION['userId'],
+                        'crdt' => date('Y-m-d H:i:s'),
+                    );
+                    $this->Generic_model->insertData('stock_sub', $data_arr);
+                }
+            }
+
+            $funcPerm = $this->Generic_model->getFuncPermision('stckMng');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Stock Update id(' . $auid . ')');
+
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                echo json_encode(false);
+            } else {
+                $this->db->trans_commit(); // SQL TRANSACTION END
+                echo json_encode(true);
+            }
+        } else if ($func == 'app') {
+            $this->db->trans_begin();           // SQL TRANSACTION START
+
+            $data_ar1 = array(
+                'csvl' => $this->input->post('csvlEdt'),   // COST
+                'fcvl' => $this->input->post('dsvlEdt'),   // DISPLY
+                'slvl' => $this->input->post('slvlEdt'),   // SALES
+                'mkvl' => $this->input->post('mkvlEdt'),   // MARKET
+                'dscr' => $this->input->post('rmksEdt'),   // REMARKS
+                'stat' => 1,
+                'apby' => $_SESSION['userId'],
+                'apdt' => date('Y-m-d H:i:s')
+            );
+            $where_arr = array(
+                'stid' => $auid
+            );
+            $this->Generic_model->updateData('stock', $data_ar1, $where_arr);
+
+            // STOCK SUB TABLE UPDATE
+            $serno = $this->input->post('serno[]');   // ITEM CODE
+            $batno = $this->input->post('batno[]');   // UNIT PRICE
+            $prtno = $this->input->post('prtno[]');   // TAX + COST
+            $brcod = $this->input->post('brcod[]');   // COST
+            $abcno = $this->input->post('abcno[]');   // DISPLY
+            $xyzno = $this->input->post('xyzno[]');   // SALES
+            $subrm = $this->input->post('subrm[]');   // REMARKS
+
+            if (sizeof($subdt) > 0) {
+                $sbid = $this->input->post('sbid[]');   // SUB TABLE AUID
+                for ($a = 0; $a < sizeof($serno); $a++) {
+                    $data_arr = array(
+                        'srno' => $serno[$a],
+                        'btno' => $batno[$a],
+                        'prno' => $prtno[$a],
+                        'brcd' => $brcod[$a],
+                        'abc' => $abcno[$a],
+                        'xyz' => $xyzno[$a],
+                        'remk' => $subrm[$a],
+                        'stat' => 1,
+                        'crby' => $_SESSION['userId'],
+                        'crdt' => date('Y-m-d H:i:s'),
+                    );
+                    $where_arr = array(
+                        'ssid' => $sbid[$a]
+                    );
+                    $this->Generic_model->updateData('stock_sub', $data_arr, $where_arr);
+                }
+
+            } else {
+                for ($a = 0; $a < sizeof($serno); $a++) {
+                    $data_arr = array(
+                        'stid' => $auid,
+                        'srno' => $serno[$a],
+                        'btno' => $batno[$a],
+                        'prno' => $prtno[$a],
+                        'brcd' => $brcod[$a],
+                        'abc' => $abcno[$a],
+                        'xyz' => $xyzno[$a],
+                        'remk' => $subrm[$a],
+                        'stat' => 1,
+                        'crby' => $_SESSION['userId'],
+                        'crdt' => date('Y-m-d H:i:s'),
+                    );
+                    $this->Generic_model->insertData('stock_sub', $data_arr);
+                }
+            }
+
+
+            $funcPerm = $this->Generic_model->getFuncPermision('stckMng');
+            $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Stock Approval Update id(' . $auid . ')');
+
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                echo json_encode(false);
+            } else {
+                $this->db->trans_commit(); // SQL TRANSACTION END
+                echo json_encode(true);
+            }
+        }
+
+    }
+    //END UPDATE || APPROVE STOCK </2019-10-10>
+
+    //DEACTIVATE STOCK </2019-10-10>
+    function stck_Deactive()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $id = $this->input->post('id');
+        $this->Generic_model->updateData('stock', array(
+            'stat' => 4,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('stid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Stock Deactivated ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END DEACTIVATE STOCK </2019-10-10>
+
+//ACTIVATE STOCK </2019-10-10>
+    function stck_Activate()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $id = $this->input->post('id');
+        $this->Generic_model->updateData('stock', array(
+            'stat' => 1,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('stid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckMng');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Stock Reactivated ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ACTIVATE STOCK </2019-10-10>
 //************************************************
 //***           END STOCK MANAGEMENT           ***
 //************************************************

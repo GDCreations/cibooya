@@ -645,7 +645,7 @@ class Stock_model extends CI_Model
     //STOCK
     var $cl_srch9 = array('stcd', 'spnm', 'itnm', 'itcd'); //set column field database for datatable searchable
     var $cl_odr9 = array(null, 'stcd', 'spnm', 'itnm', 'csvl', 'fcvl', 'slvl', 'qunt', 'frqt','avqt','crdt','stat', ''); //set column field database for datatable orderable
-    var $order9 = array('crdt' => 'desc'); // default order
+    var $order9 = array('stk.crdt' => 'desc'); // default order
 
     function mnStock_query()
     {
@@ -653,8 +653,11 @@ class Stock_model extends CI_Model
         $brnd = $this->input->post('brnd'); // BRAND
         $typ = $this->input->post('typ'); // TYPE
         $stat = $this->input->post('stat'); // Stat
+        $dtrng = explode('/',$this->input->post('dtrng')); // DateRange
+        $frdt = trim($dtrng[0],' ');
+        $todt = trim($dtrng[1],' ');
 
-        $this->db->select("stk.*, item.itcd,item.itnm,sp.spnm,CONCAT(cr.fnme,' ',cr.lnme) AS exc, DATE_FORMAT(stk.crdt, '%Y-%m-%d') AS crdt");
+        $this->db->select("stk.*, item.itcd,item.itnm,sp.spnm,CONCAT(cr.fnme,' ',cr.lnme) AS exc, DATE_FORMAT(stk.crdt, '%Y-%m-%d') AS crdtf");
         $this->db->from("stock stk");
         $this->db->join('item', 'item.itid = stk.itid');
         $this->db->join('supp_mas sp', 'sp.spid = stk.spid ');
@@ -669,7 +672,11 @@ class Stock_model extends CI_Model
         if ($typ != 'all') {
             $this->db->where('item.tpid', $typ);
         }
-        $this->db->where('stk.stat',$stat);
+        if ($stat != 'all') {
+            $this->db->where('stk.stat',$stat);
+        }
+
+        $this->db->where("DATE_FORMAT(stk.crdt,'%Y-%m-%d') BETWEEN '$frdt' AND '$todt'");
     }
 
     private function mnStock_queryData()

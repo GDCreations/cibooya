@@ -743,12 +743,12 @@
                 dataType: 'json',
                 success: function (response) {
                     // IF CHECK ALREDY ADD GRN OR NOT
-                    if (response['grndt'].length > 0) {
-                        $('#whid').val(0);
-                        document.getElementById('ttlQt').innerHTML = '';
-                        swal({title: "", text: "This Po Already Added GRN", type: "warning"},);
-
-                    } else {
+                    // if (response['grndt'].length > 0) {
+                    //     $('#whid').val(0);
+                    //     document.getElementById('ttlQt').innerHTML = '';
+                    //     swal({title: "", text: "This Po Already Added GRN", type: "warning"},);
+                    //
+                    // } else {
                         var len = response['podet'].length;
                         $('#leng').val(len);
                         set_select('whsid', response['podet'][0]['whid'])
@@ -772,7 +772,7 @@
                         }
                         $('#ttlQt').html(ttlqt);
                         $('#ttlQt2').val(ttlqt);
-                    }
+                    // }
                 }
             });
         }
