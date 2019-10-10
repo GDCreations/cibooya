@@ -33,11 +33,11 @@
         <div class="row form-horizontal">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">Supply</label>
+                    <label class="col-md-4 col-xs-12 control-label">Supplier</label>
                     <div class="col-md-8 col-xs-12">
                         <select id="supl" name="supl" class="bs-select" onchange="chckBtn(this.value,this.id)">
-                            <option value="0">-- Select Supply --</option>
-                            <option value="all">All Supply</option>
+                            <option value="0">-- Select Supplier --</option>
+                            <option value="all">All Supplier</option>
                             <?php
                             foreach ($supplyInfo as $supp) {
                                 echo "<option value='$supp->spid'>" . $supp->spcd . " - " . $supp->spnm . "</option>";
@@ -95,7 +95,7 @@
                     <tr>
                         <th class="text-left">#</th>
                         <th class="text-left">GRN NO</th>
-                        <th class="text-left">SUPPLY</th>
+                        <th class="text-left">Supplier</th>
                         <th class="text-left">PO NO</th>
                         <th class="text-left">GRN DATE</th>
                         <th class="text-left">ODR QTY</th>
@@ -137,7 +137,7 @@
                                         <div class="col-md-6 col-xs-12" id="">
                                             <select id="suplSrc" name="suplSrc" class="bs-select"
                                                     onchange="chckBtn(this.value,this.id);loadPo(this.value,'podt','poDiv','',0,true)">
-                                                <option value="0">-- Select Supply --</option>
+                                                <option value="0">-- Select Supplier --</option>
                                                 <?php
                                                 foreach ($supplyInfo as $supp) {
                                                     echo "<option value='$supp->spid'>" . $supp->spcd . " | " . $supp->spnm . "</option>";
@@ -233,7 +233,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-5  control-label">Check By</label>
+                                        <label class="col-md-5  control-label">Check By
+                                            <span class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-7 col-xs-12">
                                             <input type="text" class="form-control"
                                                    name="chkby" id="chkby"/>
@@ -312,7 +313,7 @@
                                         <div class="col-md-6 col-xs-12" id="">
                                             <select id="suplSrcEdt" name="suplSrcEdt" class="bs-select"
                                                     onchange="chckBtn(this.value,this.id);loadPo(this.value,'podtEdt','poDivEdt','',0,true)">
-                                                <option value="0">-- Select Supply --</option>
+                                                <option value="0">-- Select Supplier --</option>
                                                 <?php
                                                 foreach ($supplyInfo as $supp) {
                                                     echo "<option value='$supp->spid'>" . $supp->spcd . " | " . $supp->spnm . "</option>";
@@ -411,9 +412,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-5  control-label">Check By</label>
+                                        <label class="col-md-5  control-label">Check By
+                                            <span class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-7 col-xs-12">
-                                            <input type="text" class="form-control"
+                                            <input type="text" class="form-control "
                                                    name="chkbyEdt" id="chkbyEdt"/>
                                         </div>
                                     </div>
@@ -656,7 +658,7 @@
             srchGrn();
         });
 
-        // Get supply PO Details
+        // Get Supplier PO Details
         function loadPo(supid, html, mhtml, seltdid, st, init) {
             $.ajax({
                 url: '<?= base_url(); ?>Stock/getPodet',
@@ -713,8 +715,8 @@
                 "ordering": false,
                 "columnDefs": [
                     {className: "text-left", "targets": [1, 2]},
-                    {className: "text-center", "targets": [0]},
-                    {className: "text-right", "targets": [3, 4, 5, 6, 7, 8]},
+                    {className: "text-center", "targets": [0, 5, 6, 8]},
+                    {className: "text-right", "targets": [3, 4, 7]},
                     {className: "text-nowrap", "targets": [1]}
                 ],
                 "aoColumns": [

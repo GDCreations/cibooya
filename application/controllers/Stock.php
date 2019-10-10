@@ -3416,6 +3416,11 @@ class Stock extends CI_Controller
         foreach ($result as $row) {
             $grid = $row->grid;
 
+            if ($row->stst == '0') {
+                $stst = " <span class='label label-warning' title='Stock Not Added'>S:N </span> ";
+            } else {
+                $stst = " <span class='label label-success' title='Stock Added'> S:A </span> ";
+            }
             //"<button type='button' $edit id='edit' data-toggle='modal' data-target='#modal-view' onclick='viewSupp($row->spid,this.id);' class='btn btn-xs btn-default btn-condensed btn-rounded' title='Edit'><i class='fa fa-edit' aria-hidden='true'></i></button> " .
 
             if ($row->stat == '0') {                   // Pending
@@ -3458,7 +3463,7 @@ class Stock extends CI_Controller
             $sub_arr[] = $row->frqt;
             $sub_arr[] = $row->rcqt;
             $sub_arr[] = $row->rtqt;
-            $sub_arr[] = $stat;
+            $sub_arr[] = $stat; // . '  ' . $stst
             $sub_arr[] = $row->crdt;
             $sub_arr[] = $option;
             $data[] = $sub_arr;
