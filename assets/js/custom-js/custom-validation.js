@@ -170,7 +170,7 @@ $.validator.addMethod("tblar_max",function (value, element, options) {
     var valueToCompare = value;
     // the max value
     var maxValue = (node.val()=='')?0:node.val();
-    if(valueToCompare <= maxValue){
+    if(+valueToCompare <= +maxValue){
         return true;
     }else{
 
@@ -189,7 +189,7 @@ $.validator.addMethod("tblar_min",function (value, element, options) {
     var valueToCompare = value;
     // the max value
     var maxValue = (node.val()=='')?0:node.val();
-    if(valueToCompare >= maxValue){
+    if(+valueToCompare >= +maxValue){
         return true;
     }else{
 
