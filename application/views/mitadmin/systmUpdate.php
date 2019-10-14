@@ -82,7 +82,7 @@
 
     <!-- MODAL ADD NEW -->
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-md" role="document">
+        <div class="modal-dialog modal-md modal-info" role="document">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
@@ -154,7 +154,7 @@
                             </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="addBtn" class="btn btn-warning btn-sm btn-rounded">Submit
+                        <button type="button" id="addBtn" class="btn btn-info btn-sm btn-rounded">Submit
                         </button>
                     </div>
                 </div>
@@ -165,7 +165,7 @@
 
     <!-- MODAL VIEW / EDIT /  -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-md" role="document">
+        <div class="modal-dialog modal-md modal-success" role="document">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
@@ -237,7 +237,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="edtBtn" class="btn btn-warning btn-sm btn-rounded">Edit
+                        <button type="button" id="edtBtn" class="btn btn-success btn-sm btn-rounded">Edit
                         </button>
                     </div>
                 </div>

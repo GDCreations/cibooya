@@ -4,22 +4,22 @@
 <div class="app-heading-container app-heading-bordered bottom">
     <ul class="breadcrumb">
         <li><a href="#">Stock Access</a></li>
-        <li class="active">Stock Management</li>
+        <li class="active">Stock Conversion</li>
     </ul>
 </div>
 <div class="app-heading app-heading-bordered app-heading-page">
     <div class="icon icon-lg">
-        <span class="fa fa-cubes" style="color: #e69c0f;"></span>
+        <span class="fa fa-random" style="color: #e69c0f;"></span>
     </div>
     <div class="title">
-        <h1>Stock Management</h1>
-        <p>Add Stock / Edit / View / Approve / Search & View</p>
+        <h1>Stock Conversion</h1>
+        <p>Convert stock item measuring scale with quantity (Convert / Reject / Approve / Search & View)</p>
     </div>
     <?php
     if ($funcPerm[0]->inst == 1) { ?>
         <div class="pull-right">
             <button class="btn btn-sm btn-info btn-icon-fixed btn-rounded" data-toggle="modal" data-target="#modal-add">
-                <span class="fa fa-plus"></span>New Stock
+                <span class="fa fa-plus"></span>Add To Convert
             </button>
         </div>
     <?php }
@@ -154,61 +154,56 @@
         </div>
     </div>
 
-    <!-- MODAL ADD NEW STOCK -->
+    <!-- MODAL ADD NEW CONVERSION -->
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg modal-info" role="document" style="width: 90%">
+        <div class="modal-dialog modal-info modal-lg" role="document" style="width: 90%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
             <form id="addForm">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Stock Add
-                        </h4>
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Add Conversion
+                         </h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body scroll" style="max-height: 65vh">
                         <div class="container">
                             <div class="row form-horizontal">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-6 control-label">Supplier Name <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-6 col-xs-6">
-                                            <select class="bs-select" name="spid" id="spid"
-                                                    onchange="chckBtn(this.value,this.id);loadGrn(this.value,'grid','grid_cont')">
-                                                <option value="0"> -- Select Supplier --</option>
+                                        <label class="col-md-4 col-xs-6 control-label">Branch</label>
+                                        <div class="col-md-8 col-xs-6">
+                                            <select class="bs-select" name="brchid" id="brchid"
+                                                    onchange="chckBtn(this.value,this.id);">
                                                 <?php
-                                                foreach ($supplier as $spply) {
-                                                    echo "<option value='$spply->spid'>$spply->spcd - $spply->spnm</option>";
+                                                foreach ($branchinfo as $brch) {
+                                                    if($brch['brch_id']==0 || $brch['brch_id']=='all'){
+                                                        echo "<option value='".$brch['brch_id']."'>".$brch['brch_name']."</option>";
+                                                    }else{
+                                                        echo "<option value='".$brch['brch_id']."'>".$brch['brch_code']." - ".$brch['brch_name']."</option>";
+                                                    }
                                                 }
                                                 ?>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-6 control-label"> GRN No <span
-                                                    class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-6 col-xs-6" id="grid_cont">
-                                            <select class="bs-select" name="grid" id="grid"
-                                                    onchange="chckBtn(this.value,this.id);getGrndet(this.value)">
-                                                <option value="0"> -- Select GRN --</option>
+                                        <label class="col-md-4 col-xs-6 control-label">Item Name</label>
+                                        <div class="col-md-8 col-xs-6">
+                                            <select data-live-search="true" class="bs-select" name="itid" id="itid"
+                                                    onchange="chckBtn(this.value,this.id); loadStcks(this.value);">
+                                                <option value="all">All Items</option>
+                                                <?php
+                                                foreach ($item as $it) {
+                                                        echo "<option value='".$it->itid."'>".$it->itcd." - ".$it->itnm."</option>";
+                                                }
+                                                ?>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-6 control-label"> Stock Warehouse</label>
-                                        <div class="col-md-6 col-xs-6">
-                                            <input type="text" class="form-control" id="whnm" name="whnm"
-                                                   readonly>
-                                            <input type="hidden" class="form-control" id="whid" name="whid">
-                                        </div>
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="row form-horizontal">
-                                <h5 class="text-title"><span class="fa fa-tag"></span> Stock Details</h5>
                             </div>
                             <div class="row form-horizontal">
                                 <div class="col-md-12">
@@ -267,7 +262,7 @@
 
     <!-- MODAL VIEW STOCK -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg modal-success" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
@@ -430,7 +425,7 @@
 
     <!-- MODAL EDIT APPROVE SUPPLIER -->
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg modal-success" role="document" style="width: 90%">
+        <div class="modal-dialog modal-lg" role="document" style="width: 90%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
@@ -542,7 +537,7 @@
                                         class="fa fa-asterisk req-astrick"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="edtBtn" class="btn btn-success btn-sm btn-rounded">
+                        <button type="button" id="edtBtn" class="btn btn-warning btn-sm btn-rounded">
                         </button>
                     </div>
                 </div>
@@ -729,11 +724,32 @@
             // EDIT VALIDATE
             $("#appForm").validate({
                 rules: {
+                    csvlEdt: {
+                        required: true,
+                        notEqual: '0',
+                        currency: true,
+                        lessThanOrEqual: '#txvlEdt'
+                    },
+                    slvlEdt: {
+                        required: true,
+                        notEqual: '0',
+                        currency: true,
+                        lessThanOrEqual: '#csvlEdt'
+                    },
+                    dsvlEdt: {
+                        required: true,
+                        notEqual: '0',
+                        currency: true,
+                        lessThanOrEqual: '#slvlEdt'
+                    },
+                    mkvlEdt: {
+                        currency: true
+                    },
                     'csvlEdt[]': {
                         required: true,
                         currency: true,
                         notEqual: '0',
-                        tblar_min: 'txvlEdt[]'
+                        tblar_min: 'txprEdt[]'
                     },
                     'slvlEdt[]': {
                         required: true,
@@ -755,6 +771,18 @@
                     }
                 },
                 messages: {
+                    csvlEdt: {
+                        required: 'Please enter cost value',
+                        notEqual: "Can't enter zero value",
+                    },
+                    fcvlEdt: {
+                        required: 'Please enter face value',
+                        notEqual: "Can't enter zero value",
+                    },
+                    slvlEdt: {
+                        required: 'Please enter sales value',
+                        notEqual: "Can't enter zero value",
+                    },
                     'csvlEdt[]': {
                         required: 'Please enter cost value',
                         notEqual: "Can't enter zero value"
@@ -1011,7 +1039,9 @@
                                 numeral(grnd[a]['untp']).format('0,0.00') + '<input type="hidden" id="untp' + a + '" name="untp[]" value="' + grnd[a]['untp'] + '" >',                          // PRICE
                                 numeral(txunt).format('0,0.00') + '<input type="hidden" id="txpr_' + a + '" name="txpr[]" value="' + txunt + '" >',  // UNIT PRICE + TAX
                                 '<input readonly type="text" class="form-control" style="text-align:right; width: 100px" id="csvl_' + a + '" name="csvl[]" value="' + txunt + '" onkeyup="chkVal(this.value,' + a + ',' + " 'cost'" + ')">',        // COST VALUE
+                                '<span class="fa fa-asterisk req-astrick"></span> ' +
                                 '<input type="text" class="form-control" style="text-align:right; width: 100px" id="slvl_' + a + '" name="slvl[]" onkeyup="chkVal(this.value,' + a + ',' + " 'sale'" + ')">',        // SALES VALUE
+                                '<span class="fa fa-asterisk req-astrick"></span> ' +
                                 '<input type="text" class="form-control" style="text-align:right; width: 100px" id="dsvl_' + a + '" name="dsvl[]" onkeyup="chkVal(this.value,' + a + ',' + " 'disp'" + ')">',        // DISPLAY VALUE
                                 '<input type="text" class="form-control" style="text-align:right; width: 100px" id="mkvl_' + a + '" name="mkvl[]" onkeyup="chkVal(this.value,' + a + ',' + " 'mark'" + ')">',        // MARKET VALUE
                                 '<input type="text" class="form-control" name="rmks[]" style="width: 100px"/>'                  // REMARKS
@@ -1409,10 +1439,12 @@
                             numeral(stdt[0]['txvl']).format('0,0.00') + '<input type="hidden"  id="txvlEdt" name="txvlEdt[]" value="' + stdt[0]['txvl'] + '">',       // UNIT PRICE + TAX
 
                             '<input readonly type="text" class="form-control" style="text-align:right; width: 100px;" id="csvlEdt" name="csvlEdt[]" value="' + stdt[0]['csvl'] + '" onkeyup="chkValEdt(this.value,' + " 'cost'" + ')">',        // COST VALUE
+                            '<span class="fa fa-asterisk req-astrick"></span> ' +
                             '<input type="text" class="form-control" style="text-align:right; width: 100px;" id="slvlEdt" name="slvlEdt[]" value="' + stdt[0]['slvl'] + '" onkeyup="chkValEdt(this.value,' + " 'sale'" + ')">',        // SALES VALUE
+                            '<span class="fa fa-asterisk req-astrick"></span> ' +
                             '<input type="text" class="form-control" style="text-align:right; width: 100px;" id="dsvlEdt" name="dsvlEdt[]" value="' + stdt[0]['fcvl'] + '" onkeyup="chkValEdt(this.value,' + " 'disp'" + ')">',        // DISPLAY VALUE
                             '<input type="text" class="form-control" style="text-align:right; width: 100px;" id="mkvlEdt" name="mkvlEdt[]" value="' + stdt[0]['mkvl'] + '" onkeyup="chkValEdt(this.value,' + " 'mark'" + ')">',        // MARKET VALUE
-                            '<input type="text" class="form-control" style="width: 100%" name="rmksEdt[]" value="' + response['stdt'][0]['dscr'] + '">',                   // REMARKS
+                            '<input type="text" class="form-control" style="width: 100%" name="rmksEdt" value="' + response['stdt'][0]['dscr'] + '">',                   // REMARKS
 
                             // '<label class=""><input type="checkbox" name="blskEdt" id="checkbox_2"  ' + chck + ' class="icheckbox" onchange="showHid()"/> </label>'
                         ]).draw(false);

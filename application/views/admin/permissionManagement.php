@@ -306,10 +306,11 @@
             </div>
         </div>
     </div>
+
     <!-- Add Model -->
     <div class="modal fade" id="modalAdd" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg modal-info" role="document">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
@@ -345,7 +346,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="add_new_page" class="btn btn-warning btn-sm btn-rounded">
+                        <button type="button" id="add_new_page" class="btn btn-info btn-sm btn-rounded">
                             Add
                         </button>
                     </div>

@@ -4440,6 +4440,7 @@ class Stock extends CI_Controller
         $data2['category'] = $this->Generic_model->getData('category', array('ctid', 'ctcd', 'ctnm', 'stat'), "stat IN(1,3)");
         $data2['brand'] = $this->Generic_model->getData('brand', array('bdid', 'bdcd', 'bdnm', 'logo', 'stat'), "stat IN(1,3)");
         $data2['type'] = $this->Generic_model->getData('type', array('tpid', 'tpcd', 'tpnm', 'stat'), "stat IN(1,3)");
+        $data2['item'] = $this->Generic_model->getData('item', array('itid', 'itcd', 'itnm', 'stat'), array('stat' => 1));
         $data2['supplier'] = $this->Generic_model->getData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat' => 1));
 
         $this->load->view('admin/stock/stckConversion', $data2);

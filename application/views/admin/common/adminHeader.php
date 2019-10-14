@@ -141,7 +141,7 @@
                             <ul>
                                 <?php if (in_array("pchOdr", $permission, TRUE)) { ?>
                                     <li><a id="pchOdr" href="<?= base_url() ?>Stock/pchOdr">
-                                            <span class="nav-icon-hexa fa fa-list-ul"></span> Purchase Order </a>
+                                            <span class="nav-icon-hexa fa fa-list"></span> Purchase Order </a>
                                     </li>
                                 <?php } ?>
                                 <?php if (in_array("grnMng", $permission, TRUE)) { ?>
@@ -153,6 +153,11 @@
                                 <?php if (in_array("stckMng", $permission, TRUE)) { ?>
                                     <li><a id="stckMng" href="<?= base_url() ?>Stock/stckMng">
                                             <span class="nav-icon-hexa fa fa-cubes"></span> Stock Management </a>
+                                    </li>
+                                <?php } ?>
+                                <?php if (in_array("stckCnv", $permission, TRUE)) { ?>
+                                    <li><a id="stckCnv" href="<?= base_url() ?>Stock/stckCnv">
+                                            <span class="nav-icon-hexa fa fa-random"></span> Stock Conversion </a>
                                     </li>
                                 <?php } ?>
                             </ul>

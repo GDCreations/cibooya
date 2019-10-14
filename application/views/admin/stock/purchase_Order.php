@@ -118,7 +118,7 @@
 
     <!-- MODAL ADD NEW PO -->
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog model-lg" role="document" style="width: 80%">
+        <div class="modal-dialog model-lg modal-info" role="document" style="width: 80%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
@@ -397,7 +397,7 @@
                                         class="fa fa-asterisk req-astrick"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="add_po_btn" class="btn btn-warning btn-sm btn-rounded" disabled>Submit
+                        <button type="button" id="add_po_btn" class="btn btn-info btn-sm btn-rounded" disabled>Submit
                         </button>
                     </div>
                 </div>
@@ -408,7 +408,7 @@
 
     <!-- MODAL EDIT PO -->
     <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
+        <div class="modal-dialog modal-lg modal-success" role="document" style="width: 80%;">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
@@ -689,7 +689,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="app_po_btn" class="btn btn-warning btn-sm btn-rounded">
+                        <button type="button" id="app_po_btn" class="btn btn-success btn-sm btn-rounded">
                         </button>
                     </div>
                 </div>
@@ -700,7 +700,7 @@
 
     <!-- MODAL VIEW PO -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
+        <div class="modal-dialog modal-lg modal-success" role="document" style="width: 80%;">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>

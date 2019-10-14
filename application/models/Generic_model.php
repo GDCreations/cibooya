@@ -839,7 +839,7 @@ class Generic_model extends CI_Model
                 $this->db->close();
 
                 // SET START FILTER
-                $result[0] = array('brch_id' => '0', 'brch_name' => '--Select Branch--');
+                $result[0] = array('brch_id' => '0', 'brch_name' => '-- Select Branch --');
                 //$result[1] = array('brch_id' => 'all', 'brch_name' => 'All Branches');
                 $i = 1;
                 // DEFAULT BRANCH

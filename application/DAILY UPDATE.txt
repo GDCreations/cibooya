@@ -1,8 +1,10 @@
 -----------------------------------------------------
+2019-10-14 JANAKA
+INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'stckCnv', 'Stock Conversion', 'Stock convert measuring scale with quantity', '0', '1', '1', '4');
+-----------------------------------------------------
 2019-10-10 JANAKA
 ALTER TABLE `stock_sub` CHANGE `trst` `trst` INT(11) NOT NULL COMMENT 'Transfer(0-No/1-Yes)';
 ALTER TABLE `stock_sub` ADD `sldt` DATETIME NULL COMMENT 'sold date' AFTER `crdt`;
-
 -----------------------------------------------------
 2019-10-09 JANAKA
 ALTER TABLE `stock` ADD `apby` INT NOT NULL COMMENT 'approved by' AFTER `crdt`;

@@ -78,7 +78,7 @@
 
     <!-- MODAL ADD NEW -->
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg" role="document" style="width: 80%">
+        <div class="modal-dialog modal-lg modal-info" role="document" style="width: 80%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
@@ -150,7 +150,7 @@
                             </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="addBtn" class="btn btn-warning btn-sm btn-rounded">Submit
+                        <button type="button" id="addBtn" class="btn btn-info btn-sm btn-rounded">Submit
                         </button>
                     </div>
                 </div>
@@ -161,7 +161,7 @@
 
     <!-- MODAL VIEW / EDIT /  -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg" role="document" style="width: 80%">
+        <div class="modal-dialog modal-lg modal-success" role="document" style="width: 80%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>

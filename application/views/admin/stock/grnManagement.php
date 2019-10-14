@@ -116,7 +116,7 @@
 
     <!-- MODAL ADD NEW SUPPLIER -->
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg" role="document" style="width: 90%">
+        <div class="modal-dialog modal-lg modal-info" role="document" style="width: 90%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
@@ -279,7 +279,7 @@
                                         class="fa fa-asterisk req-astrick"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="addBtn" class="btn btn-warning btn-sm btn-rounded">Submit
+                        <button type="button" id="addBtn" class="btn btn-info btn-sm btn-rounded">Submit
                         </button>
                     </div>
                 </div>
@@ -290,7 +290,7 @@
 
     <!-- MODAL VIEW SUPPLIER -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg" role="document" style="width: 90%">
+        <div class="modal-dialog modal-lg modal-success" role="document" style="width: 90%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
@@ -503,7 +503,7 @@
                                         class="fa fa-asterisk req-astrick"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="edtBtn" class="btn btn-warning btn-sm btn-rounded">Submit
+                        <button type="button" id="edtBtn" class="btn btn-success btn-sm btn-rounded">Submit
                         </button>
                     </div>
                 </div>
@@ -732,9 +732,10 @@
 
                             child2.append("<li data-original-index=\"" + (a + 1) + "\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">" + name + "\n" +
                                 "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
-                        }
-                        if (seltdid == id) {
-                            set_select(html, seltdid);
+
+                            if (seltdid == id) {
+                                set_select(html, seltdid);
+                            }
                         }
                     } else {
                         $('#' + html).empty();
