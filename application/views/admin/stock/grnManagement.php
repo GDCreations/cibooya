@@ -807,11 +807,11 @@
                                 response['podet'][a]['itnm'],                                                    // ITEM NAME
                                 numeral(response['podet'][a]['untp']).format('0,0.00') + '<input type="hidden" name="untp[]" value="' + response['podet'][a]['untp'] + '" >',                          // PRICE
                                 numeral(response['podet'][a]['qnty']).format('0,0') + '<input type="hidden" name="odrQty[]" value="' + response['podet'][a]['qnty'] + '">',                            // ODR QUNT
-                                '<input type="text" size="4" class="form-control" id="grfr_' + a + '" name="grfr[]" onkeyup="calFrQty(this.value)" style="text-align:right;">',                                                           // RCV QTY
-                                '<input type="text" size="4" class="form-control dfg" id="grgd_' + a + '" name="grgd[]" onkeyup="calQty( ' + response['podet'][a]['qnty'] + ',this.value,' + a + ',' + response['podet'][a]['untp'] + ')" style="text-align:right;">',       // RCV QTY
+                                '<input type="text" size="4" class="form-control" id="grfr_' + a + '" name="grfr[]" onkeyup="calFrQty(this.value)" style="text-align:right;width: 100%">',                                                           // RCV QTY
+                                '<input type="text" size="4" class="form-control dfg" id="grgd_' + a + '" name="grgd[]" onkeyup="calQty( ' + response['podet'][a]['qnty'] + ',this.value,' + a + ',' + response['podet'][a]['untp'] + ')" style="text-align:right;width: 100%">',       // RCV QTY
                                 '<label id="grTprc_' + a + '">' + numeral(0).format('0,0.00') + '</label><input type="hidden" value="0" name="grhTprc[]" id="grhTprc_' + a + '">', //total price of items
-                                '<input type="text" class="form-control" id="grbd_' + a + '" name="grbd[]" readonly size="4" style="text-align:right;">',      // RTN QTY
-                                '<input type="text" class="form-control" name="rtnRmk[]">',             // RTN REMK
+                                '<input type="text" class="form-control" id="grbd_' + a + '" name="grbd[]" readonly size="4" style="text-align:right;width: 100%">',      // RTN QTY
+                                '<input type="text" class="form-control" name="rtnRmk[]" style="width: 100%">',             // RTN REMK
 
                             ]).draw(false);
                             ttlqt = +ttlqt + +response['podet'][a]['qnty'];
