@@ -611,12 +611,12 @@
                         required: true,
                         notEqual: 0
                     },
-                    'grgd[]':{
+                    'grgd[]': {
                         required: true,
                         decimal: true,
                         tblar_max: 'odrQty[]'
                     },
-                    'grfr[]':{
+                    'grfr[]': {
                         decimal: true
                     }
                 },
@@ -696,7 +696,6 @@
                         required: "Enter Check user",
                         notEqual: "Enter Check user",
                     },
-
                 }
             });
             srchGrn();
@@ -704,6 +703,7 @@
 
         // Get Supplier PO Details
         function loadPo(supid, html, mhtml, seltdid, st, init) {
+
             $.ajax({
                 url: '<?= base_url(); ?>Stock/getPodet',
                 type: 'post',
@@ -729,12 +729,11 @@
                             var $el = $('#' + html);
                             $el.append($("<option></option>")
                                 .attr("value", id).text(name));
-
                             child2.append("<li data-original-index=\"" + (a + 1) + "\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">" + name + "\n" +
                                 "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
-                        }
-                        if (seltdid == id) {
-                            set_select(html, seltdid);
+                            if (seltdid == id) {
+                                set_select(html, seltdid);
+                            }
                         }
                     } else {
                         $('#' + html).empty();
@@ -795,29 +794,29 @@
                     //     swal({title: "", text: "This Po Already Added GRN", type: "warning"},);
                     //
                     // } else {
-                        var len = response['podet'].length;
-                        $('#leng').val(len);
-                        set_select('whsid', response['podet'][0]['whid'])
+                    var len = response['podet'].length;
+                    $('#leng').val(len);
+                    set_select('whsid', response['podet'][0]['whid'])
 
-                        var ttlqt = 0;
-                        for (var a = 0; a < len; a++) {
-                            t.row.add([
-                                a + 1,
-                                response['podet'][a]['itcd'] + '<input type="hidden" name="itid[]" value="' + response['podet'][a]['itid'] + '">',       // ITEM CODE
-                                response['podet'][a]['itnm'],                                                    // ITEM NAME
-                                numeral(response['podet'][a]['untp']).format('0,0.00') + '<input type="hidden" name="untp[]" value="' + response['podet'][a]['untp'] + '" >',                          // PRICE
-                                numeral(response['podet'][a]['qnty']).format('0,0') + '<input type="hidden" name="odrQty[]" value="' + response['podet'][a]['qnty'] + '">',                            // ODR QUNT
-                                '<input type="text" size="4" class="form-control" id="grfr_' + a + '" name="grfr[]" onkeyup="calFrQty(this.value)" style="text-align:right;width: 100%">',                                                           // RCV QTY
-                                '<input type="text" size="4" class="form-control dfg" id="grgd_' + a + '" name="grgd[]" onkeyup="calQty( ' + response['podet'][a]['qnty'] + ',this.value,' + a + ',' + response['podet'][a]['untp'] + ')" style="text-align:right;width: 100%">',       // RCV QTY
-                                '<label id="grTprc_' + a + '">' + numeral(0).format('0,0.00') + '</label><input type="hidden" value="0" name="grhTprc[]" id="grhTprc_' + a + '">', //total price of items
-                                '<input type="text" class="form-control" id="grbd_' + a + '" name="grbd[]" readonly size="4" style="text-align:right;width: 100%">',      // RTN QTY
-                                '<input type="text" class="form-control" name="rtnRmk[]" style="width: 100%">',             // RTN REMK
+                    var ttlqt = 0;
+                    for (var a = 0; a < len; a++) {
+                        t.row.add([
+                            a + 1,
+                            response['podet'][a]['itcd'] + '<input type="hidden" name="itid[]" value="' + response['podet'][a]['itid'] + '">',       // ITEM CODE
+                            response['podet'][a]['itnm'],                                                    // ITEM NAME
+                            numeral(response['podet'][a]['untp']).format('0,0.00') + '<input type="hidden" name="untp[]" value="' + response['podet'][a]['untp'] + '" >',                          // PRICE
+                            numeral(response['podet'][a]['qnty']).format('0,0') + '<input type="hidden" name="odrQty[]" value="' + response['podet'][a]['qnty'] + '">',                            // ODR QUNT
+                            '<input type="text" size="4" class="form-control" id="grfr_' + a + '" name="grfr[]" onkeyup="calFrQty(this.value)" style="text-align:right;width: 100%">',                                                           // RCV QTY
+                            '<input type="text" size="4" class="form-control dfg" id="grgd_' + a + '" name="grgd[]" onkeyup="calQty( ' + response['podet'][a]['qnty'] + ',this.value,' + a + ',' + response['podet'][a]['untp'] + ')" style="text-align:right;width: 100%">',       // RCV QTY
+                            '<label id="grTprc_' + a + '">' + numeral(0).format('0,0.00') + '</label><input type="hidden" value="0" name="grhTprc[]" id="grhTprc_' + a + '">', //total price of items
+                            '<input type="text" class="form-control" id="grbd_' + a + '" name="grbd[]" readonly size="4" style="text-align:right;width: 100%">',      // RTN QTY
+                            '<input type="text" class="form-control" name="rtnRmk[]" style="width: 100%">',             // RTN REMK
 
-                            ]).draw(false);
-                            ttlqt = +ttlqt + +response['podet'][a]['qnty'];
-                        }
-                        $('#ttlQt').html(ttlqt);
-                        $('#ttlQt2').val(ttlqt);
+                        ]).draw(false);
+                        ttlqt = +ttlqt + +response['podet'][a]['qnty'];
+                    }
+                    $('#ttlQt').html(ttlqt);
+                    $('#ttlQt2').val(ttlqt);
                     // }
                 }
             });
@@ -939,8 +938,8 @@
                     "serverSide": true,
                     "columnDefs": [
                         {className: "text-left", "targets": [2, 3]},
-                        {className: "text-center", "targets": [0, 1, 4, 9, 10]},
-                        {className: "text-right", "targets": [0, 5, 6, 7, 8, 11]},
+                        {className: "text-center", "targets": [0, 1, 4, 9, 10, 11]},
+                        {className: "text-right", "targets": [0, 5, 6, 7, 8]},
                         {className: "text-nowrap", "targets": [2, 3]},
                     ],
                     "order": [[6, "DESC"]], //ASC  desc
@@ -1059,11 +1058,9 @@
                         $('#rjdt').html(": " + ((grndtl[0]['rjdt'] != null && grndtl[0]['rjdt'] != "0000-00-00 00:00:00") ? grndtl[0]['rjdt'] : "--"));
                         //$('#mdby').html(": " + ((grndtl[0]['mdnm'] != null) ? grndtl[0]['mdnm'] : "--"));
                         //$('#mddt').html(": " + ((grndtl[0]['mddt'] != null && grndtl[0]['mddt'] != "0000-00-00 00:00:00") ? grndtl[0]['mddt'] : "--"));
-
                     }
 
                     if (len2 > 0) {
-
                         $('#grnTblEdt').DataTable().clear();
                         var m = $('#grnTblEdt').DataTable({
                             "bInfo": false,
@@ -1159,7 +1156,6 @@
                                 poitem[a]['remk'],
 
                             ]).draw(false);
-
                         }
                     }
                     swal.close();
@@ -1178,7 +1174,6 @@
             e.preventDefault();
 
             if ($('#appForm').valid()) {
-
                 swal({
                         title: "Are you sure to do this ?",
                         text: "",
