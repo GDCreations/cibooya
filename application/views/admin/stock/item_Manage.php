@@ -104,7 +104,7 @@
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label"><br></label>
                     <div class="col-md-8 col-xs-12">
-                        <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed" onclick="srch_Item()"><span
+                        <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed pull-right" onclick="srch_Item()"><span
                                     class="fa fa-search"></span>Search
                         </button>
                     </div>
@@ -341,6 +341,15 @@
                                                     <div class="col-md-4 col-xs-6">
                                                         <input type="text" id="clrnm" name="clrnm" class="form-control"
                                                                placeholder="Color Name"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Re Order Level
+                                                        <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="rolv" name="rolv" class="form-control"
+                                                               placeholder="Re Order Level"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -600,6 +609,15 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Re Order Level
+                                                        <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <input type="text" id="rolv_edt" name="rolv_edt" class="form-control"
+                                                               placeholder="Re Order Level"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label class="col-md-4 col-xs-12 control-label">Discription</label>
                                                     <div class="col-md-8 col-xs-12">
                                                         <textarea class="form-control" id="dscr_edt" name="dscr_edt"
@@ -739,6 +757,11 @@
                         required: true,
                         digits: true
                     },
+                    rolv: {
+                        notEqual: 0,
+                        required: true,
+                        digits: true
+                    },
 
                     name: {
                         required: true,
@@ -822,6 +845,10 @@
                         notEqual: "Enter Max Store Level",
                         required: "Enter Max Store Level",
                     },
+                    rolv: {
+                        notEqual: "Enter Re Order Level",
+                        required: "Enter Re Order Level",
+                    },
                     name: {
                         required: "Enter item name",
                         remote: "Already entered item name"
@@ -868,6 +895,11 @@
                         notEqual: 0
                     },
                     mxlvEdt: {
+                        notEqual: 0,
+                        required: true,
+                        digits: true
+                    },
+                    rolv_edt: {
                         notEqual: 0,
                         required: true,
                         digits: true
@@ -965,6 +997,10 @@
                     mxlvEdt: {
                         notEqual: "Enter Max Store Level",
                         required: "Enter Max Store Level",
+                    },
+                    rolv_edt: {
+                        notEqual: "Enter Re Order Level",
+                        required: "Enter Re Order Level",
                     },
                     name_edt: {
                         required: "Enter item name",
@@ -1220,6 +1256,7 @@
                         $('#remk_edt').val(data['item'][0]['remk']);
                         $('#dscr_edt').val(data['item'][0]['dscr']);
                         $('#mxlvEdt').val(data['item'][0]['mxlv']);
+                        $('#rolv_edt').val(data['item'][0]['rolv']);
 
                         set_select('cat_edt', data['item'][0]['ctid']);
                         set_select('brd_edt', data['item'][0]['bdid']);

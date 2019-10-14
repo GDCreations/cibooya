@@ -33,11 +33,11 @@
 
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">From Date</label>
+                    <label class="col-md-4 col-xs-12 control-label">Date Range</label>
                     <div class="col-md-8 col-xs-12">
-                        <div class='input-group date'>
-                            <input type='text' class="form-control datetimepicker" id="frdt" name="frdt"
-                                   value="<?= date('Y-m-d') ?>"/>
+                        <div class='input-group'>
+                            <input type='text' class="form-control dateranger" id="dtrng" name="dtrng"
+                                   value="<?= date('Y-m-d') ?> / <?= date('Y-m-d') ?>"/>
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
                             </span>
@@ -45,25 +45,9 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">To Date</label>
-                    <div class="col-md-8 col-xs-12">
-                        <div class='input-group date'>
-                            <input type='text' class="form-control datetimepicker" id="todt" name="todt"
-                                   value="<?= date('Y-m-d') ?>"/>
-                            <span class="input-group-addon">
-                                <span class="fa fa-calendar"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="form-group">
-                    <button class="btn btn-sm btn-primary btn-rounded  btn-icon-fixed pull-right"
+                    <button class="btn btn-sm btn-primary btn-rounded  btn-icon-fixed pull-left"
                             onclick="srcLgnote()">
                         <span class="fa fa-search"></span>Search
                     </button>
@@ -109,53 +93,52 @@
                     <div class="modal-body">
                         <div class="container">
                             <div class="row form-horizontal">
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-md-4 col-xs-12 control-label">Release Date</label>
-                                            <div class="col-md-8 col-xs-12">
-                                                <div class='input-group date'>
-                                                    <input type='text' class="form-control datetimepicker" id="rcdt"
-                                                           name="rcdt" value="<?= date('Y-m-d') ?>"/>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Release Date <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <div class='input-group date'>
+                                                <input type='text' class="form-control datetimepicker" id="rcdt"
+                                                       name="rcdt" value="<?= date('Y-m-d') ?>"/>
+                                                <span class="input-group-addon">
+                                                        <span class="fa fa-calendar"></span>
                                                     </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-md-4 col-xs-12 control-label">Note By </label>
-                                            <div class="col-md-8 col-xs-12">
-                                                <input type='text' class="form-control" id="poby" name="poby"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="col-md-2 col-xs-12 control-label">Send To Email </label>
-                                            <div class="col-md-10 col-xs-12">
-                                                <input type='text' class="text" data-role="tagsinput" name="tag"
-                                                       id="tag"/>
-                                            </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Note By <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <input type='text' class="form-control" id="poby" name="poby"/>
                                         </div>
                                     </div>
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <!-- SUMMERNOTE EXAMPLE -->
-                                    <div class="block">
-                                        <div class="form-group">
+                            </div>
+                            <br>
+                            <div class="row form-horizontal">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-md-2 col-xs-12 control-label">Send To Email <span
+                                                    class="fa fa-asterisk req-astrick"></span></label>
+                                        <div class="col-md-10 col-xs-12">
+                                            <input type='text' class="text" data-role="tagsinput" name="tag"
+                                                   id="tag"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row form-horizontal">
+                                <!-- SUMMERNOTE EXAMPLE -->
+                                <div class="container">
                                              <textarea class="form-control editor-summernote" name="remk"
                                                        id="remk"> </textarea>
-                                        </div>
-                                    </div>
-                                    <!-- END SUMMERNOTE EXAMPLE -->
                                 </div>
-
+                                <!-- END SUMMERNOTE EXAMPLE -->
                             </div>
                         </div>
                     </div>
@@ -230,103 +213,26 @@
 
             $('#addForm').validate({
                 rules: {
-                    scdt: {
-                        required: true,
-                        notEqual: 0
-                    },
-                    mssg: {
+                    rcdt:{
                         required: true
                     },
-                    sttm: {
-                        required: true,
-                    },
-                    entm: {
-                        required: true,
-                    },
-
+                    poby:{
+                        required: true
+                    }
                 },
                 messages: {
-                    brchNw: {
-                        required: "Select Branch ",
-                        notEqual: "Select Branch"
+                    rcdt:{
+                        required: "Enter release date"
                     },
-                    uslvNw: {
-                        required: "Select User Level",
-                        notEqual: "Select User Level"
-                    },
+                    poby:{
+                        required: "Enter name"
+                    }
                 }
             });
 
             $('#edtform').validate({
-                rules: {
-                    usnmEdt: {
-                        required: true,
-                        remote: {
-                            url: "<?= base_url(); ?>admin/chkUserName",
-                            type: "post",
-                            data: {
-                                usnm: function () {
-                                    return $("#usnmEdt").val();
-                                },
-                                auid: function () {
-                                    return $("#auid").val();
-                                },
-                                stat: 1
-                            }
-                        }
-                    },
-                    brchNwEdt: {
-                        required: true,
-                        notEqual: 0
-                    },
-                    frnmEdt: {
-                        required: true
-                    },
-                    emilEdt: {
-                        required: true,
-                        email: true
-                    },
-                    mobiEdt: {
-                        required: true,
-                        digits: true,
-                        minlength: 10,
-                        maxlength: 10,
-                    },
-                    teleEdt: {
-                        digits: true,
-                        minlength: 10,
-                        maxlength: 10,
-                    },
-                },
-                messages: {
-                    nameEdt: {
-                        required: "Enter Branch name",
-                        remote: "Already entered name"
-                    },
-                    codeEdt: {
-                        required: "Enter Branch code",
-                        remote: "Already entered code"
-                    },
-
-                    addrEdt: {
-                        required: "Enter supplier address"
-                    },
-                    mobiEdt: {
-                        required: "Enter mobile number",
-                        digits: "Only numbers are allowed",
-                        minlength: "Please enter 10 digits number",
-                        maxlength: "Please enter 10 digits number",
-                    },
-                    teleEdt: {
-                        digits: "Only numbers are allowed",
-                        minlength: "Please enter 10 digits number",
-                        maxlength: "Please enter 10 digits number",
-                    },
-                    emailEdt: {
-                        required: "Enter email address",
-                        email: "Please enter valid email address"
-                    },
-                }
+                rules: {},
+                messages: {}
             });
             srcLgnote();
 
@@ -373,8 +279,7 @@
 
         //Search
         function srcLgnote() {
-            var frdt = $('#frdt').val();
-            var todt = $('#todt').val();
+            var dtrng = $('#dtrng').val();
 
             $('#DataTbSysupdt').DataTable().clear();
             $('#DataTbSysupdt').DataTable({
@@ -408,8 +313,7 @@
                     url: '<?= base_url(); ?>mitadmin/srchRelenseNt',
                     type: 'post',
                     data: {
-                        frdt: frdt,
-                        todt: todt,
+                        dtrng: dtrng,
                     }
                 }
             });
@@ -420,7 +324,7 @@
         $('#addBtn').click(function (e) {
             e.preventDefault();
             if ($('#addForm').valid()) {
-                $('#addBtn').prop('disabled', true);
+                $('#addBtn').attr('disabled', true);
                 swal({
                     title: "Processing...",
                     text: "User data saving..",
@@ -436,7 +340,7 @@
                     success: function (data) {
                         swal({title: "", text: "Release Note Creation Success!", type: "success"},
                             function () {
-                                $('#addBtn').prop('disabled', false);
+                                $('#addBtn').attr('disabled', false);
                                 clear_Form('addForm');
                                 $('#modal-add').modal('hide');
                                 srcLgnote();
@@ -455,7 +359,7 @@
         //View
         function edtReleseNote(id) {
             $.ajax({
-                url: '<?= base_url(); ?>Admin/getReleseNote',
+                url: '<?= base_url(); ?>mitadmin/getReleseNote',
                 type: 'POST',
                 data: {
                     chid: id
@@ -483,14 +387,14 @@
         function sendMail(chid) {
             swal({
                 title: "Processing...",
-                text: "User data saving..",
+                text: "",
                 imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                 showConfirmButton: false
             });
 
             $.ajax({
                 type: "POST",
-                url: "<?= base_url(); ?>admin/sendMail",
+                url: "<?= base_url(); ?>mitadmin/sendMail",
                 data: {
                     chid: chid,
                 },
@@ -526,7 +430,7 @@
                 function (isConfirm) {
                     if (isConfirm) {
                         $.ajax({
-                            url: '<?= base_url(); ?>admin/rejecSppy',
+                            url: '<?= base_url(); ?>mitadmin/rejecSppy',
                             type: 'post',
                             data: {
                                 id: id
@@ -534,7 +438,7 @@
                             dataType: 'json',
                             success: function (response) {
                                 if (response) {
-                                    swal({title: "Inactive Success !", text: "", type: "success"});
+                                    swal({title: "Reject Success !", text: "", type: "success"});
                                     srcLgnote();
                                 }
                             }
@@ -544,44 +448,6 @@
                     }
                 });
         }
-
-        function sendMaildd(id) {
-            swal({
-                    title: "Are you sure?",
-                    text: "Your will not be able to recover this check",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3bdd59",
-                    confirmButtonText: "Yes",
-                    cancelButtonText: "No",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        $.ajax({
-                            url: '<?= base_url(); ?>admin/doneSchedule',
-                            type: 'post',
-                            data: {
-                                auid: id
-                            },
-                            dataType: 'json',
-                            success: function (response) {
-                                if (response) {
-                                    srcLgnote();
-                                    swal({title: "Schedule Done Success !", text: "", type: "success"},
-                                        function () {
-                                            //  location.reload();
-                                        });
-                                }
-                            }
-                        });
-                    } else {
-                        swal("Cancelled!", "Schedule Done Faild", "error");
-                    }
-                });
-        }
-
     </script>
 
 

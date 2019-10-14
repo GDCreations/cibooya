@@ -33,11 +33,11 @@
         <div class="row form-horizontal">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">Supply</label>
+                    <label class="col-md-4 col-xs-12 control-label">Supplier</label>
                     <div class="col-md-8 col-xs-12">
                         <select id="supl" name="supl" class="bs-select" onchange="chckBtn(this.value,this.id)">
-                            <option value="0">-- Select Supply --</option>
-                            <option value="all">All Supply</option>
+                            <option value="0">-- Select Supplier --</option>
+                            <option value="all">All Supplier</option>
                             <?php
                             foreach ($supplyInfo as $supp) {
                                 echo "<option value='$supp->spid'>" . $supp->spcd . " - " . $supp->spnm . "</option>";
@@ -95,7 +95,7 @@
                     <tr>
                         <th class="text-left">#</th>
                         <th class="text-left">GRN NO</th>
-                        <th class="text-left">SUPPLY</th>
+                        <th class="text-left">Supplier</th>
                         <th class="text-left">PO NO</th>
                         <th class="text-left">GRN DATE</th>
                         <th class="text-left">ODR QTY</th>
@@ -137,7 +137,7 @@
                                         <div class="col-md-6 col-xs-12" id="">
                                             <select id="suplSrc" name="suplSrc" class="bs-select"
                                                     onchange="chckBtn(this.value,this.id);loadPo(this.value,'podt','poDiv','',0,true)">
-                                                <option value="0">-- Select Supply --</option>
+                                                <option value="0">-- Select Supplier --</option>
                                                 <?php
                                                 foreach ($supplyInfo as $supp) {
                                                     echo "<option value='$supp->spid'>" . $supp->spcd . " | " . $supp->spnm . "</option>";
@@ -211,11 +211,11 @@
                                             </tbody>
                                             <tfoot>
                                             <th colspan="4"></th>
-                                            <th id="ttlQt"></th>
-                                            <th id="ttlFr"></th>
-                                            <th id="ttlGd"></th>
-                                            <th id="ttlPrc"></th>
-                                            <th id="ttlBd"></th>
+                                            <th id="ttlQt">00</th>
+                                            <th id="ttlFr">00</th>
+                                            <th id="ttlGd">00</th>
+                                            <th id="ttlPrc">0.00</th>
+                                            <th id="ttlBd">00</th>
                                             <th></th>
                                             </tfoot>
                                         </table>
@@ -233,7 +233,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-5  control-label">Check By</label>
+                                        <label class="col-md-5  control-label">Check By
+                                            <span class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-7 col-xs-12">
                                             <input type="text" class="form-control"
                                                    name="chkby" id="chkby"/>
@@ -312,7 +313,7 @@
                                         <div class="col-md-6 col-xs-12" id="">
                                             <select id="suplSrcEdt" name="suplSrcEdt" class="bs-select"
                                                     onchange="chckBtn(this.value,this.id);loadPo(this.value,'podtEdt','poDivEdt','',0,true)">
-                                                <option value="0">-- Select Supply --</option>
+                                                <option value="0">-- Select Supplier --</option>
                                                 <?php
                                                 foreach ($supplyInfo as $supp) {
                                                     echo "<option value='$supp->spid'>" . $supp->spcd . " | " . $supp->spnm . "</option>";
@@ -389,11 +390,11 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
-                                            <th id="ttlQtEdt"></th>
-                                            <th id="ttlFrEdt"></th>
-                                            <th id="ttlGdEdt"></th>
-                                            <th id="ttlPrcEdt"></th>
-                                            <th id="ttlBdEdt"></th>
+                                            <th id="ttlQtEdt">00</th>
+                                            <th id="ttlFrEdt">00</th>
+                                            <th id="ttlGdEdt">00</th>
+                                            <th id="ttlPrcEdt">0.00</th>
+                                            <th id="ttlBdEdt">00</th>
                                             <th></th>
                                             </tfoot>
                                         </table>
@@ -411,9 +412,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-5  control-label">Check By</label>
+                                        <label class="col-md-5  control-label">Check By
+                                            <span class="fa fa-asterisk req-astrick"></span></label>
                                         <div class="col-md-7 col-xs-12">
-                                            <input type="text" class="form-control"
+                                            <input type="text" class="form-control "
                                                    name="chkbyEdt" id="chkbyEdt"/>
                                         </div>
                                     </div>
@@ -519,18 +521,56 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                "aoColumns": [
-                    {sWidth: '3%'},
-                    {sWidth: '5%'},
-                    {sWidth: '15%'},
-                    {sWidth: '15%'},
-                    {sWidth: '10%'},
-                    {sWidth: '10%'},
-                    {sWidth: '10%'},
-                    {sWidth: '8%'},
-                    {sWidth: '12%'}
+                "columnDefs": [
+                    {className: "text-left", "targets": [2, 3]},
+                    {className: "text-center", "targets": [0, 1, 4, 9, 10]},
+                    {className: "text-right", "targets": [0, 5, 6, 7, 8, 11]},
+                    {className: "text-nowrap", "targets": [2, 3]},
                 ],
+                "aoColumns": [
+                    {sWidth: '3%'}, //#
+                    {sWidth: '5%'}, //Code
+                    {sWidth: '15%'}, //Name
+                    {sWidth: '10%'}, //Address
+                    {sWidth: '10%'}, //Mobile
+                    {sWidth: '5%'}, //Created By
+                    {sWidth: '5%'}, //Created date
+                    {sWidth: '5%'}, //Created date
+                    {sWidth: '5%'}, //Created date
+                    {sWidth: '5%'}, //Created date
+                    {sWidth: '10%'},  //Status
+                    {sWidth: '10%'}  //Option
+                ]
             });
+
+            $('#grnTbl').DataTable().clear();
+            $('#grnTbl').DataTable({
+                destroy: true,
+                searching: false,
+                bPaginate: false,
+                "ordering": false,
+                "columnDefs": [
+                    {className: "text-left", "targets": [1, 2]},
+                    {className: "text-center", "targets": [0, 5, 6, 8]},
+                    {className: "text-right", "targets": [3, 4, 7]},
+                    {className: "text-nowrap", "targets": [1]}
+                ],
+                "aoColumns": [
+                    {sWidth: '2%'},
+                    {sWidth: '5%'},    // br
+                    {sWidth: '17%'},    // cnt
+                    {sWidth: '5%'},     //
+                    {sWidth: '4%'},
+                    {sWidth: '4%'},
+                    {sWidth: '4%'},
+                    {sWidth: '6%'},
+                    {sWidth: '4%'},
+                    {sWidth: '10%'}
+                ],
+                "rowCallback": function (row, data, index) {
+                }
+            });
+
 
             $('#addForm').validate({
                 rules: {
@@ -550,28 +590,35 @@
                     odrqt: {
                         required: true,
                         notEqual: 0,
-                        digits: true
+                        decimal: true
                     },
                     tfrqt: {
-                        required: true,
+                        //required: true,
                         notEqual: 0,
-                        digits: true
+                        decimal: true
                     },
                     rcvqt: {
                         required: true,
                         notEqual: 0,
-                        digits: true
+                        decimal: true
                     },
                     rtnqt: {
                         //required: true,
-                        notEqual: 0,
-                        digits: true
+                        //notEqual: 0,
+                        decimal: true
                     },
                     chkby: {
                         required: true,
                         notEqual: 0
                     },
-
+                    'grgd[]': {
+                        required: true,
+                        decimal: true,
+                        tblar_max: 'odrQty[]'
+                    },
+                    'grfr[]': {
+                        decimal: true
+                    }
                 },
                 messages: {
                     suplSrc: {
@@ -589,8 +636,7 @@
                     chkby: {
                         required: "Enter Check user",
                         notEqual: "Enter Check user",
-                    },
-
+                    }
                 }
             });
 
@@ -615,7 +661,7 @@
                     },
                     tfrqtEdt: {
                         //required: true,
-                        notEqual: 0,
+                        //notEqual: 0,
                         digits: true
                     },
                     rcvqtEdt: {
@@ -625,7 +671,7 @@
                     },
                     rtnqtEdt: {
                         //required: true,
-                        notEqual: 0,
+                        //notEqual: 0,
                         digits: true
                     },
                     chkbyEdt: {
@@ -650,14 +696,14 @@
                         required: "Enter Check user",
                         notEqual: "Enter Check user",
                     },
-
                 }
             });
             srchGrn();
         });
 
-        // Get supply PO Details
+        // Get Supplier PO Details
         function loadPo(supid, html, mhtml, seltdid, st, init) {
+
             $.ajax({
                 url: '<?= base_url(); ?>Stock/getPodet',
                 type: 'post',
@@ -683,12 +729,11 @@
                             var $el = $('#' + html);
                             $el.append($("<option></option>")
                                 .attr("value", id).text(name));
-
                             child2.append("<li data-original-index=\"" + (a + 1) + "\"><a tabindex=\"0\" class=\"\" data-tokens=\"null\" role=\"option\" aria-disabled=\"false\" aria-selected=\"true\"><span class=\"text\">" + name + "\n" +
                                 "</span><span class=\" fa fa-check check-mark\"></span></a></li>");
-                        }
-                        if (seltdid == id) {
-                            set_select(html, seltdid);
+                            if (seltdid == id) {
+                                set_select(html, seltdid);
+                            }
                         }
                     } else {
                         $('#' + html).empty();
@@ -713,8 +758,8 @@
                 "ordering": false,
                 "columnDefs": [
                     {className: "text-left", "targets": [1, 2]},
-                    {className: "text-center", "targets": [0]},
-                    {className: "text-right", "targets": [3, 4, 5, 6, 7, 8]},
+                    {className: "text-center", "targets": [0, 5, 6, 8]},
+                    {className: "text-right", "targets": [3, 4, 7]},
                     {className: "text-nowrap", "targets": [1]}
                 ],
                 "aoColumns": [
@@ -743,36 +788,36 @@
                 dataType: 'json',
                 success: function (response) {
                     // IF CHECK ALREDY ADD GRN OR NOT
-                    if (response['grndt'].length > 0) {
-                        $('#whid').val(0);
-                        document.getElementById('ttlQt').innerHTML = '';
-                        swal({title: "", text: "This Po Already Added GRN", type: "warning"},);
+                    // if (response['grndt'].length > 0) {
+                    //     $('#whid').val(0);
+                    //     document.getElementById('ttlQt').innerHTML = '';
+                    //     swal({title: "", text: "This Po Already Added GRN", type: "warning"},);
+                    //
+                    // } else {
+                    var len = response['podet'].length;
+                    $('#leng').val(len);
+                    set_select('whsid', response['podet'][0]['whid'])
 
-                    } else {
-                        var len = response['podet'].length;
-                        $('#leng').val(len);
-                        set_select('whsid', response['podet'][0]['whid'])
+                    var ttlqt = 0;
+                    for (var a = 0; a < len; a++) {
+                        t.row.add([
+                            a + 1,
+                            response['podet'][a]['itcd'] + '<input type="hidden" name="itid[]" value="' + response['podet'][a]['itid'] + '">',       // ITEM CODE
+                            response['podet'][a]['itnm'],                                                    // ITEM NAME
+                            numeral(response['podet'][a]['untp']).format('0,0.00') + '<input type="hidden" name="untp[]" value="' + response['podet'][a]['untp'] + '" >',                          // PRICE
+                            numeral(response['podet'][a]['qnty']).format('0,0') + '<input type="hidden" name="odrQty[]" value="' + response['podet'][a]['qnty'] + '">',                            // ODR QUNT
+                            '<input type="text" size="4" class="form-control" id="grfr_' + a + '" name="grfr[]" onkeyup="calFrQty(this.value)" style="text-align:right;width: 100%">',                                                           // RCV QTY
+                            '<input type="text" size="4" class="form-control dfg" id="grgd_' + a + '" name="grgd[]" onkeyup="calQty( ' + response['podet'][a]['qnty'] + ',this.value,' + a + ',' + response['podet'][a]['untp'] + ')" style="text-align:right;width: 100%">',       // RCV QTY
+                            '<label id="grTprc_' + a + '">' + numeral(0).format('0,0.00') + '</label><input type="hidden" value="0" name="grhTprc[]" id="grhTprc_' + a + '">', //total price of items
+                            '<input type="text" class="form-control" id="grbd_' + a + '" name="grbd[]" readonly size="4" style="text-align:right;width: 100%">',      // RTN QTY
+                            '<input type="text" class="form-control" name="rtnRmk[]" style="width: 100%">',             // RTN REMK
 
-                        var ttlqt = 0;
-                        for (var a = 0; a < len; a++) {
-                            t.row.add([
-                                a + 1,
-                                response['podet'][a]['itcd'] + '<input type="hidden" name="itid[]" value="' + response['podet'][a]['itid'] + '">',       // ITEM CODE
-                                response['podet'][a]['itnm'],                                                    // ITEM NAME
-                                numeral(response['podet'][a]['untp']).format('0,0.00') + '<input type="hidden" name="untp[]" value="' + response['podet'][a]['untp'] + '" >',                          // PRICE
-                                numeral(response['podet'][a]['qnty']).format('0,0') + '<input type="hidden" name="odrQty[]" value="' + response['podet'][a]['qnty'] + '">',                            // ODR QUNT
-                                '<input type="text" size="4" class="form-control" id="grfr_' + a + '" name="grfr[]" onkeyup="calFrQty(this.value)" style="text-align:right;">',                                                           // RCV QTY
-                                '<input type="text" size="4" class="form-control dfg" id="grgd_' + a + '" name="grgd[]" onkeyup="calQty( ' + response['podet'][a]['qnty'] + ',this.value,' + a + ',' + response['podet'][a]['untp'] + ')" style="text-align:right;">',       // RCV QTY
-                                '<label id="grTprc_' + a + '">' + numeral(0).format('0,0.00') + '</label><input type="hidden" value="0" name="grhTprc[]" id="grhTprc_' + a + '">', //total price of items
-                                '<input type="text" class="form-control" id="grbd_' + a + '" name="grbd[]" readonly size="4" style="text-align:right;">',      // RTN QTY
-                                '<input type="text" class="form-control" name="rtnRmk[]">',             // RTN REMK
-
-                            ]).draw(false);
-                            ttlqt = +ttlqt + +response['podet'][a]['qnty'];
-                        }
-                        $('#ttlQt').html(ttlqt);
-                        $('#ttlQt2').val(ttlqt);
+                        ]).draw(false);
+                        ttlqt = +ttlqt + +response['podet'][a]['qnty'];
                     }
+                    $('#ttlQt').html(ttlqt);
+                    $('#ttlQt2').val(ttlqt);
+                    // }
                 }
             });
         }
@@ -814,10 +859,9 @@
 
             var ttlQt = document.getElementById('ttlQt2').value;
             if (ttlGd > ttlQt) {
-                document.getElementById("addBtn").setAttribute("class", "hidden");
+                $("#addBtn").attr("disabled", true);
             } else {
-                document.getElementById("addBtn").removeAttribute("class");
-                document.getElementById("addBtn").setAttribute("class", "btn btn-warning btn-sm btn-rounded");
+                $("#addBtn").attr("disabled", false);
             }
             //document.getElementById('ttlPrc').innerHTML = numeral(ttlPRC).format('0,0.00');
             $('#ttlGd').html(ttlGd);
@@ -853,6 +897,9 @@
                                 $('#addBtn').prop('disabled', false);
                                 clear_Form('addForm');
                                 $('#modal-add').modal('hide');
+                                $('#grnTbl').DataTable().clear().draw();
+                                $('#ttlQt, #ttlFr, #ttlGd, #ttlBd').html('00');
+                                $('#ttlPrc').html('0.00');
                                 srchGrn();
                             });
                     },
@@ -891,8 +938,8 @@
                     "serverSide": true,
                     "columnDefs": [
                         {className: "text-left", "targets": [2, 3]},
-                        {className: "text-center", "targets": [0, 1, 4, 9, 10]},
-                        {className: "text-right", "targets": [0, 5, 6, 7, 8, 11]},
+                        {className: "text-center", "targets": [0, 1, 4, 9, 10, 11]},
+                        {className: "text-right", "targets": [0, 5, 6, 7, 8]},
                         {className: "text-nowrap", "targets": [2, 3]},
                     ],
                     "order": [[6, "DESC"]], //ASC  desc
@@ -1011,11 +1058,9 @@
                         $('#rjdt').html(": " + ((grndtl[0]['rjdt'] != null && grndtl[0]['rjdt'] != "0000-00-00 00:00:00") ? grndtl[0]['rjdt'] : "--"));
                         //$('#mdby').html(": " + ((grndtl[0]['mdnm'] != null) ? grndtl[0]['mdnm'] : "--"));
                         //$('#mddt').html(": " + ((grndtl[0]['mddt'] != null && grndtl[0]['mddt'] != "0000-00-00 00:00:00") ? grndtl[0]['mddt'] : "--"));
-
                     }
 
                     if (len2 > 0) {
-
                         $('#grnTblEdt').DataTable().clear();
                         var m = $('#grnTblEdt').DataTable({
                             "bInfo": false,
@@ -1111,7 +1156,6 @@
                                 poitem[a]['remk'],
 
                             ]).draw(false);
-
                         }
                     }
                     swal.close();
@@ -1130,7 +1174,6 @@
             e.preventDefault();
 
             if ($('#appForm').valid()) {
-
                 swal({
                         title: "Are you sure to do this ?",
                         text: "",
@@ -1191,7 +1234,7 @@
             swal({
                 title: "Please wait...",
                 text: "GRN generating..",
-                imageUrl: "<?= base_url() ?>assets/dist/img/loading.gif",
+                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                 showConfirmButton: false
             });
             setTimeout(function () {

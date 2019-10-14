@@ -81,10 +81,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed pull-right"
-                            onclick="srch_Po()"><span
-                                class="fa fa-search"></span>Search
-                    </button>
+                    <label class="col-md-4 col-xs-12 control-label"><br></label>
+                    <div class="col-md-8 col-xs-12">
+                        <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed pull-right"
+                                onclick="srch_Po()">
+                            <span class="fa fa-search"></span>Search
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1478,15 +1481,15 @@
                     {className: "text-right", "targets": [4]},
                     {className: "text-nowrap", "targets": [2]},
                 ],
-                "order": [[6, "DESC"]], //ASC  desc
+                "order": [[5, "DESC"]], //ASC  desc
                 "aoColumns": [
                     {sWidth: '3%'}, //No
                     {sWidth: '10%'},    //PONO
                     {sWidth: '20%'},    //SUPP
-                    {sWidth: '10%'},    //Order Date
-                    {sWidth: '10%'},    //VALUE
+                    {sWidth: '8%'},    //Order Date
+                    {sWidth: '8%'},    //VALUE
                     {sWidth: '10%'},    //Created Date
-                    {sWidth: '8%'},     //Status
+                    {sWidth: '10%'},     //Status
                     {sWidth: '12%'}     //OPT
                 ],
 

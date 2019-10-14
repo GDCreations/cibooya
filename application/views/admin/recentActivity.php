@@ -39,17 +39,6 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">From Date</label>
-                    <div class="col-md-8 col-xs-12">
-                        <div class='input-group date'>
-                            <input type='text' class="form-control datetimepicker" id="frdt" name="frdt" value="<?= date('Y-m-d') ?>"/>
-                            <span class="input-group-addon">
-                                <span class="fa fa-calendar"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="col-md-4">
@@ -62,25 +51,27 @@
                         </select>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-4">
                 <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">To Date</label>
+                    <label class="col-md-4 col-xs-12 control-label">Date Range</label>
                     <div class="col-md-8 col-xs-12">
-                        <div class='input-group date'>
-                            <input type='text' class="form-control datetimepicker" id="todt" name="todt" value="<?= date('Y-m-d') ?>"/>
+                        <div class='input-group'>
+                            <input type='text' class="form-control dateranger" id="dtrng" name="dtrng"
+                                   value="<?= date('Y-m-d') ?> / <?= date('Y-m-d') ?>"/>
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
                             </span>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group"><br> <br></div>
-                <button class="btn btn-sm btn-primary btn-rounded  btn-icon-fixed pull-right" data-toggle="modal"
-                        data-target="#modal-add"
-                        onclick="srchActv()">
-                    <span class="fa fa-search"></span>Search
-                </button>
+                <div class="form-group">
+                    <button class="btn btn-sm btn-primary btn-rounded  btn-icon-fixed pull-right" data-toggle="modal"
+                            data-target="#modal-add"
+                            onclick="srchActv()">
+                        <span class="fa fa-search"></span>Search
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -109,7 +100,22 @@
     <script type="text/javascript">
 
         $().ready(function () {
-
+            //INIT DATA TABLE
+            $('#dataTbRcnt').DataTable({
+                "columnDefs": [
+                    {className: "text-left", "targets": [1, 2]},
+                    {className: "text-center", "targets": [0, 4]},
+                    {className: "text-right", "targets": [3]},
+                    {className: "text-nowrap", "targets": [0]},
+                ],
+                "aoColumns": [
+                    {sWidth: '5%'},
+                    {sWidth: '10%'},
+                    {sWidth: '30%'}, // name
+                    {sWidth: '18%'},
+                    {sWidth: '10%'}
+                ],
+            });
         });
 
         function getUser(brid, div) {
@@ -158,9 +164,7 @@
         function srchActv() {
             var brn = document.getElementById('brch').value;
             var user = document.getElementById('user').value;
-            //var act = document.getElementById('act').value;
-            var frdt = document.getElementById('frdt').value;
-            var todt = document.getElementById('todt').value;
+            var dtrng = document.getElementById('dtrng').value;
 
             if (brn == '0') {
                 $('#brch').parent().css('border','1px solid red');
@@ -271,9 +275,7 @@
                         data: {
                             brn: brn,
                             user: user,
-                            //act: act,
-                            frdt: frdt,
-                            todt: todt
+                            dtrng: dtrng
                         }
                     },
                 });

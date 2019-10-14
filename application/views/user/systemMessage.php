@@ -49,7 +49,8 @@
                     <label class="col-md-4 col-xs-12 control-label">From Date</label>
                     <div class="col-md-8 col-xs-12">
                         <div class='input-group date'>
-                            <input type='text' class="form-control dateranger" id="dteRng" name="dteRng"/>
+                            <input type='text' class="form-control dateranger" id="dteRng" name="dteRng"
+                                   value="<?= date('Y-m-d')." / ".date('Y-m-d')?>"/>
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
                             </span>
@@ -423,7 +424,7 @@
                 }
             });
 
-            //srchUser();
+            srchUser();
 
             disableSelct('srcUslv');
             disableSelct('srcUsr');

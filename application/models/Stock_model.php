@@ -630,7 +630,7 @@ class Stock_model extends CI_Model
 
     function count_filtered_grn()
     {
-        $this-grnDet_queryData();
+        $this->grnDet_queryData();
         $query = $this->db->get();
         return $query->num_rows();
     }
@@ -641,6 +641,98 @@ class Stock_model extends CI_Model
         return $this->db->count_all_results();
     }
     //END SEARCH
+
+    //STOCK
+    var $cl_srch9 = array('stcd', 'spnm', 'itnm', 'itcd'); //set column field database for datatable searchable
+    var $cl_odr9 = array(null, 'stcd', 'spnm', 'itnm', 'csvl', 'fcvl', 'slvl', 'qunt', 'frqt','avqt','crdt','stat', ''); //set column field database for datatable orderable
+    var $order9 = array('stk.crdt' => 'desc'); // default order
+
+    function mnStock_query()
+    {
+        $cat = $this->input->post('cat'); // CATEGORY
+        $brnd = $this->input->post('brnd'); // BRAND
+        $typ = $this->input->post('typ'); // TYPE
+        $stat = $this->input->post('stat'); // Stat
+        $dtrng = explode('/',$this->input->post('dtrng')); // DateRange
+        $frdt = trim($dtrng[0],' ');
+        $todt = trim($dtrng[1],' ');
+
+        $this->db->select("stk.*, item.itcd,item.itnm,sp.spnm,CONCAT(cr.fnme,' ',cr.lnme) AS exc, DATE_FORMAT(stk.crdt, '%Y-%m-%d') AS crdtf");
+        $this->db->from("stock stk");
+        $this->db->join('item', 'item.itid = stk.itid');
+        $this->db->join('supp_mas sp', 'sp.spid = stk.spid ');
+        $this->db->join('user_mas cr', 'cr.auid = stk.crby ');
+
+        if ($cat != 'all') {
+            $this->db->where('item.ctid', $cat);
+        }
+        if ($brnd != 'all') {
+            $this->db->where('item.bdid', $brnd);
+        }
+        if ($typ != 'all') {
+            $this->db->where('item.tpid', $typ);
+        }
+        if ($stat != 'all') {
+            $this->db->where('stk.stat',$stat);
+        }
+
+        $this->db->where("DATE_FORMAT(stk.crdt,'%Y-%m-%d') BETWEEN '$frdt' AND '$todt'");
+    }
+
+    private function mnStock_queryData()
+    {
+        $this->mnStock_query();
+        $i = 0;
+        foreach ($this->cl_srch9 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch9) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr9[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order9)) {
+            $order9 = $this->order9;
+            $this->db->order_by(key($order9), $order9[key($order9)]);
+        }
+    }
+
+    function get_mnStock()
+    {
+        $this->mnStock_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_mnStock()
+    {
+        $this->mnStock_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_mnStock()
+    {
+        $this->mnStock_query();
+        return $this->db->count_all_results();
+    }
+
+// END HIRE STOCK
 }
 
 ?>
