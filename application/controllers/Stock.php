@@ -4206,14 +4206,20 @@ class Stock extends CI_Controller
         // GET STOCK SUB TABLE DETAILS
         $subdt = $this->Generic_model->getData('stock_sub', '', array('stid' => $auid));
 
+                $csvl = $this->input->post('csvlEdt[]');   // COST
+                $fcvl = $this->input->post('dsvlEdt[]');   // DISPLY
+                $slvl = $this->input->post('slvlEdt[]');   // SALES
+                $mkvl = $this->input->post('mkvlEdt[]');   // MARKET
+                $dscr = $this->input->post('rmksEdt[]');   // REMARKS
+
         if ($func == 'edt') {
             $this->db->trans_begin();           // SQL TRANSACTION START
             $data_ar1 = array(
-                'csvl' => $this->input->post('csvlEdt'),   // COST
-                'fcvl' => $this->input->post('dsvlEdt'),   // DISPLY
-                'slvl' => $this->input->post('slvlEdt'),   // SALES
-                'mkvl' => $this->input->post('mkvlEdt'),   // MARKET
-                'dscr' => $this->input->post('rmksEdt'),   // REMARKS
+                'csvl' => $csvl[0],   // COST
+                'fcvl' => $fcvl[0],   // DISPLY
+                'slvl' => $slvl[0],   // SALES
+                'mkvl' => $mkvl[0],   // MARKET
+                'dscr' => $dscr[0],   // REMARKS
                 'mdby' => $_SESSION['userId'],
                 'mddt' => date('Y-m-d H:i:s')
             );
@@ -4285,11 +4291,11 @@ class Stock extends CI_Controller
             $this->db->trans_begin();           // SQL TRANSACTION START
 
             $data_ar1 = array(
-                'csvl' => $this->input->post('csvlEdt'),   // COST
-                'fcvl' => $this->input->post('dsvlEdt'),   // DISPLY
-                'slvl' => $this->input->post('slvlEdt'),   // SALES
-                'mkvl' => $this->input->post('mkvlEdt'),   // MARKET
-                'dscr' => $this->input->post('rmksEdt'),   // REMARKS
+                'csvl' => $csvl[0],   // COST
+                'fcvl' => $fcvl[0],   // DISPLY
+                'slvl' => $slvl[0],   // SALES
+                'mkvl' => $mkvl[0],   // MARKET
+                'dscr' => $dscr[0],   // REMARKS
                 'stat' => 1,
                 'apby' => $_SESSION['userId'],
                 'apdt' => date('Y-m-d H:i:s')
@@ -4415,6 +4421,34 @@ class Stock extends CI_Controller
 //END ACTIVATE STOCK </2019-10-10>
 //************************************************
 //***           END STOCK MANAGEMENT           ***
+//************************************************
+
+//************************************************
+//***               STOCK CONVERSION           ***
+//************************************************
+//LOAD PAGE </ 2019-10-14>
+    function stckCnv()
+    {
+        $data['acm'] = ''; //Module
+        $data['acp'] = 'stckCnv'; //Page
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('stckCnv');
+        $data2['branchinfo'] = $this->Generic_model->getBranch();
+        $data2['category'] = $this->Generic_model->getData('category', array('ctid', 'ctcd', 'ctnm', 'stat'), "stat IN(1,3)");
+        $data2['brand'] = $this->Generic_model->getData('brand', array('bdid', 'bdcd', 'bdnm', 'logo', 'stat'), "stat IN(1,3)");
+        $data2['type'] = $this->Generic_model->getData('type', array('tpid', 'tpcd', 'tpnm', 'stat'), "stat IN(1,3)");
+        $data2['supplier'] = $this->Generic_model->getData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat' => 1));
+
+        $this->load->view('admin/stock/stckConversion', $data2);
+
+        $this->load->view('common/tmpFooter', $data);
+    }
+    //END LOAD PAGE </ 2019-10-14>
+//************************************************
+//***           END STOCK CONVERSION           ***
 //************************************************
 
 }

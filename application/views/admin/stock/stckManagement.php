@@ -754,7 +754,7 @@
                         required: true,
                         currency: true,
                         notEqual: '0',
-                        tblar_min: 'txprEdt[]'
+                        tblar_min: 'txvlEdt[]'
                     },
                     'slvlEdt[]': {
                         required: true,
@@ -1044,9 +1044,7 @@
                                 numeral(grnd[a]['untp']).format('0,0.00') + '<input type="hidden" id="untp' + a + '" name="untp[]" value="' + grnd[a]['untp'] + '" >',                          // PRICE
                                 numeral(txunt).format('0,0.00') + '<input type="hidden" id="txpr_' + a + '" name="txpr[]" value="' + txunt + '" >',  // UNIT PRICE + TAX
                                 '<input readonly type="text" class="form-control" style="text-align:right; width: 100px" id="csvl_' + a + '" name="csvl[]" value="' + txunt + '" onkeyup="chkVal(this.value,' + a + ',' + " 'cost'" + ')">',        // COST VALUE
-                                '<span class="fa fa-asterisk req-astrick"></span> ' +
                                 '<input type="text" class="form-control" style="text-align:right; width: 100px" id="slvl_' + a + '" name="slvl[]" onkeyup="chkVal(this.value,' + a + ',' + " 'sale'" + ')">',        // SALES VALUE
-                                '<span class="fa fa-asterisk req-astrick"></span> ' +
                                 '<input type="text" class="form-control" style="text-align:right; width: 100px" id="dsvl_' + a + '" name="dsvl[]" onkeyup="chkVal(this.value,' + a + ',' + " 'disp'" + ')">',        // DISPLAY VALUE
                                 '<input type="text" class="form-control" style="text-align:right; width: 100px" id="mkvl_' + a + '" name="mkvl[]" onkeyup="chkVal(this.value,' + a + ',' + " 'mark'" + ')">',        // MARKET VALUE
                                 '<input type="text" class="form-control" name="rmks[]" style="width: 100px"/>'                  // REMARKS
@@ -1444,12 +1442,10 @@
                             numeral(stdt[0]['txvl']).format('0,0.00') + '<input type="hidden"  id="txvlEdt" name="txvlEdt[]" value="' + stdt[0]['txvl'] + '">',       // UNIT PRICE + TAX
 
                             '<input readonly type="text" class="form-control" style="text-align:right; width: 100px;" id="csvlEdt" name="csvlEdt[]" value="' + stdt[0]['csvl'] + '" onkeyup="chkValEdt(this.value,' + " 'cost'" + ')">',        // COST VALUE
-                            '<span class="fa fa-asterisk req-astrick"></span> ' +
                             '<input type="text" class="form-control" style="text-align:right; width: 100px;" id="slvlEdt" name="slvlEdt[]" value="' + stdt[0]['slvl'] + '" onkeyup="chkValEdt(this.value,' + " 'sale'" + ')">',        // SALES VALUE
-                            '<span class="fa fa-asterisk req-astrick"></span> ' +
                             '<input type="text" class="form-control" style="text-align:right; width: 100px;" id="dsvlEdt" name="dsvlEdt[]" value="' + stdt[0]['fcvl'] + '" onkeyup="chkValEdt(this.value,' + " 'disp'" + ')">',        // DISPLAY VALUE
                             '<input type="text" class="form-control" style="text-align:right; width: 100px;" id="mkvlEdt" name="mkvlEdt[]" value="' + stdt[0]['mkvl'] + '" onkeyup="chkValEdt(this.value,' + " 'mark'" + ')">',        // MARKET VALUE
-                            '<input type="text" class="form-control" style="width: 100%" name="rmksEdt" value="' + response['stdt'][0]['dscr'] + '">',                   // REMARKS
+                            '<input type="text" class="form-control" style="width: 100%" name="rmksEdt[]" value="' + response['stdt'][0]['dscr'] + '">',                   // REMARKS
 
                             // '<label class=""><input type="checkbox" name="blskEdt" id="checkbox_2"  ' + chck + ' class="icheckbox" onchange="showHid()"/> </label>'
                         ]).draw(false);
