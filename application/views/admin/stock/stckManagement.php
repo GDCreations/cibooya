@@ -729,27 +729,6 @@
             // EDIT VALIDATE
             $("#appForm").validate({
                 rules: {
-                    csvlEdt: {
-                        required: true,
-                        notEqual: '0',
-                        currency: true,
-                        lessThanOrEqual: '#txvlEdt'
-                    },
-                    slvlEdt: {
-                        required: true,
-                        notEqual: '0',
-                        currency: true,
-                        lessThanOrEqual: '#csvlEdt'
-                    },
-                    dsvlEdt: {
-                        required: true,
-                        notEqual: '0',
-                        currency: true,
-                        lessThanOrEqual: '#slvlEdt'
-                    },
-                    mkvlEdt: {
-                        currency: true
-                    },
                     'csvlEdt[]': {
                         required: true,
                         currency: true,
@@ -776,18 +755,6 @@
                     }
                 },
                 messages: {
-                    csvlEdt: {
-                        required: 'Please enter cost value',
-                        notEqual: "Can't enter zero value",
-                    },
-                    fcvlEdt: {
-                        required: 'Please enter face value',
-                        notEqual: "Can't enter zero value",
-                    },
-                    slvlEdt: {
-                        required: 'Please enter sales value',
-                        notEqual: "Can't enter zero value",
-                    },
                     'csvlEdt[]': {
                         required: 'Please enter cost value',
                         notEqual: "Can't enter zero value"
