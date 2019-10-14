@@ -12,9 +12,9 @@ class Admin_model extends CI_Model
     {
         $brn = $this->input->post('brn');
         $usr = $this->input->post('user');
-        $act = $this->input->post('act');
-        $frdt = $this->input->post('frdt');
-        $todt = $this->input->post('todt');
+        $dtrng = explode('/',$this->input->post('dtrng'));
+        $frdt = trim($dtrng[0],' ');
+        $todt = trim($dtrng[1],' ');
 
         $this->db->select("user_log.*,user_mas.uimg,user_mas.usnm,brch_mas.brcd");
         $this->db->from("user_log");
@@ -256,8 +256,9 @@ class Admin_model extends CI_Model
 
     function systmUpdtDet_query()
     {
-        $frdt = $this->input->post('frdt');
-        $todt = $this->input->post('todt');
+        $dtrng = explode('/',$this->input->post('dtrng'));
+        $frdt = trim($dtrng[0],' ');
+        $todt = trim($dtrng[1],' ');
         $this->db->select("syst_update.*,(SELECT user_mas.usnm FROM user_mas WHERE user_mas.auid=syst_update.crby) AS innm");
         $this->db->from("syst_update");
         $this->db->order_by('syst_update.date', 'desc');

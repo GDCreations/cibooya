@@ -656,20 +656,22 @@
                         required: true,
                         currency: true,
                         notEqual: '0',
+                        tblar_min: 'txpr[]'
                     },
                     'slvl[]': {
                         required: true,
                         currency: true,
                         notEqual: '0',
+                        tblar_min: 'csvl[]'
                     },
                     'dsvl[]': {
                         required: true,
                         currency: true,
                         notEqual: '0',
+                        tblar_min: 'slvl[]'
                     },
                     'mkvl[]': {
-                        currency: true,
-                        notEqual: '0',
+                        currency: true
                     }
                 },
                 messages: {
@@ -692,10 +694,7 @@
                     'dsvl[]': {
                         required: 'Please enter face value',
                         notEqual: "Can't enter zero value"
-                    },
-                    'mkvl[]': {
-                        notEqual: "Can't enter zero value"
-                    },
+                    }
                 }
             });
 
@@ -751,6 +750,27 @@
                     mkvlEdt: {
                         currency: true
                     },
+                    'csvlEdt[]': {
+                        required: true,
+                        currency: true,
+                        notEqual: '0',
+                        tblar_min: 'txprEdt[]'
+                    },
+                    'slvlEdt[]': {
+                        required: true,
+                        currency: true,
+                        notEqual: '0',
+                        tblar_min: 'csvlEdt[]'
+                    },
+                    'dsvlEdt[]': {
+                        required: true,
+                        currency: true,
+                        notEqual: '0',
+                        tblar_min: 'slvlEdt[]'
+                    },
+                    'mkvlEdt[]': {
+                        currency: true
+                    },
                     'serno[]': {
                         required: true
                     }
@@ -767,6 +787,18 @@
                     slvlEdt: {
                         required: 'Please enter sales value',
                         notEqual: "Can't enter zero value",
+                    },
+                    'csvlEdt[]': {
+                        required: 'Please enter cost value',
+                        notEqual: "Can't enter zero value"
+                    },
+                    'slvlEdt[]': {
+                        required: 'Please enter sales value',
+                        notEqual: "Can't enter zero value"
+                    },
+                    'dsvlEdt[]': {
+                        required: 'Please enter face value',
+                        notEqual: "Can't enter zero value"
                     },
                     'serno[]': {
                         required: "This field is required"
@@ -1095,26 +1127,26 @@
             if (type == 'cost') {
                 if (txpr > typvl) {
                     document.getElementById('csvlEdt').style.borderColor = "red";
-                    document.getElementById('subBtn').disabled = true;
+                    document.getElementById('edtBtn').disabled = true;
                 } else {
                     document.getElementById('csvlEdt').style.borderColor = '';
-                    document.getElementById('subBtn').disabled = false;
+                    document.getElementById('edtBtn').disabled = false;
                 }
             } else if (type == 'sale') {
                 if (csvl > typvl) {
                     document.getElementById('slvlEdt').style.borderColor = "red";
-                    document.getElementById('subBtn').disabled = true;
+                    document.getElementById('edtBtn').disabled = true;
                 } else {
                     document.getElementById('slvlEdt').style.borderColor = '';
-                    document.getElementById('subBtn').disabled = false;
+                    document.getElementById('edtBtn').disabled = false;
                 }
             } else if (type == 'disp') {
                 if (slvl > typvl) {
                     document.getElementById('dsvlEdt').style.borderColor = "red";
-                    document.getElementById('subBtn').disabled = true;
+                    document.getElementById('edtBtn').disabled = true;
                 } else {
                     document.getElementById('dsvlEdt').style.borderColor = '';
-                    document.getElementById('subBtn').disabled = false;
+                    document.getElementById('edtBtn').disabled = false;
                 }
             }
         }
@@ -1409,14 +1441,14 @@
                             numeral(stdt[0]['qunt']).format('0,0'),     // ODR QUNT
                             numeral(stdt[0]['frqt']).format('0,0'),     // ODR QUNT
                             numeral(stdt[0]['untp']).format('0,0.00'),  // PRICE
-                            numeral(stdt[0]['txvl']).format('0,0.00') + '<input type="hidden"  id="txvlEdt" name="txvlEdt" value="' + stdt[0]['txvl'] + '">',       // UNIT PRICE + TAX
+                            numeral(stdt[0]['txvl']).format('0,0.00') + '<input type="hidden"  id="txvlEdt" name="txvlEdt[]" value="' + stdt[0]['txvl'] + '">',       // UNIT PRICE + TAX
 
-                            '<input readonly type="text" class="form-control" style="text-align:right; width: 100px;" id="csvlEdt" name="csvlEdt" value="' + stdt[0]['csvl'] + '" onkeyup="chkValEdt(this.value,' + " 'cost'" + ')">',        // COST VALUE
+                            '<input readonly type="text" class="form-control" style="text-align:right; width: 100px;" id="csvlEdt" name="csvlEdt[]" value="' + stdt[0]['csvl'] + '" onkeyup="chkValEdt(this.value,' + " 'cost'" + ')">',        // COST VALUE
                             '<span class="fa fa-asterisk req-astrick"></span> ' +
-                            '<input type="text" class="form-control" style="text-align:right; width: 100px;" id="slvlEdt" name="slvlEdt" value="' + stdt[0]['slvl'] + '" onkeyup="chkValEdt(this.value,' + " 'sale'" + ')">',        // SALES VALUE
+                            '<input type="text" class="form-control" style="text-align:right; width: 100px;" id="slvlEdt" name="slvlEdt[]" value="' + stdt[0]['slvl'] + '" onkeyup="chkValEdt(this.value,' + " 'sale'" + ')">',        // SALES VALUE
                             '<span class="fa fa-asterisk req-astrick"></span> ' +
-                            '<input type="text" class="form-control" style="text-align:right; width: 100px;" id="dsvlEdt" name="dsvlEdt" value="' + stdt[0]['fcvl'] + '" onkeyup="chkValEdt(this.value,' + " 'disp'" + ')">',        // DISPLAY VALUE
-                            '<input type="text" class="form-control" style="text-align:right; width: 100px;" id="mkvlEdt" name="mkvlEdt" value="' + stdt[0]['mkvl'] + '" onkeyup="chkValEdt(this.value,' + " 'mark'" + ')">',        // MARKET VALUE
+                            '<input type="text" class="form-control" style="text-align:right; width: 100px;" id="dsvlEdt" name="dsvlEdt[]" value="' + stdt[0]['fcvl'] + '" onkeyup="chkValEdt(this.value,' + " 'disp'" + ')">',        // DISPLAY VALUE
+                            '<input type="text" class="form-control" style="text-align:right; width: 100px;" id="mkvlEdt" name="mkvlEdt[]" value="' + stdt[0]['mkvl'] + '" onkeyup="chkValEdt(this.value,' + " 'mark'" + ')">',        // MARKET VALUE
                             '<input type="text" class="form-control" style="width: 100%" name="rmksEdt" value="' + response['stdt'][0]['dscr'] + '">',                   // REMARKS
 
                             // '<label class=""><input type="checkbox" name="blskEdt" id="checkbox_2"  ' + chck + ' class="icheckbox" onchange="showHid()"/> </label>'

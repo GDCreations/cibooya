@@ -33,11 +33,11 @@
 
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">From Date</label>
+                    <label class="col-md-4 col-xs-12 control-label">Date Range</label>
                     <div class="col-md-8 col-xs-12">
-                        <div class='input-group date'>
-                            <input type='text' class="form-control datetimepicker" id="frdt" name="frdt"
-                                   value="<?= date('Y-m-d') ?>"/>
+                        <div class='input-group'>
+                            <input type='text' class="form-control dateranger" id="dtrng" name="dtrng"
+                                   value="<?= date('Y-m-d') ?> / <?= date('Y-m-d') ?>"/>
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
                             </span>
@@ -45,25 +45,9 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">To Date</label>
-                    <div class="col-md-8 col-xs-12">
-                        <div class='input-group date'>
-                            <input type='text' class="form-control datetimepicker" id="todt" name="todt"
-                                   value="<?= date('Y-m-d') ?>"/>
-                            <span class="input-group-addon">
-                                <span class="fa fa-calendar"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="form-group">
-                    <button class="btn btn-sm btn-primary btn-rounded  btn-icon-fixed pull-right"
+                    <button class="btn btn-sm btn-primary btn-rounded  btn-icon-fixed pull-left"
                             onclick="srcSchedule()">
                         <span class="fa fa-search"></span>Search
                     </button>
@@ -292,90 +276,31 @@
                     },
                     entm: {
                         required: true,
-                    },
-
+                        time_min: 'sttm'
+                    }
                 },
                 messages: {
-                    brchNw: {
-                        required: "Select Branch ",
-                        notEqual: "Select Branch"
-                    },
-                    uslvNw: {
-                        required: "Select User Level",
-                        notEqual: "Select User Level"
-                    },
                 }
             });
 
             $('#edtform').validate({
                 rules: {
-                    usnmEdt: {
-                        required: true,
-                        remote: {
-                            url: "<?= base_url(); ?>admin/chkUserName",
-                            type: "post",
-                            data: {
-                                usnm: function () {
-                                    return $("#usnmEdt").val();
-                                },
-                                auid: function () {
-                                    return $("#auid").val();
-                                },
-                                stat: 1
-                            }
-                        }
-                    },
-                    brchNwEdt: {
+                    scdtEdt: {
                         required: true,
                         notEqual: 0
                     },
-                    frnmEdt: {
+                    mssgEdt: {
                         required: true
                     },
-                    emilEdt: {
+                    sttmEdt: {
                         required: true,
-                        email: true
                     },
-                    mobiEdt: {
+                    entmEdt: {
                         required: true,
-                        digits: true,
-                        minlength: 10,
-                        maxlength: 10,
-                    },
-                    teleEdt: {
-                        digits: true,
-                        minlength: 10,
-                        maxlength: 10,
-                    },
+                        time_min: 'sttmEdt'
+                    }
                 },
                 messages: {
-                    nameEdt: {
-                        required: "Enter Branch name",
-                        remote: "Already entered name"
-                    },
-                    codeEdt: {
-                        required: "Enter Branch code",
-                        remote: "Already entered code"
-                    },
-
-                    addrEdt: {
-                        required: "Enter supplier address"
-                    },
-                    mobiEdt: {
-                        required: "Enter mobile number",
-                        digits: "Only numbers are allowed",
-                        minlength: "Please enter 10 digits number",
-                        maxlength: "Please enter 10 digits number",
-                    },
-                    teleEdt: {
-                        digits: "Only numbers are allowed",
-                        minlength: "Please enter 10 digits number",
-                        maxlength: "Please enter 10 digits number",
-                    },
-                    emailEdt: {
-                        required: "Enter email address",
-                        email: "Please enter valid email address"
-                    },
                 }
             });
             srcSchedule();
@@ -383,8 +308,7 @@
 
         //Search
         function srcSchedule() {
-            var frdt = $('#frdt').val();
-            var todt = $('#todt').val();
+            var dtrng = $('#dtrng').val();
 
             $('#DataTbSysupdt').DataTable().clear();
             $('#DataTbSysupdt').DataTable({
@@ -422,8 +346,7 @@
                     url: '<?= base_url(); ?>mitadmin/srchSystmUpdte',
                     type: 'post',
                     data: {
-                        frdt: frdt,
-                        todt: todt,
+                        dtrng: dtrng,
                     }
                 }
             });
@@ -469,7 +392,7 @@
         //View
         function edtSchedule(id) {
             $.ajax({
-                url: '<?= base_url(); ?>Admin/getDetSysDown',
+                url: '<?= base_url(); ?>mitadmin/getDetSysDown',
                 type: 'POST',
                 data: {
                     id: id
@@ -515,7 +438,7 @@
 
                             jQuery.ajax({
                                 type: "POST",
-                                url: "<?= base_url(); ?>admin/edtSysDown",
+                                url: "<?= base_url(); ?>mitadmin/edtSysDown",
                                 data: $("#edtform").serialize(),
                                 dataType: 'json',
                                 success: function (data) {
@@ -557,7 +480,7 @@
                 function (isConfirm) {
                     if (isConfirm) {
                         $.ajax({
-                            url: '<?= base_url(); ?>admin/doneSchedule',
+                            url: '<?= base_url(); ?>mitadmin/doneSchedule',
                             type: 'post',
                             data: {
                                 auid: id

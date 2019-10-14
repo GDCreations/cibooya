@@ -27,14 +27,14 @@ $.validator.addMethod("greaterThan",
         var $otherElement = $(param);
         return parseInt(value, 10) < parseInt($otherElement.val(), 10);
     },
-    "This value greater then other value."
+    "This value greater than other value."
 );
 $.validator.addMethod("lessThan",
     function (value, element, param) {
         var $otherElement = $(param);
         return parseInt(value, 10) > parseInt($otherElement.val(), 10);
     },
-    "This value less then other value."
+    "This value less than other value."
 );
 
 // lessThanOrEqual
@@ -43,7 +43,7 @@ $.validator.addMethod("lessThanOrEqual",
         var $otherElement = $(param);
         return parseInt(value, 10) >= parseInt($otherElement.val(), 10);
     },
-    "This value less then other value."
+    "This value less than other value."
 );
 
 // greaterThanOrEqual
@@ -52,7 +52,7 @@ $.validator.addMethod("greaterThanOrEqual",
         var $otherElement = $(param);
         return parseInt(value, 10) <= parseInt($otherElement.val(), 10);
     },
-    "This value greater then other value."
+    "This value greater than other value."
 );
 
 // LESS THAN AND GREATER THAN ARRAY MODE --gemu--
@@ -162,7 +162,55 @@ $.validator.addMethod("maxAge", function (value, element, max) {
     return age <= max;
 }, "You are old enough, Cannot register!");
 
+//Validation table array elements max value
+$.validator.addMethod("tblar_max",function (value, element, options) {
+    // get all the elements passed here by name
+    var node = $(element).parent().parent().find('input[name="'+options+'"]');
+    // the value of the current element
+    var valueToCompare = value;
+    // the max value
+    var maxValue = (node.val()=='')?0:node.val();
+    if(valueToCompare <= maxValue){
+        return true;
+    }else{
 
+    }
+},function (options, element) {
+    var node = $(element).parent().parent().find('input[name="'+options+'"]');
+    var maxValue = (node.val()=='')?0:node.val();
+    return "Can't enter more than "+maxValue;
+});
+
+//Validation table array elements min value
+$.validator.addMethod("tblar_min",function (value, element, options) {
+    // get all the elements passed here by name
+    var node = $(element).parent().parent().find('input[name="'+options+'"]');
+    // the value of the current element
+    var valueToCompare = value;
+    // the max value
+    var maxValue = (node.val()=='')?0:node.val();
+    if(valueToCompare >= maxValue){
+        return true;
+    }else{
+
+    }
+},function (options, element) {
+    var node = $(element).parent().parent().find('input[name="'+options+'"]');
+    var maxValue = (node.val()=='')?0:node.val();
+    return "Can't enter less than "+maxValue;
+});
+
+//Validation min time in current day
+$.validator.addMethod("time_min",function (value, element, options) {
+    var maxValue = $('#'+options).val().split(":");
+    var curvalue = value.split(":");
+
+    if((curvalue[0]*3600)+curvalue[1]*60 >= (maxValue[0]*3600)+maxValue[1]*60){
+        return true;
+    }else{
+
+    }
+},"Enter time after 'Start time'");
 // *********************************************
 //      END jQuery customeiz validation
 // **********************************************

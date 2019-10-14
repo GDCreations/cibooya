@@ -3005,7 +3005,7 @@ class Stock extends CI_Controller
                 $this->pdf->SetXY(15, $y);
                 $this->pdf->Cell(40, 3, $rest[$i]->itcd, 'L');
                 $this->pdf->SetXY(55, $y);
-                $this->pdf->MultiCell(80, 3, $rest[$i]->itnm . " \n MODEL - " . $rest[$i]->mdl . " (" . $rest[$i]->mlcd . ")", 0);
+                $this->pdf->MultiCell(80, 3, $rest[$i]->itnm . "\nMODEL - " . $rest[$i]->mdl . " (" . $rest[$i]->mlcd . ")", 0);
                 $y2 = $this->pdf->getY();
                 $this->pdf->SetXY(135, $y);
                 $this->pdf->Cell(20, 3, $rest[$i]->qnty, 0, '', 'C');
@@ -3590,7 +3590,7 @@ class Stock extends CI_Controller
             $data = $query->result();
 
             // GRN DETAILS
-            $this->db->select("stock_grn_des.*, item.itcd, item.itnm, item.itcd AS pbcd ");
+            $this->db->select("stock_grn_des.*, item.itcd, item.itnm, item.itcd AS pbcd,item.mdl,item.mlcd");
             $this->db->from("stock_grn_des");
             $this->db->join('item', 'item.itid = stock_grn_des.itid ');
             $this->db->where('stock_grn_des.grid', $auid);
@@ -3674,17 +3674,17 @@ class Stock extends CI_Controller
             $this->pdf->SetXY(15, 60);
             $this->pdf->Cell(25, 150, '', '1');
             $this->pdf->SetXY(40, 60);
-            $this->pdf->Cell(55, 150, '', '1');
-            $this->pdf->SetXY(95, 60);
-            $this->pdf->Cell(25, 150, '', '1');
-            $this->pdf->SetXY(120, 60);
+            $this->pdf->Cell(65, 150, '', '1');
+            $this->pdf->SetXY(105, 60);
             $this->pdf->Cell(20, 150, '', '1');
-            $this->pdf->SetXY(140, 60);
+            $this->pdf->SetXY(125, 60);
             $this->pdf->Cell(20, 150, '', '1');
-            $this->pdf->SetXY(160, 60);
+            $this->pdf->SetXY(145, 60);
             $this->pdf->Cell(20, 150, '', '1');
-            $this->pdf->SetXY(180, 60);
-            $this->pdf->Cell(25, 150, '', '1');
+            $this->pdf->SetXY(165, 60);
+            $this->pdf->Cell(20, 150, '', '1');
+            $this->pdf->SetXY(185, 60);
+            $this->pdf->Cell(20, 150, '', '1');
 
             // #0
             $this->pdf->SetXY(5, 60);
@@ -3692,17 +3692,17 @@ class Stock extends CI_Controller
             $this->pdf->SetXY(15, 60);
             $this->pdf->Cell(25, 7, 'ITEM CODE', 1, 1, 'C');
             $this->pdf->SetXY(40, 60);
-            $this->pdf->Cell(55, 7, 'ITEM NAME', 1, 1, 'C');
-            $this->pdf->SetXY(95, 60);
-            $this->pdf->Cell(25, 7, 'UNIT PRICE', 1, 1, 'C');
-            $this->pdf->SetXY(120, 60);
+            $this->pdf->Cell(65, 7, 'ITEM NAME', 1, 1, 'C');
+            $this->pdf->SetXY(105, 60);
+            $this->pdf->Cell(20, 7, 'UNIT PRICE', 1, 1, 'C');
+            $this->pdf->SetXY(125, 60);
             $this->pdf->Cell(20, 7, 'ORDER QTY', 1, 1, 'C');
-            $this->pdf->SetXY(140, 60);
+            $this->pdf->SetXY(145, 60);
             $this->pdf->Cell(20, 7, 'FREE QTY', 1, 1, 'C');
-            $this->pdf->SetXY(160, 60);
+            $this->pdf->SetXY(165, 60);
             $this->pdf->Cell(20, 7, $abc, 1, 1, 'C');
-            $this->pdf->SetXY(180, 60);
-            $this->pdf->Cell(25, 7, 'TOTAL PRICE', 1, 1, 'C');
+            $this->pdf->SetXY(185, 60);
+            $this->pdf->Cell(20, 7, 'TOTAL PRICE', 1, 1, 'C');
 
             $this->pdf->SetFont('Helvetica', '', 8);  // Table body unset bold font
             $this->pdf->SetTextColor(0, 0, 0);
@@ -3718,19 +3718,20 @@ class Stock extends CI_Controller
                 $this->pdf->SetXY(15, $y);
                 $this->pdf->Cell(25, 3, $rest[$i]->pbcd, 'L');
                 $this->pdf->SetXY(40, $y);
-                $this->pdf->Cell(55, 3, $rest[$i]->itnm, 0, 0, 'L');
-                $this->pdf->SetXY(95, $y);
-                $this->pdf->Cell(25, 3, number_format($rest[$i]->untp, 2, '.', ','), 0, '', 'R');
-                $this->pdf->SetXY(120, $y);
+                $this->pdf->MultiCell(65, 3, $rest[$i]->itnm. "\nMODEL - " . $rest[$i]->mdl . " (" . $rest[$i]->mlcd . ")", 0);
+                $y2 = $this->pdf->getY();
+                $this->pdf->SetXY(105, $y);
+                $this->pdf->Cell(20, 3, number_format($rest[$i]->untp, 2, '.', ','), 0, '', 'R');
+                $this->pdf->SetXY(125, $y);
                 $this->pdf->Cell(20, 3, $rest[$i]->odqt, 0, 0, 'R');
-                $this->pdf->SetXY(140, $y);
+                $this->pdf->SetXY(145, $y);
                 $this->pdf->Cell(20, 3, $rest[$i]->frqt, 0, 0, 'R');
-                $this->pdf->SetXY(160, $y);
+                $this->pdf->SetXY(165, $y);
                 $this->pdf->Cell(20, 3, $rest[$i]->qnty, 0, 0, 'R');
-                $this->pdf->SetXY(180, $y);
-                $this->pdf->Cell(25, 3, number_format($rest[$i]->untp * $rest[$i]->qnty, 2, '.', ','), 0, '', 'R');
+                $this->pdf->SetXY(185, $y);
+                $this->pdf->Cell(20, 3, number_format($rest[$i]->untp * $rest[$i]->qnty, 2, '.', ','), 0, '', 'R');
 
-                $y = $y + 5;
+                $y = $y2 + 3;
                 $qnty = $qnty + $rest[$i]->qnty;
                 $frqty = $frqty + $rest[$i]->frqt;
                 $todqt = $todqt + $rest[$i]->odqt;
@@ -3740,17 +3741,17 @@ class Stock extends CI_Controller
 
             $this->pdf->SetFont('Helvetica', 'B', 8);
             $this->pdf->SetXY(60, 210);
-            $this->pdf->Cell(60, 10, 'TOTAL ', 0, 1, 'C');
+            $this->pdf->Cell(65, 10, 'TOTAL ', 0, 1, 'C');
             //$this->pdf->SetXY(95, 210);
             // $this->pdf->Cell(25, 8, '', 1, 0, 'C');
-            $this->pdf->SetXY(120, 210);
+            $this->pdf->SetXY(125, 210);
             $this->pdf->Cell(20, 8, $todqt, 1, 0, 'R');
-            $this->pdf->SetXY(140, 210);
+            $this->pdf->SetXY(145, 210);
             $this->pdf->Cell(20, 8, $frqty, 1, 0, 'R');
-            $this->pdf->SetXY(160, 210);
+            $this->pdf->SetXY(165, 210);
             $this->pdf->Cell(20, 8, $qnty, 1, 0, 'R');
-            $this->pdf->SetXY(180, 210);
-            $this->pdf->Cell(25, 8, number_format($ttlPrc, 2, '.', ','), 1, 0, 'R');
+            $this->pdf->SetXY(185, 210);
+            $this->pdf->Cell(20, 8, number_format($ttlPrc, 2, '.', ','), 1, 0, 'R');
 
             // REMARKS
             $this->pdf->SetXY(5, 210);

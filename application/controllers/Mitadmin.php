@@ -229,8 +229,9 @@ class Mitadmin extends CI_Controller
 
     function srchRelenseNt()
     {
-        $frdt = $this->input->post('frdt');
-        $todt = $this->input->post('todt');
+        $dtrng = explode('/',$this->input->post('dtrng'));
+        $frdt = trim($dtrng[0],' ');
+        $todt = trim($dtrng[1],' ');
 
         $this->db->select(" * ");
         $this->db->from("syst_changelog");

@@ -211,11 +211,11 @@
                                             </tbody>
                                             <tfoot>
                                             <th colspan="4"></th>
-                                            <th id="ttlQt"></th>
-                                            <th id="ttlFr"></th>
-                                            <th id="ttlGd"></th>
-                                            <th id="ttlPrc"></th>
-                                            <th id="ttlBd"></th>
+                                            <th id="ttlQt">00</th>
+                                            <th id="ttlFr">00</th>
+                                            <th id="ttlGd">00</th>
+                                            <th id="ttlPrc">0.00</th>
+                                            <th id="ttlBd">00</th>
                                             <th></th>
                                             </tfoot>
                                         </table>
@@ -390,11 +390,11 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
-                                            <th id="ttlQtEdt"></th>
-                                            <th id="ttlFrEdt"></th>
-                                            <th id="ttlGdEdt"></th>
-                                            <th id="ttlPrcEdt"></th>
-                                            <th id="ttlBdEdt"></th>
+                                            <th id="ttlQtEdt">00</th>
+                                            <th id="ttlFrEdt">00</th>
+                                            <th id="ttlGdEdt">00</th>
+                                            <th id="ttlPrcEdt">0.00</th>
+                                            <th id="ttlBdEdt">00</th>
                                             <th></th>
                                             </tfoot>
                                         </table>
@@ -521,18 +521,56 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                "aoColumns": [
-                    {sWidth: '3%'},
-                    {sWidth: '5%'},
-                    {sWidth: '15%'},
-                    {sWidth: '15%'},
-                    {sWidth: '10%'},
-                    {sWidth: '10%'},
-                    {sWidth: '10%'},
-                    {sWidth: '8%'},
-                    {sWidth: '12%'}
+                "columnDefs": [
+                    {className: "text-left", "targets": [2, 3]},
+                    {className: "text-center", "targets": [0, 1, 4, 9, 10]},
+                    {className: "text-right", "targets": [0, 5, 6, 7, 8, 11]},
+                    {className: "text-nowrap", "targets": [2, 3]},
                 ],
+                "aoColumns": [
+                    {sWidth: '3%'}, //#
+                    {sWidth: '5%'}, //Code
+                    {sWidth: '15%'}, //Name
+                    {sWidth: '10%'}, //Address
+                    {sWidth: '10%'}, //Mobile
+                    {sWidth: '5%'}, //Created By
+                    {sWidth: '5%'}, //Created date
+                    {sWidth: '5%'}, //Created date
+                    {sWidth: '5%'}, //Created date
+                    {sWidth: '5%'}, //Created date
+                    {sWidth: '10%'},  //Status
+                    {sWidth: '10%'}  //Option
+                ]
             });
+
+            $('#grnTbl').DataTable().clear();
+            $('#grnTbl').DataTable({
+                destroy: true,
+                searching: false,
+                bPaginate: false,
+                "ordering": false,
+                "columnDefs": [
+                    {className: "text-left", "targets": [1, 2]},
+                    {className: "text-center", "targets": [0, 5, 6, 8]},
+                    {className: "text-right", "targets": [3, 4, 7]},
+                    {className: "text-nowrap", "targets": [1]}
+                ],
+                "aoColumns": [
+                    {sWidth: '2%'},
+                    {sWidth: '5%'},    // br
+                    {sWidth: '17%'},    // cnt
+                    {sWidth: '5%'},     //
+                    {sWidth: '4%'},
+                    {sWidth: '4%'},
+                    {sWidth: '4%'},
+                    {sWidth: '6%'},
+                    {sWidth: '4%'},
+                    {sWidth: '10%'}
+                ],
+                "rowCallback": function (row, data, index) {
+                }
+            });
+
 
             $('#addForm').validate({
                 rules: {
@@ -552,28 +590,35 @@
                     odrqt: {
                         required: true,
                         notEqual: 0,
-                        digits: true
+                        decimal: true
                     },
                     tfrqt: {
                         //required: true,
                         notEqual: 0,
-                        digits: true
+                        decimal: true
                     },
                     rcvqt: {
                         required: true,
                         notEqual: 0,
-                        digits: true
+                        decimal: true
                     },
                     rtnqt: {
                         //required: true,
                         //notEqual: 0,
-                        digits: true
+                        decimal: true
                     },
                     chkby: {
                         required: true,
                         notEqual: 0
                     },
-
+                    'grgd[]':{
+                        required: true,
+                        decimal: true,
+                        tblar_max: 'odrQty[]'
+                    },
+                    'grfr[]':{
+                        decimal: true
+                    }
                 },
                 messages: {
                     suplSrc: {
@@ -591,8 +636,7 @@
                     chkby: {
                         required: "Enter Check user",
                         notEqual: "Enter Check user",
-                    },
-
+                    }
                 }
             });
 
@@ -816,10 +860,9 @@
 
             var ttlQt = document.getElementById('ttlQt2').value;
             if (ttlGd > ttlQt) {
-                document.getElementById("addBtn").setAttribute("class", "hidden");
+                $("#addBtn").attr("disabled", true);
             } else {
-                document.getElementById("addBtn").removeAttribute("class");
-                document.getElementById("addBtn").setAttribute("class", "btn btn-warning btn-sm btn-rounded");
+                $("#addBtn").attr("disabled", false);
             }
             //document.getElementById('ttlPrc').innerHTML = numeral(ttlPRC).format('0,0.00');
             $('#ttlGd').html(ttlGd);
@@ -855,6 +898,9 @@
                                 $('#addBtn').prop('disabled', false);
                                 clear_Form('addForm');
                                 $('#modal-add').modal('hide');
+                                $('#grnTbl').DataTable().clear().draw();
+                                $('#ttlQt, #ttlFr, #ttlGd, #ttlBd').html('00');
+                                $('#ttlPrc').html('0.00');
                                 srchGrn();
                             });
                     },
@@ -1193,7 +1239,7 @@
             swal({
                 title: "Please wait...",
                 text: "GRN generating..",
-                imageUrl: "<?= base_url() ?>assets/dist/img/loading.gif",
+                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
                 showConfirmButton: false
             });
             setTimeout(function () {
