@@ -2,11 +2,11 @@
 2019-10-14 JANAKA
 INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'stckCnv', 'Stock Conversion', 'Stock convert measuring scale with quantity', '0', '1', '1', '4');
 -----------------------------------------------------
-2019-10-10 JANAKA
+**DONE 2019-10-10 JANAKA
 ALTER TABLE `stock_sub` CHANGE `trst` `trst` INT(11) NOT NULL COMMENT 'Transfer(0-No/1-Yes)';
 ALTER TABLE `stock_sub` ADD `sldt` DATETIME NULL COMMENT 'sold date' AFTER `crdt`;
 -----------------------------------------------------
-2019-10-09 JANAKA
+**DONE 2019-10-09 JANAKA
 ALTER TABLE `stock` ADD `apby` INT NOT NULL COMMENT 'approved by' AFTER `crdt`;
 ALTER TABLE `stock` ADD `apdt` DATETIME NULL COMMENT 'Approved date' AFTER `apby`;
 ALTER TABLE `stock` ADD `mdby` INT NOT NULL COMMENT 'Modified by' AFTER `apdt`;
@@ -14,7 +14,7 @@ ALTER TABLE `stock` ADD `mddt` DATETIME NULL COMMENT 'Modified date' AFTER `mdby
 ALTER TABLE `stock` ADD `rjby` INT NOT NULL COMMENT 'Rejected by' AFTER `mddt`;
 ALTER TABLE `stock` ADD `rjdt` DATETIME NULL COMMENT 'Rejected date' AFTER `rjby`;
 -----------------------------------------------------
-2019-10-08 JANAKA
+**DONE 2019-10-08 JANAKA
 UPDATE `user_page` SET `pgnm` = 'Good Received Note (GRN)' WHERE `user_page`.`aid` = 19;
 INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'stckMng', 'Stock Management', '', '0', '1', '1', '4');
 ALTER TABLE `item` ADD `rolv` DOUBLE NOT NULL COMMENT 'Re order level ' AFTER `mxlv`;
@@ -30,14 +30,11 @@ ALTER TABLE `stock_grn` ADD `pntc` INT(10) NOT NULL COMMENT 'print count' AFTER 
 ALTER TABLE `stock_grn` ADD `prby` INT(10) NOT NULL COMMENT 'print by' AFTER `pntc`;
 ALTER TABLE `stock_grn` ADD `prdt` DATETIME NOT NULL COMMENT 'print date' AFTER `prby`;
 ALTER TABLE `stock_grn` ADD `rpby` INT(10) NOT NULL COMMENT 'reprint by' AFTER `prdt`, ADD `rpdt` DATETIME NOT NULL COMMENT 'reprint date' AFTER `rpby`;
-
-
 -----------------------------------------------------
 **DONE 2019-10-08 Gemunu
 INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'grnMng', 'Good Received Note(GRN)', '', '0', '1', '1', '4');
 ALTER TABLE `stock_grn` ADD `chby` VARCHAR(250) NOT NULL COMMENT 'check by user' AFTER `remk`;
 ALTER TABLE `stock_grn_des` CHANGE `grid` `grid` INT(11) NOT NULL COMMENT 'GRN tb id', CHANGE `spid` `spid` INT(11) NOT NULL COMMENT 'supply id', CHANGE `itid` `itid` INT(11) NOT NULL COMMENT 'item id';
-
 -----------------------------------------------------
 **DONE || 2019-10-07 JANAKA
 UPDATE `user_page` SET `adpr` = '1' WHERE `user_page`.`aid` = 18;
