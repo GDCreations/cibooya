@@ -128,7 +128,7 @@
                         </h4>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body scroll" style="max-height: 65vh">
                         <div class="container">
                             <div class="row form-horizontal">
                                 <div class="col-md-6">
@@ -292,7 +292,7 @@
                         <input type="hidden" id="auid" name="auid"/>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body scroll" style="max-height: 65vh">
                         <div class="container">
                             <div class="row form-horizontal">
                                 <div class="col-md-6">

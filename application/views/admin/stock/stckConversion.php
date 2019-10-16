@@ -230,7 +230,7 @@
                     <div class="pull-left">
                         <span class="fa fa-hand-o-right"></span> <label style="color: red"> Please convert item
                             scale that able to convert.
-                            (EX : Electic Items & furnitures unable to convert)
+                            <strong>(EX : Electic Items & furnitures unable to convert)</strong>
                         </label>
                     </div>
                     <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
@@ -343,13 +343,13 @@
                                 </div>
                                 <div class="col-md-6 col-xs-12">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Available Qty.</label>
-                                        <label class="col-md-8 col-xs-12 control-label" id="vewAvQunty"></label>
+                                        <label class="col-md-5 col-xs-12 control-label">Available Qty.</label>
+                                        <label class="col-md-7 col-xs-12 control-label" id="vewAvQunty"></label>
                                         <input type="hidden" id="conQty" name="conQty"/>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Quantity</span></label>
-                                        <label class="col-md-3 col-xs-12 control-label" id="vewQunty"></label>
+                                        <label class="col-md-5 col-xs-12 control-label">Quantity</span></label>
+                                        <label class="col-md-2 col-xs-12 control-label" id="vewQunty"></label>
                                         <div class="col-md-5 col-md-12">
                                             <select class="bs-select" id="vewScale" name="vewScale">
                                                 <option value="0">-- Scale --</option>
@@ -362,31 +362,31 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Cost Value</label>
-                                        <div class="col-md-8 col-xs-12">
+                                        <label class="col-md-5 col-xs-12 control-label">Cost Value</label>
+                                        <div class="col-md-7 col-xs-12">
                                             <input type="text" id="vewCstvl" name="vewCstvl" readonly
                                                    style="text-align: right" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Sales Value <span
+                                        <label class="col-md-5 col-xs-12 control-label">Sales Value <span
                                                     class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
+                                        <div class="col-md-7 col-xs-12">
                                             <input type="text" id="vewSalvl" name="vewSalvl" style="text-align: right"
                                                    class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Face (Display) Value <span
+                                        <label class="col-md-5 col-xs-12 control-label">Face (Display) Value <span
                                                     class="fa fa-asterisk req-astrick"></span></label>
-                                        <div class="col-md-8 col-xs-12">
+                                        <div class="col-md-7 col-xs-12">
                                             <input type="text" id="vewFcvl" name="vewFcvl" style="text-align: right"
                                                    class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Market Value</label>
-                                        <div class="col-md-8 col-xs-12">
+                                        <label class="col-md-5 col-xs-12 control-label">Market Value</label>
+                                        <div class="col-md-7 col-xs-12">
                                             <input type="text" id="vewMktvl" name="vewMktvl" style="text-align: right"
                                                    class="form-control"/>
                                         </div>

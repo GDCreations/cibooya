@@ -148,7 +148,7 @@
                         <input type="hidden" id="bdid" name="bdid"/>
                         <input type="hidden" id="brd_logo" name="brd_logo"/>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body scroll"  style="max-height: 65vh">
                         <div class="container">
                             <div class="form-horizontal">
                                 <div class="col-md-12">

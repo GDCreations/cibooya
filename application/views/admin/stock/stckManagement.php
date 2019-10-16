@@ -211,7 +211,7 @@
                                 <h5 class="text-title"><span class="fa fa-tag"></span> Stock Details</h5>
                             </div>
                             <div class="row form-horizontal">
-                                <div class="col-md-12">
+                                <div class="col-md-12 scroll" style="max-height: 65vh">
                                     <div class="table-responsive" style="padding: 10px 25px 10px 10px ">
                                         <table class="table dataTable table-bordered table-striped" id="grnTbl"
                                                style="width: 100%">
@@ -277,7 +277,7 @@
                         Management <span class="text-muted"> - View</span></h4>
                     <input type="hidden" name="stid_Vw" id="stid_Vw"/>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body scroll" style="max-height: 65vh">
                     <ul class="nav nav-tabs nav-pills">
                         <li class="active"><a href="#tabs-1" role="tab" data-toggle="tab">Stock Details</a>
                         </li>
@@ -324,32 +324,32 @@
                                     </div>
                                     <div class="col-md-6 col-xs-12">
                                         <div class="form-group">
-                                            <label class="col-md-4 col-xs-12 control-label">Quantity</label>
-                                            <label class="col-md-8 col-xs-12 control-label" id="vewQunty"> </label>
+                                            <label class="col-md-5 col-xs-12 control-label">Quantity</label>
+                                            <label class="col-md-7 col-xs-12 control-label" id="vewQunty"> </label>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4 col-xs-12 control-label">Free Quantity</label>
-                                            <label class="col-md-8 col-xs-12 control-label" id="vewFrQunty"> </label>
+                                            <label class="col-md-5 col-xs-12 control-label">Free Quantity</label>
+                                            <label class="col-md-7 col-xs-12 control-label" id="vewFrQunty"> </label>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4 col-xs-12 control-label">Cost Value</label>
-                                            <label class="col-md-8 col-xs-12 control-label" id="vewCstvl"> </label>
+                                            <label class="col-md-5 col-xs-12 control-label">Cost Value</label>
+                                            <label class="col-md-7 col-xs-12 control-label" id="vewCstvl"> </label>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4 col-xs-12 control-label">Cost + Tax</label>
-                                            <label class="col-md-8 col-xs-12 control-label" id="vewTaxvl"> </label>
+                                            <label class="col-md-5 col-xs-12 control-label">Cost + Tax</label>
+                                            <label class="col-md-7 col-xs-12 control-label" id="vewTaxvl"> </label>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4 col-xs-12 control-label">Sales Value</label>
-                                            <label class="col-md-8 col-xs-12 control-label" id="vewSalvl"> </label>
+                                            <label class="col-md-5 col-xs-12 control-label">Sales Value</label>
+                                            <label class="col-md-7 col-xs-12 control-label" id="vewSalvl"> </label>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4 col-xs-12 control-label">Face (Display) Value</label>
-                                            <label class="col-md-8 col-xs-12 control-label" id="vewFcvl"> </label>
+                                            <label class="col-md-5 col-xs-12 control-label">Face (Display) Value</label>
+                                            <label class="col-md-7 col-xs-12 control-label" id="vewFcvl"> </label>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4 col-xs-12 control-label">Market Value</label>
-                                            <label class="col-md-8 col-xs-12 control-label" id="vewMktvl"> </label>
+                                            <label class="col-md-5 col-xs-12 control-label">Market Value</label>
+                                            <label class="col-md-7 col-xs-12 control-label" id="vewMktvl"> </label>
                                         </div>
                                     </div>
                                 </div>
@@ -447,7 +447,7 @@
                         <input type="hidden" id="func" name="func"/>
                         <input type="hidden" id="stkid" name="stkid"/>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body scroll" style="max-height: 65vh">
                         <div class="container">
                             <div class="row form-horizontal">
                                 <div class="col-md-6">
@@ -514,7 +514,7 @@
                                 </button>
                             </div>
                             <div class="row form-horizontal">
-                                <div class="col-md-12 scroll" style="height: 500px;">
+                                <div class="col-md-12 scroll" style="max-height: 300px;">
                                     <div class="table-responsive" style="padding: 10px 25px 10px 10px ">
                                         <table class="table table-bordered  table-actions" id="stckSub"
                                                style="width: 100%">
@@ -1232,9 +1232,9 @@
                                 if (sbdt[srl]['stat'] == 0) {
                                     stat = '<span class="label label-warning label-ghost label-bordered" title="Inactive">Inact.</span>';
                                 } else if (sbdt[srl]['stat'] == 1) {
-                                    stat = '<span class="label label-primary label-ghost label-bordered" title="Active">Act.</span>';
+                                    stat = '<span class="label label-success label-ghost label-bordered" title="Active">Act.</span>';
                                 } else if (sbdt[srl]['stat'] == 2) {
-                                    stat = '<span class="label label-success label-ghost label-bordered" title="Sold">Sold</span>';
+                                    stat = '<span class="label label-primary label-ghost label-bordered" title="Sold">Sold</span>';
                                 }
                                 var trst = "";
                                 if (sbdt[srl]['trst'] == 1) {
@@ -1297,9 +1297,9 @@
                             if (data[srl]['stat'] == 0) {
                                 stat = '<span class="label label-warning label-ghost label-bordered" title="Inactive">Inact.</span>';
                             } else if (data[srl]['stat'] == 1) {
-                                stat = '<span class="label label-primary label-ghost label-bordered" title="Active">Act.</span>';
+                                stat = '<span class="label label-success label-ghost label-bordered" title="Active">Act.</span>';
                             } else if (data[srl]['stat'] == 2) {
-                                stat = '<span class="label label-success label-ghost label-bordered" title="Sold">Sold</span>';
+                                stat = '<span class="label label-primary label-ghost label-bordered" title="Sold">Sold</span>';
                             }
                             var trst = "";
                             if (data[srl]['trst'] == 1) {

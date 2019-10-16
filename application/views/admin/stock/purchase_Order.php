@@ -129,7 +129,7 @@
                             Order
                         </h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body scroll" style="max-height: 65vh">
                         <div class="container">
                             <div class="row form-horizontal">
                                 <div class="col-md-6">
@@ -421,7 +421,7 @@
                         <input type="hidden" id="func" name="func"/>
                         <input type="hidden" id="poid" name="poid"/>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body scroll" style="max-height: 65vh">
                         <div class="container">
                             <div class="row form-horizontal">
                                 <div class="col-md-6">
@@ -709,7 +709,7 @@
                     <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Purchase Order
                         Management <span class="text-muted"> - View</span></h4>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body scroll" style="max-height: 65vh">
                     <div class="container">
                         <div class="row form-horizontal">
                             <div class="col-md-6">

@@ -320,7 +320,7 @@
                 </div>
                 <form class="form-horizontal" id="mdul_add" name="mdul_add"
                       action="" method="post">
-                    <div class="modal-body">
+                    <div class="modal-body scroll" style="max-height: 65vh">
                         <div class="container">
                             <div class="table-responsive">
                                 <table class="table datatable table-bordered table-head-custom table-striped table-actions" width="100%"

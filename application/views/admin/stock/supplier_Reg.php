@@ -209,7 +209,7 @@
                         <input type="hidden" id="func" name="func"/>
                         <input type="hidden" id="spid" name="spid"/>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body scroll" style="max-height: 65vh">
                         <div class="container">
                             <div class="form-horizontal">
                                 <div class="col-md-12">

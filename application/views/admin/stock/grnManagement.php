@@ -126,7 +126,7 @@
                         <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> GRN & GRRN
                         </h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body scroll" style="max-height: 65vh">
                         <div class="container">
 
                             <div class="row form-horizontal">
@@ -302,7 +302,7 @@
                         <input type="hidden" id="func" name="func"/>
                         <input type="hidden" id="grnid" name="grnid"/>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body scroll" style="max-height: 65vh">
                         <div class="container">
 
                             <div class="row form-horizontal">

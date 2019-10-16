@@ -28,3 +28,7 @@
     font-size: 13px;
     margin: 20px 0px 20px;
 }
+
+.modal-header > h4 > .text-muted{
+    color: #1e4a75 !important;
+}
