@@ -1710,6 +1710,7 @@ class Stock extends CI_Controller
             'mdl' => $this->input->post('model'),
             'mlcd' => strtoupper($this->input->post('md_code')),
             'szof' => $this->input->post('szof'),
+            'szsl' => $this->input->post('szscl'),
             'size' => $this->input->post('size'),
             'clr' => $this->input->post('clrnm'),
             'clcd' => $this->input->post('clr'),
@@ -1922,6 +1923,7 @@ class Stock extends CI_Controller
                 'mdl' => $this->input->post('model_edt'),
                 'mlcd' => strtoupper($this->input->post('md_code_edt')),
                 'szof' => $this->input->post('szof_edt'),
+                'szsl' => $this->input->post('szscl_edt'),
                 'size' => $this->input->post('size_edt'),
                 'clr' => $this->input->post('clrnm_edt'),
                 'clcd' => $this->input->post('clr_edt'),
@@ -1946,6 +1948,7 @@ class Stock extends CI_Controller
                 'mdl' => $this->input->post('model_edt'),
                 'mlcd' => strtoupper($this->input->post('md_code_edt')),
                 'szof' => $this->input->post('szof_edt'),
+                'szsl' => $this->input->post('szscl_edt'),
                 'size' => $this->input->post('size_edt'),
                 'clr' => $this->input->post('clrnm_edt'),
                 'clcd' => $this->input->post('clr_edt'),
@@ -3718,7 +3721,7 @@ class Stock extends CI_Controller
                 $this->pdf->SetXY(15, $y);
                 $this->pdf->Cell(25, 3, $rest[$i]->pbcd, 'L');
                 $this->pdf->SetXY(40, $y);
-                $this->pdf->MultiCell(65, 3, $rest[$i]->itnm. "\nMODEL - " . $rest[$i]->mdl . " (" . $rest[$i]->mlcd . ")", 0);
+                $this->pdf->MultiCell(65, 3, $rest[$i]->itnm . "\nMODEL - " . $rest[$i]->mdl . " (" . $rest[$i]->mlcd . ")", 0);
                 $y2 = $this->pdf->getY();
                 $this->pdf->SetXY(105, $y);
                 $this->pdf->Cell(20, 3, number_format($rest[$i]->untp, 2, '.', ','), 0, '', 'R');
@@ -3906,14 +3909,15 @@ class Stock extends CI_Controller
     //END GET GRN DETAILS
 
     //GET SERIAL NUMBER ITEM </2019-10-10>
-    function srch_SrlNum(){
+    function srch_SrlNum()
+    {
         $val = $this->input->post('val');
         $stid = $this->input->post('stid');
 
         $this->db->select("stb.*");
         $this->db->from('stock_sub stb');
-        $this->db->where('stb.stid',$stid);
-        if($val!=''){
+        $this->db->where('stb.stid', $stid);
+        if ($val != '') {
             $this->db->where("stb.srno=$val");
         }
         $res = $this->db->get()->result();
@@ -4148,12 +4152,15 @@ class Stock extends CI_Controller
     {
         $auid = $this->input->post('auid');
 
-        $this->db->select("stk.*, sp.spcd, sp.spnm, item.itnm, item.itcd, item.mdl,item.mlcd,
+        $this->db->select("stk.*, sp.spcd, sp.spnm, item.itnm, item.itcd, item.mdl,item.mlcd,item.size, 
+        sl.scl,sl.scnm,ssl.scl AS sscl,ssl.scnm AS sscnm,
         cat.ctcd, cat.ctnm, bd.bdcd, bd.bdnm, tp.tpcd, tp.tpnm, CONCAT(cr.fnme,' ',cr.lnme) AS crnm,
         CONCAT(ap.fnme,' ',ap.lnme) AS apnm,CONCAT(md.fnme,' ',md.lnme) AS mdnm, CONCAT(rj.fnme,' ',rj.lnme) AS rjnm,
         grn.grno,wh.whcd, wh.whnm, ");
         $this->db->from("stock stk");
         $this->db->join('item', 'item.itid = stk.itid ');
+        $this->db->join('scale sl', 'sl.slid = item.scli ');
+        $this->db->join('scale ssl', 'ssl.slid = item.szsl ');
         $this->db->join('supp_mas sp', 'sp.spid = stk.spid ');
         $this->db->join('stock_grn grn', 'grn.grid = stk.grid ');
         $this->db->join('stock_wh wh', 'wh.whid = stk.whid ');
@@ -4181,7 +4188,7 @@ class Stock extends CI_Controller
         $id = $this->input->post('id');
         $grid = $this->input->post('grid');
         $this->Generic_model->updateData('stock', array('stat' => 3), array('stid' => $id));
-        $this->Generic_model->updateData('stock_sub',array('stat'=>0),array('stid'=>$id));
+        $this->Generic_model->updateData('stock_sub', array('stat' => 0), array('stid' => $id));
 
         $this->Generic_model->updateData('stock_grn', array('stst' => 0), array('grid' => $grid));
 
@@ -4206,11 +4213,11 @@ class Stock extends CI_Controller
         // GET STOCK SUB TABLE DETAILS
         $subdt = $this->Generic_model->getData('stock_sub', '', array('stid' => $auid));
 
-                $csvl = $this->input->post('csvlEdt[]');   // COST
-                $fcvl = $this->input->post('dsvlEdt[]');   // DISPLY
-                $slvl = $this->input->post('slvlEdt[]');   // SALES
-                $mkvl = $this->input->post('mkvlEdt[]');   // MARKET
-                $dscr = $this->input->post('rmksEdt[]');   // REMARKS
+        $csvl = $this->input->post('csvlEdt[]');   // COST
+        $fcvl = $this->input->post('dsvlEdt[]');   // DISPLY
+        $slvl = $this->input->post('slvlEdt[]');   // SALES
+        $mkvl = $this->input->post('mkvlEdt[]');   // MARKET
+        $dscr = $this->input->post('rmksEdt[]');   // REMARKS
 
         if ($func == 'edt') {
             $this->db->trans_begin();           // SQL TRANSACTION START
@@ -4437,9 +4444,10 @@ class Stock extends CI_Controller
 
         $data2['funcPerm'] = $this->Generic_model->getFuncPermision('stckCnv');
         $data2['branchinfo'] = $this->Generic_model->getBranch();
-        $data2['category'] = $this->Generic_model->getData('category', array('ctid', 'ctcd', 'ctnm', 'stat'), "stat IN(1,3)");
-        $data2['brand'] = $this->Generic_model->getData('brand', array('bdid', 'bdcd', 'bdnm', 'logo', 'stat'), "stat IN(1,3)");
-        $data2['type'] = $this->Generic_model->getData('type', array('tpid', 'tpcd', 'tpnm', 'stat'), "stat IN(1,3)");
+//        $data2['category'] = $this->Generic_model->getData('category', array('ctid', 'ctcd', 'ctnm', 'stat'), "stat IN(1,3)");
+//        $data2['brand'] = $this->Generic_model->getData('brand', array('bdid', 'bdcd', 'bdnm', 'logo', 'stat'), "stat IN(1,3)");
+//        $data2['type'] = $this->Generic_model->getData('type', array('tpid', 'tpcd', 'tpnm', 'stat'), "stat IN(1,3)");
+        $data2['scale'] = $this->Generic_model->getData('scale', '', array('stat' => 1));
         $data2['item'] = $this->Generic_model->getData('item', array('itid', 'itcd', 'itnm', 'stat'), array('stat' => 1));
         $data2['supplier'] = $this->Generic_model->getData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat' => 1));
 
@@ -4448,6 +4456,464 @@ class Stock extends CI_Controller
         $this->load->view('common/tmpFooter', $data);
     }
     //END LOAD PAGE </ 2019-10-14>
+
+    //SEARCH BRANCH STOCK TO CONVERT </2019-10-14>
+    function srchBrchStck_Cn()
+    {
+        $brch = $this->input->post('brch');
+        $itid = $this->input->post('itid');
+
+        $this->db->select("stb.*,it.itcd,it.itnm,it.mdl,it.mlcd,it.size,sc.scl,sc.scnm,
+        szs.scl As zscl,szs.scnm AS zscnm,
+        (SELECT COUNT(*) FROM stock_brn_sub sbs JOIN stock_brn stb1 ON stb1.stbid=sbs.stcid WHERE stb1.stat=0 AND sbs.stbid=stb.stbid) AS pcnt");
+        $this->db->from('stock_brn stb');
+        $this->db->join('item it', 'it.itid=stb.itid');
+        $this->db->join('scale sc', 'sc.slid=it.scli');
+        $this->db->join('scale szs', 'szs.slid=it.szsl');
+        $this->db->where('stb.stat', 1);
+        $this->db->where('stb.cst', 0);
+        if ($brch != 'all') {
+            $this->db->where('stb.brid', $brch);
+        }
+        if ($itid != 'all') {
+            $this->db->where('stb.itid', $itid);
+        }
+        $res = $this->db->get()->result();
+
+        $scl = $this->Generic_model->getData('scale', '', array('stat' => 1));
+        $scaleO = "<option value='0'>Select Scale</option>";
+        foreach ($scl as $sl) {
+            $scaleO = $scaleO . "<option value='$sl->slid'>$sl->scnm - ($sl->scl)</option>";
+        }
+
+        $data = array();
+        $i = 0;
+
+        foreach ($res as $row) {
+            ++$i;
+            $scaleS = "<select class='form-control' id='nscl_$i' name='nscl_$i' onchange='checkScale(this.value,$i)'>" . $scaleO . "</select>";
+
+            $opt = "<button type='button' id='addConBtn_$i' onclick='addCon($row->stbid,$i)' class='btn btn-xs btn-default btn-condensed' title='Add to convert'>
+                            <span class='fa fa-angle-double-right'></span></button>";
+
+            $sub_arr = array();
+            $sub_arr[] = $i;
+            $sub_arr[] = $row->stcd;
+            $sub_arr[] = $row->itcd;
+            $sub_arr[] = "<span data-html='true' data-toggle='tooltip' data-placement='top' data-original-title='Model<br>$row->mdl<br>$row->mlcd'>" . $row->itnm . "</span>";
+            $sub_arr[] = $row->scnm . " (" . $row->scl . ")";
+            $sub_arr[] = $row->avqn . "<input type='hidden' id='avqn_$i' name='avqn_$i' value='$row->avqn'/>";
+            $sub_arr[] = "<span title='$row->zscnm'>" . $row->size . " ($row->zscl)</span><input type='hidden' id='size_$i' name='size_$i' value='$row->size'/>";
+            $sub_arr[] = $scaleS;
+            $sub_arr[] = "<input type='text' data-container='body' data-toggle='popover' data-placement='top'
+                                                   data-html='true'
+                                                   data-trigger='focus'
+                                                   data-content='Pending Conversion QTY<br><h3 style=\"text-align: center; color: #e69c0f; font-size: 18px; font-weight: bold\">$row->pcnt</h3>' 
+                                                   class='form-control' id='qty_$i' name='qty_$i' style='text-align: right; width: 100%' onkeyup='checkQty(this.value,$i);'/>";
+            $sub_arr[] = number_format(($row->csvl / $row->size), 2) . "<input type='hidden' id='csvl_$i' value='" . ($row->csvl / $row->size) . "'>";
+            $sub_arr[] = "<input type='text' style='text-align: right; width: 100%' class='form-control' id='slvl_$i' name='slvl_$i' onkeyup='checkSlvl(this.value,$i)'>";
+            $sub_arr[] = "<input type='text' style='text-align: right; width: 100%' class='form-control' id='fcvl_$i' name='fcvl_$i' onkeyup='checkFcvl(this.value,$i)'>";
+            $sub_arr[] = "<input type='text' style='text-align: right; width: 100%' class='form-control' id='mkvl_$i' name='mkvl_$i' onkeyup='checkMkvl(this.value,$i)'>";
+            $sub_arr[] = $opt;
+            $data[] = $sub_arr;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => sizeof($res),
+            "recordsFiltered" => sizeof($res),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+    //END SEARCH BRANCH STOCK TO CONVERT </2019-10-14>
+
+    //GET SERIAL NUMBER ITEM </2019-10-15>
+    function srch_SrlNumCon()
+    {
+        $val = $this->input->post('val');
+        $stid = $this->input->post('stid');
+
+        $this->db->select("stb.*,sb.srno,sb.btno,sb.prno,sb.brcd,sb.abc,sb.xyz");
+        $this->db->from('stock_brn_sub stb');
+        $this->db->join('stock_sub sb', 'sb.ssid=stb.ssid');
+        $this->db->where('stb.stbid', $stid);
+        $this->db->where("stb.stat=1");
+        if ($val != '') {
+            $this->db->where("sb.srno=$val");
+        }
+        $res = $this->db->get()->result();
+        echo json_encode($res);
+    }
+    //GET SERIAL NUMBER ITEM </2019-10-15>
+
+    //ADD TO CONVERTION </2019-10-15>
+    function addToConv()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+        $stid = $this->input->post('stBrchID');
+        $qty = $this->input->post('addQty');
+        $nscl = $this->input->post('newScal');
+
+        //Get Item Details
+        $this->db->select("stb.stid,stb.brid,stb.itid,
+        bm.brcd,it.size");
+        $this->db->from('stock_brn stb');
+        $this->db->join('brch_mas bm', 'bm.brid=stb.brid');
+        $this->db->join('item it', 'it.itid=stb.itid');
+        $this->db->where('stb.stbid', $stid);
+        $item = $this->db->get()->result();
+
+        //Get next Stock code
+        $this->db->select("stcd");
+        $this->db->from("stock_brn");
+        $this->db->where('cst', 1);
+        $this->db->order_by('stbid', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        $data = $query->result();
+
+        $yr = date('y');
+
+        if (sizeof($data) > 0) {
+            $icde = $data[0]->stcd;
+            $re = (explode("-", $icde));
+
+            $aa = intval($re[2]) + 1;
+            $cc = strlen($aa);
+            if ($cc == 1) {
+                $xx = '000' . $aa;
+            } else if ($cc == 2) {
+                $xx = '00' . $aa;
+            } else if ($cc == 3) {
+                $xx = '0' . $aa;
+            } else if ($cc == 4) {
+                $xx = '' . $aa;
+            }
+            $stno = 'STC' . $yr . '-' . $item[0]->brcd . '-' . $xx;
+        } else {
+            $stno = 'STC' . $yr . '-' . $item[0]->brcd . '-0001';  // Ex (STOCK)(YEAR)-NO - ST18-0001
+        }
+
+        $this->Generic_model->insertData('stock_brn', array(
+            'stcd' => $stno,
+            'stfr' => 2,
+            'stid' => $item[0]->stid,
+            'itid' => $item[0]->itid,
+            'brid' => $item[0]->brid,
+            'frid' => $item[0]->brid,
+            'csvl' => $this->input->post('newCsvl'),
+            'fcvl' => $this->input->post('newFcvl'),
+            'slvl' => $this->input->post('newSlvl'),
+            'mkvl' => $this->input->post('newMkvl'),
+            'qunt' => $qty * $item[0]->size,
+            'avqn' => $qty * $item[0]->size,
+            'stat' => 0,
+            'cst' => 1,
+            'cslid' => $nscl,
+            'crby' => $_SESSION['userId'],
+            'crdt' => date('Y-m-d H:i:s'),
+        ));
+        $lstid = $this->db->insert_id();
+
+        $srl = $this->input->post('srlnum[]');
+        for ($it = 0; $it < sizeof($srl); $it++) {
+            $this->Generic_model->updateData('stock_brn_sub', array('stcid' => $lstid, 'stat' => 3), array('sbsid' => $srl[$it]));
+        }
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckCnv');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Add to convert stock ($lstid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+    //END ADD TO CONVERTION </2019-10-15>
+
+    //SEARCH CONVERSION STOCKS </2019-10-15>
+    function srchConStck()
+    {
+        $funcPerm = $this->Generic_model->getFuncPermision('stckMng');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edt = "";
+        } else {
+            $edt = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rej = "";
+        } else {
+            $rej = "disabled";
+        }
+        if ($funcPerm[0]->dact == 1) {
+            $dac = "";
+        } else {
+            $dac = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
+
+        $result = $this->Stock_model->get_sbcStock();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            $st = $row->stat;
+            $stid = $row->stbid;
+            if ($st == '0') {                   // Pending
+                $stat = " <span class='label label-warning'> Pending </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($stid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  $edt  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($stid,this.id);' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  $app  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($stid,this.id);' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  $rej  onclick='rejecStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+
+            } else if ($st == '1') {           // Approved
+                $stat = " <span class='label label-success'> Active </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($stid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='dec' $dac onclick='deacStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Deactivate' ><i class='fa fa-close' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+
+            } else if ($st == '2') {            // Finished
+                $stat = " <span class='label label-primary'> Finish </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($stid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+            } else if ($st == '3') {
+                $stat = " <span class='label label-danger'> Reject </span> ";
+                $option =
+                    "<button type='button' disabled  data-toggle='modal' data-target='#modal-view'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+            } else if ($st == '4') {
+                $stat = " <span class='label label-indi'> Deactive </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($stid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='edtStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rec' $reac onclick='reacStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reactivate' ><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck($stid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->stcd;
+            $sub_arr[] = "<span data-html='true' data-toggle='tooltip' data-placement='top' data-original-title='$row->brnm'>" . $row->brcd . "</span>";
+            $sub_arr[] = $row->itcd . ' | ' . $row->itnm;
+            $sub_arr[] = number_format($row->csvl, 2, '.', ',');
+            $sub_arr[] = number_format($row->fcvl, 2, '.', ',');
+            $sub_arr[] = number_format($row->slvl, 2, '.', ',');
+            $sub_arr[] = $row->qunt;
+            $sub_arr[] = $row->avqn;
+            $sub_arr[] = $row->crdtf;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        //$output = array("data" => $data);
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Stock_model->count_all_sbcStock(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_sbcStock(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+    //END SEARCH CONVERSION STOCKS </2019-10-15>
+
+    //REJECT CONVERSION STOCK </2019-10-15>
+    function rejConStock()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+        $id = $this->input->post('id');
+
+        $this->Generic_model->updateData('stock_brn', array('stat' => 3), array('stbid' => $id));
+        $this->Generic_model->updateData('stock_brn_sub', array('stat' => 1), array('stcid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckCnv');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Conversion Stock Reject id(' . $id . ')');
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+    //END REJECT CONVERSION STOCK </2019-10-15>
+
+    //VIEW CONVERSION STOCK </2019-10-16>
+    function vewConStock()
+    {
+        $auid = $this->input->post('auid');
+
+        $this->db->select("stk.*,item.itnm, item.itcd, item.mdl,item.mlcd,item.size,
+        sl.scl,sl.scnm,ssl.scl AS sscl,ssl.scnm AS sscnm,
+        cat.ctcd, cat.ctnm, bd.bdcd, bd.bdnm, tp.tpcd, tp.tpnm, CONCAT(cr.fnme,' ',cr.lnme) AS crnm,
+        CONCAT(ap.fnme,' ',ap.lnme) AS apnm,CONCAT(md.fnme,' ',md.lnme) AS mdnm, CONCAT(rj.fnme,' ',rj.lnme) AS rjnm");
+        $this->db->from("stock_brn stk");
+        $this->db->join('item', 'item.itid = stk.itid ');
+        $this->db->join('scale ssl', 'ssl.slid = item.szsl ');
+        $this->db->join('scale sl', 'sl.slid = stk.cslid ');
+        $this->db->join('category cat', 'cat.ctid = item.ctid');
+        $this->db->join('brand bd', 'bd.bdid = item.bdid ');
+        $this->db->join('type tp', 'tp.tpid = item.tpid ');
+        $this->db->join('user_mas cr', 'cr.auid = stk.crby ');
+        $this->db->join('user_mas ap', 'ap.auid=stk.apby', 'LEFT');
+        $this->db->join('user_mas md', 'md.auid=stk.mdby', 'LEFT');
+        $this->db->join('user_mas rj', 'rj.auid=stk.rjby', 'LEFT');
+        $this->db->where('stk.stbid', $auid);
+        $query = $this->db->get();
+        $result['stdt'] = $query->result();
+
+        $this->db->select("ss.srno,sbs.sbsid,sbs.stbid");
+        $this->db->from('stock_brn_sub sbs');
+        $this->db->join('stock_sub ss', 'ss.ssid=sbs.ssid');
+        $this->db->where('stcid', $auid);
+        $result['sbdt'] = $this->db->get()->result();
+
+        echo json_encode($result);
+    }
+    //END VIEW CONVERSION STOCK </2019-10-16>
+
+    //EDIT || APPROVE CONVERTION STOCK </2019-10-16>
+    function edtConStock()
+    {
+        $this->db->trans_begin();           // SQL TRANSACTION START
+        $func = $this->input->post('func');
+        $auid = $this->input->post('stid_Vw');
+
+        if ($func == 'edt') {
+            $msg = "Stock conversion updated";
+            //Update Stock
+            $this->Generic_model->updateData('stock_brn', array(
+                'fcvl' => $this->input->post('vewFcvl'),
+                'slvl' => $this->input->post('vewSalvl'),
+                'mkvl' => $this->input->post('vewMktvl'),
+                'cst' => 1,
+                'cslid' => $this->input->post('vewScale'),
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ),array('stbid'=>$auid));
+        } else if ($func == 'app') {
+            $msg = "Stock conversion completed";
+            //Update Stock
+            $this->Generic_model->updateData('stock_brn', array(
+                'fcvl' => $this->input->post('vewFcvl'),
+                'slvl' => $this->input->post('vewSalvl'),
+                'mkvl' => $this->input->post('vewMktvl'),
+                'cst' => 1,
+                'stat' => 1,
+                'cslid' => $this->input->post('vewScale'),
+                'apby' => $_SESSION['userId'],
+                'apdt' => date('Y-m-d H:i:s'),
+            ),array('stbid'=>$auid));
+
+            $this->db->select("sb.avqn,sbs.stbid,COUNT(sbs.stcid) AS cnt");
+            $this->db->from('stock_brn_sub sbs');
+            $this->db->join('stock_brn sb','sb.stbid=sbs.stbid');
+            $this->db->where("stcid=$auid");
+            $prvStk = $this->db->get()->result();
+
+            //Previous Stock AVQTY update
+            $this->Generic_model->updateData('stock_brn',array(
+                'avqn'=> $prvStk[0]->avqn - $prvStk[0]->cnt,
+            ),array('stbid'=>$prvStk[0]->stbid));
+        }
+
+        $srl = $this->input->post('srlnumEdt[]');
+        $this->Generic_model->updateData('stock_brn_sub', array('stcid' => 0, 'stat' => 1), array('stcid' => $auid));
+        for ($it = 0; $it < sizeof($srl); $it++) {
+            $this->Generic_model->updateData('stock_brn_sub',array('stcid' => $auid, 'stat' => 3),array('sbsid' => $srl[$it]));
+        }
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckCnv');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, $msg.' id(' . $auid . ')');
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+    //END EDIT || APPROVE CONVERTION STOCK </2019-10-16>
+
+//DEACTIVATE STOCK </2019-10-16>
+    function conStck_Deactive()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $id = $this->input->post('id');
+        $this->Generic_model->updateData('stock_brn', array(
+            'stat' => 4,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('stbid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckCnv');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Converted Stock Deactivated ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END DEACTIVATE STOCK </2019-10-16>
+
+//ACTIVATE STOCK </2019-10-16>
+    function conStck_Activate()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+
+        $id = $this->input->post('id');
+        $this->Generic_model->updateData('stock_brn', array(
+            'stat' => 1,
+            'mdby' => $_SESSION['userId'],
+            'mddt' => date('Y-m-d H:i:s')
+        ), array('stbid' => $id));
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckCnv');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Converted Stock Reactivated ($id)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+//END ACTIVATE STOCK </2019-10-16>
+
 //************************************************
 //***           END STOCK CONVERSION           ***
 //************************************************

@@ -733,6 +733,95 @@ class Stock_model extends CI_Model
     }
 
 // END HIRE STOCK
+
+//CONVERTION STOCK </2019-10-15>
+    var $cl_srch10 = array('stcd', 'spnm', 'itnm', 'itcd'); //set column field database for datatable searchable
+    var $cl_odr10 = array(null, 'stcd', 'spnm', 'itnm', 'csvl', 'fcvl', 'slvl', 'qunt','avqt','crdt','stat', ''); //set column field database for datatable orderable
+    var $order10 = array('stk.crdt' => 'desc'); // default order
+
+    function sbcStock_query()
+    {
+        $brch = $this->input->post('brch'); // Branch
+        $item = $this->input->post('item'); // Item
+        $stat = $this->input->post('stat'); // Stat
+        $dtrng = explode('/',$this->input->post('dtrng')); // DateRange
+        $frdt = trim($dtrng[0],' ');
+        $todt = trim($dtrng[1],' ');
+
+        $this->db->select("stk.*, item.itcd,item.itnm,CONCAT(cr.fnme,' ',cr.lnme) AS exc, DATE_FORMAT(stk.crdt, '%Y-%m-%d') AS crdtf,
+        bm.brcd,bm.brnm");
+        $this->db->from("stock_brn stk");
+        $this->db->join('brch_mas bm', 'bm.brid = stk.brid');
+        $this->db->join('item', 'item.itid = stk.itid');
+        $this->db->join('user_mas cr', 'cr.auid = stk.crby ');
+
+        if ($brch != 'all') {
+            $this->db->where('stk.brid', $brch);
+        }
+        if ($item != 'all') {
+            $this->db->where('stk.itid', $item);
+        }
+        if ($stat != 'all') {
+            $this->db->where('stk.stat',$stat);
+        }
+
+        $this->db->where("DATE_FORMAT(stk.crdt,'%Y-%m-%d') BETWEEN '$frdt' AND '$todt' AND stk.cst=1");
+    }
+
+    private function sbcStock_queryData()
+    {
+        $this->sbcStock_query();
+        $i = 0;
+        foreach ($this->cl_srch10 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch10) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr10[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order10)) {
+            $order10 = $this->order10;
+            $this->db->order_by(key($order10), $order10[key($order10)]);
+        }
+    }
+
+    function get_sbcStock()
+    {
+        $this->sbcStock_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_sbcStock()
+    {
+        $this->sbcStock_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_sbcStock()
+    {
+        $this->sbcStock_query();
+        return $this->db->count_all_results();
+    }
+
+    //END CONVERTION STOCK </2019-10-15>
 }
 
 ?>

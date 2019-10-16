@@ -1,6 +1,25 @@
 -----------------------------------------------------
+2019-10-16 JANAKA
+ALTER TABLE `stock_brn` ADD `apby` INT NOT NULL COMMENT 'approved by' AFTER `crdt`;
+ALTER TABLE `stock_brn` ADD `apdt` DATETIME NULL COMMENT 'Approved date' AFTER `apby`;
+ALTER TABLE `stock_brn` ADD `mdby` INT NOT NULL COMMENT 'Modified by' AFTER `apdt`;
+ALTER TABLE `stock_brn` ADD `mddt` DATETIME NULL COMMENT 'Modified date' AFTER `mdby`;
+ALTER TABLE `stock_brn` ADD `rjby` INT NOT NULL COMMENT 'Rejected by' AFTER `mddt`;
+ALTER TABLE `stock_brn` ADD `rjdt` DATETIME NULL COMMENT 'Rejected date' AFTER `rjby`;
+-----------------------------------------------------
 2019-10-14 JANAKA
 INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'stckCnv', 'Stock Conversion', 'Stock convert measuring scale with quantity', '0', '1', '1', '4');
+ALTER TABLE `stock_brn` CHANGE `qunt` `qunt` DOUBLE NULL DEFAULT NULL COMMENT 'Quantity';
+ALTER TABLE `stock_brn` CHANGE `avqn` `avqn` DOUBLE NULL DEFAULT NULL COMMENT 'Available quantity';
+ALTER TABLE `stock_brn` ADD `stcd` VARCHAR(20) NULL COMMENT 'Branch Stock Code' AFTER `stbid`;
+INSERT INTO `scale` (`slid`, `scl`, `scnm`, `stat`) VALUES (NULL, 'Pack', 'Pack', '1');
+ALTER TABLE `item` CHANGE `size` `size` DOUBLE NULL DEFAULT NULL COMMENT 'Size';
+ALTER TABLE `item` ADD `szsl` INT NOT NULL COMMENT 'Size scale' AFTER `size`;
+ALTER TABLE `stock_brn_sub` CHANGE `stat` `stat` INT(11) NULL DEFAULT NULL COMMENT '(0-Inactive/1-Active/2-Sold/3-Convert)';
+ALTER TABLE `stock_brn_sub` ADD `stcid` INT NOT NULL COMMENT 'Stock convert id' AFTER `stbid`;
+ALTER TABLE `stock_brn` ADD `cst` INT NOT NULL COMMENT 'Conversion(0-No/1-Yes)' AFTER `stat`;
+ALTER TABLE `stock_brn` ADD `cslid` INT NOT NULL COMMENT 'Conversion scale id' AFTER `cst`;
+ALTER TABLE `stock_brn` CHANGE `stat` `stat` INT(11) NULL DEFAULT NULL COMMENT '(0-Pending/1-Active/2-Finish/3-Reject/4-Inactive)';
 -----------------------------------------------------
 **DONE 2019-10-10 JANAKA
 ALTER TABLE `stock_sub` CHANGE `trst` `trst` INT(11) NOT NULL COMMENT 'Transfer(0-No/1-Yes)';

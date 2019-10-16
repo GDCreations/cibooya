@@ -122,7 +122,7 @@
                        id="dataTbStck" width="100%">
                     <thead>
                     <tr>
-                        <th class="text-left"> NO</th>
+                        <th class="text-left"> # </th>
                         <th class="text-left"> STK NO</th>
                         <th class="text-left"> SUPPLY</th>
                         <th class="text-left"> ITEM</th>
@@ -310,8 +310,12 @@
                                             <label class="col-md-8 col-xs-12 control-label" id="vewBrnd"></label>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-4 col-xs-12 control-label">Size (Type)</label>
+                                            <label class="col-md-4 col-xs-12 control-label">Type</label>
                                             <label class="col-md-8 col-xs-12 control-label" id="vewTyp"></label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 col-xs-12 control-label">Size</label>
+                                            <label class="col-md-8 col-xs-12 control-label" id="vewSize"></label>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-4 col-xs-12 control-label">GRN No</label>
@@ -1179,6 +1183,7 @@
                         document.getElementById("vewBrnd").innerHTML = ": " + response['stdt'][0]['bdcd'] + " | " + response['stdt'][0]['bdnm'];
                         document.getElementById("vewMdl").innerHTML = ": " + response['stdt'][0]['mlcd'] + " | " + response['stdt'][0]['mdl'];
                         document.getElementById("vewTyp").innerHTML = ": " + response['stdt'][0]['tpcd'] + " | " + response['stdt'][0]['tpnm'];
+                        document.getElementById("vewSize").innerHTML = ": " + response['stdt'][0]['size'] + " " + response['stdt'][0]['sscl']+" ("+response['stdt'][0]['sscnm']+")";
                         document.getElementById("vewName").innerHTML = ": " + response['stdt'][0]['itcd'] + " | " + response['stdt'][0]['itnm'];
                         document.getElementById("vewSpl").innerHTML = ": " + response['stdt'][0]['spcd'] + ' | ' + response['stdt'][0]['spnm'];
                         document.getElementById("vewCstvl").innerHTML = ": " + numeral(response['stdt'][0]['csvl']).format('0,0.00');
@@ -1187,7 +1192,7 @@
                         document.getElementById("vewTaxvl").innerHTML = ": " + numeral(response['stdt'][0]['txvl']).format('0,0.00');
                         document.getElementById("vewMktvl").innerHTML = ": " + numeral(response['stdt'][0]['mkvl']).format('0,0.00');
                         document.getElementById("vewGrno").innerHTML = ": " + response['stdt'][0]['grno'];
-                        document.getElementById("vewQunty").innerHTML = ": " + response['stdt'][0]['qunt'];
+                        document.getElementById("vewQunty").innerHTML = ": " + response['stdt'][0]['qunt'] + " " + response['stdt'][0]['scl']+" ("+response['stdt'][0]['scnm']+")";
                         document.getElementById("vewFrQunty").innerHTML = ": " + response['stdt'][0]['frqt'];
 
                         //STATUS

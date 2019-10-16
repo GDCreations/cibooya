@@ -67,7 +67,7 @@ jQuery.validator.addMethod("lessThanTo",
         }
         return this.optional(element) || lessThan;
     },
-    "This value less then other value(s)."
+    "This value less than other value(s)."
 );
 
 // Validation method for currency

@@ -324,11 +324,25 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Size Scale <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <select id="szscl" name="szscl" class="bs-select">
+                                                            <option value="0">-- Select Size Scale --</option>
+                                                            <?php
+                                                            foreach ($storeScl as $stscl) {
+                                                                echo "<option value='$stscl->slid'> (" . $stscl->scl . ") - " . $stscl->scnm . "</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label class="col-md-4 col-xs-12 control-label">Size <span
                                                                 class="fa fa-asterisk req-astrick"></span></label>
                                                     <div class="col-md-8 col-xs-12">
                                                         <input type="text" id="size" name="size" class="form-control"
-                                                               placeholder="Size & Scale"/>
+                                                               placeholder="Size"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -587,12 +601,26 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="col-md-4 col-xs-12 control-label">Size Scale <span
+                                                                class="fa fa-asterisk req-astrick"></span></label>
+                                                    <div class="col-md-8 col-xs-12">
+                                                        <select id="szscl_edt" name="szscl_edt" class="bs-select">
+                                                            <option value="0">-- Select Size Scale --</option>
+                                                            <?php
+                                                            foreach ($storeScl as $stscl) {
+                                                                echo "<option value='$stscl->slid'> (" . $stscl->scl . ") - " . $stscl->scnm . "</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
                                                     <label class="col-md-4 col-xs-12 control-label">Size <span
                                                                 class="fa fa-asterisk req-astrick"></span></label>
                                                     <div class="col-md-8 col-xs-12">
                                                         <input type="text" id="size_edt" name="size_edt"
                                                                class="form-control"
-                                                               placeholder="Size & Scale"/>
+                                                               placeholder="Size"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -818,8 +846,12 @@
                     szof: {
                         required: true,
                     },
+                    szscl:{
+                        notEqual: 0
+                    },
                     size: {
-                        required: true
+                        required: true,
+                        decimal: true
                     }
                 },
                 messages: {
@@ -868,8 +900,11 @@
                     szof: {
                         required: "Enter size area of item",
                     },
+                    szscl:{
+                        notEqual: "Select scale of size"
+                    },
                     size: {
-                        required: "Enter size & scale"
+                        required: "Enter size"
                     }
                 }
             });
@@ -971,8 +1006,12 @@
                     szof_edt: {
                         required: true,
                     },
+                    szscl_edt:{
+                        notEqual: 0
+                    },
                     size_edt: {
-                        required: true
+                        required: true,
+                        decimal: true
                     }
                 },
                 messages: {
@@ -1021,8 +1060,11 @@
                     szof_edt: {
                         required: "Enter size area of item",
                     },
+                    szscl_edt:{
+                        notEqual: "Select scale of size"
+                    },
                     size_edt: {
-                        required: "Enter size & scale"
+                        required: "Enter size"
                     }
                 }
             });
@@ -1264,6 +1306,7 @@
                         set_select('ntr_edt', data['item'][0]['ntid']);
                         set_select('strtp_edt', data['item'][0]['strid']);
                         set_select('strscl_edt', data['item'][0]['scli']);
+                        set_select('szscl_edt',data['item'][0]['szsl']);
 
                         var len2 = data['pics'].length;
                         var picsVw = new Array();
