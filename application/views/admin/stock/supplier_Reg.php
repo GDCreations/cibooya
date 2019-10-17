@@ -1006,9 +1006,17 @@
             e.preventDefault();
 
             var table = $('#supp_Bank').DataTable();
-            //var row = table.rows().count();
 
-            if (table.rows().count() > 0) {
+            var abc = true;
+            if ($('#bnkDtlEdt').prop('checked')) {
+                if (table.rows().count() > 0) {
+                    abc = true;
+                } else {
+                    abc = false;
+                }
+            }
+
+            if (abc) {
                 if ($('#app_sup_form').valid()) {
 
                     swal({
