@@ -1,5 +1,5 @@
 -----------------------------------------------------
-2019-10-16 JANAKA
+**DONE  2019-10-16 JANAKA
 ALTER TABLE `stock_brn` ADD `apby` INT NOT NULL COMMENT 'approved by' AFTER `crdt`;
 ALTER TABLE `stock_brn` ADD `apdt` DATETIME NULL COMMENT 'Approved date' AFTER `apby`;
 ALTER TABLE `stock_brn` ADD `mdby` INT NOT NULL COMMENT 'Modified by' AFTER `apdt`;
@@ -7,7 +7,7 @@ ALTER TABLE `stock_brn` ADD `mddt` DATETIME NULL COMMENT 'Modified date' AFTER `
 ALTER TABLE `stock_brn` ADD `rjby` INT NOT NULL COMMENT 'Rejected by' AFTER `mddt`;
 ALTER TABLE `stock_brn` ADD `rjdt` DATETIME NULL COMMENT 'Rejected date' AFTER `rjby`;
 -----------------------------------------------------
-2019-10-14 JANAKA
+**DONE  2019-10-14 JANAKA
 INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'stckCnv', 'Stock Conversion', 'Stock convert measuring scale with quantity', '0', '1', '1', '4');
 ALTER TABLE `stock_brn` CHANGE `qunt` `qunt` DOUBLE NULL DEFAULT NULL COMMENT 'Quantity';
 ALTER TABLE `stock_brn` CHANGE `avqn` `avqn` DOUBLE NULL DEFAULT NULL COMMENT 'Available quantity';
