@@ -2135,7 +2135,7 @@ class Stock extends CI_Controller
 
         //Inserting supplier details
         $this->Generic_model->insertData('stock_wh', array(
-            'whcd' => $this->input->post('code'),
+            'whcd' => strtoupper($this->input->post('code')),
             'whnm' => $this->input->post('name'),
             'addr' => $this->input->post('addr'),
             'mobi' => $this->input->post('mobi'),
@@ -2327,7 +2327,7 @@ class Stock extends CI_Controller
             //Updating supplier details
             $this->Generic_model->updateData('stock_wh', array(
                 'whnm' => $this->input->post('name_edt'),
-                'whcd' => $this->input->post('code_edt'),
+                'whcd' => strtoupper($this->input->post('code_edt')),
                 'addr' => $this->input->post('addr_edt'),
                 'mobi' => $this->input->post('mobi_edt'),
                 'tele' => $this->input->post('tele_edt'),
@@ -2344,7 +2344,7 @@ class Stock extends CI_Controller
             //Updating supplier details
             $this->Generic_model->updateData('stock_wh', array(
                 'whnm' => $this->input->post('name_edt'),
-                'whcd' => $this->input->post('code_edt'),
+                'whcd' => strtoupper($this->input->post('code_edt')),
                 'addr' => $this->input->post('addr_edt'),
                 'mobi' => $this->input->post('mobi_edt'),
                 'tele' => $this->input->post('tele_edt'),
@@ -4493,7 +4493,7 @@ class Stock extends CI_Controller
             ++$i;
             $scaleS = "<select class='form-control' id='nscl_$i' name='nscl_$i' onchange='checkScale(this.value,$i)'>" . $scaleO . "</select>";
 
-            $opt = "<button type='button' id='addConBtn_$i' onclick='addCon($row->stbid,$i)' class='btn btn-xs btn-default btn-condensed' title='Add to convert'>
+            $opt = "<button type='button' id='addConBtn_$i' onclick='addCon($row->stbid,$i)' class='btn btn-xs btn-info btn-condensed' title='Add to convert'>
                             <span class='fa fa-angle-double-right'></span></button>";
 
             $sub_arr = array();

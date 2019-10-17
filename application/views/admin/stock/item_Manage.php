@@ -150,7 +150,7 @@
                         <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Add Item
                         </h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body scroll"  style="max-height: 65vh">
                         <div class="container">
                             <div class="block-content">
                                 <div id="smartwizard" class="wizard show-submit">
@@ -424,7 +424,7 @@
                         <input type="hidden" id="itid" name="itid"/>
                         <input type="hidden" id="hsImg" name="hsImg"/>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body scroll"  style="max-height: 65vh">
                         <div class="container">
                             <div class="block-content">
                                 <div id="smartwizard2" class="wizard show-submit">
