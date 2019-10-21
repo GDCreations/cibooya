@@ -839,11 +839,13 @@ class Stock_model extends CI_Model
         $frdt = trim($dtrng[0],' ');
         $todt = trim($dtrng[1],' ');
 
-        $this->db->select("str.rqid,str.rqno,str.rqfr,str.stat,str.crdt,bm.brcd AS rsbrcd, bm.brnm AS rsbrnm,
+        $this->db->select("1str.rqid,str.rqno,str.rqfr,str.stat,str.crdt,bm.brcd AS rsbrcd, bm.brnm AS rsbrnm,
         bm2.rrbrcd,bm2.rrbrnm,
         (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat!=6) AS cnt,
         (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat=4) AS iscnt,
-        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat=2) AS rjcnt");
+        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat=2) AS rjcnt,
+        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat=3) AS ascnt,
+        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat=5) AS rccnt");
         $this->db->from("stock_req str");
         $this->db->join('brch_mas bm', 'bm.brid = str.rsbc');
         if($rqfr=='true'){

@@ -69,6 +69,7 @@
                             <option value="1">Approved</option>
                             <option value="2">Cancelled</option>
                             <option value="3">Received</option>
+                            <option value="4">Issuing Reject</option>
                         </select>
                     </div>
                 </div>
@@ -140,7 +141,8 @@
                         <th class="text-left" id="Reference number">REF. NO.</th>
                         <th class="text-left" title="Requested or recieved by"> REQ. BY</th>
                         <th class="text-left" title="Issuing warehouse or branch"> ISSUING BY</th>
-                        <th class="text-left" title="Item count"> ITEM CNT.</th>
+                        <th class="text-left" title="Assigned / Item count"><span style="color: #76AB3C">ASS.</span> / <span style="color: #F69F00">ITEM CNT.</span></th>
+                        <th class="text-left" title="Delivered / Issued"><span style="color: #CC00E0">DELI.</span> / <span style="color: #4FB5DD">ISSUED</span></th>
                         <th class="text-left" title="Created date">CRDT</th>
                         <th class="text-left"> STATUS</th>
                         <th class="text-left"> OPTION</th>
@@ -1076,16 +1078,18 @@
                 "serverSide": true,
                 "columnDefs": [
                     {className: "text-left", "targets": [2, 3]},
-                    {className: "text-center", "targets": [0, 1, 5, 6, 7]},
-                    {className: "text-right", "targets": [4]},
+                    {className: "text-center", "targets": [0, 1, 4, 5, 6, 7, 8]},
+                    {className: "text-right", "targets": []},
                     {className: "text-nowrap", "targets": [2]},
                 ],
+                "order": [[6, "DESC"]], //ASC  desc
                 "aoColumns": [
                     {sWidth: '1%'}, //No
                     {sWidth: '7%'},    //REF
                     {sWidth: '20%'},    //RQ BY
                     {sWidth: '20%'},    //IS BY
-                    {sWidth: '7%'},    //ITEM COUNT
+                    {sWidth: '7%'},    //Assigned / ITEM COUNT
+                    {sWidth: '7%'},    //Recieved / Issued
                     {sWidth: '10%'},    //CRDT
                     {sWidth: '10%'},     //Status
                     {sWidth: '15%'}     //OPT

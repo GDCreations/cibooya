@@ -15,15 +15,6 @@
         <h1>Stock Transfer</h1>
         <p>Transfer goods Warehouse to Branches & Branch to Branches</p>
     </div>
-    <?php
-    if ($funcPerm[0]->inst == 1) { ?>
-        <div class="pull-right">
-            <button class="btn btn-sm btn-info btn-icon-fixed btn-rounded" data-toggle="modal" data-target="#modal-add">
-                <span class="fa fa-plus"></span>New Transfer
-            </button>
-        </div>
-    <?php }
-    ?>
 </div>
 <!-- END PAGE HEADING -->
 
@@ -67,7 +58,7 @@
                         <div class="col-md-8 col-xs-12">
                             <select class="bs-select" name="frBrncs" id="frBrncs"
                                     onchange="chckBtn(this.value,this.id);">
-                                <option value="0">-- Select Branch --</option>
+                                <option value="all">All Branches</option>
                                 <?php
                                 foreach ($brncFrm as $brf) {
                                     if ($brf['brch_id'] != '0' && $brf['brch_id'] != 'all') {
@@ -103,7 +94,7 @@
                         <div class="col-md-8 col-xs-12">
                             <select class="bs-select" name="frBrncs" id="frBrncs"
                                     onchange="chckBtn(this.value,this.id);">
-                                <option value="0">-- Select Branch --</option>
+                                <option value="all">All Branches</option>
                                 <?php
                                 foreach ($brncFrm as $brf) {
                                     if ($brf['brch_id']!='0' && $brf['brch_id']!='all') {
@@ -138,7 +129,7 @@
                         <div class="col-md-8 col-xs-12">
                             <select class="bs-select" name="tobrcs" id="tobrcs"
                                     onchange="chckBtn(this.value,this.id);">
-                                <option value="0">-- Select Branch --</option>
+                                <option value="all">All Branches</option>
                                 <?php
                                 foreach ($brncTo as $brt) {
                                     echo "<option value='$brt->brid'>$brt->brcd - $brt->brnm</option>";
@@ -146,20 +137,6 @@
                                 ?>
                             </select>
                             <br/></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-4 col-xs-12 control-label">Item Name</label>
-                        <div class="col-md-8 col-xs-12">
-                            <select class="bs-select" data-live-search="true" id="items" name="items"
-                                    onchange="chckBtn(this.value,this.id)">
-                                <option value="0">-- Select Item --</option>
-                                <?php
-                                foreach ($item as $itm) {
-                                    echo "<option value='$itm->itid'>" . $itm->itcd . " - " . $itm->itnm . "</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -199,9 +176,10 @@
                     <tr>
                         <th class="text-center"> #</th>
                         <th class="text-left" id="Reference number">REF. NO.</th>
-                        <th class="text-left" title="Issuing warehouse or branch"> ISSUED BY</th>
+                        <th class="text-left" title="Issuing warehouse or branch"> ISSUING BY</th>
                         <th class="text-left" title="Requested or recieved by"> REQ. BY</th>
-                        <th class="text-left" title="Item count"> ITEM CNT.</th>
+                        <th class="text-left" title="Assigned / Item count"><span style="color: #76AB3C">ASS.</span> / <span style="color: #F69F00">ITEM CNT.</span></th>
+                        <th class="text-left" title="Delivered / Issued"><span style="color: #CC00E0">DELI.</span> / <span style="color: #4FB5DD">ISSUED</span></th>
                         <th class="text-left" title="Created date">CRDT</th>
                         <th class="text-left"> STATUS</th>
                         <th class="text-left"> OPTION</th>
@@ -216,6 +194,19 @@
 
     <script type="text/javascript">
         $().ready(function (e) {
+
+        });
+
+        //SEARCH
+        function srch_rqGd(){
+            var rqfr = $('#srreqFr').prop('checked');
+            var rqbr = $('#tobrcs').val(); //Requester Branch (goods to brnch)
+            var rcbr = $('#frBrncs').val(); //Req receiver Branch (goods from brnch)
+            var rcwh = $('#frwhs').val(); //Req receiver warehouse (goods from warehouse)
+            var dtrg = $('#dtrng').val(); //Date Range
+            var stat = $('#reqSt').val(); //Status
+
+            $('#dataTbReq').DataTable().clear();
             $('#dataTbReq').DataTable({
                 "destroy": true,
                 "cache": false,
@@ -226,23 +217,37 @@
                     [10, 25, 50, 100, "All"]
                 ],
                 "columnDefs": [
-                    {className: "text-left", "targets": [2]},
-                    {className: "text-center", "targets": [0, 1, 3, 5, 6, 7]},
-                    {className: "text-right", "targets": [4]},
+                    {className: "text-left", "targets": [2, 3]},
+                    {className: "text-center", "targets": [0, 1, 4, 5, 6, 7, 8]},
+                    {className: "text-right", "targets": []},
                     {className: "text-nowrap", "targets": [2]},
                 ],
+                "order": [[6, "DESC"]], //ASC  desc
                 "aoColumns": [
                     {sWidth: '1%'}, //No
                     {sWidth: '7%'},    //REF
-                    {sWidth: '20%'},    //IS BY
                     {sWidth: '20%'},    //RQ BY
-                    {sWidth: '7%'},    //ITEM COUNT
+                    {sWidth: '20%'},    //IS BY
+                    {sWidth: '7%'},    //Assigned / ITEM COUNT
+                    {sWidth: '7%'},    //Recieved / Issued
                     {sWidth: '10%'},    //CRDT
                     {sWidth: '10%'},     //Status
                     {sWidth: '15%'}     //OPT
-                ]
+                ],
+                "ajax": {
+                    url: '<?= base_url(); ?>Stock/searchStReq',
+                    type: 'post',
+                    data: {
+                        rqfr: rqfr,
+                        rqbr: rqbr,
+                        rcbr: rcbr,
+                        rcwh: rcwh,
+                        dtrg: dtrg,
+                        stat: stat
+                    }
+                }
             });
-        });
+        }
 
         function srcheckFr() {
             if ($('#srreqFr').prop('checked')) {
