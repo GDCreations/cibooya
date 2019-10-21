@@ -1591,12 +1591,12 @@ class Stock extends CI_Controller
         $this->load->view('admin/common/adminHeader', $per);
 
         $data2['funcPerm'] = $this->Generic_model->getFuncPermision('itemMng');
-        $data2['category'] = $this->Generic_model->getData('category', array('ctid', 'ctcd', 'ctnm', 'stat'), "stat IN(1,3)");
-        $data2['brand'] = $this->Generic_model->getData('brand', array('bdid', 'bdcd', 'bdnm', 'logo', 'stat'), "stat IN(1,3)");
-        $data2['type'] = $this->Generic_model->getData('type', array('tpid', 'tpcd', 'tpnm', 'stat'), "stat IN(1,3)");
-        $data2['nature'] = $this->Generic_model->getData('nature', array('ntid', 'ntnm', 'dscr'), array('stat' => 1));
-        $data2['store'] = $this->Generic_model->getData('str_type', array('strid', 'stnm'), array('stat' => 1));
-        $data2['storeScl'] = $this->Generic_model->getData('scale', array('slid', 'scl', 'scnm'), array('stat' => 1));
+        $data2['category'] = $this->Generic_model->getSortData('category', array('ctid', 'ctcd', 'ctnm', 'stat'), "stat IN(1,3)",'','','ctnm','ASC');
+        $data2['brand'] = $this->Generic_model->getSortData('brand', array('bdid', 'bdcd', 'bdnm', 'logo', 'stat'), "stat IN(1,3)",'','','bdnm','ASC');
+        $data2['type'] = $this->Generic_model->getSortData('type', array('tpid', 'tpcd', 'tpnm', 'stat'), "stat IN(1,3)",'','','tpnm','ASC');
+        $data2['nature'] = $this->Generic_model->getSortData('nature', array('ntid', 'ntnm', 'dscr'), array('stat' => 1),'','','ntnm','ASC');
+        $data2['store'] = $this->Generic_model->getSortData('str_type', array('strid', 'stnm'), array('stat' => 1),'','','stnm','ASC');
+        $data2['storeScl'] = $this->Generic_model->getSortData('scale', array('slid', 'scl', 'scnm'), array('stat' => 1),'','','scnm','ASC');
         $this->load->view('admin/stock/item_Manage', $data2);
 
         $this->load->view('common/tmpFooter', $data);
@@ -2460,13 +2460,14 @@ class Stock extends CI_Controller
         $this->load->view('admin/common/adminHeader', $per);
 
         $data2['funcPerm'] = $this->Generic_model->getFuncPermision('pchOdr');
-        $data2['supplier'] = $this->Generic_model->getData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat' => 1));
-        $data2['warehouse'] = $this->Generic_model->getData('stock_wh', array('whid', 'whcd', 'whnm'), array('stat' => 1));
+        $data2['supplier'] = $this->Generic_model->getSortData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat' => 1),'','','spnm','ASC');
+        $data2['warehouse'] = $this->Generic_model->getSortData('stock_wh', array('whid', 'whcd', 'whnm'), array('stat' => 1),'','','whnm','ASC');
         //Item With Storing Scale
         $this->db->select("itid,itcd,itnm,slid,scnm,scl");
         $this->db->from('item');
         $this->db->join('scale', 'scale.slid=item.scli');
         $this->db->where('item.stat', 1);
+        $this->db->order_by('item.itnm', 'ASC');
         $data2['item'] = $this->db->get()->result();
         $this->load->view('admin/stock/purchase_Order', $data2);
 
@@ -3364,9 +3365,6 @@ class Stock extends CI_Controller
 
         $this->Generic_model->updateData('stock_po', array('grnst' => 1), array('poid' => $this->input->post('podt')));
 
-        $funcPerm = $this->Generic_model->getFuncPermision('grnMng');
-        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "GRN Added ($grno)");
-
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
             echo json_encode(false);
@@ -3856,10 +3854,10 @@ class Stock extends CI_Controller
         $this->load->view('admin/common/adminHeader', $per);
 
         $data2['funcPerm'] = $this->Generic_model->getFuncPermision('stckMng');
-        $data2['category'] = $this->Generic_model->getData('category', array('ctid', 'ctcd', 'ctnm', 'stat'), "stat IN(1,3)");
-        $data2['brand'] = $this->Generic_model->getData('brand', array('bdid', 'bdcd', 'bdnm', 'logo', 'stat'), "stat IN(1,3)");
-        $data2['type'] = $this->Generic_model->getData('type', array('tpid', 'tpcd', 'tpnm', 'stat'), "stat IN(1,3)");
-        $data2['supplier'] = $this->Generic_model->getData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat' => 1));
+        $data2['category'] = $this->Generic_model->getSortData('category', array('ctid', 'ctcd', 'ctnm', 'stat'), "stat IN(1,3)",'','','ctnm','ASC');
+        $data2['brand'] = $this->Generic_model->getSortData('brand', array('bdid', 'bdcd', 'bdnm', 'logo', 'stat'), "stat IN(1,3)",'','','bdnm','ASC');
+        $data2['type'] = $this->Generic_model->getSortData('type', array('tpid', 'tpcd', 'tpnm', 'stat'), "stat IN(1,3)",'','','tpnm','ASC');
+        $data2['supplier'] = $this->Generic_model->getSortData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat' => 1),'','','spnm','ASC');
 
         $this->load->view('admin/stock/stckManagement', $data2);
 
@@ -4444,12 +4442,9 @@ class Stock extends CI_Controller
 
         $data2['funcPerm'] = $this->Generic_model->getFuncPermision('stckCnv');
         $data2['branchinfo'] = $this->Generic_model->getBranch();
-//        $data2['category'] = $this->Generic_model->getData('category', array('ctid', 'ctcd', 'ctnm', 'stat'), "stat IN(1,3)");
-//        $data2['brand'] = $this->Generic_model->getData('brand', array('bdid', 'bdcd', 'bdnm', 'logo', 'stat'), "stat IN(1,3)");
-//        $data2['type'] = $this->Generic_model->getData('type', array('tpid', 'tpcd', 'tpnm', 'stat'), "stat IN(1,3)");
         $data2['scale'] = $this->Generic_model->getData('scale', '', array('stat' => 1));
-        $data2['item'] = $this->Generic_model->getData('item', array('itid', 'itcd', 'itnm', 'stat'), array('stat' => 1));
-        $data2['supplier'] = $this->Generic_model->getData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat' => 1));
+        $data2['item'] = $this->Generic_model->getSortData('item', array('itid', 'itcd', 'itnm', 'stat'), array('stat' => 1),'','','itnm','ASC');
+        $data2['supplier'] = $this->Generic_model->getSortData('supp_mas', array('spid', 'spcd', 'spnm'), array('stat' => 1),'','','spnm','ASC');
 
         $this->load->view('admin/stock/stckConversion', $data2);
 
@@ -4818,7 +4813,7 @@ class Stock extends CI_Controller
                 'cslid' => $this->input->post('vewScale'),
                 'mdby' => $_SESSION['userId'],
                 'mddt' => date('Y-m-d H:i:s'),
-            ),array('stbid'=>$auid));
+            ), array('stbid' => $auid));
         } else if ($func == 'app') {
             $msg = "Stock conversion completed";
             //Update Stock
@@ -4831,28 +4826,28 @@ class Stock extends CI_Controller
                 'cslid' => $this->input->post('vewScale'),
                 'apby' => $_SESSION['userId'],
                 'apdt' => date('Y-m-d H:i:s'),
-            ),array('stbid'=>$auid));
+            ), array('stbid' => $auid));
 
             $this->db->select("sb.avqn,sbs.stbid,COUNT(sbs.stcid) AS cnt");
             $this->db->from('stock_brn_sub sbs');
-            $this->db->join('stock_brn sb','sb.stbid=sbs.stbid');
+            $this->db->join('stock_brn sb', 'sb.stbid=sbs.stbid');
             $this->db->where("stcid=$auid");
             $prvStk = $this->db->get()->result();
 
             //Previous Stock AVQTY update
-            $this->Generic_model->updateData('stock_brn',array(
-                'avqn'=> $prvStk[0]->avqn - $prvStk[0]->cnt,
-            ),array('stbid'=>$prvStk[0]->stbid));
+            $this->Generic_model->updateData('stock_brn', array(
+                'avqn' => $prvStk[0]->avqn - $prvStk[0]->cnt,
+            ), array('stbid' => $prvStk[0]->stbid));
         }
 
         $srl = $this->input->post('srlnumEdt[]');
         $this->Generic_model->updateData('stock_brn_sub', array('stcid' => 0, 'stat' => 1), array('stcid' => $auid));
         for ($it = 0; $it < sizeof($srl); $it++) {
-            $this->Generic_model->updateData('stock_brn_sub',array('stcid' => $auid, 'stat' => 3),array('sbsid' => $srl[$it]));
+            $this->Generic_model->updateData('stock_brn_sub', array('stcid' => $auid, 'stat' => 3), array('sbsid' => $srl[$it]));
         }
 
         $funcPerm = $this->Generic_model->getFuncPermision('stckCnv');
-        $this->Log_model->userFuncLog($funcPerm[0]->pgid, $msg.' id(' . $auid . ')');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, $msg . ' id(' . $auid . ')');
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
@@ -4916,6 +4911,404 @@ class Stock extends CI_Controller
 
 //************************************************
 //***           END STOCK CONVERSION           ***
+//************************************************
+
+//************************************************
+//***               STOCK REQUEST              ***
+//************************************************
+//LOAD PAGE </ 2019-10-17>
+    function stckReq()
+    {
+        $data['acm'] = 'stcAcs'; //Module
+        $data['acp'] = 'stckReq'; //Page
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('stckReq');
+        $data2['brncFrm'] = $this->Generic_model->getBranch();
+        $data2['brncTo'] = $this->Generic_model->getSortData('brch_mas', array('brid', 'brcd', 'brnm'), array('stat' => 1),'','','brnm','ASC');
+
+        //Item With Storing Scale
+        $this->db->select("itid,itcd,itnm,slid,scnm,scl,mdl,mlcd");
+        $this->db->from('item');
+        $this->db->join('scale', 'scale.slid=item.scli');
+        $this->db->where('item.stat', 1);
+        $this->db->order_by('itnm','ASC');
+        $data2['item'] = $this->db->get()->result();
+
+        $data2['warehouse'] = $this->Generic_model->getSortData('stock_wh', array('whid', 'whcd', 'whnm'), array('stat' => 1),'','','whnm','ASC');
+
+        $this->load->view('admin/stock/stckRequest', $data2);
+
+        $this->load->view('common/tmpFooter', $data);
+    }
+    //END LOAD PAGE </ 2019-10-17>
+
+    //ADD REQUEST </2019-10-17>
+    function stReq_Add()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+        $rqBrch = $this->Generic_model->getData('brch_mas', '', array('brid' => $this->input->post('tobrc')));
+        //Create next request number
+        $this->db->select("rqno");
+        $this->db->from("stock_req");
+        $this->db->where('rsbc', $rqBrch[0]->brid);
+        $this->db->order_by('rqid', 'desc');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        $data = $query->result();
+
+        $yr = date('y');
+
+        if (count($data) == '0') {
+            $rqno = 'SRQ' . $yr . '-' . $rqBrch[0]->brcd . '-0001';  // Ex GRN/YR/1/NO - GRN/18/0/0001
+        } else {
+            $rqno = $data[0]->rqno;
+            $re = (explode("-", $rqno));
+
+            $aa = intval($re[2]) + 1;
+            $cc = strlen($aa);
+            if ($cc == 1) {
+                $xx = '000' . $aa;
+            } else if ($cc == 2) {
+                $xx = '00' . $aa;
+            } else if ($cc == 3) {
+                $xx = '0' . $aa;
+            } else if ($cc == 4) {
+                $xx = '0' . $aa;
+            }
+            $rqno = 'SRQ' . $yr . '-' . $rqBrch[0]->brcd . '-' . $xx;
+        }
+
+        if ($this->input->post('reqFr') == 1) {
+            $rqfr = 1;
+            $rrbc = $this->input->post('frwh');
+        } else {
+            $rqfr = 2;
+            $rrbc = $this->input->post('frBrn');
+        }
+
+        //Insert Main Details
+        $this->Generic_model->insertData('stock_req', array(
+            'rqno' => $rqno,
+            'rqfr' => $rqfr,
+            'rsbc' => $rqBrch[0]->brid,
+            'rrbc' => $rrbc,
+            'stat' => 0,
+            'crby' => $_SESSION['userId'],
+            'crdt' => date('Y-m-d H:i:s'),
+            'rmk' => $this->input->post('remk')
+        ));
+
+        $lstid = $this->db->insert_id();
+        //Insert Sub Details
+        $itid = $this->input->post('itid[]');
+        $qty = $this->input->post('qunty[]');
+
+        for ($it = 0; $it < sizeof($itid); $it++) {
+            $this->Generic_model->insertData('stock_req_sub', array(
+                'rqid' => $lstid,
+                'rsbc' => $rqBrch[0]->brid,
+                'itid' => $itid[$it],
+                'reqty' => $qty[$it],
+                'crby' => $_SESSION['userId'],
+                'crdt' => date('Y-m-d H:i:s'),
+                'stat' => 0
+            ));
+        }
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckReq');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Made a stock request (' . $rqno . ')');
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+    //END ADD REQUEST </2019-10-17>
+
+    //SEARCH REQUESTED STOCKS </2019-10-18>
+    function searchStReq()
+    {
+        $funcPerm = $this->Generic_model->getFuncPermision('stckReq');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edt = "";
+        } else {
+            $edt = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rej = "";
+        } else {
+            $rej = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
+
+        $result = $this->Stock_model->get_ReqStock();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            $st = $row->stat;
+            $rqid = $row->rqid;
+
+            //IS EVEN AN ITEM APPROVED
+            $isItIss = "disabled";
+            $isItIssMsg = "Goods not issued yet";
+            $styl = "btn btn-xs btn-default btn-condensed";
+            if ($row->iscnt > 0) {
+                $isItIss = "";
+                $isItIssMsg = $row->iscnt . " goods issued";
+                $styl = "label-icon label-icon-info label-icon-bordered";
+            }
+
+            $isRej = 'View'; //main stock side
+            if ($row->rjcnt > 0) {
+                $isRej = $row->iscnt ." rejected goods here";
+            }
+
+            if ($st == '0') {                   // Pending
+                $stat = " <span class='label label-warning'> Pending </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  $edt  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  $app  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  $rej  onclick='rejecStck($rqid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+
+            } else if ($st == '1') {           // Approved
+                $stat = " <span class='label label-success'> Waiting For Goods </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='$isRej' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modal-view'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modal-view'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rec' $isItIss disabled  onclick='viewStck($rqid,this.id);' class='$styl' title='$isItIssMsg'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+
+            } else if ($st == '2') {            // Finished
+                $stat = " <span class='label label-danger'> Cancelled </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck($rqid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+            } else if ($st == '3') {        //Recieved
+                $stat = " <span class='label label-info'> Received </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck();' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+            }else if($st == '4'){
+                $stat = " <span class='label label-indi' title='Issue rejected'> Issue Rej. </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck();' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+            }
+
+            if($row->rqfr==1){
+                $rqfr = "<label class='label label-info label-bordered label-ghost' title='Warehouse'>WH</label> ";
+            }else{
+                $rqfr = "<label class='label label-info label-bordered label-ghost' title='Branch'>BR</label> ";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->rqno;
+            $sub_arr[] = $row->rsbrcd." - ".$row->rsbrnm;
+            $sub_arr[] = $rqfr.$row->rrbrcd." - ".$row->rrbrnm;
+            $sub_arr[] = str_pad($row->cnt,2,0,STR_PAD_LEFT);
+            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        //$output = array("data" => $data);
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Stock_model->count_all_ReqStock(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_ReqStock(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+    //END SEARCH REQUESTED STOCKS </2019-10-18>
+
+    //VIEW REQ STOCK </2019-10-18>
+    function vewReqStock(){
+        $id = $this->input->post('id');
+
+        $this->db->select("rq.rqno,rq.rqfr,rq.stat,rq.crdt,rq.apdt,rq.mddt,rq.rjdt,rq.isrdt,rq.redt,rq.rsbc,rq.rrbc,rq.rmk,
+        bm.brcd AS rsbrcd, bm.brnm AS rsbrnm,
+        bm2.brcd AS rrbrcd, bm2.brnm AS rrbrnm,
+        wh.whcd,wh.whnm, CONCAT(cr.fnme,' ',cr.lnme) AS crnm,
+        CONCAT(ap.fnme,' ',ap.lnme) AS apnm,CONCAT(md.fnme,' ',md.lnme) AS mdnm, CONCAT(rj.fnme,' ',rj.lnme) AS rjnm,
+        CONCAT(isr.fnme,' ',isr.lnme) AS isrnm,CONCAT(re.fnme,' ',re.lnme) AS renm");
+        $this->db->from('stock_req rq');
+        $this->db->join('brch_mas bm', 'bm.brid = rq.rsbc');
+        $this->db->join('brch_mas bm2','bm2.brid = rq.rrbc','LEFT');
+        $this->db->join('stock_wh wh','wh.whid = rq.rrbc','LEFT');
+        $this->db->join('user_mas cr', 'cr.auid = rq.crby ');
+        $this->db->join('user_mas ap', 'ap.auid=rq.apby', 'LEFT');
+        $this->db->join('user_mas md', 'md.auid=rq.mdby', 'LEFT');
+        $this->db->join('user_mas rj', 'rj.auid=rq.rjby', 'LEFT');
+        $this->db->join('user_mas isr', 'isr.auid=rq.isrby', 'LEFT');
+        $this->db->join('user_mas re', 're.auid=rq.reby', 'LEFT');
+        $this->db->where('rq.rqid',$id);
+        $data['req'] = $this->db->get()->result();
+
+        $this->db->select("rqs.auid,rqs.itid,rqs.reqty,rqs.stat,rqs.crdt,rqs.mddt,rqs.apdt,rqs.rjdt,rqs.asdt,rqs.isdt,rqs.inpr,
+        it.itcd,it.itnm,it.mdl,it.mlcd,sc.scl,sc.scnm,
+        CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(ap.fnme,' ',ap.lnme) AS apnm,CONCAT(md.fnme,' ',md.lnme) AS mdnm, 
+        CONCAT(rj.fnme,' ',rj.lnme) AS rjnm, CONCAT(as.fnme,' ',as.lnme) AS asnm,CONCAT(is.fnme,' ',is.lnme) AS isnm");
+        $this->db->from('stock_req_sub rqs');
+        $this->db->join('item it','it.itid=rqs.itid');
+        $this->db->join('scale sc','sc.slid=it.scli');
+        $this->db->join('user_mas cr', 'cr.auid = rqs.crby ');
+        $this->db->join('user_mas ap', 'ap.auid=rqs.apby', 'LEFT');
+        $this->db->join('user_mas md', 'md.auid=rqs.mdby', 'LEFT');
+        $this->db->join('user_mas rj', 'rj.auid=rqs.rjby', 'LEFT');
+        $this->db->join('user_mas as', 'as.auid=rqs.asby', 'LEFT');
+        $this->db->join('user_mas is', 'is.auid=rqs.isby', 'LEFT');
+        $this->db->where("rqs.rqid=$id AND rqs.stat!=6");
+        $data['reqs'] = $this->db->get()->result();
+        echo json_encode($data);
+    }
+    //END VIEW REQ STOCK </2019-10-18>
+
+    //EDIT || APPROVE REQUEST STOCK </2019-10-18>
+    function edtReqStock()
+    {
+        $this->db->trans_begin();           // SQL TRANSACTION START
+        $func = $this->input->post('func');
+        $auid = $this->input->post('reqId');
+
+        if ($this->input->post('reqFrEdt') == 1) {
+            $rqfr = 1;
+            $rrbc = $this->input->post('frwhEdt');
+        } else {
+            $rqfr = 2;
+            $rrbc = $this->input->post('frBrnEdt');
+        }
+
+        if ($func == 'edt') {
+            $msg = "Stock request updated";
+            //Update Stock
+            $this->Generic_model->updateData('stock_req', array(
+                'rqfr' => $rqfr,
+                'rsbc' => $this->input->post('tobrcEdt'),
+                'rrbc' => $rrbc,
+                'stat' => 0,
+                'rmk' => $this->input->post('remkEdt'),
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ), array('rqid' => $auid));
+        } else if ($func == 'app') {
+            $msg = "Stock request completed";
+            //Update Stock
+            $this->Generic_model->updateData('stock_req', array(
+                'rqfr' => $rqfr,
+                'rsbc' => $this->input->post('tobrcEdt'),
+                'rrbc' => $rrbc,
+                'stat' => 1,
+                'rmk' => $this->input->post('remkEdt'),
+                'apby' => $_SESSION['userId'],
+                'apdt' => date('Y-m-d H:i:s'),
+            ), array('rqid' => $auid));
+        }
+
+        $itid = $this->input->post('itidEdt[]');
+        $rqsid = $this->input->post('rqsid[]');
+        $qty = $this->input->post('quntyEdt[]');
+
+        $this->Generic_model->updateData('stock_req_sub', array('stat' => 6), array('rqid' => $auid,'stat'=>0));
+        for ($it = 0; $it < sizeof($itid); $it++) {
+            if ($rqsid[$it] != 0) {
+                $this->Generic_model->updateData('stock_req_sub', array(
+                    'stat' => 0,
+                ), array('auid' => $rqsid[$it]));
+            } else {
+                $this->Generic_model->insertData('stock_req_sub', array(
+                    'rqid' => $auid,
+                    'rsbc' => $this->input->post('tobrcEdt'),
+                    'itid' => $itid[$it],
+                    'reqty' => $qty[$it],
+                    'crby' => $_SESSION['userId'],
+                    'crdt' => date('Y-m-d H:i:s'),
+                    'stat' => 0
+                ));
+            }
+        }
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckReq');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, $msg . ' id(' . $auid . ')');
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+    //END EDIT || APPROVE REQUEST STOCK </2019-10-18>
+//************************************************
+//***           END STOCK REQUEST              ***
+//************************************************
+
+//************************************************
+//***               STOCK TRANSFER             ***
+//************************************************
+//LOAD PAGE </ 2019-10-17>
+    function stckTrnf()
+    {
+        $data['acm'] = 'stcAcs'; //Module
+        $data['acp'] = 'stckTrnf'; //Page
+        $this->load->view('common/tmpHeader');
+        $per['permission'] = $this->Generic_model->getPermision();
+        $this->load->view('admin/common/adminHeader', $per);
+
+        $data2['funcPerm'] = $this->Generic_model->getFuncPermision('stckTrnf');
+        $data2['brncFrm'] = $this->Generic_model->getBranch();
+        $data2['brncTo'] = $this->Generic_model->getSortData('brch_mas', array('brid', 'brcd', 'brnm'), array('stat' => 1),'','','brnm','ASC');
+
+        //Item With Storing Scale
+        $this->db->select("itid,itcd,itnm,slid,scnm,scl,mdl,mlcd");
+        $this->db->from('item');
+        $this->db->join('scale', 'scale.slid=item.scli');
+        $this->db->where('item.stat', 1);
+        $this->db->order_by('itnm','ASC');
+        $data2['item'] = $this->db->get()->result();
+
+        $data2['warehouse'] = $this->Generic_model->getSortData('stock_wh', array('whid', 'whcd', 'whnm'), array('stat' => 1),'','','whnm','ASC');
+        $data2['warehouse'] = $this->Generic_model->getData('stock_wh', array('whid', 'whcd', 'whnm'), array('stat' => 1));
+
+        $this->load->view('admin/stock/stckTransfer', $data2);
+
+        $this->load->view('common/tmpFooter', $data);
+    }
+    //END LOAD PAGE </ 2019-10-17>
+//************************************************
+//***           END STOCK TRANSFER             ***
 //************************************************
 
 }

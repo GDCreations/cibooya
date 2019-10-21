@@ -822,6 +822,107 @@ class Stock_model extends CI_Model
     }
 
     //END CONVERTION STOCK </2019-10-15>
+
+    //REQUEST STOCK </2019-10-18>
+    var $cl_srch11 = array('rqno', 'bm.brnm', 'bm2.rrbrnm', 'str.crdt','str.stat'); //set column field database for datatable searchable
+    var $cl_odr11 = array(null, 'rqno', 'bm.brnm', 'bm2.rrbrnm', '', 'str.crdt', '', ''); //set column field database for datatable orderable
+    var $order11 = array('str.crdt' => 'desc'); // default order
+
+    function ReqStock_query()
+    {
+        $rqfr = $this->input->post('rqfr');
+        $rqbr = $this->input->post('rqbr');
+        $rcbr = $this->input->post('rcbr');
+        $rcwh = $this->input->post('rcwh');
+        $stat = $this->input->post('stat');
+        $dtrng = explode('/',$this->input->post('dtrg')); // DateRange
+        $frdt = trim($dtrng[0],' ');
+        $todt = trim($dtrng[1],' ');
+
+        $this->db->select("str.rqid,str.rqno,str.rqfr,str.stat,str.crdt,bm.brcd AS rsbrcd, bm.brnm AS rsbrnm,
+        bm2.rrbrcd,bm2.rrbrnm,
+        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat!=6) AS cnt,
+        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat=4) AS iscnt,
+        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat=2) AS rjcnt");
+        $this->db->from("stock_req str");
+        $this->db->join('brch_mas bm', 'bm.brid = str.rsbc');
+        if($rqfr=='true'){
+            $this->db->join('(SELECT whnm AS rrbrnm, whcd AS rrbrcd,whid FROM stock_wh) bm2', 'bm2.whid = str.rrbc');
+            if ($rcwh != 'all') {
+                $this->db->where('str.rrbc', $rcwh);
+            }
+            $this->db->where('str.rqfr',1);
+        }else{
+            $this->db->join('(SELECT brnm AS rrbrnm, brcd AS rrbrcd,brid FROM brch_mas) bm2', 'bm2.brid = str.rrbc');
+            if ($rcbr != 'all') {
+                $this->db->where('str.rrbc', $rcbr);
+            }
+            $this->db->where('str.rqfr',2);
+        }
+        if ($rqbr != 'all') {
+            $this->db->where('str.rsbc', $rqbr);
+        }
+        if ($stat != 'all') {
+            $this->db->where('str.stat',$stat);
+        }
+
+        $this->db->where("DATE_FORMAT(str.crdt,'%Y-%m-%d') BETWEEN '$frdt' AND '$todt'");
+    }
+
+    private function ReqStock_queryData()
+    {
+        $this->ReqStock_query();
+        $i = 0;
+        foreach ($this->cl_srch11 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch11) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr11[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order11)) {
+            $order11 = $this->order11;
+            $this->db->order_by(key($order11), $order11[key($order11)]);
+        }
+    }
+
+    function get_ReqStock()
+    {
+        $this->ReqStock_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_ReqStock()
+    {
+        $this->ReqStock_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_ReqStock()
+    {
+        $this->ReqStock_query();
+        return $this->db->count_all_results();
+    }
+
+    //END CONVERTION STOCK </2019-10-18>
 }
 
 ?>

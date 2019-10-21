@@ -223,7 +223,7 @@
                                         <div class="col-md-8 col-xs-12">
                                             <div class="app-spinner pulse pulse-primary col-md-push-6 col-xs-push-6"
                                                  id="item_pulse" style="display: none;"></div>
-                                            <input type="text" id="cnty" name="cnty" class="form-control"
+                                            <input type="text" id="cnty" name="cnty" class="form-control text-right"
                                                    placeholder="Quantity"
                                                    data-container="body" data-toggle="popover" data-placement="top"
                                                    data-html="true"
@@ -518,7 +518,7 @@
                                         <div class="col-md-8 col-xs-12">
                                             <div class="app-spinner pulse pulse-primary col-md-push-6 col-xs-push-6"
                                                  id="item_pulse_edt" style="display: none;"></div>
-                                            <input type="text" id="cnty_edt" name="cnty_edt" class="form-control"
+                                            <input type="text" id="cnty_edt" name="cnty_edt" class="form-control text-right"
                                                    placeholder="Quantity"
                                                    data-container="body" data-toggle="popover" data-placement="top"
                                                    data-html="true"

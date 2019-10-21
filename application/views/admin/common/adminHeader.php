@@ -160,6 +160,16 @@
                                             <span class="nav-icon-hexa fa fa-random"></span> Stock Conversion </a>
                                     </li>
                                 <?php } ?>
+                                <?php if (in_array("stckReq", $permission, TRUE)) { ?>
+                                    <li><a id="stckReq" href="<?= base_url() ?>Stock/stckReq">
+                                            <span class="nav-icon-hexa fa fa-indent"></span> Stock Request </a>
+                                    </li>
+                                <?php } ?>
+                                <?php if (in_array("stckTrnf", $permission, TRUE)) { ?>
+                                    <li><a id="stckTrnf" href="<?= base_url() ?>Stock/stckTrnf">
+                                            <span class="nav-icon-hexa fa fa-outdent"></span> Stock Transfer </a>
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </li>
                         <?php $Stock_title = false;

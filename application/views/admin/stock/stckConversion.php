@@ -472,7 +472,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <div class="pull-left">
+                        <div class="pull-left edit_Area">
                             <span class="fa fa-hand-o-right"></span> <label style="color: red"> <span
                                         class="fa fa-asterisk req-astrick"></span> Required Fields </label>
                         </div>
@@ -1148,6 +1148,7 @@
                         $("#modal-view").find('.edit_req').css("display", "none");
                         $(".edit_Area").css('display', 'none');
                         $(".view_Area").css('display', 'block');
+                        $(".req-astrick").css('display', 'none');
                         //Make readonly all fields
                         $("#modal-view :input").attr("readonly", true);
                         disableSelct('vewScale');
@@ -1161,6 +1162,7 @@
                         $("#modal-view").find('.edit_req').css("display", "inline");
                         $(".edit_Area").css('display', 'block');
                         $(".view_Area").css('display', 'none');
+                        $(".req-astrick").css('display', 'inline');
                         //Remove readonly all fields
                         $("#modal-view :input").attr("readonly", false);
                         $("#vewCstvl").attr("readonly", true);
@@ -1174,6 +1176,7 @@
                         $("#modal-view").find('.edit_req').css("display", "inline");
                         $(".edit_Area").css('display', 'block');
                         $(".view_Area").css('display', 'none');
+                        $(".req-astrick").css('display', 'inline');
                         //Remove readonly all fields
                         $("#modal-view :input").attr("readonly", false);
                         $("#vewCstvl").attr("readonly", true);
@@ -1185,6 +1188,7 @@
                     var len = response['stdt'].length;
                     var len2 = response['sbdt'].length;
                     if (len > 0) {
+                        $('#conStViewTitle').html($('#conStViewTitle').html()+" | "+response['stdt'][0]['stcd']);
                         document.getElementById("vewCat").innerHTML = ": " + response['stdt'][0]['ctcd'] + " | " + response['stdt'][0]['ctnm'];
                         document.getElementById("vewBrnd").innerHTML = ": " + response['stdt'][0]['bdcd'] + " | " + response['stdt'][0]['bdnm'];
                         document.getElementById("vewMdl").innerHTML = ": " + response['stdt'][0]['mlcd'] + " | " + response['stdt'][0]['mdl'];
@@ -1222,8 +1226,8 @@
                         $('#apdt').html(": " + ((response['stdt'][0]['apdt'] != null && response['stdt'][0]['apdt'] != "0000-00-00 00:00:00") ? response['stdt'][0]['apdt'] : "--"));
                         $('#rjby').html(": " + ((response['stdt'][0]['rjnm'] != null) ? response['stdt'][0]['rjnm'] : "--"));
                         $('#rjdt').html(": " + ((response['stdt'][0]['rjdt'] != null && response['stdt'][0]['rjdt'] != "0000-00-00 00:00:00") ? response['stdt'][0]['rjdt'] : "--"));
-                        $('#mdby').html(": " + ((response['stdt'][0]['apnm'] != null) ? response['stdt'][0]['apnm'] : "--"));
-                        $('#mddt').html(": " + ((response['stdt'][0]['apdt'] != null && response['stdt'][0]['apdt'] != "0000-00-00 00:00:00") ? response['stdt'][0]['apdt'] : "--"));
+                        $('#mdby').html(": " + ((response['stdt'][0]['mdnm'] != null) ? response['stdt'][0]['mdnm'] : "--"));
+                        $('#mddt').html(": " + ((response['stdt'][0]['mddt'] != null && response['stdt'][0]['mddt'] != "0000-00-00 00:00:00") ? response['stdt'][0]['mddt'] : "--"));
 
                         var sbdt = response['sbdt'];
                         if (len2 > 0) {
