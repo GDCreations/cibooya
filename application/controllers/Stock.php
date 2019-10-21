@@ -5135,7 +5135,8 @@ class Stock extends CI_Controller
             $sub_arr[] = $row->rqno;
             $sub_arr[] = $row->rsbrcd." - ".$row->rsbrnm;
             $sub_arr[] = $rqfr.$row->rrbrcd." - ".$row->rrbrnm;
-            $sub_arr[] = str_pad($row->cnt,2,0,STR_PAD_LEFT);
+            $sub_arr[] = "<span style='color: #76AB3C'>".str_pad($row->ascnt,2,0,STR_PAD_LEFT)."</span> / <span style='color: #F69F00'>".str_pad($row->cnt,2,0,STR_PAD_LEFT)."</span>";
+            $sub_arr[] = "<span style='color: #CC00E0'>".str_pad($row->rccnt,2,0,STR_PAD_LEFT)."</span> / <span style='color: #4FB5DD'>".str_pad($row->iscnt,2,0,STR_PAD_LEFT)."</span>";
             $sub_arr[] = $row->crdt;
             $sub_arr[] = $stat;
             $sub_arr[] = $option;
@@ -5307,6 +5308,129 @@ class Stock extends CI_Controller
         $this->load->view('common/tmpFooter', $data);
     }
     //END LOAD PAGE </ 2019-10-17>
+
+    //SEARCH REQUESTED STOCKS TO ISSUE</2019-10-18>
+    function srchReqStck()
+    {
+        $funcPerm = $this->Generic_model->getFuncPermision('stckReq');
+
+        if ($funcPerm[0]->view == 1) {
+            $viw = "";
+        } else {
+            $viw = "disabled";
+        }
+        if ($funcPerm[0]->edit == 1) {
+            $edt = "";
+        } else {
+            $edt = "disabled";
+        }
+        if ($funcPerm[0]->apvl == 1) {
+            $app = "";
+        } else {
+            $app = "disabled";
+        }
+        if ($funcPerm[0]->rejt == 1) {
+            $rej = "";
+        } else {
+            $rej = "disabled";
+        }
+        if ($funcPerm[0]->reac == 1) {
+            $reac = "";
+        } else {
+            $reac = "disabled";
+        }
+
+        $result = $this->Stock_model->get_ReqStock();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            $st = $row->stat;
+            $rqid = $row->rqid;
+
+            //IS EVEN AN ITEM APPROVED
+            $isItIss = "disabled";
+            $isItIssMsg = "Goods not issued yet";
+            $styl = "btn btn-xs btn-default btn-condensed";
+            if ($row->iscnt > 0) {
+                $isItIss = "";
+                $isItIssMsg = $row->iscnt . " goods issued";
+                $styl = "label-icon label-icon-info label-icon-bordered";
+            }
+
+            $isRej = 'View'; //main stock side
+            if ($row->rjcnt > 0) {
+                $isRej = $row->iscnt ." rejected goods here";
+            }
+
+            if ($st == '0') {                   // Pending
+                $stat = " <span class='label label-warning'> Pending </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  $edt  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  $app  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  $rej  onclick='rejecStck($rqid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+
+            } else if ($st == '1') {           // Approved
+                $stat = " <span class='label label-success'> Waiting For Goods </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='$isRej' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modal-view'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modal-view'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rec' $isItIss disabled  onclick='viewStck($rqid,this.id);' class='$styl' title='$isItIssMsg'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+
+            } else if ($st == '2') {            // Finished
+                $stat = " <span class='label label-danger'> Cancelled </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck($rqid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+            } else if ($st == '3') {        //Recieved
+                $stat = " <span class='label label-info'> Received </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck();' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+            }else if($st == '4'){
+                $stat = " <span class='label label-indi' title='Issue rejected'> Issue Rej. </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej'  disabled  onclick='rejecStck();' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+            }
+
+            if($row->rqfr==1){
+                $rqfr = "<label class='label label-info label-bordered label-ghost' title='Warehouse'>WH</label> ";
+            }else{
+                $rqfr = "<label class='label label-info label-bordered label-ghost' title='Branch'>BR</label> ";
+            }
+
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->rqno;
+            $sub_arr[] = $row->rsbrcd." - ".$row->rsbrnm;
+            $sub_arr[] = $rqfr.$row->rrbrcd." - ".$row->rrbrnm;
+            $sub_arr[] = "<span style='color: #76AB3C'>".str_pad($row->ascnt,2,0,STR_PAD_LEFT)."</span> / <span style='color: #F69F00'>".str_pad($row->cnt,2,0,STR_PAD_LEFT)."</span>";
+            $sub_arr[] = "<span style='color: #CC00E0'>".str_pad($row->rccnt,2,0,STR_PAD_LEFT)."</span> / <span style='color: #4FB5DD'>".str_pad($row->iscnt,2,0,STR_PAD_LEFT)."</span>";
+            $sub_arr[] = $row->crdt;
+            $sub_arr[] = $stat;
+            $sub_arr[] = $option;
+            $data[] = $sub_arr;
+        }
+
+        //$output = array("data" => $data);
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Stock_model->count_all_ReqStock(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_ReqStock(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+    //END SEARCH REQUESTED STOCKS TO ISSUE</2019-10-18>
 //************************************************
 //***           END STOCK TRANSFER             ***
 //************************************************
