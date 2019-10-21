@@ -1,4 +1,4 @@
-<!--<script type="text/javascript" src="--><? //= base_url(); ?><!--assets/js/custom-js/full_width.js"></script>-->
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/custom-js/full_width.js"></script>
 
 <!-- START PAGE HEADING -->
 <div class="app-heading-container app-heading-bordered bottom">
@@ -1103,7 +1103,8 @@
                         rcbr: rcbr,
                         rcwh: rcwh,
                         dtrg: dtrg,
-                        stat: stat
+                        stat: stat,
+                        mode: 1
                     }
                 }
             });
@@ -1144,6 +1145,7 @@
                         $("#modal-view :input[type='checkbox']").attr('disabled',true);
                         disableSelct('tobrcEdt');
                         disableSelct('frwhEdt');
+                        disableSelct('frBrnEdt');
                         //VIEW MODEL
                         var des = "disabled";
                     }else if(func=='edt'){
@@ -1160,6 +1162,7 @@
                         $("#modal-view :input[type='checkbox']").attr('disabled',false);
                         enableSelct('tobrcEdt');
                         enableSelct('frwhEdt');
+                        enableSelct('frBrnEdt');
                         //EDIT MODEL
                     }else if(func=='app'){
                         //APPROVE MODEL
@@ -1175,6 +1178,7 @@
                         $("#modal-view :input[type='checkbox']").attr('disabled',false);
                         enableSelct('tobrcEdt');
                         enableSelct('frwhEdt');
+                        enableSelct('frBrnEdt');
                         //APPROVE MODEL
                     }
 
@@ -1197,7 +1201,7 @@
                         if (req[0]['stat'] == 0) {
                             var stat = "<label class='label label-warning'>Pending</label>";
                         } else if (req[0]['stat'] == 1) {
-                            var stat = "<label class='label label-success'>Approved</label>";
+                            var stat = "<label class='label label-success'>Waiting For Goods</label>";
                         } else if (req[0]['stat'] == 2) {
                             var stat = "<label class='label label-danger'>Cancelled</label>";
                         } else if (req[0]['stat'] == 3) {

@@ -4919,7 +4919,7 @@ class Stock extends CI_Controller
 //LOAD PAGE </ 2019-10-17>
     function stckReq()
     {
-        $data['acm'] = 'stcAcs'; //Module
+        $data['acm'] = ''; //Module
         $data['acp'] = 'stckReq'; //Page
         $this->load->view('common/tmpHeader');
         $per['permission'] = $this->Generic_model->getPermision();
@@ -5157,25 +5157,7 @@ class Stock extends CI_Controller
     //VIEW REQ STOCK </2019-10-18>
     function vewReqStock(){
         $id = $this->input->post('id');
-
-        $this->db->select("rq.rqno,rq.rqfr,rq.stat,rq.crdt,rq.apdt,rq.mddt,rq.rjdt,rq.isrdt,rq.redt,rq.rsbc,rq.rrbc,rq.rmk,
-        bm.brcd AS rsbrcd, bm.brnm AS rsbrnm,
-        bm2.brcd AS rrbrcd, bm2.brnm AS rrbrnm,
-        wh.whcd,wh.whnm, CONCAT(cr.fnme,' ',cr.lnme) AS crnm,
-        CONCAT(ap.fnme,' ',ap.lnme) AS apnm,CONCAT(md.fnme,' ',md.lnme) AS mdnm, CONCAT(rj.fnme,' ',rj.lnme) AS rjnm,
-        CONCAT(isr.fnme,' ',isr.lnme) AS isrnm,CONCAT(re.fnme,' ',re.lnme) AS renm");
-        $this->db->from('stock_req rq');
-        $this->db->join('brch_mas bm', 'bm.brid = rq.rsbc');
-        $this->db->join('brch_mas bm2','bm2.brid = rq.rrbc','LEFT');
-        $this->db->join('stock_wh wh','wh.whid = rq.rrbc','LEFT');
-        $this->db->join('user_mas cr', 'cr.auid = rq.crby ');
-        $this->db->join('user_mas ap', 'ap.auid=rq.apby', 'LEFT');
-        $this->db->join('user_mas md', 'md.auid=rq.mdby', 'LEFT');
-        $this->db->join('user_mas rj', 'rj.auid=rq.rjby', 'LEFT');
-        $this->db->join('user_mas isr', 'isr.auid=rq.isrby', 'LEFT');
-        $this->db->join('user_mas re', 're.auid=rq.reby', 'LEFT');
-        $this->db->where('rq.rqid',$id);
-        $data['req'] = $this->db->get()->result();
+        $data['req'] = $this->Stock_model->getReqDet();
 
         $this->db->select("rqs.auid,rqs.itid,rqs.reqty,rqs.stat,rqs.crdt,rqs.mddt,rqs.apdt,rqs.rjdt,rqs.asdt,rqs.isdt,rqs.inpr,
         it.itcd,it.itnm,it.mdl,it.mlcd,sc.scl,sc.scnm,
@@ -5282,7 +5264,7 @@ class Stock extends CI_Controller
 //LOAD PAGE </ 2019-10-17>
     function stckTrnf()
     {
-        $data['acm'] = 'stcAcs'; //Module
+        $data['acm'] = ''; //Module
         $data['acp'] = 'stckTrnf'; //Page
         $this->load->view('common/tmpHeader');
         $per['permission'] = $this->Generic_model->getPermision();
@@ -5312,7 +5294,7 @@ class Stock extends CI_Controller
     //SEARCH REQUESTED STOCKS TO ISSUE</2019-10-18>
     function srchReqStck()
     {
-        $funcPerm = $this->Generic_model->getFuncPermision('stckReq');
+        $funcPerm = $this->Generic_model->getFuncPermision('stckTrnf');
 
         if ($funcPerm[0]->view == 1) {
             $viw = "";
@@ -5348,58 +5330,25 @@ class Stock extends CI_Controller
             $st = $row->stat;
             $rqid = $row->rqid;
 
-            //IS EVEN AN ITEM APPROVED
-            $isItIss = "disabled";
-            $isItIssMsg = "Goods not issued yet";
-            $styl = "btn btn-xs btn-default btn-condensed";
-            if ($row->iscnt > 0) {
-                $isItIss = "";
-                $isItIssMsg = $row->iscnt . " goods issued";
-                $styl = "label-icon label-icon-info label-icon-bordered";
-            }
+            if ($st == '1') {           // TO ISSUE GOODS
+                $stat = " <span class='label label-warning'> To Issue </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='View' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt' $app data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='Assign / Issue' ><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej' $rej onclick='rejStck($rqid);' class='btn btn-xs btn-default btn-condensed' title='Reject' ><i class='fa fa-ban' aria-hidden='true'></i></button>";
 
-            $isRej = 'View'; //main stock side
-            if ($row->rjcnt > 0) {
-                $isRej = $row->iscnt ." rejected goods here";
-            }
-
-            if ($st == '0') {                   // Pending
-                $stat = " <span class='label label-warning'> Pending </span> ";
+            } else if ($st == '3') {            // Delivered
+                $stat = " <span class='label label-success'> Delivered </span> ";
                 $option =
-                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='edt'  $edt  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='app'  $app  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='rej'  $rej  onclick='rejecStck($rqid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
-
-            } else if ($st == '1') {           // Approved
-                $stat = " <span class='label label-success'> Waiting For Goods </span> ";
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='View' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt' disabled onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='Assign / Issue' ><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej' disabled onclick='rejStck($rqid);' class='btn btn-xs btn-default btn-condensed' title='Reject' ><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($st == '4') {        //Issue Reject
+                $stat = " <span class='label label-danger'> Reject </span> ";
                 $option =
-                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='$isRej' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modal-view'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modal-view'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='rec' $isItIss disabled  onclick='viewStck($rqid,this.id);' class='$styl' title='$isItIssMsg'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
-
-            } else if ($st == '2') {            // Finished
-                $stat = " <span class='label label-danger'> Cancelled </span> ";
-                $option =
-                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='rej'  disabled  onclick='rejecStck($rqid);' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
-            } else if ($st == '3') {        //Recieved
-                $stat = " <span class='label label-info'> Received </span> ";
-                $option =
-                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='rej'  disabled  onclick='rejecStck();' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
-            }else if($st == '4'){
-                $stat = " <span class='label label-indi' title='Issue rejected'> Issue Rej. </span> ";
-                $option =
-                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='rej'  disabled  onclick='rejecStck();' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='View' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt' disabled onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='Assign / Issue' ><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej' disabled onclick='rejStck($rqid);' class='btn btn-xs btn-default btn-condensed' title='Reject' ><i class='fa fa-ban' aria-hidden='true'></i></button>";
             }
 
             if($row->rqfr==1){
@@ -5431,6 +5380,30 @@ class Stock extends CI_Controller
         echo json_encode($output);
     }
     //END SEARCH REQUESTED STOCKS TO ISSUE</2019-10-18>
+
+    //VIEW REQ STOCK </2019-10-21>
+    function vewReqStock2(){
+        $id = $this->input->post('id');
+        $data['req'] = $this->Stock_model->getReqDet();
+
+        $rqfr = $data['req'][0]->rqfr;
+        $this->db->select("stc.avqn,stc.stid,stc.stcd,stc.csvl,stc.fcvl,stc.slvl,stc.mkvl,
+        rqs.auid,rqs.itid,rqs.reqty,rqs.stat,rqs.crdt,rqs.inpr,
+        it.itcd,it.itnm,it.mdl,it.mlcd,sc.scl,sc.scnm,
+        ");
+        $this->db->from('stock_req_sub rqs');
+        $this->db->join('item it','it.itid=rqs.itid');
+        $this->db->join('scale sc','sc.slid=it.scli');
+        if($rqfr==1){
+            $this->db->join('(SELECT stcd,avqn,stid,itid,csvl,fcvl,slvl,mkvl FROM stock WHERE stock.stat=1) stc','stc.itid=rqs.itid');
+        }else{
+            $this->db->join('(SELECT stcd,avqn,stbid AS stid,itid,csvl,fcvl,slvl,mkvl FROM stock_brn WHERE stock_brn.stat=1) stc','stc.itid=rqs.itid');
+        }
+        $this->db->where("rqs.rqid=$id AND rqs.stat!=6");
+        $data['reqs'] = $this->db->get()->result();
+        echo json_encode($data);
+    }
+    //END VIEW REQ STOCK </2019-10-21>
 //************************************************
 //***           END STOCK TRANSFER             ***
 //************************************************
