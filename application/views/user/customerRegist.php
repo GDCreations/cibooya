@@ -1,3 +1,5 @@
+<script type="text/javascript" src="<?= base_url(); ?>assets/js/custom-js/full_width.js"></script>
+
 <!-- START PAGE HEADING -->
 <div class="app-heading-container app-heading-bordered bottom">
     <ul class="breadcrumb">
@@ -14,7 +16,7 @@
         <p>Register / Edit / Reject / Deactive / Search & View</p>
     </div>
     <?php
-    if($funcPerm[0]->inst == 1){ ?>
+    if ($funcPerm[0]->inst == 1) { ?>
         <div class="pull-right">
             <button class="btn btn-sm btn-info btn-icon-fixed btn-rounded" data-toggle="modal" data-target="#modal-add">
                 <span class="fa fa-plus"></span>Register
@@ -32,7 +34,7 @@
                 <div class="form-group">
                     <label class="col-md-4 col-xs-12 control-label">Status</label>
                     <div class="col-md-8 col-xs-12">
-                        <select id="stat" name="stat" onchange="srch_Supp();" class="bs-select">
+                        <select id="stat" name="stat" onchange="srchCustmer();" class="bs-select">
                             <option value="all">All</option>
                             <option value="0">Pending</option>
                             <option value="1">Active</option>
@@ -46,7 +48,6 @@
     </div>
     <div class="block">
         <div class="row form-horizontal">
-            <!--            <div class="block block-condensed">-->
             <div class="table-responsive">
                 <table id="supp_table" class="table dataTable table-striped table-bordered" width="100%">
                     <thead>
@@ -54,6 +55,7 @@
                         <th class="text-left">#</th>
                         <th class="text-left">CODE</th>
                         <th class="text-left">NAME</th>
+                        <th class="text-left">NIC</th>
                         <th class="text-left">ADDRESS</th>
                         <th class="text-left">MOBILE</th>
                         <th class="text-left">CREATED BY</th>
@@ -65,9 +67,7 @@
                     <tbody>
                     </tbody>
                 </table>
-
             </div>
-            <!--            </div>-->
         </div>
     </div>
 
@@ -77,10 +77,10 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
-            <form id="add_sup_form">
+            <form id="addForm">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Supplier
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Customer
                             Registering</h4>
                     </div>
                     <div class="modal-body">
@@ -88,11 +88,11 @@
                             <div class="row form-horizontal">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Supplier Name <span
+                                        <label class="col-md-4 col-xs-12 control-label">Customer Name <span
                                                     class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="name" id="name"
-                                                   placeholder="Supplier Name"/>
+                                            <input class="form-control" type="text" name="cusnm" id="cusnm"
+                                                   placeholder="Customer Name"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -101,7 +101,7 @@
                                                     style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
                                         <textarea class="form-control" name="addr" id="addr"
-                                                  placeholder="Supplier Address"></textarea>
+                                                  placeholder="Customer Address"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -118,45 +118,20 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Email <span
+                                        <label class="col-md-4 col-xs-12 control-label">NIC <span
                                                     class="fa fa-asterisk"
                                                     style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
+                                            <input class="form-control" type="text" name="anic" id="anic"
+                                                   onkeyup="checkNic(this.value,'anic','addBtn','','','')"
+                                                   placeholder="NIC"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 col-xs-12 control-label">Email </label>
+                                        <div class="col-md-8 col-xs-12">
                                             <input class="form-control" type="email" name="email" id="email"
                                                    placeholder="Email"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Bank Name <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <select id="bnknm" name="bnknm"
-                                                    onchange="getbankbrch(this.value,'bnkbr','bnkbr_cont')"
-                                                    class="bs-select">
-                                                <option value="0">-- Select A Bank --</option>
-                                                <?php
-                                                foreach ($bank as $bnk) {
-                                                    echo "<option value='$bnk->bnid'>" . $bnk->bkcd . " - " . $bnk->bknm . "</option>";
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Bank Branch <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
-                                        <div class="col-md-8 col-xs-12" id="bnkbr_cont">
-                                            <select id="bnkbr" name="bnkbr" onchange="" class="bs-select">
-                                                <option value="0">-- Select A Branch --</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Account Number <span
-                                                    class="fa fa-asterisk" style="color: red"></span></label>
-                                        <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="acno" id="acno"
-                                                   placeholder="Account Number"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -172,11 +147,11 @@
                     </div>
                     <div class="modal-footer">
                         <div class="pull-left">
-                            <span class="fa fa-hand-o-right"></span> <label style="color: red"> <span
-                                        class="fa fa-asterisk"></span> Required Fields </label>
+                            <span class="fa fa-hand-o-right"></span> <label style="color: red">
+                                <span class="fa fa-asterisk"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="add_sup_btn" class="btn btn-warning btn-xs btn-rounded">Submit
+                        <button type="button" id="addBtn" class="btn btn-warning btn-xs btn-rounded">Submit
                         </button>
                     </div>
                 </div>
@@ -188,96 +163,72 @@
     <!-- MODAL VIEW SUPPLIER -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
         <div class="modal-dialog modal-lg" role="document">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
-                                                                                              class="icon-cross"></span>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" class="icon-cross"></span>
             </button>
             <form id="app_sup_form">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Supplier
+                        <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Customer
                             Registering <span class="text-muted" id="subTitle_edit"></span></h4>
                         <input type="hidden" id="func" name="func"/>
-                        <input type="hidden" id="spid" name="spid"/>
+                        <input type="hidden" id="cuid" name="cuid"/>
                     </div>
                     <div class="modal-body">
                         <div class="container">
                             <div class="form-horizontal">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Supplier Name <span
-                                                    class="fa fa-asterisk edit_req" style="color: red"></span></label>
+                                        <label class="col-md-4 col-xs-12 control-label">Customer Name <span
+                                                    class="fa fa-asterisk" style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="text" name="name_edt" id="name_edt"
-                                                   placeholder="Supplier Name"/>
+                                            <input class="form-control" type="text" name="cusnmEdt" id="cusnmEdt"
+                                                   placeholder="Customer Name"/>
                                         </div>
-                                    </div>
-                                    <div class="form-group view_Area">
-                                        <label class="col-md-4 col-xs-12 control-label">Supplier Code</label>
-                                        <label class="col-md-8 col-xs-12 control-label" id="code"></label>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Address <span
-                                                    class="fa fa-asterisk edit_req"
+                                                    class="fa fa-asterisk"
                                                     style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                        <textarea class="form-control" name="addr_edt" id="addr_edt"
-                                                  placeholder="Supplier Address"></textarea>
+                                        <textarea class="form-control" name="addrEdt" id="addrEdt"
+                                                  placeholder="Customer Address"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Contact <span
-                                                    class="fa fa-asterisk edit_req"
+                                                    class="fa fa-asterisk"
                                                     style="color: red"></span></label>
                                         <div class="col-md-4 col-xs-12">
-                                            <input class="form-control" type="text" name="mobi_edt" id="mobi_edt"
+                                            <input class="form-control" type="text" name="mobiEdt" id="mobiEdt"
                                                    placeholder="Mobile"/>
                                         </div>
                                         <div class="col-md-4 col-xs-12">
-                                            <input class="form-control" type="text" name="tele_edt" id="tele_edt"
+                                            <input class="form-control" type="text" name="teleEdt" id="teleEdt"
                                                    placeholder="Land Tele."/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 col-xs-12 control-label">Email <span
-                                                    class="fa fa-asterisk edit_req"
+                                        <label class="col-md-4 col-xs-12 control-label">NIC <span
+                                                    class="fa fa-asterisk"
                                                     style="color: red"></span></label>
                                         <div class="col-md-8 col-xs-12">
-                                            <input class="form-control" type="email" name="email_edt" id="email_edt"
-                                                   placeholder="Email"/>
+                                            <input class="form-control" type="text" name="anicEdt" id="anicEdt"
+                                                   onkeyup="checkNic(this.value,'anicEdt','edtBtn','','','')"
+                                                   placeholder="NIC"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <lable class="col-md-9 control-label">Bank Details</lable>
-                                        <div id="edit_Area" class="col-md-3">
-                                            <button type="button" class="btn btn-xs btn-info btn-rounded btn-icon-fixed"
-                                                    data-toggle="modal" data-target="#modal-Bank-New">
-                                                <span class="fa fa-plus"></span> Add
-                                            </button>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="table-responsive">
-                                                <table id="supp_Bank"
-                                                       class="table dataTable table-striped table-bordered"
-                                                       width="100%">
-                                                    <thead>
-                                                    <tr>
-                                                        <!--                                                    <th class="text-left">#</th>-->
-                                                        <th class="text-left">BANK</th>
-                                                        <th class="text-left">BRANCH</th>
-                                                        <th class="text-left">ACCOUNT NO.</th>
-                                                        <th class="text-left">ACTION</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                        <label class="col-md-4 col-xs-12 control-label">Email </label>
+                                        <div class="col-md-8 col-xs-12">
+                                            <input class="form-control" type="email" name="emailEdt" id="emailEdt"
+                                                   placeholder="Email"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 col-xs-12 control-label">Remark</label>
                                         <div class="col-md-8 col-xs-12">
-                                        <textarea class="form-control" rows="5" name="remk_edt" id="remk_edt"
+                                        <textarea class="form-control" rows="5" name="remkEdt" id="remkEdt"
                                                   placeholder="Remark"></textarea>
                                         </div>
                                     </div>
@@ -327,7 +278,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="app_sup_btn" class="btn btn-warning btn-xs btn-rounded">
+                        <button type="button" id="edtBtn" class="btn btn-warning btn-xs btn-rounded">
                         </button>
                     </div>
                 </div>
@@ -336,64 +287,445 @@
     </div>
     <!-- END VIEW SUPPLIER -->
 
-    <!--    ADD NEW ACCOUNT-->
-    <div class="modal fade" id="modal-Bank-New" data-backdrop="static" tabindex="-1" role="dialog"
-         aria-labelledby="modal-default-header">
-        <div class="modal-dialog" role="document">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
-                                                                                              class="icon-cross"></span>
-            </button>
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="modal-default-header"><span class="fa fa-tags"></span> Add New Account
-                        Number</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <form id="edit_bank_form">
-                            <div class="form-group">
-                                <label class="col-md-4 col-xs-12 control-label">Bank Name </label>
-                                <div class="col-md-8 col-xs-12">
-                                    <select id="bnknm_edt" name="bnknm_edt"
-                                            onchange="getbankbrch(this.value,'bnkbr_edt','bnkbr_cont_edt')"
-                                            class="bs-select">
-                                        <option value="0">-- Select A Bank --</option>
-                                        <?php
-                                        foreach ($bank as $bnk) {
-                                            echo "<option value='$bnk->bnid'>" . $bnk->bkcd . " - " . $bnk->bknm . "</option>";
+    <script type="text/javascript">
+
+        $().ready(function () {
+            //Table Initializing
+            $('#supp_table').DataTable({
+                "lengthMenu": [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                "aoColumns": [
+                    {sWidth: '3%'},
+                    {sWidth: '5%'},
+                    {sWidth: '15%'},
+                    {sWidth: '15%'},
+                    {sWidth: '10%'},
+                    {sWidth: '10%'},
+                    {sWidth: '10%'},
+                    {sWidth: '8%'},
+                    {sWidth: '12%'}
+                ],
+            });
+
+            $('#addForm').validate({
+                rules: {
+                    cusnm: {
+                        required: true,
+                    },
+                    addr: {
+                        required: true
+                    },
+                    mobi: {
+                        required: true,
+                        digits: true,
+                        minlength: 10,
+                        maxlength: 10,
+                        remote: {
+                            url: "<?= base_url(); ?>Stock/chk_mobile",
+                            type: "post",
+                            data: {
+                                mobi: function () {
+                                    return $("#mobi").val();
+                                },
+                                stat: 0
+                            }
+                        }
+                    },
+                    tele: {
+                        digits: true,
+                        minlength: 10,
+                        maxlength: 10,
+                        remote: {
+                            url: "<?= base_url(); ?>Stock/chk_mobile",
+                            type: "post",
+                            data: {
+                                mobi: function () {
+                                    return $("#tele").val();
+                                },
+                                stat: 0
+                            }
+                        }
+                    },
+                    email: {
+                        //required: true,
+                        email: true
+                    },
+                    anic: {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 12,
+                    },
+                },
+                messages: {
+                    cusnm: {
+                        required: "Enter Customer name",
+                        remote: "Already entered name"
+                    },
+                    addr: {
+                        required: "Enter Customer Address"
+                    },
+                    mobi: {
+                        required: "Enter mobile number",
+                        digits: "Only numbers are allowed",
+                        minlength: "Please enter 10 digits number",
+                        maxlength: "Please enter 10 digits number",
+                        remote: "This number is already added"
+                    },
+                    tele: {
+                        digits: "Only numbers are allowed",
+                        minlength: "Please enter 10 digits number",
+                        maxlength: "Please enter 10 digits number",
+                        remote: "This number is already added"
+                    },
+                    email: {
+                        required: "Enter email address",
+                        email: "Please enter valid email address"
+                    },
+                }
+            });
+
+            $('#app_sup_form').validate({
+                rules: {
+                    cusnmEdt: {
+                        required: true,
+                    },
+                    addrEdt: {
+                        required: true
+                    },
+                    mobiEdt: {
+                        required: true,
+                        digits: true,
+                        minlength: 10,
+                        maxlength: 10,
+                        remote: {
+                            url: "<?= base_url(); ?>Stock/chk_mobile",
+                            type: "post",
+                            data: {
+                                mobi: function () {
+                                    return $("#mobi_edt").val();
+                                },
+                                spid: function () {
+                                    return $("#spid").val();
+                                },
+                                stat: 1
+                            }
+                        }
+                    },
+                    teleEdt: {
+                        digits: true,
+                        minlength: 10,
+                        maxlength: 10,
+                        remote: {
+                            url: "<?= base_url(); ?>Stock/chk_mobile",
+                            type: "post",
+                            data: {
+                                mobi: function () {
+                                    return $("#tele_edt").val();
+                                },
+                                spid: function () {
+                                    return $("#spid").val();
+                                },
+                                stat: 1
+                            }
+                        }
+                    },
+                    emailEdt: {
+                        //required: true,
+                        email: true
+                    },
+                    anicEdt: {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 12,
+                    },
+                },
+                messages: {
+                    name_edt: {
+                        required: "Enter supplier name",
+                        remote: "Already entered name"
+                    },
+                    addr_edt: {
+                        required: "Enter supplier address"
+                    },
+                    mobi_edt: {
+                        required: "Enter mobile number",
+                        digits: "Only numbers are allowed",
+                        minlength: "Please enter 10 digits number",
+                        maxlength: "Please enter 10 digits number",
+                        remote: "This number is already added"
+                    },
+                    tele_edt: {
+                        digits: "Only numbers are allowed",
+                        minlength: "Please enter 10 digits number",
+                        maxlength: "Please enter 10 digits number",
+                        remote: "This number is already added"
+                    },
+                    email_edt: {
+                        required: "Enter email address",
+                        email: "Please enter valid email address"
+                    },
+                }
+            });
+            srchCustmer();
+        });
+
+        //Add New Supplier
+        $('#addBtn').click(function (e) {
+            e.preventDefault();
+            if ($('#addForm').valid()) {
+                $('#addBtn').prop('disabled', true);
+                swal({
+                    title: "Processing...",
+                    text: "Supplier's data saving..",
+                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                    showConfirmButton: false
+                });
+
+                jQuery.ajax({
+                    type: "POST",
+                    url: "<?= base_url(); ?>user/custmerRegist",
+                    data: $("#addForm").serialize(),
+                    dataType: 'json',
+                    success: function (data) {
+                        swal({title: "", text: "Registration Success!", type: "success"},
+                            function () {
+                                $('#addBtn').prop('disabled', false);
+                                clear_Form('addForm');
+                                $('#modal-add').modal('hide');
+                                srchCustmer();
+                            });
+                    },
+                    error: function (data, textStatus) {
+                        swal({title: "Registration Failed", text: textStatus, type: "error"},
+                            function () {
+                                location.reload();
+                            });
+                    }
+                });
+            }
+        });
+
+        //Search Suppliers
+        function srchCustmer() {
+            var stat = $('#stat').val();
+            $('#supp_table').DataTable().clear();
+            $('#supp_table').DataTable({
+                "destroy": true,
+                "cache": false,
+                "processing": true,
+                "orderable": true,
+                "language": {
+                    processing: '<i class="fa fa-spinner fa-spin fa-fw" style="font-size:20px;color:red;"></i><span class=""> Loading...</span> '
+                },
+                "lengthMenu": [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                "serverSide": true,
+                "columnDefs": [
+                    {className: "text-left", "targets": [2, 3, 4]},
+                    {className: "text-center", "targets": [0, 1, 5, 6, 7, 8, 9]},
+                    {className: "text-right", "targets": [0]},
+                    {className: "text-nowrap", "targets": [2, 3]},
+                ],
+                "order": [[6, "DESC"]], //ASC  desc
+                "aoColumns": [
+                    {sWidth: '3%'}, //#
+                    {sWidth: '5%'}, //Code
+                    {sWidth: '15%'}, //Name
+                    {sWidth: '10%'}, //Name
+                    {sWidth: '15%'}, //Address
+                    {sWidth: '10%'}, //Mobile
+                    {sWidth: '10%'}, //Created By
+                    {sWidth: '10%'}, //Created date
+                    {sWidth: '8%'}, //Status
+                    {sWidth: '12%'} //Option
+                ],
+
+                "ajax": {
+                    url: '<?= base_url(); ?>user/searchCustmer',
+                    type: 'post',
+                    data: {
+                        stat: stat
+                    }
+                }
+            });
+        }
+
+        //View Customer
+        function viewCust(id, func) {
+            swal({
+                title: "Loading Data...",
+                text: "Supplier's Details",
+                imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                showConfirmButton: false
+            });
+
+            $('#func').val(func);
+            $('#cuid').val(id);
+
+            jQuery.ajax({
+                type: "POST",
+                url: "<?= base_url(); ?>user/get_customerDet",
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (func == 'view') {
+                        //VIEW MODEL
+                        $('#subTitle_edit').html(' - View');
+                        $('#edtBtn').css('display', 'none');
+                        $("#modal-view").find('.edit_req').css("display", "none");
+                        $("#edit_Area").css('display', 'none');
+                        $(".view_Area").css('display', 'block');
+                        //Make readonly all fields
+                        $("#modal-view :input").attr("readonly", true);
+                        $("#modal-view").find('.bootstrap-select').addClass("disabled dropup");
+                        $("#modal-view").find('.bootstrap-select').children().addClass("disabled dropup");
+                        var des = "disabled";
+                        $("#bnkDtlEdt").attr("disabled", true);
+                        //VIEW MODEL
+                    } else if (func == 'edit') {
+                        //EDIT MODEL
+                        $('#subTitle_edit').html(' - Edit');
+                        $('#edtBtn').css('display', 'inline');
+                        $('#edtBtn').html('Update');
+                        $("#modal-view").find('.edit_req').css("display", "inline");
+                        $("#edit_Area").css('display', 'block');
+                        $(".view_Area").css('display', 'none');
+                        //Remove readonly all fields
+                        $("#modal-view :input").attr("readonly", false);
+                        $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
+                        $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
+                        var des = "";
+                        $("#bnkDtlEdt").attr("disabled", false);
+                        //EDIT MODEL
+                    } else if (func == 'app') {
+                        //APPROVE MODEL
+                        $('#subTitle_edit').html(' - Approve');
+                        $('#edtBtn').css('display', 'inline');
+                        $('#edtBtn').html('Approve');
+                        $("#modal-view").find('.edit_req').css("display", "inline");
+                        $("#edit_Area").css('display', 'block');
+                        $(".view_Area").css('display', 'none');
+                        //Remove readonly all fields
+                        $("#modal-view :input").attr("readonly", false);
+                        $("#modal-view").find('.bootstrap-select').removeClass("disabled dropup");
+                        $("#modal-view").find('.bootstrap-select').children().removeClass("disabled dropup");
+                        var des = "";
+                        $("#bnkDtlEdt").attr("disabled", false);
+                        //APPROVE MODEL
+                    }
+                    var len = data.length;
+                    var spdet = data;
+                    if (len > 0) {
+                        $('#cusnmEdt').val(spdet[0]['funm']);
+                        $('#addrEdt').val(spdet[0]['hoad']);
+                        $('#mobiEdt').val(spdet[0]['mobi']);
+                        $('#teleEdt').val(spdet[0]['tele']);
+                        $('#anicEdt').val(spdet[0]['anic']);
+                        $('#emailEdt').val(spdet[0]['emil']);
+                        $('#remkEdt').val(spdet[0]['rmks']);
+                        //$('#remk_edt').val(spdet[0]['dscr']);
+
+                        if (spdet[0]['stat'] == 0) {
+                            var stat = "<label class='label label-warning'>Pending</label>";
+                        } else if (spdet[0]['stat'] == 1) {
+                            var stat = "<label class='label label-success'>Active</label>";
+                        } else if (spdet[0]['stat'] == 2) {
+                            var stat = "<label class='label label-danger'>Reject</label>";
+                        } else if (spdet[0]['stat'] == 3) {
+                            var stat = "<label class='label label-info'>Inactive</label>";
+                        } else {
+                            var stat = "--";
+                        }
+                        $('#sup_stat').html(": " + stat);
+                        $('#code').html(": " + spdet[0]['spcd']);
+                        $('#crby').html(": " + spdet[0]['crnm']);
+                        $('#crdt').html(": " + spdet[0]['crdt']);
+                        $('#apby').html(": " + ((spdet[0]['apnm'] != null) ? spdet[0]['apnm'] : "--"));
+                        $('#apdt').html(": " + ((spdet[0]['apdt'] != null && spdet[0]['apdt'] != "0000-00-00 00:00:00") ? spdet[0]['apdt'] : "--"));
+                        $('#rjby').html(": " + ((spdet[0]['rjnm'] != null) ? spdet[0]['rjnm'] : "--"));
+                        $('#rjdt').html(": " + ((spdet[0]['rjdt'] != null && spdet[0]['rjdt'] != "0000-00-00 00:00:00") ? spdet[0]['rjdt'] : "--"));
+                        $('#mdby').html(": " + ((spdet[0]['mdnm'] != null) ? spdet[0]['mdnm'] : "--"));
+                        $('#mddt').html(": " + ((spdet[0]['mddt'] != null && spdet[0]['mddt'] != "0000-00-00 00:00:00") ? spdet[0]['mddt'] : "--"));
+
+                    }
+                    swal.close();
+                },
+                error: function (data, textStatus) {
+                    swal({title: "Loading Failed", text: textStatus, type: "error"},
+                        function () {
+                            location.reload();
+                        });
+                }
+            });
+        }
+
+        //APPROVE || EDIT HERE
+        $('#edtBtn').click(function (e) {
+            e.preventDefault();
+
+                if ($('#app_sup_form').valid()) {
+
+                    swal({
+                            title: "Are you sure to do this ?",
+                            text: "",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3bdd59",
+                            confirmButtonText: "Yes",
+                            cancelButtonText: "No",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                var func = $('#func').val();
+                                $('#app_sup_btn').prop('disabled', true);
+                                if (func == 'edit') {
+                                    swal({
+                                        title: "Processing...",
+                                        text: "Supplier's details updating..",
+                                        imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                                        showConfirmButton: false
+                                    });
+
+                                    jQuery.ajax({
+                                        type: "POST",
+                                        url: "<?= base_url(); ?>user/custmUpdate",
+                                        data: $("#app_sup_form").serialize(),
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            swal({title: "", text: "Updating Success!", type: "success"},
+                                                function () {
+                                                    $('#app_sup_btn').prop('disabled', false);
+                                                    clear_Form('app_sup_form');
+                                                    $('#modal-view').modal('hide');
+                                                    srchCustmer();
+                                                });
+                                        },
+                                        error: function (data, textStatus) {
+                                            swal({title: "Updating Failed", text: textStatus, type: "error"},
+                                                function () {
+                                                    location.reload();
+                                                });
                                         }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-4 col-xs-12 control-label">Bank Branch </label>
-                                <div class="col-md-8 col-xs-12" id="bnkbr_cont_edt">
-                                    <select id="bnkbr_edt" name="bnkbr_edt" onchange="" class="bs-select">
-                                        <option value="0">-- Select A Branch --</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-4 col-xs-12 control-label">Account Number </label>
-                                <div class="col-md-8 col-xs-12">
-                                    <input type="text" class="form-control" name="acno_edt"
-                                           id="acno_edt"
-                                           placeholder="Account Number"/>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                    <button type="button" id="add_new_acc" class="btn btn-warning btn-xs btn-rounded">
-                        Add
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--    ADD NEW ACCOUNT-->
+                                    });
+                                }  else {
+                                    alert('Contact System Admin');
+                                }
+                            } else {
+                                swal("Cancelled", " ", "warning");
+                            }
+                        });
+                }
+
+        });
+
+    </script>
 </div>
 <!-- END PAGE CONTAINER -->
