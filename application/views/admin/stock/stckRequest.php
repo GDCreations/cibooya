@@ -157,7 +157,7 @@
 
     <!-- MODAL ADD NEW REQUEST -->
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog model-lg modal-info" role="document" style="width: 60%">
+        <div class="modal-dialog modal-lg modal-info" role="document" style="width: 60%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
@@ -1191,9 +1191,13 @@
 
                         if(req[0]['rqfr']==1){
                             $('#reqFrEdt').prop('checked',true);
+                            $('#frWrhEdt').css('display', 'inline');
+                            $('#frBrncEdt').css('display', 'none');
                             set_select('frwhEdt',req[0]['rrbc']);
                         }else{
                             $('#reqFrEdt').prop('checked',false);
+                            $('#frWrhEdt').css('display', 'none');
+                            $('#frBrncEdt').css('display', 'inline');
                             set_select('frBrnEdt',req[0]['rrbc']);
                         }
 

@@ -636,28 +636,29 @@
         function checkQty(value, row) {
             var avqt = $('#avqn_' + row).val();
 
+            $('#qty_' + row).next('br').remove();
             $('#qty_' + row).next('.error').remove();
             $('#qty_' + row).css('border', '1px dotted');
 
             if (value == '') {
-                $('#qty_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='qty_" + row + "'>Enter quantity</label>");
+                $('#qty_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='qty_" + row + "'>Enter quantity</label>");
                 $('#qty_' + row).css('border', '1px dotted red');
                 return false;
             } else if (decimal(value)) {
                 if (value == 0) {
-                    $('#qty_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='qty_" + row + "'>Can't enter zero value</label>");
+                    $('#qty_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='qty_" + row + "'>Can't enter zero value</label>");
                     $('#qty_' + row).css('border', '1px dotted red');
                     return false;
                 } else {
                     if (+value > avqt) {
-                        $('#qty_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='qty_" + row + "'>Can't enter more than " + avqt + "</label>");
+                        $('#qty_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='qty_" + row + "'>Can't enter more than " + avqt + "</label>");
                         $('#qty_' + row).css('border', '1px dotted red');
                         return false;
                     }
                     return true;
                 }
             } else {
-                $('#qty_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='qty_" + row + "'>Please enter a correct number, format 0.00</label>");
+                $('#qty_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='qty_" + row + "'>Please enter a correct number, format 0.00</label>");
                 $('#qty_' + row).css('border', '1px dotted red');
                 return false;
             }
@@ -665,11 +666,12 @@
 
         //Check scale is selected
         function checkScale(value, row) {
+            $('#nscl_' + row).next('br').remove();
             $('#nscl_' + row).next('.error').remove();
             $('#nscl_' + row).css('border', '1px dotted');
 
             if (value == 0) {
-                $('#nscl_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='nscl_" + row + "'>Select a scale</label>");
+                $('#nscl_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='nscl_" + row + "'>Select a scale</label>");
                 $('#nscl_' + row).css('border', '1px dotted red');
                 return false;
             }
@@ -680,28 +682,29 @@
         function checkSlvl(value, row) {
             var csvl = $('#csvl_' + row).val();
 
+            $('#slvl_' + row).next('br').remove();
             $('#slvl_' + row).next('.error').remove();
             $('#slvl_' + row).css('border', '1px dotted');
 
             if (value == '') {
-                $('#slvl_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='slvl_" + row + "'>Enter value</label>");
+                $('#slvl_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='slvl_" + row + "'>Enter value</label>");
                 $('#slvl_' + row).css('border', '1px dotted red');
                 return false;
             } else if (decimal(value)) {
                 if (value == 0) {
-                    $('#slvl_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='slvl_" + row + "'>Can't enter zero value</label>");
+                    $('#slvl_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='slvl_" + row + "'>Can't enter zero value</label>");
                     $('#slvl_' + row).css('border', '1px dotted red');
                     return false;
                 } else {
                     if (+value < csvl) {
-                        $('#slvl_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='slvl_" + row + "'>Can't enter less than " + csvl + "</label>");
+                        $('#slvl_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='slvl_" + row + "'>Can't enter less than " + csvl + "</label>");
                         $('#slvl_' + row).css('border', '1px dotted red');
                         return false;
                     }
                     return true;
                 }
             } else {
-                $('#slvl_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='slvl_" + row + "'>Please enter a correct number, format 0.00</label>");
+                $('#slvl_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='slvl_" + row + "'>Please enter a correct number, format 0.00</label>");
                 $('#slvl_' + row).css('border', '1px dotted red');
                 return false;
             }
@@ -711,28 +714,29 @@
         function checkFcvl(value, row) {
             var slvl = $('#slvl_' + row).val();
 
+            $('#fcvl_' + row).next('br').remove();
             $('#fcvl_' + row).next('.error').remove();
             $('#fcvl_' + row).css('border', '1px dotted');
 
             if (value == '') {
-                $('#fcvl_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='fcvl_" + row + "'>Enter value</label>");
+                $('#fcvl_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='fcvl_" + row + "'>Enter value</label>");
                 $('#fcvl_' + row).css('border', '1px dotted red');
                 return false;
             } else if (decimal(value)) {
                 if (value == 0) {
-                    $('#fcvl_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='fcvl_" + row + "'>Can't enter zero value</label>");
+                    $('#fcvl_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='fcvl_" + row + "'>Can't enter zero value</label>");
                     $('#fcvl_' + row).css('border', '1px dotted red');
                     return false;
                 } else {
                     if (+value < slvl) {
-                        $('#fcvl_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='fcvl_" + row + "'>Can't enter less than " + slvl + "</label>");
+                        $('#fcvl_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='fcvl_" + row + "'>Can't enter less than " + slvl + "</label>");
                         $('#fcvl_' + row).css('border', '1px dotted red');
                         return false;
                     }
                     return true;
                 }
             } else {
-                $('#fcvl_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='fcvl_" + row + "'>Please enter a correct number, format 0.00</label>");
+                $('#fcvl_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='fcvl_" + row + "'>Please enter a correct number, format 0.00</label>");
                 $('#fcvl_' + row).css('border', '1px dotted red');
                 return false;
             }
@@ -740,6 +744,7 @@
 
         //Check Market Value
         function checkMkvl(value, row) {
+            $('#mkvl_' + row).next('br').remove();
             $('#mkvl_' + row).next('.error').remove();
             $('#mkvl_' + row).css('border', '1px dotted');
 
@@ -747,7 +752,7 @@
                 if (decimal(value)) {
                     return true;
                 } else {
-                    $('#mkvl_' + row).after("<label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='mkvl_" + row + "'>Please enter a correct number, format 0.00</label>");
+                    $('#mkvl_' + row).after("<br><label id='name-error' class='error' style='font-size: 13px;color: red; font-style: italic;' for='mkvl_" + row + "'>Please enter a correct number, format 0.00</label>");
                     $('#mkvl_' + row).css('border', '1px dotted red');
                     return false;
                 }
@@ -777,6 +782,7 @@
                 $('#newMkvl').val(mkvl);
                 $('#added_srl').html('');
                 srchSrlNum();
+                $('#added_srl').html('');
                 $('#modal-srl').modal('show');
             }
         }
@@ -785,6 +791,7 @@
         function srchSrlNum() {
             var val = $('#srlSrch').val();
             $('#srl_Number_Area').html('');
+
             var stock = $('#stBrchID').val();
             swal({
                 title: "Searching...",
@@ -834,6 +841,8 @@
         function srchSrlNumEdt() {
             var val = $('#srlSrchEdt').val();
             $('#srl_Number_AreaEdt').html('');
+            $('#added_srlEdt').html('');
+
             var stock = $('#pr_stid_Vw').val();
             swal({
                 title: "Searching...",
