@@ -5,7 +5,14 @@ ALTER TABLE `stock_sub` ADD `trrf` INT NOT NULL COMMENT 'Tranfer reference (Stoc
 ALTER TABLE `stock_brn_sub` ADD `trrf` INT NOT NULL COMMENT 'Transfer reference (stock_req_sub2)' AFTER `trst`;
 
 -----------------------------------------------------
-2019-10-17 JANAKA
+2019-10-22 GEMUNU
+
+Dbs Folder New Added
+cus_sol tb
+cus_mas tb
+
+-----------------------------------------------------
+**DONE  2019-10-17 JANAKA
 INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'stckReq', 'Stock Request', '', '0', '1', '1', '4');
 INSERT INTO `user_page` (`aid`, `pgcd`, `pgnm`, `remk`, `adpr`, `stst`, `mntp`, `modu`) VALUES (NULL, 'stckTrnf', 'Stock Transfer', 'Stock transfer from WH to Brch & Brch to Brch', '1', '1', '1', '4');
 -----------------------------------------------------

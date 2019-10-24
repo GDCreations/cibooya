@@ -29,27 +29,31 @@ function default_Selector(node) {
 //Set selected item in selector
 //id - Selector ID <select></select>
 //itm - Selected Item ID <option></option>
-function set_select(id,itm) {
-    $('#'+id).val(itm);
-    var sltr = $('#'+id);       //Get Selector Element
-    var prev = $('#'+id).prev();//Get Previous element (<div><ul><li></li></ul></div>)
-    var sltr_chld = sltr.children(); //<option></option>
-    sltr_chld.map(function () {
-        //Get Index of value option
-        if($(this).val()==itm){
-           var index = $(this).index();
-           var li = prev.children().children().removeClass('selected'); //<li></li>
-           li.map(function () {
-               //Get Selecting Index <li></li>
-               if($(this).index()==index){
-                   $(this).addClass('selected');
-                   var sel_value = $(this).children().children().first().html(); //Selected value text
-                   prev.prev().prop('title',sel_value);
-                   prev.prev().children().first().html(sel_value)
-               }
-           });
-        }
-    });
+function set_select(id, itm) {
+
+    if (id) {
+
+        $('#' + id).val(itm);
+        var sltr = $('#' + id);       //Get Selector Element
+        var prev = $('#' + id).prev();//Get Previous element (<div><ul><li></li></ul></div>)
+        var sltr_chld = sltr.children(); //<option></option>
+        sltr_chld.map(function () {
+            //Get Index of value option
+            if ($(this).val() == itm) {
+                var index = $(this).index();
+                var li = prev.children().children().removeClass('selected'); //<li></li>
+                li.map(function () {
+                    //Get Selecting Index <li></li>
+                    if ($(this).index() == index) {
+                        $(this).addClass('selected');
+                        var sel_value = $(this).children().children().first().html(); //Selected value text
+                        prev.prev().prop('title', sel_value);
+                        prev.prev().children().first().html(sel_value)
+                    }
+                });
+            }
+        });
+    }
 }
 
 //Selectors Red Indicating
@@ -64,64 +68,64 @@ function chckBtn(id, inpu) {
 //Selectors Enables
 //id - Selector ID
 function enableSelct(id) {
-    $('#'+id).prop('disabled',false);
-    $('#'+id).parent().removeClass("disabled");
-    $('#'+id).prev().prev().removeClass("disabled");
+    $('#' + id).prop('disabled', false);
+    $('#' + id).parent().removeClass("disabled");
+    $('#' + id).prev().prev().removeClass("disabled");
 }
 
 //Selectors Disable
 //id - Selector ID
 function disableSelct(id) {
-    $('#'+id).prop('disabled',true);
-    $('#'+id).parent().addClass("disabled");
-    $('#'+id).prev().prev().addClass("disabled");
+    $('#' + id).prop('disabled', true);
+    $('#' + id).parent().addClass("disabled");
+    $('#' + id).prev().prev().addClass("disabled");
 }
 
 //Enable All selectors in <DIV>
 // id - <DIV> id
 function enableAllSelct(id) {
-    sltr_chld = $('#'+id).find('select');
+    sltr_chld = $('#' + id).find('select');
     sltr_chld.map(function () {
         var id2 = $(this).attr('id');
-        $('#'+id2).prop('disabled',false);
-        $('#'+id2).parent().removeClass("disabled");
-        $('#'+id2).prev().prev().removeClass("disabled");
+        $('#' + id2).prop('disabled', false);
+        $('#' + id2).parent().removeClass("disabled");
+        $('#' + id2).prev().prev().removeClass("disabled");
     });
 }
 
 //Desable All selectors in <DIV>
 // id - <DIV> id
 function disableAllSelct(id) {
-    sltr_chld = $('#'+id).find('select');
+    sltr_chld = $('#' + id).find('select');
     sltr_chld.map(function () {
         var id2 = $(this).attr('id');
-        $('#'+id2).prop('disabled',true);
-        $('#'+id2).parent().addClass("disabled");
-        $('#'+id2).prev().prev().addClass("disabled");
+        $('#' + id2).prop('disabled', true);
+        $('#' + id2).parent().addClass("disabled");
+        $('#' + id2).prev().prev().addClass("disabled");
     });
 }
 
 //Readonly OFF All selectors in <DIV>
 // id - <DIV> id
 function editAllSelct(id) {
-    sltr_chld = $('#'+id).find('select');
+    sltr_chld = $('#' + id).find('select');
     sltr_chld.map(function () {
         var id2 = $(this).attr('id');
-        $('#'+id2).prop('readonly',false);
-        $('#'+id2).parent().removeClass("disabled");
-        $('#'+id2).prev().prev().removeClass("disabled");
+        $('#' + id2).prop('readonly', false);
+        $('#' + id2).parent().removeClass("disabled");
+        $('#' + id2).prev().prev().removeClass("disabled");
     });
 }
 
 //Readonly ON All selectors in <DIV>
 // id - <DIV> id
 function readonlyAllSelct(id) {
-    sltr_chld = $('#'+id).find('select');
+    sltr_chld = $('#' + id).find('select');
     sltr_chld.map(function () {
         var id2 = $(this).attr('id');
-        $('#'+id2).prop('readonly',true);
-        $('#'+id2).parent().addClass("disabled");
-        $('#'+id2).prev().prev().addClass("disabled");
+        $('#' + id2).prop('readonly', true);
+        $('#' + id2).parent().addClass("disabled");
+        $('#' + id2).prev().prev().addClass("disabled");
     });
 }
 
@@ -155,10 +159,10 @@ function checkNic(nic, vlid, htid, dob, gend, genDiv) {
 
         if (x < 500) {
             //document.getElementById( gend).value = 1;
-            set_select(gend,1);
+            set_select(gend, 1);
         } else {
             //document.getElementById( gend).value = 2;
-            set_select(gend,2);
+            set_select(gend, 2);
             x = +x - +500;
         }
 
@@ -196,7 +200,7 @@ function checkNic(nic, vlid, htid, dob, gend, genDiv) {
         }
         var today = +1900 + +birthYear + "-" + (mo) + "-" + (da);
 
-        $('#' + dob).val(today);
+        if (dob) $('#' + dob).val(today);
         document.getElementById(vlid).style.borderColor = "";
         document.getElementById(htid).disabled = false;
 
@@ -207,10 +211,10 @@ function checkNic(nic, vlid, htid, dob, gend, genDiv) {
 
         if (x < 500) {
             //document.getElementById(gend).value = 1;
-            set_select(gend,1);
+            set_select(gend, 1);
         } else {
             //document.getElementById(gend).value = 2;
-            set_select(gend,2);
+            set_select(gend, 2);
             x = +x - +500;
         }
 
@@ -262,7 +266,7 @@ function checkNic(nic, vlid, htid, dob, gend, genDiv) {
 
         var today = +birthYear + "-" + (mo) + "-" + (da);
 
-        $('#' + dob).val(today);
+        if (dob) $('#' + dob).val(today);
         document.getElementById(vlid).style.borderColor = "";
         document.getElementById(htid).disabled = false;
 
@@ -280,15 +284,15 @@ function checkNic(nic, vlid, htid, dob, gend, genDiv) {
 //id - Wizard ID
 //fst - First Step id
 //sunmt - Submit button id
-function resetSmWizard(id,fst,submt) {
-    $('#'+id).children().first().children().children().removeClass('done');
-    $('#'+id).children().first().children().children().removeClass('selected');
-    $('#'+id).children().first().children().children().removeClass('active');
-    $('#'+id).children().first().children().first().children().addClass('selected');
+function resetSmWizard(id, fst, submt) {
+    $('#' + id).children().first().children().children().removeClass('done');
+    $('#' + id).children().first().children().children().removeClass('selected');
+    $('#' + id).children().first().children().children().removeClass('active');
+    $('#' + id).children().first().children().first().children().addClass('selected');
 
-    $('#'+id).find('.stepContainer').children().css('display','none');
-    $('#'+fst).css('display','block');
-    $('#'+submt).css('display','none');
+    $('#' + id).find('.stepContainer').children().css('display', 'none');
+    $('#' + fst).css('display', 'block');
+    $('#' + submt).css('display', 'none');
 
     $('.buttonNext').removeClass('buttonDisabled disabled');
     $('.buttonPrevious').addClass('buttonDisabled disabled');
