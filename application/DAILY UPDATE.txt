@@ -1,4 +1,10 @@
 -----------------------------------------------------
+2019-10-21 JANAKA
+ALTER TABLE `stock_req_sub` DROP `skid`, DROP `rbsid`, DROP `csvl`, DROP `fcvl`, DROP `slvl`, DROP `mkvl`;
+ALTER TABLE `stock_sub` ADD `trrf` INT NOT NULL COMMENT 'Tranfer reference (Stock_req_su2)' AFTER `trst`;
+ALTER TABLE `stock_brn_sub` ADD `trrf` INT NOT NULL COMMENT 'Transfer reference (stock_req_sub2)' AFTER `trst`;
+
+-----------------------------------------------------
 2019-10-22 GEMUNU
 
 Dbs Folder New Added
