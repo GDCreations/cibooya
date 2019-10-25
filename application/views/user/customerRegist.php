@@ -36,7 +36,7 @@
                     <div class="col-md-8 col-xs-12">
                         <select id="stat" name="stat" onchange="srchCustmer();" class="bs-select">
                             <option value="all">All</option>
-                            <option value="0">Pending</option>
+                            <!--<option value="0">Pending</option>-->
                             <option value="1">Active</option>
                             <option value="3">Inactive</option>
                             <option value="2">Reject</option>
@@ -73,9 +73,9 @@
 
     <!-- MODAL ADD NEW SUPPLIER -->
     <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog" role="document">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
-                                                                                              class="icon-cross"></span>
+        <div class="modal-dialog modal-info" role="document">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" class="icon-cross"></span>
             </button>
             <form id="addForm">
                 <div class="modal-content">
@@ -151,7 +151,7 @@
                                 <span class="fa fa-asterisk"></span> Required Fields </label>
                         </div>
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="addBtn" class="btn btn-warning btn-xs btn-rounded">Submit
+                        <button type="button" id="addBtn" class="btn btn-info btn-sm btn-rounded">Submit
                         </button>
                     </div>
                 </div>
@@ -162,7 +162,7 @@
 
     <!-- MODAL VIEW SUPPLIER -->
     <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-md modal-info" role="document">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="icon-cross"></span>
             </button>
@@ -174,7 +174,7 @@
                         <input type="hidden" id="func" name="func"/>
                         <input type="hidden" id="cuid" name="cuid"/>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body scroll" style="max-height: 65vh">
                         <div class="container">
                             <div class="form-horizontal">
                                 <div class="col-md-12">
@@ -278,7 +278,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                        <button type="button" id="edtBtn" class="btn btn-warning btn-xs btn-rounded">
+                        <button type="button" id="edtBtn" class="btn btn-info btn-sm btn-rounded">
                         </button>
                     </div>
                 </div>
@@ -323,7 +323,7 @@
                         minlength: 10,
                         maxlength: 10,
                         remote: {
-                            url: "<?= base_url(); ?>Stock/chk_mobile",
+                            url: "<?= base_url(); ?>user/chk_mobile",
                             type: "post",
                             data: {
                                 mobi: function () {
@@ -338,7 +338,7 @@
                         minlength: 10,
                         maxlength: 10,
                         remote: {
-                            url: "<?= base_url(); ?>Stock/chk_mobile",
+                            url: "<?= base_url(); ?>user/chk_mobile",
                             type: "post",
                             data: {
                                 mobi: function () {
@@ -400,14 +400,14 @@
                         minlength: 10,
                         maxlength: 10,
                         remote: {
-                            url: "<?= base_url(); ?>Stock/chk_mobile",
+                            url: "<?= base_url(); ?>user/chk_mobile",
                             type: "post",
                             data: {
                                 mobi: function () {
-                                    return $("#mobi_edt").val();
+                                    return $("#mobiEdt").val();
                                 },
-                                spid: function () {
-                                    return $("#spid").val();
+                                auid: function () {
+                                    return $("#cuid").val();
                                 },
                                 stat: 1
                             }
@@ -418,14 +418,14 @@
                         minlength: 10,
                         maxlength: 10,
                         remote: {
-                            url: "<?= base_url(); ?>Stock/chk_mobile",
+                            url: "<?= base_url(); ?>user/chk_mobile",
                             type: "post",
                             data: {
                                 mobi: function () {
-                                    return $("#tele_edt").val();
+                                    return $("#teleEdt").val();
                                 },
-                                spid: function () {
-                                    return $("#spid").val();
+                                auid: function () {
+                                    return $("#cuid").val();
                                 },
                                 stat: 1
                             }
@@ -449,14 +449,14 @@
                     addr_edt: {
                         required: "Enter supplier address"
                     },
-                    mobi_edt: {
+                    mobiEdt: {
                         required: "Enter mobile number",
                         digits: "Only numbers are allowed",
                         minlength: "Please enter 10 digits number",
                         maxlength: "Please enter 10 digits number",
                         remote: "This number is already added"
                     },
-                    tele_edt: {
+                    teleEdt: {
                         digits: "Only numbers are allowed",
                         minlength: "Please enter 10 digits number",
                         maxlength: "Please enter 10 digits number",
@@ -669,60 +669,60 @@
         $('#edtBtn').click(function (e) {
             e.preventDefault();
 
-                if ($('#app_sup_form').valid()) {
+            if ($('#app_sup_form').valid()) {
 
-                    swal({
-                            title: "Are you sure to do this ?",
-                            text: "",
-                            type: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3bdd59",
-                            confirmButtonText: "Yes",
-                            cancelButtonText: "No",
-                            closeOnConfirm: false,
-                            closeOnCancel: false
-                        },
-                        function (isConfirm) {
-                            if (isConfirm) {
-                                var func = $('#func').val();
-                                $('#app_sup_btn').prop('disabled', true);
-                                if (func == 'edit') {
-                                    swal({
-                                        title: "Processing...",
-                                        text: "Supplier's details updating..",
-                                        imageUrl: "<?= base_url() ?>assets/img/loading.gif",
-                                        showConfirmButton: false
-                                    });
+                swal({
+                        title: "Are you sure to do this ?",
+                        text: "",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3bdd59",
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            var func = $('#func').val();
+                            $('#app_sup_btn').prop('disabled', true);
+                            if (func == 'edit') {
+                                swal({
+                                    title: "Processing...",
+                                    text: "Supplier's details updating..",
+                                    imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                                    showConfirmButton: false
+                                });
 
-                                    jQuery.ajax({
-                                        type: "POST",
-                                        url: "<?= base_url(); ?>user/custmUpdate",
-                                        data: $("#app_sup_form").serialize(),
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            swal({title: "", text: "Updating Success!", type: "success"},
-                                                function () {
-                                                    $('#app_sup_btn').prop('disabled', false);
-                                                    clear_Form('app_sup_form');
-                                                    $('#modal-view').modal('hide');
-                                                    srchCustmer();
-                                                });
-                                        },
-                                        error: function (data, textStatus) {
-                                            swal({title: "Updating Failed", text: textStatus, type: "error"},
-                                                function () {
-                                                    location.reload();
-                                                });
-                                        }
-                                    });
-                                }  else {
-                                    alert('Contact System Admin');
-                                }
+                                jQuery.ajax({
+                                    type: "POST",
+                                    url: "<?= base_url(); ?>user/custmUpdate",
+                                    data: $("#app_sup_form").serialize(),
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        swal({title: "", text: "Updating Success!", type: "success"},
+                                            function () {
+                                                $('#app_sup_btn').prop('disabled', false);
+                                                clear_Form('app_sup_form');
+                                                $('#modal-view').modal('hide');
+                                                srchCustmer();
+                                            });
+                                    },
+                                    error: function (data, textStatus) {
+                                        swal({title: "Updating Failed", text: textStatus, type: "error"},
+                                            function () {
+                                                location.reload();
+                                            });
+                                    }
+                                });
                             } else {
-                                swal("Cancelled", " ", "warning");
+                                alert('Contact System Admin');
                             }
-                        });
-                }
+                        } else {
+                            swal("Cancelled", " ", "warning");
+                        }
+                    });
+            }
 
         });
 
