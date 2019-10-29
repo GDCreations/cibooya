@@ -1,5 +1,36 @@
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/custom-js/full_width.js"></script>
 
+<style>
+    .tbl-warn-msg {
+        color: #F69F00;
+        font-size: 12px;
+        font-style: italic;
+    }
+
+    .popover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        max-width: 600px;
+        padding: 1px;
+        text-align: left;
+        white-space: normal;
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-radius: 6px;
+        -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        -webkit-background-clip: padding-box;
+        -moz-background-clip: padding;
+        background-clip: padding-box;
+    }
+</style>
+
 <!-- START PAGE HEADING -->
 <div class="app-heading-container app-heading-bordered bottom">
     <ul class="breadcrumb">
@@ -112,7 +143,7 @@
                     <div class="col-md-8 col-xs-12">
                         <div class='input-group'>
                             <input type='text' class="form-control dateranger" id="dtrng" name="dtrng"
-                                   value="<?= date('Y-m-d') ?> / <?= date('Y-m-d') ?>"/>
+                                   value="<?= '2019-10-01' ?> / <?= date('Y-m-d') ?>"/>
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
                             </span>
@@ -334,9 +365,9 @@
     <!-- END ADD NEW REQUEST -->
 
     <!-- MODAL VIEW || APPROVE || EDIT REQUEST -->
-    <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
-        <div class="modal-dialog model-lg modal-info" role="document" style="width: 60%">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
+    <div class="modal fade" id="modal-view" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
+        <div class="modal-dialog modal-lg modal-info" role="document" style="width: 60%">
+            <button type="button" class="close" onclick="closeView();" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
             <form id="appForm">
@@ -462,7 +493,28 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row form-horizontal">
+                            <div class="row form-horizontal view_Area">
+                                <div class="table-responsive" style="padding: 10px 25px 10px 10px">
+                                    <table class="table dataTable table-striped table-bordered" id="reqGdTblView"
+                                           width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th class="text-left" title="Cost value">CSVL</th>
+                                            <th class="text-left" title="Display value">DSVL</th>
+                                            <th class="text-left" title="Sale value">SLVL</th>
+                                            <th class="text-left" title="Market value">MKVL</th>
+                                            <th class="text-left" title="Issued Quantity">ISS. QTY.</th>
+                                            <th class="text-center">STATUS</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <input type="hidden" id="lengEdt" name="lengEdt" value="0"/>
+                                </div>
+                            </div>
+                            <div class="row form-horizontal edit_Area">
                                 <div class="table-responsive" style="padding: 10px 25px 10px 10px">
                                     <table class="table dataTable table-striped table-bordered" id="reqGdTblEdt"
                                            width="100%">
@@ -564,7 +616,7 @@
                             <span class="fa fa-hand-o-right"></span> <label style="color: red"> <span
                                         class="fa fa-asterisk req-astrick"></span> Required Fields </label>
                         </div>
-                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-link" data-dismiss="modal" onclick="closeView();">Close</button>
                         <button type="button" id="app_req_btn" class="btn btn-info btn-sm btn-rounded" disabled>Submit
                         </button>
                     </div>
@@ -1132,7 +1184,7 @@
                 success: function (response) {
                     var des = "";
 
-                    if(func=='vew'){
+                    if(func=='vew' || func=='rec'){
                         //VIEW MODEL
                         $('#subTitle').html(' - View');
                         $('#app_req_btn').css('display', 'none');
@@ -1230,45 +1282,227 @@
                         $('#isrby').html(": " + ((req[0]['isrnm'] != null) ? req[0]['isrnm'] : "--"));
                         $('#isrdt').html(": " + ((req[0]['isrdt'] != null && req[0]['isrdt'] != "0000-00-00 00:00:00") ? req[0]['isrdt'] : "--"));
 
-                        var len2 = response['reqs'].length;
-                        $('#lengEdt').val(len2);
-                        var reqs = response['reqs'];
-                        $('#reqGdTblEdt').DataTable().clear();
-                        var t = $('#reqGdTblEdt').DataTable({
-                            destroy: true,
-                            searching: false,
-                            bPaginate: false,
-                            "ordering": false,
-                            "columnDefs": [
-                                {className: "text-left", "targets": [1, 2, 3, 4]},
-                                {className: "text-center", "targets": [0, 6]},
-                                {className: "text-right", "targets": [5]},
-                                {className: "text-nowrap", "targets": [2]},
-                            ],
-                            "aoColumns": [
-                                {sWidth: '1%'}, //No
-                                {sWidth: '10%'},    //CODE
-                                {sWidth: '20%'},    //Item
-                                {sWidth: '20%'},    //Model
-                                {sWidth: '10%'},    //Scale
-                                {sWidth: '10%'},    //Qty
-                                {sWidth: '5%'},     //opt
-                            ]
-                        });
+                        if(func=='edt' || func=='app'){
+                            var len2 = response['reqs'].length;
+                            $('#lengEdt').val(len2);
+                            var reqs = response['reqs'];
+                            $('#reqGdTblEdt').DataTable().clear();
+                            var t = $('#reqGdTblEdt').DataTable({
+                                destroy: true,
+                                searching: false,
+                                bPaginate: false,
+                                "ordering": false,
+                                "columnDefs": [
+                                    {className: "text-left", "targets": [1, 2, 3, 4]},
+                                    {className: "text-center", "targets": [0, 6]},
+                                    {className: "text-right", "targets": [5]},
+                                    {className: "text-nowrap", "targets": [2]},
+                                ],
+                                "aoColumns": [
+                                    {sWidth: '1%'}, //No
+                                    {sWidth: '10%'},    //CODE
+                                    {sWidth: '20%'},    //Item
+                                    {sWidth: '20%'},    //Model
+                                    {sWidth: '10%'},    //Scale
+                                    {sWidth: '10%'},    //Qty
+                                    {sWidth: '5%'},     //opt
+                                ]
+                            });
 
-                        for (var it = 0; it < len2; it++) {
-                            t.row.add([
-                                (it+1),
-                                reqs[it]['itcd'] + '<input type="hidden" name="itidEdt[]" value="' + reqs[it]['itid'] + ' ">' +
-                                '<input type="hidden" name="rqsid[]" value="'+reqs[it]['auid']+'"/>',     // ITEM CODE
-                                reqs[it]['itnm'],
-                                reqs[it]['mlcd']+" - "+reqs[it]['mdl'], //Model
-                                reqs[it]['scnm']+" ("+reqs[it]['scl']+")", //Scale
-                                numeral(reqs[it]['reqty']).format('0,0') + '<input type="hidden" name="quntyEdt[]" value="' + reqs[it]['reqty'] + ' ">',         // QUNT
-                                '<button type="button" '+des+' class="btn btn-xs btn-warning" id="dltrwEdt" onclick=""><span><i class="fa fa-close" title="Remove"></i></span></button>'
-                            ]).draw(false);
+                            for (var it = 0; it < len2; it++) {
+                                t.row.add([
+                                    (it+1),
+                                    reqs[it]['itcd'] + '<input type="hidden" name="itidEdt[]" value="' + reqs[it]['itid'] + ' ">' +
+                                    '<input type="hidden" name="rqsid[]" value="'+reqs[it]['auid']+'"/>',     // ITEM CODE
+                                    reqs[it]['itnm'],
+                                    reqs[it]['mlcd']+" - "+reqs[it]['mdl'], //Model
+                                    reqs[it]['scnm']+" ("+reqs[it]['scl']+")", //Scale
+                                    numeral(reqs[it]['reqty']).format('0,0') + '<input type="hidden" name="quntyEdt[]" value="' + reqs[it]['reqty'] + ' ">',         // QUNT
+                                    '<button type="button" '+des+' class="btn btn-xs btn-warning" id="dltrwEdt" onclick=""><span><i class="fa fa-close" title="Remove"></i></span></button>'
+                                ]).draw(false);
+                            }
+                            $('#app_req_btn').attr('disabled',false);
+                        }else {
+                            var rqfr = req[0]['rqfr'];
+                            var rrbc = req[0]['rrbc'];
+                            jQuery.ajax({
+                                type: "POST",
+                                url: "<?= base_url(); ?>Stock/vewReqStock3",
+                                data: {
+                                    id: id,
+                                    rqfr: rqfr,
+                                    rrbc: rrbc
+                                },
+                                dataType: 'json',
+                                success: function (data) {
+                                    var len2 = data['reqs'].length;
+                                    var reqs = data['reqs'];
+
+                                    $('#reqGdTblView').DataTable().clear();
+                                    var t = $('#reqGdTblView').DataTable({
+                                        destroy: true,
+                                        searching: false,
+                                        bPaginate: false,
+                                        "ordering": false,
+                                        "columnDefs": [
+                                            {className: "text-left", "targets": []},
+                                            {className: "text-center", "targets": [0, 5, 6]},
+                                            {className: "text-right", "targets": [1, 2, 3, 4]},
+                                            {className: "text-nowrap", "targets": [1]},
+                                        ],
+                                        "aoColumns": [
+                                            {sWidth: '1%'}, //No
+                                            {sWidth: '10%'},    //CSVL
+                                            {sWidth: '10%'},    //DSVL
+                                            {sWidth: '10%'},    //SLVL
+                                            {sWidth: '10%'},    //MKVL
+                                            {sWidth: '10%'},    //THIS ASS
+                                            {sWidth: '10%'},     //STAT
+                                        ]
+                                    });
+                                    var item = 0;
+                                    var itmCnt = 1;
+                                    for (var vw = 0; vw < len2; vw++) {
+                                        if (item == reqs[vw]['itid']) {
+                                            if(reqs[vw]['thsAsCnt']!=0){
+                                                var receiv = "";
+                                                if (reqs[vw]['stat'] == 4) {
+                                                    if(func=='rec'){
+                                                        receiv = "<button type='button' class='btn btn-xs btn-info' onclick='receivedGd("+id+","+reqs[vw]['sb2id']+","+reqs[vw]['inid']+");' title='Received'>" +
+                                                            "<span class='fa fa-cube'></span></button>";
+                                                    }
+                                                }
+                                                t.row.add([
+                                                    '*',
+                                                    numeral(reqs[vw]['csvl']).format('0,0.00'),     // CSVL
+                                                    numeral(reqs[vw]['fcvl']).format('0,0.00'),     // FCVL
+                                                    numeral(reqs[vw]['slvl']).format('0,0.00'),     // SLVL
+                                                    numeral(reqs[vw]['mkvl']).format('0,0.00'),     // MKVL
+                                                    '<strong>' + numeral(reqs[vw]['thsAsCnt']).format('00') + '</strong>',
+                                                    receiv
+                                                ]).draw();
+                                            }else{
+                                                rowNode = t.row.add([
+                                                    '*',
+                                                    '<strong>No assigned goods</strong>', '', '', '', '', '', ''
+                                                ]).draw().node();
+                                                $(rowNode).children().eq(1).prop('colspan', 7);
+                                                $(rowNode).children().eq(1).addClass('text-left tbl-warn-msg');
+                                                for (var ittt = 2; ittt < 7; ittt++) {
+                                                    $(rowNode).children().eq(2).remove();
+                                                }
+                                            }
+                                        } else {
+                                            item = reqs[vw]['itid'];
+
+                                            //STATUS
+                                            var content = "";
+                                            if(reqs[vw]['stat']==4 || reqs[vw]['stat']==5){
+                                                var rqin = data['rqin'];
+                                                rqin.forEach(forIn);
+
+                                                function forIn(item, index) {
+                                                    if (item.inid == reqs[vw]['inid']) {
+                                                        content = "<div class='row form-horizontal'><label class='col-md-4'>Issue Note </label><label class='col-md-8'>: " + item.inno + "</label><br>" +
+                                                            "<label class='col-md-4'>Driver Name </label><label class='col-md-8'>: " + item.drnm + "</label><br>" +
+                                                            "<label class='col-md-4'>Vehicle No </label><label class='col-md-8'>: " + item.vno + "</label><br>" +
+                                                            "<label class='col-md-4'>Contact No </label><label class='col-md-8'>: " + item.mbno + "</label><br>" +
+                                                            "<label class='col-md-4'>Date </label><label class='col-md-8'>: " + item.crdt + "</label><br>" +
+                                                            "<label class='col-md-4'>By </label><label class='col-md-8'>: " + item.crnm + "</label></div>";
+                                                    }
+                                                }
+                                            }
+
+                                            var receiv = "";
+                                            if (reqs[vw]['stat'] == 0) {
+                                                var stat = "<label class='label label-warning'>To Issue</label>";
+                                            } else if (reqs[vw]['stat'] == 3) {
+                                                var stat = "<label class='label label-info'>Assigned</label>";
+                                            } else if (reqs[vw]['stat'] == 4) {
+                                                var stat = "<label class='label label-indi' style='cursor: pointer' title='Issue Details'" +
+                                                    "onclick='popOver(this);' data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\"\n" +
+                                                    "                                                   data-html=\"true\"\n" +
+                                                    "                                                   data-trigger=\"focus\"\n" +
+                                                    "                                                   data-content=\"" + content + "\">On the way</label>";
+                                                if(func=='rec'){
+                                                    receiv = "<button type='button' class='btn btn-xs btn-info' onclick='receivedGd("+id+","+reqs[vw]['sb2id']+","+reqs[vw]['inid']+");' title='Received'>" +
+                                                        "<span class='fa fa-cube'></span></button>";
+                                                }
+
+                                            } else if (reqs[vw]['stat'] == 5) {
+                                                var stat = "<label class='label label-success' style='cursor: pointer' title='Issue Details'" +
+                                                    "onclick='popOver(this);' data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\"\n" +
+                                                    "                                                   data-html=\"true\"\n" +
+                                                    "                                                   data-trigger=\"focus\"\n" +
+                                                    "                                                   data-content=\"" + content + "\">Received</label>";
+                                            } else if (reqs[vw]['stat'] == 2) {
+                                                var stat = "<label class='label label-danger'>Reject</label>";
+                                            } else {
+                                                var stat = "NOP";
+                                            }
+
+                                            rowNode = t.row.add([
+                                                itmCnt,
+                                                "ITEM : <strong>" + reqs[vw]['itnm'] + " | " + reqs[vw]['itcd'] + "</strong><br>" +
+                                                "MODEL : <strong>" + reqs[vw]['mdl'] + " (" + reqs[vw]['mlcd'] + ")</strong>",
+                                                "Scale : <strong>(" + reqs[vw]['scl'] + ") " + reqs[vw]['scnm'] + "</strong><br>" +
+                                                "Requested QTY : <strong style='color: red'>" + reqs[vw]['reqty'] + "</strong>",
+                                                stat,
+                                                '',
+                                                '',
+                                                ''
+                                            ]).draw().node();
+                                            $(rowNode).children().eq(1).prop('colspan', 4);
+                                            $(rowNode).children().eq(1).addClass('text-left');
+                                            $(rowNode).children().eq(2).addClass('text-left');
+                                            $(rowNode).children().eq(3).removeClass('text-right');
+                                            $(rowNode).children().eq(3).addClass('text-center');
+                                            for (var ittt = 4; ittt < 7; ittt++) {
+                                                $(rowNode).children().eq(4).remove();
+                                            }
+                                            $(rowNode).addClass('success');
+                                            if (reqs[vw]['stcd'] == null ) {
+                                                rowNode = t.row.add([
+                                                    '*',
+                                                    '<strong>Stocks Not Available</strong>', '', '', '', '', '', ''
+                                                ]).draw().node();
+                                                $(rowNode).children().eq(1).prop('colspan', 7);
+                                                $(rowNode).children().eq(1).addClass('text-left tbl-warn-msg');
+                                                for (var ittt = 2; ittt < 7; ittt++) {
+                                                    $(rowNode).children().eq(2).remove();
+                                                }
+                                            } else {
+                                                if(reqs[vw]['thsAsCnt']!=0){
+                                                    t.row.add([
+                                                        '*',
+                                                        numeral(reqs[vw]['csvl']).format('0,0.00'),     // CSVL
+                                                        numeral(reqs[vw]['fcvl']).format('0,0.00'),     // FCVL
+                                                        numeral(reqs[vw]['slvl']).format('0,0.00'),     // SLVL
+                                                        numeral(reqs[vw]['mkvl']).format('0,0.00'),     // MKVL
+                                                        '<strong>' + numeral(reqs[vw]['thsAsCnt']).format('00') + '</strong>',
+                                                        receiv
+                                                    ]).draw();
+                                                }else {
+                                                    rowNode = t.row.add([
+                                                        '*',
+                                                        '<strong>No assigned goods</strong>', '', '', '', '', '', ''
+                                                    ]).draw().node();
+                                                    $(rowNode).children().eq(1).prop('colspan', 7);
+                                                    $(rowNode).children().eq(1).addClass('text-left tbl-warn-msg');
+                                                    for (var ittt = 2; ittt < 7; ittt++) {
+                                                        $(rowNode).children().eq(2).remove();
+                                                    }
+                                                }
+                                            }
+                                            itmCnt++;
+                                        }
+                                    }
+                                },
+                                error: function (data, textStatus) {
+                                    alert('Contact System Support');
+                                }
+                            });
                         }
-                        $('#app_req_btn').attr('disabled',false);
                     }
                     swal.close();
                 }
@@ -1335,6 +1569,65 @@
                     });
             }
         });
+
+        function popOver(node) {
+            $(node).popover('toggle');
+            $('[data-toggle="popover"]').not($(node).popover()).popover('hide');
+        }
+
+        function closeView() {
+            $('[data-toggle="popover"]').popover('hide');
+        }
+        //RECEIVED GOODS
+        function receivedGd(rqid,id,inid) {
+            swal({
+                    title: "Are you sure this process",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3bdd59",
+                    confirmButtonText: "Yes!",
+                    cancelButtonText: "No!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+                    swal({
+                        title: "Please wait...",
+                        text: "Adding as stock...",
+                        imageUrl: "<?= base_url() ?>assets/img/loading.gif",
+                        showConfirmButton: false
+                    });
+
+                    if (isConfirm) {
+                        jQuery.ajax({
+                            type: "POST",
+                            url: "<?= base_url(); ?>Stock/addReqGd_toStc",
+                            data: {
+                                id:id,
+                                rqid:rqid,
+                                inid:inid
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                swal({title: "", text: "New Stock Added", type: "success"},
+                                    function () {
+                                        viewStck(rqid,'rec');
+                                        srch_Req();
+                                    });
+                            },
+                            error: function () {
+                                swal({title: "", text: "Faild", type: "error"},
+                                    function () {
+                                        location.reload();
+                                    });
+                            }
+                        });
+                    } else {
+                        swal("Cancelled", " ", "warning");
+                    }
+                });
+        }
     </script>
 </div>
 <!-- END PAGE CONTAINER -->

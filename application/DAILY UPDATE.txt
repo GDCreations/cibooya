@@ -5,7 +5,7 @@ ALTER TABLE `stock_sub` ADD `trrf` INT NOT NULL COMMENT 'Tranfer reference (Stoc
 ALTER TABLE `stock_brn_sub` ADD `trrf` INT NOT NULL COMMENT 'Transfer reference (stock_req_sub2)' AFTER `trst`;
 
 -----------------------------------------------------
-2019-10-22 GEMUNU
+**DONE 2019-10-22 GEMUNU
 
 Dbs Folder New Added
 cus_sol tb
