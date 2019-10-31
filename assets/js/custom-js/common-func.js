@@ -24,6 +24,7 @@ function default_Selector(node) {
     var selected = node.find('ul').children().first().children().children().first().html(); //get selected valus
     node.prev().prop('title', selected); //set selected value as title
     node.prev().children().first().html(selected); //set selected value as <li> element
+    node.next().val(node.next().children().first().val());
 }
 
 //Set selected item in selector

@@ -1,9 +1,8 @@
 -----------------------------------------------------
-2019-10-21 JANAKA
-ALTER TABLE `stock_req_sub` DROP `skid`, DROP `rbsid`, DROP `csvl`, DROP `fcvl`, DROP `slvl`, DROP `mkvl`;
-ALTER TABLE `stock_sub` ADD `trrf` INT NOT NULL COMMENT 'Tranfer reference (Stock_req_su2)' AFTER `trst`;
-ALTER TABLE `stock_brn_sub` ADD `trrf` INT NOT NULL COMMENT 'Transfer reference (stock_req_sub2)' AFTER `trst`;
-
+2019-10-29 JANAKA
+ALTER TABLE `stock_req_sub` ADD `reby` INT NOT NULL COMMENT 'Recieved by' AFTER `isdt`;
+ALTER TABLE `stock_req_sub` ADD `redt` DATETIME NOT NULL COMMENT 'Recieved date' AFTER `reby`;
+ALTER TABLE `stock_req_sub2` CHANGE `stat` `stat` INT(11) NOT NULL COMMENT '(1-active/2-Issued/3-Received/0-Inavtive)';
 -----------------------------------------------------
 **DONE 2019-10-22 GEMUNU
 
