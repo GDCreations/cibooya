@@ -36,6 +36,22 @@
                         </li>
                     <?php } ?>
 
+                    <li class="title" id="slsModule_titl">SALES MODULE</li>
+                    <?php $slsModule_titl = true; ?>
+                    <?php if (in_array('slsModul', $permMdul, TRUE)) { ?>
+                        <li id="slsModul">
+                            <a id="sale" href="<?= base_url()?>Sale/sale"><span class="nav-icon-hexa fa fa-shopping-cart"></span> Salling </a>
+                        </li>
+                        <?php $slsModule_titl = false;
+                    } ?>
+                    <?php
+                    //MAIN TITLE
+                    if ($slsModule_titl) { ?>
+                        <script>
+                            $('#slsModule_titl').css('display', 'none');
+                        </script>
+                    <?php } ?>
+
                     <li class="title" id="msgModule_titl">MESSAGE MODULE</li>
                     <?php $msgModule_titl = true; ?>
                     <?php if (in_array('msgModul', $permMdul, TRUE)) { ?>
