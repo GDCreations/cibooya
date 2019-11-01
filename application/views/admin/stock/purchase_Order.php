@@ -235,7 +235,7 @@
                                 <div class="col-md-4">
                                     <label class="col-md-4 col-xs-12 control-label" id="stScale">Unit Price</label>
                                     <div class="col-md-6 col-xs-10">
-                                        <input type="text" id="price" name="price" class="form-control"
+                                        <input type="text" id="price" name="price" class="form-control text-right"
                                                placeholder="Price 00.00"/>
                                     </div>
                                     <div class="col-md-2 col-xs-2">
@@ -530,7 +530,7 @@
                                 <div class="col-md-4">
                                     <label class="col-md-4 col-xs-12 control-label" id="stScale">Unit Price</label>
                                     <div class="col-md-6 col-xs-10">
-                                        <input type="text" id="price_edt" name="price_edt" class="form-control"
+                                        <input type="text" id="price_edt" name="price_edt" class="form-control text-right"
                                                placeholder="Price 00.00"/>
                                     </div>
                                     <div class="col-md-2 col-xs-2">
@@ -1193,6 +1193,28 @@
                 valid = subVal.element(v) && valid;
             });
 
+            //Checking Quantity again
+            jQuery.ajax({
+                type: "POST",
+                url: "<?= base_url(); ?>Stock/chk_Mx_ItmLvl",
+                async: false,
+                data: {
+                    item: function () {
+                        return $("#item").val();
+                    },
+                    qnty: function () {
+                        return $("#cnty").val();
+                    },
+                },
+                dataType: 'json',
+                success: function (data) {
+                    valid = (data==true) && valid;
+                },
+                error: function (data, textStatus) {
+                    valid = false;
+                }
+            });
+
             if (valid) {
                 var leng = $('#leng').val();
 
@@ -1637,6 +1659,28 @@
             var valid = true;
             $('#item_edt,#cnty_edt,#price_edt').each(function (i, v) {
                 valid = subValEdt.element(v) && valid;
+            });
+
+            //Checking Quantity again
+            jQuery.ajax({
+                type: "POST",
+                url: "<?= base_url(); ?>Stock/chk_Mx_ItmLvl",
+                async: false,
+                data: {
+                    item: function () {
+                        return $("#item_edt").val();
+                    },
+                    qnty: function () {
+                        return $("#cnty_edt").val();
+                    },
+                },
+                dataType: 'json',
+                success: function (data) {
+                    valid = (data==true) && valid;
+                },
+                error: function (data, textStatus) {
+                    valid = false;
+                }
             });
 
             if (valid) {

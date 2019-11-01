@@ -5074,15 +5074,15 @@ class Stock extends CI_Controller
             $isItIss = "disabled";
             $isItIssMsg = "Goods not issued yet";
             $styl = "btn btn-xs btn-default btn-condensed";
-            if ($row->iscnt > 0) {
+            if ($row->niscnt > 0) {
                 $isItIss = "";
-                $isItIssMsg = $row->iscnt . " goods issued (Make as received)";
+                $isItIssMsg = $row->niscnt . " goods issued (Make as received)";
                 $styl = "label-icon label-icon-info label-icon-bordered";
             }
 
             $isRej = 'View'; //main stock side
             if ($row->rjcnt > 0) {
-                $isRej = $row->iscnt . " rejected goods here";
+                $isRej = $row->rjcnt . " rejected goods here";
             }
 
             if ($st == '0') {                   // Pending
@@ -5295,11 +5295,16 @@ class Stock extends CI_Controller
         $sb2 = $this->db->get()->result();
 
         if ($sb2[0]->sttp == 1) {
-            $srl = $this->Generic_model->getData('stock_sub', '', array('stat' => 1, 'trrf' => $id, 'trst' => 1));
+            $this->db->select("sb.*,stc.csvl,stc.fcvl,stc.slvl,stc.mkvl");
+            $this->db->from('stock_sub sb');
+            $this->db->join('stock stc', 'stc.stid=sb.stid');
+            $this->db->where("sb.stat=1 AND sb.trrf=$id AND sb.trst=1");
+            $srl = $this->db->get()->result();
         } else {
-            $this->db->select("st.*");
+            $this->db->select("st.*,stc.csvl,stc.fcvl,stc.slvl,stc.mkvl");
             $this->db->from('stock_brn_sub stb');
             $this->db->join('stock_sub st', 'st.ssid=stb.ssid');
+            $this->db->join('stock stc', 'stc.stid=st.stid');
             $this->db->where("stb.stat=1 AND stb.trrf=$id AND stb.trst=1");
             $srl = $this->db->get()->result();
         }
@@ -5340,10 +5345,10 @@ class Stock extends CI_Controller
             'itid' => $sb2[0]->itid, //item id
             'brid' => $sb2[0]->rsbc, //current branch id
             'frid' => $sb2[0]->rrbc, //Stock from branch id
-            'csvl' => 0,
-            'fcvl' => 0,
-            'slvl' => 0,
-            'mkvl' => 0,
+            'csvl' => $srl[0]->csvl,
+            'fcvl' => $srl[0]->fcvl,
+            'slvl' => $srl[0]->slvl,
+            'mkvl' => $srl[0]->mkvl,
             'qunt' => $sb2[0]->asqty,
             'avqn' => $sb2[0]->asqty,
             'stat' => 1,
@@ -5367,6 +5372,29 @@ class Stock extends CI_Controller
                 'crby' => $_SESSION['userId'],
                 'crdt' => date('Y-m-d H:i:s'),
             ));
+        }
+
+        $this->Generic_model->updateData('stock_req_sub2',array('stat'=>3),array('auid'=>$id));
+        //Check all stock_req_sub2 is received
+        $rec = $this->Generic_model->getData('stock_req_sub2','',array('stat'=>1,'sbid'=>$sb2[0]->sbid));
+        if(sizeof($rec)<=0){
+            //Update As received
+            $this->Generic_model->updateData('stock_req_sub',array(
+                'asqty' => $sb2[0]->asqty,
+                'stat' => 5,
+                'reby' => $_SESSION['userId'],
+                'redt' => date('Y-m-d H:i:s')
+            ),array('auid'=>$sb2[0]->sbid));
+        }
+
+        //Checking all stock_req_sub is recieved
+        $des2 = $this->Generic_model->getData('stock_req_sub', array('auid'), "stat IN(0,3,4) AND rqid=".$sb2[0]->rqid);
+        if (sizeof($des2) <= 0) {
+            $this->Generic_model->updateData('stock_req', array(
+                'stat' => 3,
+                'reby' => $_SESSION['userId'],
+                'redt' => date('Y-m-d H:i:s')
+            ), array('rqid' => $sb2[0]->rqid));
         }
 
         $funcPerm = $this->Generic_model->getFuncPermision('stckReq');
@@ -6154,6 +6182,7 @@ class Stock extends CI_Controller
         $inid = $this->input->post('inid');
 
         $des = $this->Generic_model->getData('stock_req_sub2', array('sbid', 'asqty', 'stid', 'sttp', 'rqid'), array('inid' => $inid));
+        $this->Generic_model->updateData('stock_req_sub2',array('stat'=>2),array('stat'=>1,'inid'=>$inid));
         for ($it = 0; $it < sizeof($des); $it++) {
             $this->Generic_model->updateData('stock_req_sub', array(
                 'stat' => 4,

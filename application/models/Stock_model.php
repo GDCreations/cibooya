@@ -853,10 +853,10 @@ class Stock_model extends CI_Model
         $rrbc = $this->input->post('rrbc'); //Request Receiver
 
         $this->db->select("stc.ascnt,stc.avqn,stc.stid,stc.stcd,stc.csvl,stc.fcvl,stc.slvl,stc.mkvl,
-        IFNULL((SELECT sb3.asqty FROM stock_req_sub2 sb3 WHERE sb3.stat=1 AND sb3.rqid=rqs.rqid AND sb3.stid=stc.stid),0) AS thsAsCnt,
-        (SELECT sb4.inpr FROM stock_req_sub2 sb4 WHERE sb4.stat=1 AND sb4.rqid=rqs.rqid AND sb4.stid=stc.stid) AS isInpr,
-        (SELECT sb5.inid FROM stock_req_sub2 sb5 WHERE sb5.stat=1 AND sb5.rqid=rqs.rqid AND sb5.stid=stc.stid) AS inid,
-        (SELECT sb6.auid FROM stock_req_sub2 sb6 WHERE sb6.stat=1 AND sb6.rqid=rqs.rqid AND sb6.stid=stc.stid) AS sb2id,
+        IFNULL((SELECT sb3.asqty FROM stock_req_sub2 sb3 WHERE sb3.stat IN(1,2,3) AND sb3.rqid=rqs.rqid AND sb3.stid=stc.stid),0) AS thsAsCnt,
+        (SELECT sb4.inpr FROM stock_req_sub2 sb4 WHERE sb4.stat IN(1,2,3) AND sb4.rqid=rqs.rqid AND sb4.stid=stc.stid) AS isInpr,
+        (SELECT sb5.inid FROM stock_req_sub2 sb5 WHERE sb5.stat IN(1,2,3) AND sb5.rqid=rqs.rqid AND sb5.stid=stc.stid) AS inid,
+        (SELECT sb6.auid FROM stock_req_sub2 sb6 WHERE sb6.stat IN(1,2,3) AND sb6.rqid=rqs.rqid AND sb6.stid=stc.stid) AS sb2id,
         rqs.auid,rqs.itid,rqs.reqty,rqs.stat,rqs.crdt,rqs.stat,
         it.itcd,it.itnm,it.mdl,it.mlcd,sc.scl,sc.scnm,
         ");
@@ -867,13 +867,13 @@ class Stock_model extends CI_Model
             $this->db->join('(SELECT stcd,avqn,stid,itid,csvl,fcvl,slvl,mkvl,
              IFNULL((SELECT SUM(sb2.asqty) FROM stock_req_sub2 sb2 
                 JOIN stock_req_sub sb ON sb.auid = sb2.sbid
-                WHERE sb2.stid=stock.stid AND sb2.stat=1 AND sb2.sttp=1 AND sb.stat=3),0) AS ascnt
+                WHERE sb2.stid=stock.stid AND sb2.stat IN(1,2) AND sb2.sttp=1 AND sb.stat=3),0) AS ascnt
              FROM stock WHERE stock.stat=1 AND stock.whid=' . $rrbc . ') stc', 'stc.itid=rqs.itid', 'LEFT');
         } else {
             $this->db->join('(SELECT stcd,avqn,stbid AS stid,itid,csvl,fcvl,slvl,mkvl,
              IFNULL((SELECT SUM(sb2.asqty) FROM stock_req_sub2 sb2 
                 JOIN stock_req_sub sb ON sb.auid = sb2.sbid
-                JOIN stock_req rq ON rq.rqid = sb.rqid WHERE sb2.stat=1 AND sb2.stid=stock_brn.stbid AND rq.rqfr=2 AND sb.stat=3),0) AS ascnt
+                JOIN stock_req rq ON rq.rqid = sb.rqid WHERE sb2.stat IN(1,2) AND sb2.stid=stock_brn.stbid AND rq.rqfr=2 AND sb.stat=3),0) AS ascnt
              FROM stock_brn WHERE stock_brn.stat=1 AND stock_brn.brid=' . $rrbc . ') stc', 'stc.itid=rqs.itid', 'LEFT');
         }
         $this->db->where("rqs.rqid=$id AND rqs.stat!=6");
@@ -901,11 +901,12 @@ class Stock_model extends CI_Model
         (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs JOIN stock_req_sub2 sb2 ON sb2.sbid=rqs.auid
             WHERE rqs.rqid=str.rqid AND rqs.stat=3 AND sb2.inpr=0 AND sb2.stat=1) AS inpcnt,
         IFNULL((SELECT rqin.inid FROM stock_req_sub2 sb3 JOIN stock_req_in rqin ON rqin.inid=sb3.inid 
-            WHERE sb3.stat=1 AND rqin.stat=1 ORDER BY rqin.inid DESC LIMIT 1),0) AS lstInid,
+            WHERE sb3.stat=1 AND rqin.stat=1 AND sb3.rqid=str.rqid ORDER BY rqin.inid DESC LIMIT 1),0) AS lstInid,
         (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat!=6) AS cnt,
         (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat IN(4,5)) AS iscnt,
+        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs JOIN stock_req_sub2 sbb ON sbb.sbid=rqs.auid WHERE rqs.rqid=str.rqid AND rqs.stat IN(4,5) AND sbb.stat=2) AS niscnt,
         (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat=2) AS rjcnt,
-        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat IN(3,4,5)) AS ascnt,
+        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat IN(3,4)) AS ascnt,
         (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat=5) AS rccnt");
         $this->db->from("stock_req str");
         $this->db->join('brch_mas bm', 'bm.brid = str.rsbc');

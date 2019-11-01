@@ -438,9 +438,9 @@
     </div>
     <!-- END VIEW || ASSIGN REQUEST -->
     <!-- MODAL ISSUE NOTE PRINT || ISSUE -->
-    <div class="modal fade" id="modal-iss" tabindex="-1" role="dialog" aria-labelledby="modal-default-header">
+    <div class="modal fade" id="modal-iss" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modal-default-header">
         <div class="modal-dialog modal-lg modal-success" role="document" style="width: 60%">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeIss()"><span aria-hidden="true"
                                                                                               class="icon-cross"></span>
             </button>
             <form id="issForm">
@@ -628,7 +628,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-link" data-dismiss="modal" onclick="closeIss()">Close</button>
                         <button type="button" id="addBtn" class="btn btn-warning btn-sm btn-rounded">
                             Submit
                         </button>
@@ -1160,6 +1160,7 @@
 
                                 if (item == reqs[it]['itid']) {
                                     if (+reqs[it]['thsAsCnt'] > 0) {
+
                                         t.row.add([
                                             '*',
                                             reqs[it]['stcd'] + '<input type="hidden" name="stidEdt[]" id="stidEdt_' + it + '" value="' + reqs[it]['stid'] + ' ">',
@@ -1971,6 +1972,13 @@
 
         function closeView() {
             $('[data-toggle="popover"]').popover('hide');
+        }
+        
+        function closeIss() {
+            default_Selector($('#frwhIss').prev());
+            $('#drnm').val('');
+            $('#vhnm').val('');
+            $('#dctno').val('');
         }
 
         function checkIssFr() {

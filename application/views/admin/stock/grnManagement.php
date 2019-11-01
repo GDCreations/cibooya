@@ -599,7 +599,7 @@
                     },
                     rcvqt: {
                         required: true,
-                        notEqual: 0,
+                        //notEqual: 0,
                         decimal: true
                     },
                     rtnqt: {
@@ -666,7 +666,7 @@
                     },
                     rcvqtEdt: {
                         //required: true,
-                        notEqual: 0,
+                        //notEqual: 0,
                         digits: true
                     },
                     rtnqtEdt: {
