@@ -847,6 +847,38 @@ class Stock_model extends CI_Model
         $this->db->where('rq.rqid',$id);
         return $this->db->get()->result();
     }
+    function getReqSubDet(){
+        $id = $this->input->post('id'); //Request ID
+        $rqfr = $this->input->post('rqfr'); //Request From 1-Warehouse / 2- Branch
+        $rrbc = $this->input->post('rrbc'); //Request Receiver
+
+        $this->db->select("stc.ascnt,stc.avqn,stc.stid,stc.stcd,stc.csvl,stc.fcvl,stc.slvl,stc.mkvl,
+        IFNULL((SELECT sb3.asqty FROM stock_req_sub2 sb3 WHERE sb3.stat=1 AND sb3.rqid=rqs.rqid AND sb3.stid=stc.stid),0) AS thsAsCnt,
+        (SELECT sb4.inpr FROM stock_req_sub2 sb4 WHERE sb4.stat=1 AND sb4.rqid=rqs.rqid AND sb4.stid=stc.stid) AS isInpr,
+        (SELECT sb5.inid FROM stock_req_sub2 sb5 WHERE sb5.stat=1 AND sb5.rqid=rqs.rqid AND sb5.stid=stc.stid) AS inid,
+        (SELECT sb6.auid FROM stock_req_sub2 sb6 WHERE sb6.stat=1 AND sb6.rqid=rqs.rqid AND sb6.stid=stc.stid) AS sb2id,
+        rqs.auid,rqs.itid,rqs.reqty,rqs.stat,rqs.crdt,rqs.stat,
+        it.itcd,it.itnm,it.mdl,it.mlcd,sc.scl,sc.scnm,
+        ");
+        $this->db->from('stock_req_sub rqs');
+        $this->db->join('item it', 'it.itid=rqs.itid');
+        $this->db->join('scale sc', 'sc.slid=it.scli');
+        if ($rqfr == 1) {
+            $this->db->join('(SELECT stcd,avqn,stid,itid,csvl,fcvl,slvl,mkvl,
+             IFNULL((SELECT SUM(sb2.asqty) FROM stock_req_sub2 sb2 
+                JOIN stock_req_sub sb ON sb.auid = sb2.sbid
+                WHERE sb2.stid=stock.stid AND sb2.stat=1 AND sb2.sttp=1 AND sb.stat=3),0) AS ascnt
+             FROM stock WHERE stock.stat=1 AND stock.whid=' . $rrbc . ') stc', 'stc.itid=rqs.itid', 'LEFT');
+        } else {
+            $this->db->join('(SELECT stcd,avqn,stbid AS stid,itid,csvl,fcvl,slvl,mkvl,
+             IFNULL((SELECT SUM(sb2.asqty) FROM stock_req_sub2 sb2 
+                JOIN stock_req_sub sb ON sb.auid = sb2.sbid
+                JOIN stock_req rq ON rq.rqid = sb.rqid WHERE sb2.stat=1 AND sb2.stid=stock_brn.stbid AND rq.rqfr=2 AND sb.stat=3),0) AS ascnt
+             FROM stock_brn WHERE stock_brn.stat=1 AND stock_brn.brid=' . $rrbc . ') stc', 'stc.itid=rqs.itid', 'LEFT');
+        }
+        $this->db->where("rqs.rqid=$id AND rqs.stat!=6");
+        return $this->db->get()->result();
+    }
 
     var $cl_srch11 = array('rqno', 'bm.brnm', 'bm2.rrbrnm', 'str.crdt', 'str.stat'); //set column field database for datatable searchable
     var $cl_odr11 = array(null, 'rqno', 'bm.brnm', 'bm2.rrbrnm', '', '', 'str.crdt', '', ''); //set column field database for datatable orderable
@@ -866,10 +898,14 @@ class Stock_model extends CI_Model
 
         $this->db->select("str.rqid,str.rqno,str.rqfr,str.stat,str.crdt,bm.brcd AS rsbrcd, bm.brnm AS rsbrnm,
         bm2.rrbrcd,bm2.rrbrnm,
+        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs JOIN stock_req_sub2 sb2 ON sb2.sbid=rqs.auid
+            WHERE rqs.rqid=str.rqid AND rqs.stat=3 AND sb2.inpr=0 AND sb2.stat=1) AS inpcnt,
+        IFNULL((SELECT rqin.inid FROM stock_req_sub2 sb3 JOIN stock_req_in rqin ON rqin.inid=sb3.inid 
+            WHERE sb3.stat=1 AND rqin.stat=1 ORDER BY rqin.inid DESC LIMIT 1),0) AS lstInid,
         (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat!=6) AS cnt,
-        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat=4) AS iscnt,
+        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat IN(4,5)) AS iscnt,
         (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat=2) AS rjcnt,
-        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat=3) AS ascnt,
+        (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat IN(3,4,5)) AS ascnt,
         (SELECT COUNT(rqs.auid) FROM stock_req_sub rqs WHERE rqs.rqid=str.rqid AND rqs.stat=5) AS rccnt");
         $this->db->from("stock_req str");
         $this->db->join('brch_mas bm', 'bm.brid = str.rsbc');
@@ -953,6 +989,94 @@ class Stock_model extends CI_Model
     }
 
     //END CONVERTION STOCK </2019-10-18>
+
+//    GET ISSUED NOTES </2019-10-25>
+    var $cl_srch12 = array('inno', 'drnm', 'vno', 'mbno', 'crnm', 'rqin.crdt'); //set column field database for datatable searchable
+    var $cl_odr12 = array(null, 'inno', 'drnm', 'vno', 'mbno', 'crnm', 'rqin.crdt', ''); //set column field database for datatable orderable
+    var $order12 = array('rqin.crdt' => 'DESC'); // default order
+
+    function issNotes_query()
+    {
+        $isfr = $this->input->post('isfr');
+        $isbr = $this->input->post('isbr');
+        $iswh = $this->input->post('iswh');
+        $dtrng = explode('/', $this->input->post('dtrg')); // DateRange
+        $frdt = trim($dtrng[0], ' ');
+        $todt = trim($dtrng[1], ' ');
+
+        $this->db->select("rqin.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm");
+        $this->db->from('stock_req_in rqin');
+        $this->db->join('stock_req_sub2 sb2','sb2.inid=rqin.inid');
+        $this->db->join('stock_req rq','rq.rqid=sb2.rqid');
+        $this->db->join('user_mas cr','cr.auid=rqin.crby');
+        if ($isfr == 'true') {
+            if($iswh!='all'){
+                $this->db->where('rq.rsbc',$iswh);
+            }
+            $this->db->where('rq.rqfr',1);
+        }else{
+            if($isbr!='all') {
+                $this->db->where('rq.rsbc',$isbr);
+            }
+            $this->db->where('rq.rqfr',2);
+        }
+        $this->db->where("DATE_FORMAT(rqin.crdt,'%Y-%m-%d') BETWEEN '$frdt' AND '$todt'");
+        $this->db->group_by('rqin.inid');
+    }
+
+    private function issNotes_queryData()
+    {
+        $this->issNotes_query();
+        $i = 0;
+        foreach ($this->cl_srch12 as $item) // loop column
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->cl_srch12) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->cl_odr12[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order12)) {
+            $order12 = $this->order12;
+            $this->db->order_by(key($order12), $order12[key($order12)]);
+        }
+    }
+
+    function get_issNotes()
+    {
+        $this->issNotes_queryData();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function count_filtered_issNotes()
+    {
+        $this->issNotes_queryData();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_issNotes()
+    {
+        $this->issNotes_query();
+        return $this->db->count_all_results();
+    }
+//   END GET ISSUED NOTES </2019-10-25>
 }
 
 ?>

@@ -5076,7 +5076,7 @@ class Stock extends CI_Controller
             $styl = "btn btn-xs btn-default btn-condensed";
             if ($row->iscnt > 0) {
                 $isItIss = "";
-                $isItIssMsg = $row->iscnt . " goods issued";
+                $isItIssMsg = $row->iscnt . " goods issued (Make as received)";
                 $styl = "label-icon label-icon-info label-icon-bordered";
             }
 
@@ -5099,9 +5099,9 @@ class Stock extends CI_Controller
                     "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='$isRej' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modal-view'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modal-view'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='rec' $isItIss disabled  onclick='viewStck($rqid,this.id);' class='$styl' title='$isItIssMsg'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+                    "<button type='button' id='rec' $isItIss $reac data-toggle='modal' data-target='#modal-view' onclick='viewStck($rqid,this.id);' class='$styl' title='$isItIssMsg'><i class='fa fa-chevron-down' aria-hidden='true'></i></button> ";
 
-            } else if ($st == '2') {            // Finished
+            } else if ($st == '2') {            // Cancelled
                 $stat = " <span class='label label-danger'> Cancelled </span> ";
                 $option =
                     "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
@@ -5116,12 +5116,19 @@ class Stock extends CI_Controller
                     "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' id='rej'  disabled  onclick='rejecStck();' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
             } else if ($st == '4') {
-                $stat = " <span class='label label-indi' title='Issue rejected'> Issue Rej. </span> ";
+                $stat = " <span class='label label-primary' title='Issue rejected'> Issue Rej. </span> ";
                 $option =
                     "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
                     "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' id='rej'  disabled  onclick='rejecStck();' class='btn btn-xs btn-default btn-condensed' title='Reject'><i class='fa fa-ban' aria-hidden='true'></i></button> ";
+            } else if ($st == '5') {
+                $stat = " <span class='label label-indi' title='Issue rejected'> On The Way </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='view' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='edit' ><i class='fa fa-edit' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app'  disabled  data-toggle='modal' data-target='#modalEdt'  onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='approval' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rec' $isItIss $reac data-toggle='modal' data-target='#modal-view' onclick='viewStck($rqid,this.id);' class='$styl' title='$isItIssMsg'><i class='fa fa-chevron-down' aria-hidden='true'></i></button> ";
             }
 
             if ($row->rqfr == 1) {
@@ -5160,7 +5167,7 @@ class Stock extends CI_Controller
         $id = $this->input->post('id');
         $data['req'] = $this->Stock_model->getReqDet();
 
-        $this->db->select("rqs.auid,rqs.itid,rqs.reqty,rqs.stat,rqs.crdt,rqs.mddt,rqs.apdt,rqs.rjdt,rqs.asdt,rqs.isdt,rqs.inpr,
+        $this->db->select("rqs.auid,rqs.itid,rqs.reqty,rqs.stat,rqs.crdt,rqs.mddt,rqs.apdt,rqs.rjdt,rqs.asdt,rqs.isdt,
         it.itcd,it.itnm,it.mdl,it.mlcd,sc.scl,sc.scnm,
         CONCAT(cr.fnme,' ',cr.lnme) AS crnm, CONCAT(ap.fnme,' ',ap.lnme) AS apnm,CONCAT(md.fnme,' ',md.lnme) AS mdnm, 
         CONCAT(rj.fnme,' ',rj.lnme) AS rjnm, CONCAT(as.fnme,' ',as.lnme) AS asnm,CONCAT(is.fnme,' ',is.lnme) AS isnm");
@@ -5175,6 +5182,22 @@ class Stock extends CI_Controller
         $this->db->join('user_mas is', 'is.auid=rqs.isby', 'LEFT');
         $this->db->where("rqs.rqid=$id AND rqs.stat!=6");
         $data['reqs'] = $this->db->get()->result();
+        echo json_encode($data);
+    }
+
+    function vewReqStock3()
+    {
+        $id = $this->input->post('id');
+
+        $data['reqs'] = $this->Stock_model->getReqSubDet();
+
+        $this->db->select("rqin.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm");
+        $this->db->from('stock_req_sub sb');
+        $this->db->join('stock_req_sub2 sb2', 'sb2.sbid=sb.auid');
+        $this->db->join('stock_req_in rqin', 'rqin.inid=sb2.inid');
+        $this->db->join('user_mas cr', 'cr.auid=rqin.crby');
+        $this->db->where("sb.rqid=$id AND sb.stat!=6");
+        $data['rqin'] = $this->db->get()->result();
         echo json_encode($data);
     }
     //END VIEW REQ STOCK </2019-10-18>
@@ -5255,6 +5278,109 @@ class Stock extends CI_Controller
         }
     }
     //END EDIT || APPROVE REQUEST STOCK </2019-10-18>
+
+    //ADD REQUEST GOODS AS STOCK </2019-10-25>
+    function addReqGd_toStc()
+    {
+        $this->db->trans_begin(); // SQL TRANSACTION START
+        $id = $this->input->post('id'); //stock_req_sub2 ID
+        $rqid = $this->input->post('rqid'); //stock_req ID
+        $inid = $this->input->post('inid'); //stock_req_in ID
+
+        $this->db->select("sb2.*,bm.brcd,rq.rsbc,rq.rrbc");
+        $this->db->from('stock_req_sub2 sb2');
+        $this->db->join('stock_req rq', 'rq.rqid=sb2.rqid');
+        $this->db->join('brch_mas bm', 'bm.brid=rq.rsbc');
+        $this->db->where("sb2.auid=$id AND sb2.inid=$inid AND sb2.rqid=$rqid");
+        $sb2 = $this->db->get()->result();
+
+        if ($sb2[0]->sttp == 1) {
+            $srl = $this->Generic_model->getData('stock_sub', '', array('stat' => 1, 'trrf' => $id, 'trst' => 1));
+        } else {
+            $this->db->select("st.*");
+            $this->db->from('stock_brn_sub stb');
+            $this->db->join('stock_sub st', 'st.ssid=stb.ssid');
+            $this->db->where("stb.stat=1 AND stb.trrf=$id AND stb.trst=1");
+            $srl = $this->db->get()->result();
+        }
+
+        $this->db->select("stcd");
+        $this->db->from("stock_brn");
+        $this->db->order_by('stbid', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        $stcd = $query->result();
+
+        $yr = date('y');
+
+        if (sizeof($stcd) > 0) {
+            $icde = $stcd[0]->stcd;
+            $re = (explode("-", $icde));
+
+            $aa = intval($re[2]) + 1;
+            $cc = strlen($aa);
+            if ($cc == 1) {
+                $xx = '000' . $aa;
+            } else if ($cc == 2) {
+                $xx = '00' . $aa;
+            } else if ($cc == 3) {
+                $xx = '0' . $aa;
+            } else if ($cc == 4) {
+                $xx = '' . $aa;
+            }
+            $stno = 'ST' . $yr . '-' . $sb2[0]->brcd . '-' . $xx;
+        } else {
+            $stno = 'ST' . $yr . '-' . $sb2[0]->brcd . '-0001';  // Ex (STOCK)(YEAR)-(BRCD)-NO - ST18-TM-0001
+        }
+
+        $this->Generic_model->insertData('stock_brn', array(
+            'stcd' => $stno,
+            'stfr' => $sb2[0]->sttp,
+            'stid' => $srl[0]->stid, //main stock id
+            'itid' => $sb2[0]->itid, //item id
+            'brid' => $sb2[0]->rsbc, //current branch id
+            'frid' => $sb2[0]->rrbc, //Stock from branch id
+            'csvl' => 0,
+            'fcvl' => 0,
+            'slvl' => 0,
+            'mkvl' => 0,
+            'qunt' => $sb2[0]->asqty,
+            'avqn' => $sb2[0]->asqty,
+            'stat' => 1,
+            'cst' => 0,             //converted stock 0-no, 1-yes
+            'cslid' => 0,           //Conversion id
+            'crby' => $_SESSION['userId'],
+            'crdt' => date('Y-m-d H:i:s'),
+            'apby' => $_SESSION['userId'],
+            'apdt' => date('Y-m-d H:i:s'),
+        ));
+        $lstid = $this->db->insert_id();
+
+        for ($it = 0; $it < sizeof($srl); $it++) {
+            $this->Generic_model->insertData('stock_brn_sub',array(
+                'stbid' => $lstid,
+                'stcid' => 0,
+                'stid' => $srl[$it]->stid,
+                'ssid' => $srl[$it]->ssid,
+                'stat' => 1,
+                'trst' => 0,
+                'crby' => $_SESSION['userId'],
+                'crdt' => date('Y-m-d H:i:s'),
+            ));
+        }
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckReq');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Made request as stock(' . $lstid . ')');
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+    //END ADD REQUEST GOODS AS STOCK </2019-10-25>
 //************************************************
 //***           END STOCK REQUEST              ***
 //************************************************
@@ -5317,10 +5443,10 @@ class Stock extends CI_Controller
         } else {
             $rej = "disabled";
         }
-        if ($funcPerm[0]->reac == 1) {
-            $reac = "";
+        if ($funcPerm[0]->prnt == 1) {
+            $prnt = "";
         } else {
-            $reac = "disabled";
+            $prnt = "disabled";
         }
 
         $result = $this->Stock_model->get_ReqStock();
@@ -5331,14 +5457,22 @@ class Stock extends CI_Controller
             $st = $row->stat;
             $rqid = $row->rqid;
 
+            //Have assigned goods
             if ($row->ascnt > 0) {
-                $ascnt = $row->ascnt." assigned to issue";
+                $ascnt = $row->ascnt . " assigned to issue";
                 $asDes = "disabled";
                 $isDes = "";
-            }else{
+            } else {
                 $ascnt = "No assigned to issue";
                 $asDes = "";
                 $isDes = "disabled";
+            }
+
+            //Have printed issue notes to issue
+            if ($row->inpcnt > 0) {
+                $isnote = "<button type='button' id='prt' $prnt $isDes data-toggle='modal' data-target='#modal-iss'  onclick='issStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='Print issue note' ><i class='fa fa-print' aria-hidden='true'></i></button> ";
+            } else {
+                $isnote = "<button type='button' id='app' $app $isDes data-toggle='modal' data-target='#modal-iss'  onclick='issStck($rqid,this.id,$row->lstInid);' class='btn btn-xs btn-default btn-condensed' title='$ascnt' ><i class='fa fa-check' aria-hidden='true'></i></button> ";
             }
 
             if ($st == '1') {           // TO ISSUE GOODS
@@ -5346,21 +5480,28 @@ class Stock extends CI_Controller
                 $option =
                     "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='View' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
                     "<button type='button' id='ass' $edt data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='Assign' ><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='app' $app $isDes data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='$ascnt' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    $isnote .
                     "<button type='button' id='rej' $rej $asDes onclick='rejReq($rqid);' class='btn btn-xs btn-default btn-condensed' title='Reject' ><i class='fa fa-ban' aria-hidden='true'></i></button>";
 
             } else if ($st == '3') {            // Delivered
                 $stat = " <span class='label label-success'> Delivered </span> ";
                 $option =
                     "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='View' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='edt' disabled onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='Assign / Issue' ><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt' disabled onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='Assign' ><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
                     "<button type='button' id='app' disabled onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='Issue' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' id='rej' disabled onclick='rejStck($rqid);' class='btn btn-xs btn-default btn-condensed' title='Reject' ><i class='fa fa-ban' aria-hidden='true'></i></button>";
             } else if ($st == '4') {        //Issue Reject
                 $stat = " <span class='label label-danger'> Reject </span> ";
                 $option =
                     "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='View' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
-                    "<button type='button' id='edt' disabled onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='Assign / Issue' ><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt' disabled onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='Assign' ><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='app' disabled onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='Issue' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='rej' disabled onclick='rejStck($rqid);' class='btn btn-xs btn-default btn-condensed' title='Reject' ><i class='fa fa-ban' aria-hidden='true'></i></button>";
+            } else if ($st == '5') {        //Issued
+                $stat = " <span class='label label-indi'> Issued </span> ";
+                $option =
+                    "<button type='button' id='vew' $viw  data-toggle='modal' data-target='#modal-view'  onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='View' ><i class='fa fa-eye' aria-hidden='true'></i></button> " .
+                    "<button type='button' id='edt' disabled onclick='viewStck();' class='btn btn-xs btn-default btn-condensed' title='Assign' ><i class='fa fa-wrench' aria-hidden='true'></i></button> " .
                     "<button type='button' id='app' disabled onclick='viewStck($rqid,this.id);' class='btn btn-xs btn-default btn-condensed' title='Issue' ><i class='fa fa-check' aria-hidden='true'></i></button> " .
                     "<button type='button' id='rej' disabled onclick='rejStck($rqid);' class='btn btn-xs btn-default btn-condensed' title='Reject' ><i class='fa fa-ban' aria-hidden='true'></i></button>";
             }
@@ -5396,15 +5537,16 @@ class Stock extends CI_Controller
     //END SEARCH REQUESTED STOCKS TO ISSUE</2019-10-18>
 
     //REQUEST REJECT IN ISSUING AREA </2019-10-23>
-    function reqIsReject(){
+    function reqIsReject()
+    {
         $this->db->trans_begin(); // SQL TRANSACTION START
         $id = $this->input->post('id');
 
-        $this->Generic_model->updateData('stock_req',array(
-            'stat'=>4,
+        $this->Generic_model->updateData('stock_req', array(
+            'stat' => 4,
             'isrby' => $_SESSION['userId'],
             'isrdt' => date('Y-m-d H:i:s'),
-            ),array('rqid'=>$id));
+        ), array('rqid' => $id));
 
         $funcPerm = $this->Generic_model->getFuncPermision('stckTrnf');
         $this->Log_model->userFuncLog($funcPerm[0]->pgid, 'Stock Request Reject id(' . $id . ')');
@@ -5425,35 +5567,65 @@ class Stock extends CI_Controller
         $id = $this->input->post('id');
         $data['req'] = $this->Stock_model->getReqDet();
 
-        $rqfr = $data['req'][0]->rqfr; //Request From 1-Warehouse / 2- Branch
-        $rrbc = $data['req'][0]->rrbc; //Request Receiver
+        $_POST['rqfr'] = $data['req'][0]->rqfr; //Request From 1-Warehouse / 2- Branch
+        $_POST['rrbc'] = $data['req'][0]->rrbc; //Request Receiver
 
-        $this->db->select("stc.ascnt,stc.avqn,stc.stid,stc.stcd,stc.csvl,stc.fcvl,stc.slvl,stc.mkvl,
-        IFNULL((SELECT asqty FROM stock_req_sub2 sb3 WHERE sb3.stat=1 AND sb3.rqid=rqs.rqid AND sb3.stid=stc.stid),0) AS thsAsCnt,
-        rqs.auid,rqs.itid,rqs.reqty,rqs.stat,rqs.crdt,rqs.inpr,
-        it.itcd,it.itnm,it.mdl,it.mlcd,sc.scl,sc.scnm,
-        ");
-        $this->db->from('stock_req_sub rqs');
-        $this->db->join('item it', 'it.itid=rqs.itid');
-        $this->db->join('scale sc', 'sc.slid=it.scli');
-        if ($rqfr == 1) {
-            $this->db->join('(SELECT stcd,avqn,stid,itid,csvl,fcvl,slvl,mkvl,
-             IFNULL((SELECT SUM(sb2.asqty) FROM stock_req_sub2 sb2 
-                JOIN stock_req_sub sb ON sb.auid = sb2.sbid
-                WHERE sb2.stid=stock.stid AND sb2.stat=1 AND sb2.sttp=1 AND sb.stat=3),0) AS ascnt
-             FROM stock WHERE stock.stat=1 AND stock.whid=' . $rrbc . ') stc', 'stc.itid=rqs.itid', 'LEFT');
-        } else {
-            $this->db->join('(SELECT stcd,avqn,stbid AS stid,itid,csvl,fcvl,slvl,mkvl,
-             IFNULL((SELECT SUM(sb2.asqty) FROM stock_req_sub2 sb2 
-                JOIN stock_req_sub sb ON sb.auid = sb2.sbid
-                JOIN stock_req rq ON rq.rqid = sb.rqid WHERE sb2.stat=1 AND sb2.stid=stock_brn.stbid AND rq.rqfr=2 AND sb.stat=3),0) AS ascnt
-             FROM stock_brn WHERE stock_brn.stat=1 AND stock_brn.brid=' . $rrbc . ') stc', 'stc.itid=rqs.itid', 'LEFT');
-        }
-        $this->db->where("rqs.rqid=$id AND rqs.stat!=6");
-        $data['reqs'] = $this->db->get()->result();
+        $data['reqs'] = $this->Stock_model->getReqSubDet();
+
+        $this->db->select("rqin.*,CONCAT(cr.fnme,' ',cr.lnme) AS crnm");
+        $this->db->from('stock_req_sub sb');
+        $this->db->join('stock_req_sub2 sb2', 'sb2.sbid=sb.auid');
+        $this->db->join('stock_req_in rqin', 'rqin.inid=sb2.inid');
+        $this->db->join('user_mas cr', 'cr.auid=rqin.crby');
+        $this->db->where("sb.rqid=$id AND sb.stat!=6");
+        $data['rqin'] = $this->db->get()->result();
         echo json_encode($data);
     }
     //END VIEW REQ STOCK </2019-10-21>
+    //
+    //VIEW REQ STOCK TO ISSUE </2019-10-23>
+    function vewReqStockIss()
+    {
+        $id = $this->input->post('id');
+        $func = $this->input->post('func');
+        $inid = $this->input->post('inid');
+        $data['req'] = $this->Stock_model->getReqDet();
+
+        $rqfr = $data['req'][0]->rqfr; //Request From 1-Warehouse / 2- Branch
+        $rrbc = $data['req'][0]->rrbc; //Request Receiver
+
+        $this->db->select("stc.avqn,stc.stid,stc.stcd,stc.csvl,stc.fcvl,stc.slvl,stc.mkvl,
+        sb2.asqty AS thsAsCnt,sb2.auid AS sb2auid,
+        rqs.auid,rqs.itid,rqs.reqty,rqs.stat,rqs.crdt,
+        it.itcd,it.itnm,it.mdl,it.mlcd,sc.scl,sc.scnm,
+        ");
+        $this->db->from('stock_req_sub2 sb2');
+        $this->db->join('stock_req_sub rqs', 'rqs.auid=sb2.sbid');
+        $this->db->join('item it', 'it.itid=rqs.itid');
+        $this->db->join('scale sc', 'sc.slid=it.scli');
+        if ($rqfr == 1) {
+            $this->db->join('(SELECT stcd,avqn,stid,itid,csvl,fcvl,slvl,mkvl
+             FROM stock WHERE stock.stat=1 AND stock.whid=' . $rrbc . ') stc', 'stc.stid=sb2.stid');
+        } else {
+            $this->db->join('(SELECT stcd,avqn,stbid AS stid,itid,csvl,fcvl,slvl,mkvl
+             FROM stock_brn WHERE stock_brn.stat=1 AND stock_brn.brid=' . $rrbc . ') stc', 'stc.stbid=sb2.stid');
+        }
+
+        //0-To Print / 1- To Issue
+        if ($func == 'app') {
+            $inpr = 1;
+            $inidq = "AND sb2.inid=$inid";
+        } else {
+            $inpr = 0;
+            $inidq = "";
+        }
+        $this->db->where("rqs.rqid=$id AND rqs.stat=3 AND sb2.inpr=$inpr $inidq AND sb2.stat=1");
+        $data['reqs'] = $this->db->get()->result();
+
+        $data['rqin'] = $this->Generic_model->getData('stock_req_in', '', array('inid' => $inid));
+        echo json_encode($data);
+    }
+    //END VIEW REQ STOCK TO ISSUE</2019-10-23>
 
     //GET SERIAL NUMBER ITEM </2019-10-22>
     function srch_SrlNumTrn()
@@ -5534,7 +5706,7 @@ class Stock extends CI_Controller
             $funcPerm = $this->Generic_model->getFuncPermision('stckTrnf');
             $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Add to transfer stock ($lstId)");
         } else if ($func == 'edt') {
-            $det = $this->Generic_model->getData('stock_req_sub2', '', array('rqid' => $rqid, 'sbid' => $sbid, 'stid' => $stid, 'itid' => $itid, 'sttp' => $rqfr));
+            $det = $this->Generic_model->getData('stock_req_sub2', '', array('rqid' => $rqid, 'sbid' => $sbid, 'stid' => $stid, 'itid' => $itid, 'sttp' => $rqfr, 'stat' => 1));
             $sb2Id = $det[0]->auid;
             //Update stock_req_sub2 qty
             $this->Generic_model->updateData('stock_req_sub2', array(
@@ -5621,7 +5793,7 @@ class Stock extends CI_Controller
         $itid = $this->input->post('itid');
         $qty = $this->input->post('qty');
 
-        $det = $this->Generic_model->getData('stock_req_sub2', '', array('rqid' => $rqid, 'sbid' => $sbid, 'stid' => $stid, 'itid' => $itid, 'sttp' => $rqfr));
+        $det = $this->Generic_model->getData('stock_req_sub2', '', array('rqid' => $rqid, 'sbid' => $sbid, 'stid' => $stid, 'itid' => $itid, 'sttp' => $rqfr, 'stat' => 1));
         $sb2Id = $det[0]->auid;
         //Update stock_req_sub2 qty
         $this->Generic_model->updateData('stock_req_sub2', array(
@@ -5661,6 +5833,405 @@ class Stock extends CI_Controller
         }
     }
     //END CANCEL ASSIGNED GOODS </2019-10-23>
+
+    //MAKE ISSUE NOTE </2019-10-23>
+    function makeIsNote()
+    {
+        $this->db->trans_begin();
+
+        $yr = date('y');
+        //issue not number auto generate
+        $this->db->select("inno");
+        $this->db->from('stock_req_in rqin');
+        $this->db->order_by('rqin.inid', 'desc');
+        $this->db->limit(1);
+        $data = $this->db->get()->result();
+
+        if (count($data) == '0') {
+            $inno = 'IN' . $yr . "-0001";
+        } else {
+            $re = (explode("-", $data[0]->inno));
+            $aa = intval($re[1]) + 1;
+            $cc = strlen($aa);
+            // next loan no
+            if ($cc == 1) {
+                $xx = '000' . $aa;
+            } else if ($cc == 2) {
+                $xx = '00' . $aa;
+            } else if ($cc == 3) {
+                $xx = '0' . $aa;
+            } else if ($cc == 4) {
+                $xx = '' . $aa;
+            }
+            $inno = 'IN' . $yr . "-" . $xx;
+        }
+        //issue not number auto generate
+
+        $this->Generic_model->insertData('stock_req_in', array(
+            'inno' => $inno,
+            'vno' => $this->input->post('vhnm'),
+            'drnm' => $this->input->post('drnm'),
+            'mbno' => $this->input->post('dctno'),
+            'rmk' => $this->input->post('remkIss'),
+            'crby' => $_SESSION['userId'],
+            'crdt' => date('Y-m-d H:i:s'),
+            'inpr' => 1,
+            'stat' => 1
+        ));
+        $lstId = $this->db->insert_id();
+
+        $sb2auid = $this->input->post('sb2auid[]');
+        for ($it = 0; $it < sizeof($sb2auid); $it++) {
+            $this->Generic_model->updateData('stock_req_sub2', array(
+                'inid' => $lstId,
+                'inpr' => 1
+            ), array('auid' => $sb2auid[$it]));
+        }
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckTrnf');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Made Issue Note ($lstId)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode($lstId);
+        }
+    }
+    //END MAKE ISSUE NOTE </2019-10-23>
+
+    //PRINT ISSUE NOTE </2019-10-24>
+    function issue_note_print($inid, $tms)
+    {
+        if ($tms == 2) {
+            $inpr = $this->Generic_model->getData('stock_req_in', array('inpr'), array('inid' => $inid));
+            $this->Generic_model->updateData('stock_req_in', array('inpr' => $inpr[0]->inpr + 1), array('inid' => $inid));
+        }
+
+        //Issued goods details
+        $this->db->select("rqin.inno,rqin.vno,rqin.drnm,rqin.inpr,rqin.rmk,rqin.crby,rqin.crdt,
+        sb2.auid AS sauid, sb2.asqty,sl.scl,sl.scnm,req.rqno,req.rqfr,req.rqid,req.rsbc,req.rrbc,
+        item.itcd,item.itnm,item.mdl,item.mlcd,bd.bdcd,bd.bdnm,CONCAT(in.fnme,' ',in.lnme) AS innm");
+        $this->db->from('stock_req_in rqin');
+        $this->db->join('stock_req_sub2 sb2', 'sb2.inid=rqin.inid');
+        $this->db->join('stock_req req', 'req.rqid=sb2.rqid');
+        $this->db->join('item', 'item.itid=sb2.itid');
+        $this->db->join('scale sl', 'sl.slid=item.scli');
+        $this->db->join('brand bd', 'bd.bdid=item.bdid');
+        $this->db->join('user_mas in', 'in.auid=rqin.crby');
+        $this->db->where("rqin.inid=$inid");
+        $res = $this->db->get()->result();
+        //Issued goods details
+
+        //Issued Branch Or Warehouse details
+        if ($res[0]->rqfr == 1) {
+            $this->db->select("wh.whcd AS swhcd, wh.whnm AS swhnm, wh.addr AS saddr, wh.tele AS stele, wh.email AS semail,
+                    brc.brnm AS rbrnm, brc.brcd AS rbrcd, brc.brad AS rbraddr");
+            $this->db->from('stock_req req');
+            $this->db->join('stock_wh wh', 'wh.whid=req.rrbc');
+            $this->db->join('brch_mas brc', 'brc.brid=req.rsbc');
+            $this->db->where("req.rqid=" . $res[0]->rqid);
+            $rrDet = $this->db->get()->result();
+        } else if ($res[0]->rqfr == 2) {
+            $this->db->select("wh.brcd AS swhcd,wh.brnm AS swhnm, wh.brad AS saddr, wh.brtp AS stele, wh.brem AS semail,
+                    brc.brnm AS rbrnm, brc.brcd AS rbrcd, brc.brad AS rbraddr");
+            $this->db->from('stock_req req');
+            $this->db->join('brch_mas wh', 'wh.brid=req.rrbc');
+            $this->db->join('brch_mas brc', 'brc.brid=req.rsbc');
+            $this->db->where("req.rqid=" . $res[0]->rqid);
+            $rrDet = $this->db->get()->result();
+        } else {
+            die();
+        }
+        //Issued Branch Or Warehouse details
+
+        //Company details
+        $comDet = $this->Generic_model->getData('com_det', '');
+        //Company details
+        $date = date('Y-m-d H:i:s');
+
+        ob_start();
+        $this->pdf->AddPage('P', 'A5');
+        $this->pdf->SetAutoPageBreak(true, 10);
+        //$this->pdf->Rect(5, 5, 200, 287, ''); //For A4
+        $this->pdf->SetFont('Helvetica', 'B', 11);
+        $this->pdf->SetTextColor(50, 50, 50);
+        $this->pdf->SetXY(10, 12);
+        $this->pdf->Cell(0, 0, $rrDet[0]->swhnm . ' | ' . $rrDet[0]->swhcd, 0, 1, 'C');
+        $this->pdf->SetFont('Helvetica', '', 9);
+        $this->pdf->SetXY(10, 16);
+        $this->pdf->Cell(0, 0, $rrDet[0]->saddr, 0, 1, 'C');
+        $this->pdf->SetXY(10, 20);
+        $this->pdf->Cell(0, 0, "Tele " . $rrDet[0]->stele . " | Email " . $rrDet[0]->semail, 0, 1, 'C');
+
+        // Top left company details
+        $this->pdf->SetFont('Helvetica', 'B', 9);
+        $this->pdf->SetXY(5, 27);
+        $this->pdf->Cell(0, 0, "Issue Note No. : " . $res[0]->inno);
+        $this->pdf->SetFont('Helvetica', '', 10);
+        $this->pdf->SetXY(5, 32);
+        $this->pdf->Cell(0, 0, 'Delivery Address', 0, 0, '');
+        $this->pdf->Line(5, 34.5, 35, 34.5);
+        $this->pdf->Ln();
+        $this->pdf->SetFont('Helvetica', '', 9);
+        $this->pdf->SetXY(5, 37);
+        $this->pdf->Cell(0, 0, $comDet[0]->cmne . " (" . $rrDet[0]->rbrnm | $rrDet[0]->rbrcd . ")");
+        $this->pdf->SetFont('Helvetica', '', 9);
+        $this->pdf->SetXY(5, 41);
+        $this->pdf->Cell(0, 0, $rrDet[0]->rbraddr);
+        $this->pdf->SetFont('Helvetica', '', 9);
+        $this->pdf->SetXY(5, 48);
+        $this->pdf->Cell(1, 0, 'Delivery Date : ' . date('Y-m-d'), 0, 1, 'L');
+        $this->pdf->SetXY(5, 52);
+        $this->pdf->Cell(1, 0, 'Vehicle No : ' . $res[0]->vno, 0, 1, 'L');
+        $this->pdf->SetXY(5, 56);
+        $this->pdf->Cell(1, 0, 'Driver Name : ' . $res[0]->drnm, 0, 1, 'L');
+
+        //Top Right
+        $this->pdf->SetFont('Helvetica', 'B', 9);
+        $this->pdf->SetXY(90, 27);
+        $this->pdf->Cell(1, 0, 'Date : ' . $res[0]->crdt, 0, 1, 'L');
+        $this->pdf->SetFont('Helvetica', '', 9);
+        $this->pdf->SetXY(90, 48);
+        $this->pdf->Cell(1, 0, 'Issued By : ' . $res[0]->innm, 0, 1, 'L');
+
+        $this->pdf->Line(5, 59, 145, 59);
+        $this->pdf->Ln();
+        $this->pdf->SetFont('Helvetica', 'B', 9);
+
+        $this->pdf->SetXY(5, 59);
+        $this->pdf->Cell(10, 110, '', '1');
+        $this->pdf->SetXY(15, 59);
+        $this->pdf->Cell(30, 110, '', '1');
+        $this->pdf->SetXY(45, 59);
+        $this->pdf->Cell(80, 110, '', '1');
+        $this->pdf->SetXY(125, 59);
+        $this->pdf->Cell(20, 110, '', '1');
+
+        $this->pdf->SetXY(5, 59);
+        $this->pdf->Cell(10, 5, '#', 1, 1, 'C');
+        $this->pdf->SetXY(15, 59);
+        $this->pdf->Cell(30, 5, 'Item', 1, 1, 'C');
+        $this->pdf->SetXY(45, 59);
+        $this->pdf->Cell(80, 5, 'Description', 1, 1, 'C');
+        $this->pdf->SetXY(125, 59);
+        $this->pdf->Cell(20, 5, 'QTY', 1, 1, 'C');
+        $this->pdf->Line(5, 64, 145, 64);
+        $this->pdf->Ln();
+        $this->pdf->SetXY(5, 64);
+
+        $tQty = 0;
+        for ($it = 0; $it < sizeof($res); $it++) {
+            //loading serial numbers
+            if ($res[0]->rqfr == 1) {
+                $this->db->select("sb.srno,sb.btno,sb.prno,sb.brcd,sb.abc,sb.xyz");
+                $this->db->from('stock_sub sb');
+                $this->db->where("sb.trrf=" . $res[$it]->sauid);
+                $srno = $this->db->get()->result();
+            } else {
+                $this->db->select("sb.srno,sb.btno,sb.prno,sb.brcd,sb.abc,sb.xyz");
+                $this->db->from('stock_brn_sub sbb');
+                $this->db->join('stock_sub sb', 'sb.ssid=sbb.ssid');
+                $this->db->where("sbb.trrf=" . $res[$it]->sauid);
+                $srno = $this->db->get()->result();
+            }
+
+            $y = $this->pdf->GetY();
+            $this->pdf->SetFont('Helvetica', '', 9);
+            $this->pdf->SetXY(5, $y);
+            $this->pdf->Cell(10, 5, $it + 1, 0, 0, 'C');
+            $this->pdf->SetXY(15, $y);
+            $this->pdf->Cell(30, 5, $res[$it]->itcd, 0, 0, 'L');
+
+            if (sizeof($srno) > 0) {
+                $srl = "SRL - ";
+                for ($sr = 0; $sr < sizeof($srno); $sr++) {
+                    $this->pdf->SetX(35);
+                    $ref = '';
+                    if ($srno[$sr]->srno != "") {
+                        $ref = $srno[$sr]->srno;
+                    } else if ($srno[$sr]->btno != "") {
+                        $ref = $srno[$sr]->btno;
+                    } else if ($srno[$sr]->prno != "") {
+                        $ref = $srno[$sr]->prno;
+                    } else if ($srno[$sr]->brcd != "") {
+                        $ref = $srno[$sr]->brcd;
+                    } else if ($srno[$sr]->abc != "") {
+                        $ref = $srno[$sr]->abc;
+                    } else if ($srno[$sr]->xyz != "") {
+                        $ref = $srno[$sr]->xyz;
+                    }
+
+                    if ($sr == 0) {
+                        $srl = $srl . $ref;
+                    } else {
+                        $srl = $srl . " | " . $ref;
+                    }
+                }
+            } else {
+                $srl = "BULK";
+            }
+
+            $this->pdf->SetXY(45, $y);
+            $this->pdf->MultiCell(80, 5, $res[$it]->itnm . "\n MODEL - " . $res[$it]->mdl . " (" . $res[$it]->mlcd . ") " . $res[$it]->bdnm . "\n$srl", 0);
+            $y2 = $this->pdf->getY();
+            $this->pdf->SetXY(125, $y);
+            $this->pdf->Cell(20, 5, str_pad($res[$it]->asqty, 2, 0, STR_PAD_LEFT), 0, 0, 'R');
+            $this->pdf->SetXY(45, $y2 + 3);
+
+            $tQty += $res[$it]->asqty;
+        }
+
+        if ($this->pdf->GetY() > ($this->pdf->h / 3) * 2) {
+            // FOOTER
+            $this->pdf->SetFont('Helvetica', '', 7);
+            $this->pdf->SetXY(10, $this->pdf->h - 10);
+            $this->pdf->Cell(0, 0, '(' . $res[0]->inno . '|' . $date . '|' . $_SESSION['username'] . ')'); /* AGNO | DATE | USER */
+            if ($res[0]->inpr == 1) {
+                $this->pdf->SetXY(120, $this->pdf->h - 10);
+                $this->pdf->Cell(0, 0, 'Original Issue Note');
+            } else {
+                $this->pdf->SetXY(120, $this->pdf->h - 10);
+                $this->pdf->Cell(0, 0, 'Copy (' . $res[0]->inpr . ')');
+            }
+            $this->pdf->AddPage('P', 'A5');
+            $this->pdf->SetAutoPageBreak(true, 10);
+        }
+
+        $this->pdf->SetFont('Helvetica', 'B', 9);
+        $this->pdf->SetXY(45, $this->pdf->h - 40);
+        $this->pdf->Cell(80, 5, "Total", 0, 0, 'R');
+        $this->pdf->Cell(20, 5, str_pad($tQty, 2, 0, STR_PAD_LEFT), 0, 0, 'R');
+
+        $this->pdf->SetFont('Helvetica', '', 9);
+        $this->pdf->SetXY(10, $this->pdf->h - 20);
+        $this->pdf->Cell(35, 0, ".............................................", 0, 0, 'C');
+        $this->pdf->SetFont('Helvetica', 'B', 9);
+        $this->pdf->SetXY(10, $this->pdf->h - 17);
+        $this->pdf->Cell(35, 0, "Issued By", 0, 0, 'C');
+
+        $this->pdf->SetFont('Helvetica', '', 9);
+        $this->pdf->SetXY(55, $this->pdf->h - 20);
+        $this->pdf->Cell(35, 0, ".............................................", 0, 0, 'C');
+        $this->pdf->SetFont('Helvetica', 'B', 9);
+        $this->pdf->SetXY(55, $this->pdf->h - 17);
+        $this->pdf->Cell(35, 0, "Delivered By", 0, 0, 'C');
+
+        $this->pdf->SetFont('Helvetica', '', 9);
+        $this->pdf->SetXY(100, $this->pdf->h - 20);
+        $this->pdf->Cell(35, 0, ".............................................", 0, 0, 'C');
+        $this->pdf->SetFont('Helvetica', 'B', 9);
+        $this->pdf->SetXY(100, $this->pdf->h - 17);
+        $this->pdf->Cell(35, 0, "Received By", 0, 0, 'C');
+        // FOOTER
+        $this->pdf->SetFont('Helvetica', '', 7);
+        $this->pdf->SetXY(10, $this->pdf->h - 10);
+        $this->pdf->Cell(0, 0, '(' . $res[0]->inno . '|' . $date . '|' . $_SESSION['username'] . ')'); /* AGNO | DATE | USER */
+
+        if ($res[0]->inpr == 1) {
+            $this->pdf->SetXY(120, $this->pdf->h - 10);
+            $this->pdf->Cell(0, 0, 'Original Issue Note');
+        } else {
+            $this->pdf->SetXY(120, $this->pdf->h - 10);
+            $this->pdf->Cell(0, 0, 'Copy (' . $res[0]->inpr . ')');
+        }
+
+        $this->pdf->SetTitle('Agreement No  :' . $res[0]->inno);
+        $this->pdf->Output($res[0]->inno . '.pdf', 'I');
+        ob_end_flush();
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckTrnf');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Issue Note Printed " . $res[0]->inno . " (TM " . ($inpr[0]->inpr + 1) . ")");
+    }
+    //END PRINT ISSUE NOTE </2019-10-24>
+
+    //DELIVER THE GOODS </2019-10-24>
+    function issGoods()
+    {
+        $this->db->trans_begin();  //SQL BEGIN TRANSACTION
+        $func = $this->input->post('func');
+        $inid = $this->input->post('inid');
+
+        $des = $this->Generic_model->getData('stock_req_sub2', array('sbid', 'asqty', 'stid', 'sttp', 'rqid'), array('inid' => $inid));
+        for ($it = 0; $it < sizeof($des); $it++) {
+            $this->Generic_model->updateData('stock_req_sub', array(
+                'stat' => 4,
+                'isby' => $_SESSION['userId'],
+                'isdt' => date('Y-m-d H:i:s')
+            ), array('auid' => $des[$it]->sbid));
+
+            $cnt = $des[$it]->asqty;
+            if ($des[$it]->sttp == 1) {
+                $this->db->set('avqn', "avqn - $cnt", false);
+                $this->db->where('stid', $des[$it]->stid);
+                $this->db->update('stock');
+
+                //Checking and Update as finish stock
+                $this->db->set('stat', "IF(avqn=0,2,stat)", false);
+                $this->db->where('stid', $des[$it]->stid);
+                $this->db->update('stock');
+            } else {
+                $this->db->set('avqn', "avqn - $cnt", false);
+                $this->db->where('stbid', $des[$it]->stid);
+                $this->db->update('stock_brn');
+
+                //Checking and Update as finish stock
+                $this->db->set('stat', "IF(avqn=0,2,stat)", false);
+                $this->db->where('stbid', $des[$it]->stid);
+                $this->db->update('stock_brn');
+            }
+        }
+
+        //Check if all stock_req_sub issued
+        $des2 = $this->Generic_model->getData('stock_req_sub', array('auid'), "stat IN(0,3) AND rqid=".$des[0]->rqid);
+        if (sizeof($des2) <= 0) {
+            $this->Generic_model->updateData('stock_req', array('stat' => 5), array('rqid' => $des[0]->rqid));
+        }
+
+        $funcPerm = $this->Generic_model->getFuncPermision('stckTrnf');
+        $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Issue Goods From Stock (INID : $inid)");
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            echo json_encode(false);
+        } else {
+            $this->db->trans_commit(); // SQL TRANSACTION END
+            echo json_encode(true);
+        }
+    }
+    //END DELIVER THE GOODS </2019-10-24>
+
+    //SEARCH ISSUED NOTES </2019-10-25>
+    function srchIssNote()
+    {
+        $result = $this->Stock_model->get_issNotes();
+        $data = array();
+        $i = $_POST['start'];
+
+        foreach ($result as $row) {
+            $sub_arr = array();
+            $sub_arr[] = ++$i;
+            $sub_arr[] = $row->inno;
+            $sub_arr[] = $row->drnm;
+            $sub_arr[] = $row->vno;
+            $sub_arr[] = $row->mbno;
+            $sub_arr[] = $row->crnm;
+            $sub_arr[] = $row->crdt;
+            $sub_arr[] = "<button class='btn btn-xs btn-primary' onclick='issNtRp($row->inid);'><span class='fa fa-print'></span></button>";
+            $data[] = $sub_arr;
+        }
+
+        //$output = array("data" => $data);
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->Stock_model->count_all_issNotes(),
+            "recordsFiltered" => $this->Stock_model->count_filtered_issNotes(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+    //END SEARCH ISSUED NOTES </2019-10-25>
 //************************************************
 //***           END STOCK TRANSFER             ***
 //************************************************

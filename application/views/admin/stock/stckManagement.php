@@ -1617,6 +1617,10 @@
                     }
                 }
                 $('#modal_gennummedt').modal('hide');
+                $('#strtnumedt').val('');
+                $('#normlnumedt').val('');
+                set_select('notypeedt',0);
+                $('#sameedt').prop('checked',false);
             }
         }
 
