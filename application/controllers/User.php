@@ -235,6 +235,28 @@ class User extends CI_Controller
         $this->load->view('common/tmpFooter', $data);
     }
 
+// CHECK ALREADY ENTERED MOBILE NUMBER
+    function chk_mobile()
+    {
+        $mobi = $this->input->post('mobi');
+        $stat = $this->input->post('stat'); //0-Add/1-Edit
+
+        $this->db->select("mobi,tele");
+        $this->db->from('cus_mas');
+        $this->db->where("(mobi=$mobi OR tele=$mobi)");
+        if ($stat == 1) {
+            $this->db->where("cuid!=" . $this->input->post('auid'));
+        }
+        $res = $this->db->get()->result();
+        if (sizeof($res) > 0) {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
+    }
+// END CHECK ALREADY ENTERED MOBILE NUMBER
+
+
 // CUSTOMER REGISTRATION
     function custmerRegist()
     {
@@ -417,18 +439,16 @@ class User extends CI_Controller
             //Updating supplier details
             $this->Generic_model->updateData('cus_mas',
                 array(
-                    'funm' => $this->input->post('cusnmEdt'),
-                    'hoad' => $this->input->post('addrEdt'),
-                    'mobi' => $this->input->post('mobiEdt'),
-                    'tele' => $this->input->post('teleEdt'),
-                    'anic' => $this->input->post('anicEdt'),
-                    'emil' => $this->input->post('emailEdt'),
-                    'rmks' => $this->input->post('remkEdt'),
-
-                    'mdby' => $_SESSION['userId'],
-                    'mddt' => date('Y-m-d H:i:s'),
-
-                ), array('cuid' => $cuid));
+                'funm' => $this->input->post('cusnmEdt'),
+                'hoad' => $this->input->post('addrEdt'),
+                'mobi' => $this->input->post('mobiEdt'),
+                'tele' => $this->input->post('teleEdt'),
+                'anic' => $this->input->post('anicEdt'),
+                'emil' => $this->input->post('emailEdt'),
+                'rmks' => $this->input->post('remkEdt'),
+                'mdby' => $_SESSION['userId'],
+                'mddt' => date('Y-m-d H:i:s'),
+            ), array('cuid' => $cuid));
 
             $funcPerm = $this->Generic_model->getFuncPermision('cusReg');
             $this->Log_model->userFuncLog($funcPerm[0]->pgid, "Customer's Details Updated ($cuid)");
@@ -443,7 +463,7 @@ class User extends CI_Controller
         }
     }
 //END CUSTOMER UPDATE
-
+//
 // REJECT CUSTOMER
     function supp_Reject()
     {
