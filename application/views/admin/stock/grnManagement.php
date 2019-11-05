@@ -594,7 +594,7 @@
                     },
                     tfrqt: {
                         //required: true,
-                        notEqual: 0,
+                        // notEqual: 0,
                         decimal: true
                     },
                     rcvqt: {
