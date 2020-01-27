@@ -4533,7 +4533,7 @@ class Stock extends CI_Controller
         $this->db->from('stock_brn_sub stb');
         $this->db->join('stock_sub sb', 'sb.ssid=stb.ssid');
         $this->db->where('stb.stbid', $stid);
-        $this->db->where("stb.stat=1 AND trst=0");
+        $this->db->where("stb.stat=1 AND stb.trst=0");
         if ($val != '') {
             $this->db->where("sb.srno=$val");
         }
