@@ -54,78 +54,42 @@
     <div class="block">
         <?php
         if ($funcPerm[0]->inst == 1) { ?>
-        <div class="row form-horizontal">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">Issue From</label>
-                    <div class="col-md-8 col-xs-12">
-                        <label class="switch">
-                            <input id="srreqFr" name="srreqFr" type="checkbox" onclick="srcheckFr()"
-                                   checked/>Branch
-                        </label>Warehouse
-                    </div>
-                </div>
-                <br>
-            </div>
-        </div>
-        <div class="row form-horizontal">
-            <div class="col-md-4">
-                <div class="form-group" id="srfrWrh">
-                    <label class="col-md-4 col-xs-12 control-label">Warehouse</label>
-                    <div class="col-md-8 col-xs-12">
-                        <select class="bs-select" name="frwhs" id="frwhs"
-                                onchange="chckBtn(this.value,this.id);">
-                            <option value="all">All Warehouses</option>
-                            <?php
-                            foreach ($warehouse as $wh) {
-                                echo "<option value='$wh->whid'>$wh->whcd - $wh->whnm</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group" id="srfrBrnc" style="display: none">
-                    <label class="col-md-4 col-xs-12 control-label">Issuing Branch</label>
-                    <div class="col-md-8 col-xs-12">
-                        <select class="bs-select" name="frBrncs" id="frBrncs"
-                                onchange="chckBtn(this.value,this.id);">
-                            <option value="all">All Branches</option>
-                            <?php
-                            foreach ($brncFrm as $brf) {
-                                if ($brf['brch_id'] != '0' && $brf['brch_id'] != 'all') {
-                                    echo "<option value='" . $brf['brch_id'] . "'>" . $brf['brch_code'] . " - " . $brf['brch_name'] . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-4 col-xs-12 control-label">Status</label>
-                    <div class="col-md-8 col-xs-12">
-                        <select name="reqSt" id="reqSt" class="bs-select">
-                            <option value="all">All Status</option>
-                            <!--                            <option value="0">Pending</option>-->
-                            <option value="1">To Issue</option>
-                            <option value="5">Issued</option>
-                            <!--                            <option value="2">Cancelled</option>-->
-                            <option value="3">Delivered</option>
-                            <option value="4">Issuing Reject</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <?php }else{
-            ?>
             <div class="row form-horizontal">
                 <div class="col-md-4">
-                    <div class="form-group" id="srfrBrnc">
+                    <div class="form-group">
+                        <label class="col-md-4 col-xs-12 control-label">Issue From</label>
+                        <div class="col-md-8 col-xs-12">
+                            <label class="switch">
+                                <input id="srreqFr" name="srreqFr" type="checkbox" onclick="srcheckFr()"
+                                       checked/>Branch
+                            </label>Warehouse
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="row form-horizontal">
+                <div class="col-md-4">
+                    <div class="form-group" id="srfrWrh">
+                        <label class="col-md-4 col-xs-12 control-label">Warehouse</label>
+                        <div class="col-md-8 col-xs-12">
+                            <select class="bs-select" name="frwhs" id="frwhs"
+                                    onchange="chckBtn(this.value,this.id);">
+                                <option value="all">All Warehouses</option>
+                                <?php
+                                foreach ($warehouse as $wh) {
+                                    echo "<option value='$wh->whid'>$wh->whcd - $wh->whnm</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="srfrBrnc" style="display: none">
                         <label class="col-md-4 col-xs-12 control-label">Issuing Branch</label>
                         <div class="col-md-8 col-xs-12">
                             <select class="bs-select" name="frBrncs" id="frBrncs"
                                     onchange="chckBtn(this.value,this.id);">
-                                <option value="0">-- Select Branch --</option>
+                                <option value="all">All Branches</option>
                                 <?php
                                 foreach ($brncFrm as $brf) {
                                     if ($brf['brch_id'] != '0' && $brf['brch_id'] != 'all') {
@@ -136,6 +100,7 @@
                             </select>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label class="col-md-4 col-xs-12 control-label">Status</label>
                         <div class="col-md-8 col-xs-12">
@@ -151,9 +116,6 @@
                         </div>
                     </div>
                 </div>
-                <?php
-                }
-                ?>
                 <div class="col-md-4">
                     <div class="form-group" id="srToBrnc">
                         <label class="col-md-4 col-xs-12 control-label">Requester Branches</label>
@@ -199,8 +161,91 @@
                     </div>
                 </div>
             </div>
-        </div>
+        <?php } else {
+            ?>
+            <div class="row form-horizontal">
+                <div class="col-md-4">
+                    <div class="form-group" id="srfrBrnc">
+                        <label class="col-md-4 col-xs-12 control-label">Issuing Branch</label>
+                        <div class="col-md-8 col-xs-12">
+                            <select class="bs-select" name="frBrncs" id="frBrncs"
+                                    onchange="chckBtn(this.value,this.id);">
+                                <option value="0">-- Select Branch --</option>
+                                <?php
+                                foreach ($brncFrm as $brf) {
+                                    if ($brf['brch_id'] != '0' && $brf['brch_id'] != 'all') {
+                                        echo "<option value='" . $brf['brch_id'] . "'>" . $brf['brch_code'] . " - " . $brf['brch_name'] . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 col-xs-12 control-label">Status</label>
+                        <div class="col-md-8 col-xs-12">
+                            <select name="reqSt" id="reqSt" class="bs-select">
+                                <option value="all">All Status</option>
+                                <!--                            <option value="0">Pending</option>-->
+                                <option value="1">To Issue</option>
+                                <option value="5">Issued</option>
+                                <!--                            <option value="2">Cancelled</option>-->
+                                <option value="3">Delivered</option>
+                                <option value="4">Issuing Reject</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" id="srToBrnc">
+                        <label class="col-md-4 col-xs-12 control-label">Requester Branches</label>
+                        <div class="col-md-8 col-xs-12">
+                            <select class="bs-select" name="tobrcs" id="tobrcs"
+                                    onchange="chckBtn(this.value,this.id);">
+                                <option value="all">All Branches</option>
+                                <?php
+                                foreach ($brncTo as $brt) {
+                                    echo "<option value='$brt->brid'>$brt->brcd - $brt->brnm</option>";
+                                }
+                                ?>
+                            </select>
+                            <br/></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-md-4 col-xs-12 control-label">Date Range</label>
+                        <div class="col-md-8 col-xs-12">
+                            <div class='input-group'>
+                                <input type='text' class="form-control dateranger" id="dtrng" name="dtrng"
+                                       value="<?= date('Y-m-d') ?> / <?= date('Y-m-d') ?>"/>
+                                <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 col-xs-12 text-right">
+                            <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed"
+                                    onclick="srch_rqGd()">
+                                <span class="fa fa-search"></span>Search
+                            </button>
+                            <?php if ($funcPerm[0]->rpnt == 1) { ?>
+                                <button type="button" data-toggle="modal" data-target='#modal-isNts'
+                                        class='btn btn-sm btn-danger btn-rounded btn-icon-fixed'>
+                                    <span class="fa fa-file-text-o"></span> Issue Notes
+                                </button>
+                            <?php } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+        ?>
     </div>
+
     <div class="block">
         <div class="row form-horizontal">
             <div class="table-responsive">
@@ -441,7 +486,7 @@
     <div class="modal fade" id="modal-iss" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modal-default-header">
         <div class="modal-dialog modal-lg modal-success" role="document" style="width: 60%">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeIss()"><span aria-hidden="true"
-                                                                                              class="icon-cross"></span>
+                                                                                                                   class="icon-cross"></span>
             </button>
             <form id="issForm">
                 <div class="modal-content">
@@ -637,7 +682,6 @@
             </div>
         </div>
     </div>
-    <!-- END ADD SERIAL STOCK -->
     <!--    OLD ISSUE NOTES-->
     <div class="modal fade" id="modal-isNts" tabindex="-1" role="dialog"
          aria-labelledby="modal-default-header">
@@ -652,63 +696,42 @@
                 <div class="modal-body scroll" style="max-height: 65vh">
                     <?php
                     if ($funcPerm[0]->inst == 1) { ?>
-                    <div class="row form-horizontal">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="col-md-4 col-xs-12 control-label">Issued From</label>
-                                <div class="col-md-8 col-xs-12">
-                                    <label class="switch">
-                                        <input id="issFr" name="issFr" type="checkbox" onclick="checkIssFr()"
-                                               checked/>Branch
-                                    </label>Warehouse
-                                </div>
-                            </div>
-                            <br>
-                        </div>
-                    </div>
-                    <div class="row form-horizontal">
-                        <div class="col-md-6">
-                            <div class="form-group" id="issfrWrh">
-                                <label class="col-md-4 col-xs-12 control-label">Warehouse</label>
-                                <div class="col-md-8 col-xs-12">
-                                    <select class="bs-select" name="frwhiss" id="frwhiss"
-                                            onchange="chckBtn(this.value,this.id);">
-                                        <option value="all">All Warehouses</option>
-                                        <?php
-                                        foreach ($warehouse as $wh) {
-                                            echo "<option value='$wh->whid'>$wh->whcd - $wh->whnm</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group" id="issfrBrnc" style="display: none">
-                                <label class="col-md-4 col-xs-12 control-label">Issuing Branch</label>
-                                <div class="col-md-8 col-xs-12">
-                                    <select class="bs-select" name="frBrnciss" id="frBrnciss"
-                                            onchange="chckBtn(this.value,this.id);">
-                                        <option value="all">All Branches</option>
-                                        <?php
-                                        foreach ($brncFrm as $brf) {
-                                            if ($brf['brch_id'] != '0' && $brf['brch_id'] != 'all') {
-                                                echo "<option value='" . $brf['brch_id'] . "'>" . $brf['brch_code'] . " - " . $brf['brch_name'] . "</option>";
-                                            }
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <?php } else {
-                        ?>
                         <div class="row form-horizontal">
                             <div class="col-md-6">
-                                <div class="form-group" style="display: none">
+                                <div class="form-group">
+                                    <label class="col-md-4 col-xs-12 control-label">Issued From</label>
+                                    <div class="col-md-8 col-xs-12">
+                                        <label class="switch">
+                                            <input id="issFr" name="issFr" type="checkbox" onclick="checkIssFr()"
+                                                   checked/>Branch
+                                        </label>Warehouse
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row form-horizontal">
+                            <div class="col-md-6">
+                                <div class="form-group" id="issfrWrh">
+                                    <label class="col-md-4 col-xs-12 control-label">Warehouse</label>
+                                    <div class="col-md-8 col-xs-12">
+                                        <select class="bs-select" name="frwhiss" id="frwhiss"
+                                                onchange="chckBtn(this.value,this.id);">
+                                            <option value="all">All Warehouses</option>
+                                            <?php
+                                            foreach ($warehouse as $wh) {
+                                                echo "<option value='$wh->whid'>$wh->whcd - $wh->whnm</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="issfrBrnc" style="display: none">
                                     <label class="col-md-4 col-xs-12 control-label">Issuing Branch</label>
                                     <div class="col-md-8 col-xs-12">
                                         <select class="bs-select" name="frBrnciss" id="frBrnciss"
                                                 onchange="chckBtn(this.value,this.id);">
-                                            <option value="0">-- Select Branch --</option>
+                                            <option value="all">All Branches</option>
                                             <?php
                                             foreach ($brncFrm as $brf) {
                                                 if ($brf['brch_id'] != '0' && $brf['brch_id'] != 'all') {
@@ -720,7 +743,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <?php } ?>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="col-md-4 col-xs-12 control-label">Date Range</label>
@@ -744,35 +766,80 @@
                                 </div>
                             </div>
                         </div>
+                    <?php } else {
+                        ?>
                         <div class="row form-horizontal">
-                            <div class="col-md-12">
-                                <div class="table-responsive">
-                                    <table class="table datatable table-bordered table-striped"
-                                           id="dataTbIssNt" width="100%">
-                                        <thead>
-                                        <tr>
-                                            <th class="text-center"> #</th>
-                                            <th class="text-center" title="Issue Note Number"> No</th>
-                                            <th class="text-left"> Driver Name</th>
-                                            <th class="text-left"> Vehicle No.</th>
-                                            <th class="text-left"> Contact</th>
-                                            <th class="text-left" title="Created By"> CRBY.</th>
-                                            <th class="text-left" title="Created Date"> CRDT.</th>
-                                            <th class="text-left"> OPTION</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
+                            <div class="col-md-6">
+                                <div class="form-group" style="display: none">
+                                    <label class="col-md-4 col-xs-12 control-label">Issuing Branch</label>
+                                    <div class="col-md-8 col-xs-12">
+                                        <select class="bs-select" name="frBrnciss" id="frBrnciss"
+                                                onchange="chckBtn(this.value,this.id);">
+                                            <option value="0">-- Select Branch --</option>
+                                            <?php
+                                            foreach ($brncFrm as $brf) {
+                                                if ($brf['brch_id'] != '0' && $brf['brch_id'] != 'all') {
+                                                    echo "<option value='" . $brf['brch_id'] . "'>" . $brf['brch_code'] . " - " . $brf['brch_name'] . "</option>";
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-md-4 col-xs-12 control-label">Date Range</label>
+                                    <div class="col-md-8 col-xs-12">
+                                        <div class='input-group'>
+                                            <input type='text' class="form-control dateranger" id="dtrngIss" name="dtrngIss"
+                                                   value="<?= date('Y-m-d') ?> / <?= date('Y-m-d') ?>"/>
+                                            <span class="input-group-addon">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12 col-xs-12 text-right">
+                                        <button class="btn btn-sm btn-primary btn-rounded btn-icon-fixed"
+                                                onclick="srch_issNote()">
+                                            <span class="fa fa-search"></span>Search
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <?php } ?>
 
+                    <div class="row form-horizontal">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table datatable table-bordered table-striped"
+                                       id="dataTbIssNt" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center"> #</th>
+                                        <th class="text-center" title="Issue Note Number"> No</th>
+                                        <th class="text-left"> Driver Name</th>
+                                        <th class="text-left"> Vehicle No.</th>
+                                        <th class="text-left"> Contact</th>
+                                        <th class="text-left" title="Created By"> CRBY.</th>
+                                        <th class="text-left" title="Created Date"> CRDT.</th>
+                                        <th class="text-left"> OPTION</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
